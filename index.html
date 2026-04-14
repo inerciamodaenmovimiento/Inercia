@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INERCIA - Moda en Movimiento</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;family=Outfit:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        beige: { 50:'#faf8f5', 100:'#f5f0e8', 200:'#ebe3d5', 300:'#d9ccb8', 400:'#c4b094', 500:'#b09a78' },
+        ink: { 900:'#1a1a1a', 800:'#2d2d2d', 700:'#404040' },
+        accent: { 500:'#e63946', 400:'#ff6b6b', 300:'#ff9999' }
+      },
+      fontFamily: {
+        display: ['Cormorant Garamond','serif'],
+        body: ['Outfit','sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html,body{height:100%;margin:0}
+*{box-sizing:border-box}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#faf8f5}
+::-webkit-scrollbar-thumb{background:#c4b094;border-radius:3px}
+.fade-in{animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.slide-in-right{animation:slideRight .35s ease}
+@keyframes slideRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.card-hover{transition:all .3s ease}
+.card-hover:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(44,40,37,.1)}
+.btn-primary{transition:all .25s ease}
+.btn-primary:hover{transform:scale(1.02)}
+.modal-overlay{background:rgba(44,40,37,.4);backdrop-filter:blur(4px)}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-beige-50 font-body text-ink-900">
+  <div id="app" class="h-full w-full overflow-auto">
+   <!-- NAV -->
+   <nav id="navbar" class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-beige-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+     <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
+      <span id="nav-title" class="font-display text-2xl sm:text-3xl font-600 tracking-wide text-ink-900">INERCIA</span> <span class="hidden sm:inline text-beige-400 font-light text-sm tracking-widest uppercase">Moda en movimiento</span>
+     </div>
+     <div class="flex items-center gap-3 sm:gap-5">
+      <button onclick="navigateTo('home')" class="text-sm font-medium text-ink-700 hover:text-ink-900 transition hidden sm:block">Tienda</button> <button onclick="openCart()" class="relative p-2 hover:bg-beige-100 rounded-full transition"> <i data-lucide="shopping-bag" class="w-5 h-5"></i> <span id="cart-count" class="absolute -top-1 -right-1 w-5 h-5 bg-ink-900 text-white text-xs rounded-full flex items-center justify-center hidden">0</span> </button>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="hero-section" class="relative overflow-hidden bg-gradient-to-br from-beige-100 via-white to-beige-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
+     <h1 id="hero-title" class="font-display text-5xl sm:text-7xl md:text-8xl font-300 text-ink-900 mb-4 fade-in">INERCIA</h1>
+     <p id="hero-subtitle" class="font-display text-xl sm:text-2xl text-beige-500 italic mb-8 fade-in" style="animation-delay:.1s">Moda en movimiento</p><button onclick="document.getElementById('products-section').scrollIntoView({behavior:'smooth'})" class="btn-primary inline-flex items-center gap-2 bg-ink-900 text-white px-8 py-3 rounded-full text-sm font-medium fade-in" style="animation-delay:.2s"> Explorar <i data-lucide="arrow-down" class="w-4 h-4"></i> </button>
+    </div>
+    <div class="absolute top-10 left-10 w-32 h-32 rounded-full bg-beige-200/40 blur-2xl"></div>
+    <div class="absolute bottom-10 right-10 w-48 h-48 rounded-full bg-beige-200/30 blur-3xl"></div>
+   </section><!-- CATEGORIES FILTER -->
+   <div id="categories-bar" class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <div id="category-filters" class="flex flex-wrap gap-2"></div>
+   </div><!-- PRODUCTS -->
+   <section id="products-section" class="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
+    <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"></div>
+    <div id="empty-products" class="hidden text-center py-20">
+     <i data-lucide="package" class="w-16 h-16 text-beige-300 mx-auto mb-4"></i>
+     <p class="text-beige-400 text-lg">No hay productos disponibles aún</p>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="bg-ink-900 text-beige-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+     <span id="footer-text" class="font-display text-lg">© 2024 INERCIA</span>
+     <div class="flex gap-6 text-sm text-beige-400">
+      <span>Moda en movimiento</span>
+     </div>
+    </div>
+   </footer><!-- CART SIDEBAR -->
+   <div id="cart-overlay" class="fixed inset-0 z-50 hidden">
+    <div class="modal-overlay absolute inset-0" onclick="closeCart()"></div>
+    <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl slide-in-right flex flex-col">
+     <div class="flex items-center justify-between p-5 border-b border-beige-100">
+      <h2 class="font-display text-2xl">Tu Carrito</h2><button onclick="closeCart()" class="p-2 hover:bg-beige-50 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+     </div>
+     <div id="cart-items" class="flex-1 overflow-auto p-5 space-y-4"></div>
+     <div id="cart-empty-msg" class="flex-1 flex flex-col items-center justify-center text-beige-400 hidden">
+      <i data-lucide="shopping-bag" class="w-12 h-12 mb-3"></i>
+      <p>Tu carrito está vacío</p>
+     </div>
+     <div id="cart-footer" class="border-t border-beige-100 p-5 space-y-3 hidden">
+      <div class="flex justify-between text-lg font-medium"><span>Total</span><span id="cart-total">$0</span>
+      </div><button onclick="navigateTo('checkout');closeCart()" class="btn-primary w-full bg-ink-900 text-white py-3 rounded-full text-sm font-medium">Proceder al pago</button>
+     </div>
+    </div>
+   </div><!-- PRODUCT DETAIL MODAL -->
+   <div id="product-modal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-overlay absolute inset-0" onclick="closeProductModal()"></div>
+    <div class="absolute inset-4 sm:inset-10 md:inset-16 bg-white rounded-2xl shadow-2xl overflow-auto fade-in">
+     <button onclick="closeProductModal()" class="absolute top-4 right-4 p-2 hover:bg-beige-50 rounded-full z-10"><i data-lucide="x" class="w-5 h-5"></i></button>
+     <div id="product-modal-content" class="p-6 sm:p-10"></div>
+    </div>
+   </div><!-- CHECKOUT PAGE -->
+   <div id="checkout-page" class="hidden">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+     <button onclick="navigateTo('home')" class="flex items-center gap-2 text-beige-500 hover:text-ink-900 mb-8 transition text-sm"> <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a la tienda </button>
+     <h1 class="font-display text-4xl mb-8">Finalizar Compra</h1>
+     <div id="checkout-items" class="space-y-3 mb-8"></div>
+     <div class="flex justify-between text-xl font-medium mb-8 pb-4 border-b border-beige-200">
+      <span>Total</span><span id="checkout-total">$0</span>
+     </div>
+     <form id="checkout-form" class="space-y-6" onsubmit="return false;">
+      <!-- Datos personales -->
+      <div class="bg-white rounded-xl p-6 border border-beige-200 space-y-4">
+       <h3 class="font-display text-xl mb-2">Datos de envío</h3>
+       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label for="ch-name" class="block text-sm text-beige-500 mb-1">Nombre completo</label><input id="ch-name" required class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 transition bg-beige-50">
+        </div>
+        <div><label for="ch-email" class="block text-sm text-beige-500 mb-1">Email</label><input id="ch-email" type="email" required class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 transition bg-beige-50">
+        </div>
+        <div><label for="ch-phone" class="block text-sm text-beige-500 mb-1">Teléfono</label><input id="ch-phone" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 transition bg-beige-50">
+        </div>
+        <div><label for="ch-address" class="block text-sm text-beige-500 mb-1">Dirección</label><input id="ch-address" required class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 transition bg-beige-50">
+        </div>
+        <div><label for="ch-city" class="block text-sm text-beige-500 mb-1">Ciudad</label><input id="ch-city" required class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 transition bg-beige-50">
+        </div>
+        <div><label for="ch-zip" class="block text-sm text-beige-500 mb-1">Código postal</label><input id="ch-zip" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 transition bg-beige-50">
+        </div>
+       </div>
+      </div><!-- Método de envío -->
+      <div class="bg-white rounded-xl p-6 border border-beige-200 space-y-3">
+       <h3 class="font-display text-xl mb-2">Método de envío</h3>
+       <div id="shipping-options" class="space-y-3"></div>
+       <div id="address-warning" class="hidden bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-4">
+        <p class="text-xs text-yellow-800">⚠️ Completa tu dirección para seleccionar envío</p>
+       </div>
+      </div><!-- Método de pago -->
+      <div class="bg-white rounded-xl p-6 border border-beige-200 space-y-3">
+       <h3 class="font-display text-xl mb-2">Método de pago</h3>
+       <p class="text-xs text-beige-400 italic mb-2">🔒 Demo — no se procesan pagos reales</p><label class="flex items-center gap-3 p-3 rounded-lg border border-beige-200 cursor-pointer hover:bg-beige-50 transition"> <input type="radio" name="payment" value="transfer" checked class="accent-ink-900">
+        <div class="flex-1"><span class="font-medium text-sm">Transferencia bancaria</span>
+        </div></label> <label class="flex items-center gap-3 p-3 rounded-lg border border-beige-200 cursor-pointer hover:bg-beige-50 transition"> <input type="radio" name="payment" value="oxxo" class="accent-ink-900">
+        <div class="flex-1"><span class="font-medium text-sm">Pago en OXXO</span>
+        </div></label> <label class="flex items-center gap-3 p-3 rounded-lg border border-beige-200 cursor-pointer hover:bg-beige-50 transition"> <input type="radio" name="payment" value="cod" class="accent-ink-900">
+        <div class="flex-1"><span class="font-medium text-sm">Contra entrega</span>
+        </div></label>
+      </div><button type="button" onclick="placeOrder()" class="btn-primary w-full bg-ink-900 text-white py-4 rounded-full font-medium text-sm">Confirmar pedido</button>
+     </form>
+    </div>
+   </div><!-- ORDER CONFIRMATION -->
+   <div id="order-confirm" class="hidden">
+    <div class="max-w-lg mx-auto px-4 py-20 text-center fade-in">
+     <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <i data-lucide="check" class="w-10 h-10 text-green-600"></i>
+     </div>
+     <h1 class="font-display text-4xl mb-3">¡Pedido Confirmado!</h1>
+     <p class="text-beige-500 mb-8">Recibirás un correo con los detalles de tu compra y la información de pago.</p><button onclick="cart=[];updateCartUI();navigateTo('home')" class="btn-primary bg-ink-900 text-white px-8 py-3 rounded-full text-sm font-medium">Seguir comprando</button>
+    </div>
+   </div><!-- ADMIN PANEL -->
+   <div id="admin-panel" class="hidden">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+     <div class="flex items-center justify-between mb-8">
+      <div>
+       <button onclick="navigateTo('home')" class="flex items-center gap-2 text-beige-500 hover:text-ink-900 mb-2 transition text-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i> Volver</button>
+       <h1 class="font-display text-4xl">Panel de Administración</h1>
+      </div><button onclick="adminLogout()" class="text-sm text-beige-500 hover:text-ink-900 transition">Cerrar sesión</button>
+     </div><!-- TABS -->
+     <div class="flex gap-1 bg-beige-100 rounded-xl p-1 mb-8">
+      <button onclick="setAdminTab('products')" id="tab-products" class="flex-1 py-2.5 rounded-lg text-sm font-medium transition bg-white shadow-sm">Productos</button> <button onclick="setAdminTab('categories')" id="tab-categories" class="flex-1 py-2.5 rounded-lg text-sm font-medium transition text-beige-500">Categorías</button> <button onclick="setAdminTab('discounts')" id="tab-discounts" class="flex-1 py-2.5 rounded-lg text-sm font-medium transition text-beige-500">Descuentos</button> <button onclick="setAdminTab('payments')" id="tab-payments" class="flex-1 py-2.5 rounded-lg text-sm font-medium transition text-beige-500">Pagos</button> <button onclick="setAdminTab('shipping')" id="tab-shipping" class="flex-1 py-2.5 rounded-lg text-sm font-medium transition text-beige-500">Envíos</button>
+     </div><!-- PRODUCTS TAB -->
+     <div id="admin-products" class="">
+      <div class="bg-white rounded-xl border border-beige-200 p-6 mb-6">
+       <h3 class="font-display text-xl mb-4">Agregar producto</h3>
+       <form id="add-product-form" onsubmit="return false;" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+         <div><label for="ap-name" class="block text-sm text-beige-500 mb-1">Nombre</label><input id="ap-name" required class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50">
+         </div>
+         <div><label for="ap-price" class="block text-sm text-beige-500 mb-1">Precio ($)</label><input id="ap-price" type="number" min="0" step="0.01" required class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50">
+         </div>
+         <div><label for="ap-category" class="block text-sm text-beige-500 mb-1">Categoría</label><select id="ap-category" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50"></select>
+         </div>
+         <div><label for="ap-image" class="block text-sm text-beige-500 mb-1">Imagen del producto</label><input id="ap-image" type="file" accept="image/*" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-beige-100 file:text-ink-900 cursor-pointer">
+         </div>
+         <div class="sm:col-span-2"><label for="ap-desc" class="block text-sm text-beige-500 mb-1">Descripción</label><textarea id="ap-desc" rows="2" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50 resize-none"></textarea>
+         </div>
+         <div class="sm:col-span-2"><label for="ap-sizes" class="block text-sm text-beige-500 mb-1">Tallas (separadas por coma)</label><input id="ap-sizes" placeholder="XS, S, M, L, XL" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50">
+         </div>
+        </div><button type="button" id="add-product-btn" onclick="addProduct()" class="btn-primary bg-ink-900 text-white px-6 py-2.5 rounded-full text-sm font-medium">Agregar producto</button>
+       </form>
+      </div>
+      <div id="admin-product-list" class="space-y-3"></div>
+     </div><!-- CATEGORIES TAB -->
+     <div id="admin-categories" class="hidden">
+      <div class="bg-white rounded-xl border border-beige-200 p-6 mb-6">
+       <h3 class="font-display text-xl mb-4">Agregar categoría</h3>
+       <div class="flex gap-3">
+        <input id="new-cat" placeholder="Nombre de categoría" class="flex-1 border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50"> <button onclick="addCategory()" class="btn-primary bg-ink-900 text-white px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap">Agregar</button>
+       </div>
+      </div>
+      <div id="cat-list" class="space-y-2"></div>
+     </div><!-- DISCOUNTS TAB -->
+     <div id="admin-discounts" class="hidden">
+      <div class="bg-white rounded-xl border border-beige-200 p-6 mb-6">
+       <h3 class="font-display text-xl mb-4">Agregar descuento a prenda</h3>
+       <div class="space-y-4">
+        <div><label for="discount-product" class="block text-sm text-beige-500 mb-1">Selecciona prenda</label><select id="discount-product" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50"></select>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+         <div><label for="discount-amount" class="block text-sm text-beige-500 mb-1">Descuento (%)</label><input id="discount-amount" type="number" min="0" max="100" step="1" placeholder="15" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50">
+         </div>
+         <div><label for="discount-code" class="block text-sm text-beige-500 mb-1">Código (opcional)</label><input id="discount-code" placeholder="SUMMER20" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50">
+         </div>
+        </div><button onclick="addDiscount()" class="btn-primary w-full bg-ink-900 text-white py-2.5 rounded-full text-sm font-medium">Aplicar descuento</button>
+       </div>
+      </div>
+      <div id="discount-list" class="space-y-2"></div>
+     </div>
+     <div id="admin-payments" class="hidden">
+      <div class="bg-white rounded-xl border border-beige-200 p-6 mb-6">
+       <h3 class="font-display text-xl mb-4">Métodos de pago</h3>
+       <div class="space-y-2" id="payment-list"></div>
+       <div class="flex gap-3 mt-4">
+        <input id="new-payment" placeholder="Ej: Tarjeta de crédito" class="flex-1 border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50"> <button onclick="addPaymentMethod()" class="btn-primary bg-ink-900 text-white px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap">Agregar</button>
+       </div>
+      </div>
+     </div><!-- SHIPPING METHODS TAB -->
+     <div id="admin-shipping" class="hidden">
+      <div class="bg-white rounded-xl border border-beige-200 p-6 mb-6">
+       <h3 class="font-display text-xl mb-4">Métodos de envío</h3>
+       <div class="space-y-3" id="shipping-list"></div>
+       <div class="space-y-3 mt-4 border-t border-beige-200 pt-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+         <div><label for="new-shipping-name" class="block text-sm text-beige-500 mb-1">Nombre</label><input id="new-shipping-name" placeholder="Ej: Envío estándar" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50">
+         </div>
+         <div><label for="new-shipping-price" class="block text-sm text-beige-500 mb-1">Precio ($)</label><input id="new-shipping-price" type="number" min="0" step="0.01" placeholder="99" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50">
+         </div>
+         <div class="sm:col-span-2"><label for="new-shipping-desc" class="block text-sm text-beige-500 mb-1">Descripción</label><input id="new-shipping-desc" placeholder="Ej: 5-7 días hábiles" class="w-full border border-beige-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-ink-900 bg-beige-50">
+         </div>
+        </div><button onclick="addShippingMethod()" class="btn-primary w-full bg-ink-900 text-white py-2.5 rounded-full text-sm font-medium">Agregar método</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div><!-- ADMIN LOGIN MODAL -->
+   <div id="admin-login" class="fixed inset-0 z-50 hidden">
+    <div class="modal-overlay absolute inset-0" onclick="closeAdminLogin()"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+     <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm fade-in relative">
+      <button onclick="closeAdminLogin()" class="absolute top-4 right-4 p-1 hover:bg-beige-50 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button>
+      <h2 class="font-display text-2xl mb-2">Acceso Admin</h2>
+      <p class="text-sm text-beige-400 mb-6">Ingresa el código de seguridad</p><label for="admin-code" class="block text-sm text-beige-500 mb-1">Código</label> <input id="admin-code" type="password" maxlength="4" class="w-full border border-beige-200 rounded-lg px-4 py-3 text-sm text-center tracking-[.5em] focus:outline-none focus:border-ink-900 bg-beige-50 mb-2">
+      <p id="admin-error" class="text-red-500 text-xs mb-4 hidden">Código incorrecto</p><button onclick="tryAdminLogin()" class="btn-primary w-full bg-ink-900 text-white py-3 rounded-full text-sm font-medium">Entrar</button>
+     </div>
+    </div>
+   </div><!-- ADMIN TRIGGER BUTTON (bottom-right) --> <button id="admin-trigger" onclick="openAdminLogin()" class="fixed bottom-5 right-5 z-30 w-10 h-10 bg-beige-200/60 hover:bg-beige-300/80 rounded-full flex items-center justify-center transition opacity-40 hover:opacity-100" title="Admin"> <i data-lucide="settings" class="w-4 h-4 text-ink-700"></i> </button> <!-- TOAST -->
+   <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-[60] bg-ink-900 text-white px-6 py-3 rounded-full text-sm shadow-lg transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
+    <span id="toast-msg"></span>
+   </div>
+  </div>
+  <script>
+// ── STATE ──
+let products = [];
+let categories = ['Tops', 'Bottoms', 'Vestidos', 'Accesorios'];
+let cart = [];
+let currentCategory = 'all';
+let adminAuthenticated = false;
+let currentView = 'home';
+let discounts = {}; // { productId: { amount: 15, code: 'SUMMER20' } }
+let shippingMethods = [];
+let paymentMethods = [];
+
+const ADMIN_CODE = '0110';
+
+const defaultConfig = {
+  hero_title: 'INERCIA',
+  hero_subtitle: 'Moda en movimiento',
+  footer_text: '© 2024 INERCIA',
+  background_color: '#faf8f5',
+  surface_color: '#ffffff',
+  text_color: '#2c2825',
+  primary_action_color: '#2c2825',
+  secondary_action_color: '#b09a78',
+  font_family: 'Cormorant Garamond',
+  font_size: 16
+};
+
+// ── ELEMENT SDK ──
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = key => config[key] || defaultConfig[key];
+    document.getElementById('hero-title').textContent = c('hero_title');
+    document.getElementById('nav-title').textContent = c('hero_title');
+    document.getElementById('hero-subtitle').textContent = c('hero_subtitle');
+    document.getElementById('footer-text').textContent = c('footer_text');
+
+    const bg = c('background_color');
+    const surface = c('surface_color');
+    const text = c('text_color');
+    const primary = c('primary_action_color');
+    const secondary = c('secondary_action_color');
+
+    document.body.style.backgroundColor = bg;
+    document.body.style.color = text;
+
+    document.querySelectorAll('.bg-ink-900').forEach(el => { el.style.backgroundColor = primary; });
+    document.querySelectorAll('.text-ink-900').forEach(el => { el.style.color = text; });
+
+    const font = c('font_family');
+    const baseSize = c('font_size');
+    document.querySelectorAll('.font-display').forEach(el => { el.style.fontFamily = `${font}, serif`; });
+    document.querySelectorAll('h1').forEach(el => { el.style.fontSize = `${baseSize * 2.5}px`; });
+    document.querySelectorAll('h2').forEach(el => { el.style.fontSize = `${baseSize * 1.5}px`; });
+    document.querySelectorAll('h3').forEach(el => { el.style.fontSize = `${baseSize * 1.25}px`; });
+  },
+  mapToCapabilities: (config) => {
+    const c = key => config[key] || defaultConfig[key];
+    const mkColor = (key) => ({
+      get: () => c(key),
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [
+        mkColor('background_color'),
+        mkColor('surface_color'),
+        mkColor('text_color'),
+        mkColor('primary_action_color'),
+        mkColor('secondary_action_color')
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c('font_family'),
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c('font_size'),
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = key => config[key] || defaultConfig[key];
+    return new Map([
+      ['hero_title', c('hero_title')],
+      ['hero_subtitle', c('hero_subtitle')],
+      ['footer_text', c('footer_text')]
+    ]);
+  }
+});
+
+// ── DATA SDK ──
+const dataHandler = {
+  onDataChanged(data) {
+    // Separate products from categories
+    const cats = data.filter(d => d.type === 'category');
+    const prods = data.filter(d => d.type === 'product');
+    categories = cats.map(c => c.name);
+    products = prods;
+    renderCategoryFilters();
+    renderProducts();
+    renderAdminProducts();
+    renderAdminCategories();
+    updateCategorySelect();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+  lucide.createIcons();
+})();
+
+// ── NAVIGATION ──
+function navigateTo(view) {
+  currentView = view;
+  document.getElementById('hero-section').classList.toggle('hidden', view !== 'home');
+  document.getElementById('categories-bar').classList.toggle('hidden', view !== 'home');
+  document.getElementById('products-section').classList.toggle('hidden', view !== 'home');
+  document.querySelector('footer').classList.toggle('hidden', view !== 'home');
+  document.getElementById('checkout-page').classList.toggle('hidden', view !== 'checkout');
+  document.getElementById('order-confirm').classList.toggle('hidden', view !== 'confirm');
+  document.getElementById('admin-panel').classList.toggle('hidden', view !== 'admin');
+  document.getElementById('admin-trigger').classList.toggle('hidden', view === 'admin');
+
+  if (view === 'checkout') renderCheckout();
+if (view === 'admin') { renderAdminProducts(); renderAdminCategories(); renderDiscountList(); renderPaymentMethods(); renderShippingMethods(); updateCategorySelect(); }
+  window.scrollTo({ top: 0 });
+  lucide.createIcons();
+}
+
+// ── PRODUCTS RENDERING ──
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  const empty = document.getElementById('empty-products');
+  const filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  const existingMap = new Map([...grid.children].map(el => [el.dataset.pid, el]));
+  const newIds = new Set(filtered.map(p => p.__backendId));
+
+  existingMap.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  filtered.forEach((p, i) => {
+    const disc = discounts[p.__backendId];
+    const discPercent = disc ? ` -${disc.amount}%` : '';
+    const originalPrice = Number(p.price);
+    const discountedPrice = disc ? originalPrice * (1 - disc.amount / 100) : originalPrice;
+    
+    if (existingMap.has(p.__backendId)) {
+      const el = existingMap.get(p.__backendId);
+      const imgEl = el.querySelector('.p-img');
+      if (p.image_url) {
+        imgEl.src = p.image_url;
+        imgEl.style.display = 'block';
+        imgEl.parentElement.querySelector('.p-emoji')?.remove();
+      } else {
+        if (!el.querySelector('.p-emoji')) {
+          const span = document.createElement('span');
+          span.className = 'p-emoji text-6xl';
+          span.textContent = '👗';
+          imgEl.parentElement.appendChild(span);
+        }
+        imgEl.style.display = 'none';
+      }
+      el.querySelector('.p-name').textContent = p.name;
+      el.querySelector('.p-cat').textContent = p.category;
+      const priceHtml = disc ? `<p class="p-price font-medium text-sm"><span class="line-through text-beige-400">$${originalPrice.toLocaleString()}</span> <span class="text-accent-500 font-bold">$${discountedPrice.toLocaleString()}</span></p>` : `<p class="p-price font-medium text-sm">$${originalPrice.toLocaleString()}</p>`;
+      el.querySelector('.p-price-container').innerHTML = priceHtml;
+    } else {
+      const card = document.createElement('div');
+      card.dataset.pid = p.__backendId;
+      card.className = 'card-hover bg-white rounded-xl overflow-hidden border border-beige-200/60 cursor-pointer fade-in relative';
+      card.style.animationDelay = `${i * .05}s`;
+      card.onclick = () => openProductModal(p.__backendId);
+      const imageHTML = p.image_url ? 
+        `<img class="p-img w-full h-full object-cover" src="${p.image_url}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML+='<span class=\'p-emoji text-6xl\'>👗</span>'">` :
+        `<span class="p-emoji text-6xl">👗</span>`;
+      const priceHtml = disc ? `<p class="p-price font-medium text-sm"><span class="line-through text-beige-400">$${originalPrice.toLocaleString()}</span> <span class="text-accent-500 font-bold">$${discountedPrice.toLocaleString()}</span></p>` : `<p class="p-price font-medium text-sm">$${originalPrice.toLocaleString()}</p>`;
+      if (disc) {
+        const badge = document.createElement('div');
+        badge.className = 'absolute top-2 right-2 bg-accent-500 text-white px-2 py-1 rounded-full text-xs font-medium';
+        badge.textContent = `-${disc.amount}%`;
+        card.appendChild(badge);
+      }
+      card.innerHTML = `
+        <div class="aspect-[3/4] bg-gradient-to-br from-beige-100 to-beige-50 flex items-center justify-center overflow-hidden">
+          ${imageHTML}
+        </div>
+        <div class="p-4">
+          <p class="p-cat text-xs text-beige-400 uppercase tracking-wider mb-1">${p.category}</p>
+          <h3 class="p-name font-display text-lg font-500 mb-1">${p.name}</h3>
+          <div class="p-price-container">${priceHtml}</div>
+        </div>`;
+      if (disc) {
+        const badge = document.createElement('div');
+        badge.className = 'absolute top-2 right-2 bg-accent-500 text-white px-2 py-1 rounded-full text-xs font-medium';
+        badge.textContent = `-${disc.amount}%`;
+        card.appendChild(badge);
+      }
+      grid.appendChild(card);
+    }
+  });
+  lucide.createIcons();
+}
+
+// ── CATEGORY FILTERS ──
+function renderCategoryFilters() {
+  const bar = document.getElementById('category-filters');
+  const allCats = ['all', ...categories];
+  bar.innerHTML = allCats.map(c => `
+    <button onclick="currentCategory='${c}';renderCategoryFilters();renderProducts()" 
+      class="px-4 py-2 rounded-full text-sm font-medium transition ${currentCategory === c ? 'bg-ink-900 text-white' : 'bg-white text-ink-700 border border-beige-200 hover:bg-beige-100'}">
+      ${c === 'all' ? 'Todos' : c}
+    </button>`).join('');
+}
+
+// ── PRODUCT MODAL ──
+function openProductModal(id) {
+  const p = products.find(x => x.__backendId === id);
+  if (!p) return;
+  const sizes = p.sizes ? p.sizes.split(',').map(s => s.trim()) : [];
+  const disc = discounts[p.__backendId];
+  const originalPrice = Number(p.price);
+  const discountedPrice = disc ? originalPrice * (1 - disc.amount / 100) : originalPrice;
+  const imageHTML = p.image_url ? 
+    `<img src="${p.image_url}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML+='<span class=\'text-8xl\'>👗</span>'">` :
+    `<span class="text-8xl">👗</span>`;
+  const priceHtml = disc ? 
+    `<div><p class="text-sm text-beige-400 line-through">$${originalPrice.toLocaleString()}</p><p class="text-3xl font-medium text-accent-500">$${discountedPrice.toLocaleString()}</p>${disc.code ? `<p class="text-xs text-accent-500 mt-1">Código: <strong>${disc.code}</strong></p>` : ''}</div>` :
+    `<p class="text-3xl font-medium">$${originalPrice.toLocaleString()}</p>`;
+  document.getElementById('product-modal-content').innerHTML = `
+    <div class="flex flex-col md:flex-row gap-8">
+      <div class="flex-1 aspect-square bg-gradient-to-br from-beige-100 to-beige-50 rounded-xl flex items-center justify-center overflow-hidden">
+        ${imageHTML}
+      </div>
+      <div class="flex-1 space-y-4">
+        <p class="text-xs text-beige-400 uppercase tracking-wider">${p.category}</p>
+        <h2 class="font-display text-3xl">${p.name}</h2>
+        ${priceHtml}
+        <p class="text-beige-500 text-sm leading-relaxed">${p.description || 'Sin descripción'}</p>
+        ${sizes.length ? `
+          <div>
+            <p class="text-sm text-beige-500 mb-2">Talla</p>
+            <div class="flex gap-2" id="size-options">
+              ${sizes.map((s, i) => `<button onclick="selectSize(this)" class="size-btn px-4 py-2 border rounded-lg text-sm transition ${i === 0 ? 'border-ink-900 bg-ink-900 text-white' : 'border-beige-200 hover:border-ink-900'}">${s}</button>`).join('')}
+            </div>
+          </div>` : ''}
+        <button onclick="addToCart('${p.__backendId}')" class="btn-primary w-full bg-ink-900 text-white py-3 rounded-full text-sm font-medium mt-4 flex items-center justify-center gap-2">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i> Agregar al carrito
+        </button>
+      </div>
+    </div>`;
+  document.getElementById('product-modal').classList.remove('hidden');
+  lucide.createIcons();
+}
+
+function selectSize(btn) {
+  document.querySelectorAll('.size-btn').forEach(b => { b.className = b.className.replace('border-ink-900 bg-ink-900 text-white', 'border-beige-200 hover:border-ink-900'); });
+  btn.className = btn.className.replace('border-beige-200 hover:border-ink-900', 'border-ink-900 bg-ink-900 text-white');
+}
+
+function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
+
+// ── CART ──
+function addToCart(id) {
+  const p = products.find(x => x.__backendId === id);
+  if (!p) return;
+  const sizeBtn = document.querySelector('.size-btn.bg-ink-900');
+  const size = sizeBtn ? sizeBtn.textContent : '';
+  const existing = cart.find(c => c.id === id && c.size === size);
+  if (existing) existing.qty++;
+  else cart.push({ id, name: p.name, price: Number(p.price), emoji: p.image_emoji || '👗', size, qty: 1 });
+  updateCartUI();
+  closeProductModal();
+  showToast('Producto agregado al carrito');
+}
+
+function updateCartUI() {
+  const countEl = document.getElementById('cart-count');
+  const total = cart.reduce((s, c) => s + c.qty, 0);
+  countEl.textContent = total;
+  countEl.classList.toggle('hidden', total === 0);
+}
+
+function openCart() {
+  const overlay = document.getElementById('cart-overlay');
+  overlay.classList.remove('hidden');
+  const itemsDiv = document.getElementById('cart-items');
+  const emptyMsg = document.getElementById('cart-empty-msg');
+  const footer = document.getElementById('cart-footer');
+
+  if (cart.length === 0) {
+    itemsDiv.innerHTML = '';
+    emptyMsg.classList.remove('hidden');
+    footer.classList.add('hidden');
+  } else {
+    emptyMsg.classList.add('hidden');
+    footer.classList.remove('hidden');
+    itemsDiv.innerHTML = cart.map((c, i) => `
+      <div class="flex items-center gap-3 bg-beige-50 rounded-xl p-3">
+        <span class="text-3xl">${c.emoji}</span>
+        <div class="flex-1 min-w-0">
+          <p class="font-medium text-sm truncate">${c.name}</p>
+          <p class="text-xs text-beige-400">${c.size ? 'Talla: ' + c.size + ' · ' : ''}$${c.price.toLocaleString()}</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="changeQty(${i},-1)" class="w-7 h-7 rounded-full bg-beige-200 flex items-center justify-center text-sm hover:bg-beige-300 transition">−</button>
+          <span class="text-sm w-5 text-center">${c.qty}</span>
+          <button onclick="changeQty(${i},1)" class="w-7 h-7 rounded-full bg-beige-200 flex items-center justify-center text-sm hover:bg-beige-300 transition">+</button>
+        </div>
+        <button onclick="removeFromCart(${i})" class="p-1 hover:bg-beige-200 rounded-full"><i data-lucide="x" class="w-4 h-4 text-beige-400"></i></button>
+      </div>`).join('');
+    document.getElementById('cart-total').textContent = '$' + cart.reduce((s, c) => s + c.price * c.qty, 0).toLocaleString();
+  }
+  lucide.createIcons();
+}
+
+function closeCart() { document.getElementById('cart-overlay').classList.add('hidden'); }
+function changeQty(i, d) { cart[i].qty += d; if (cart[i].qty < 1) cart.splice(i, 1); updateCartUI(); openCart(); }
+function removeFromCart(i) { cart.splice(i, 1); updateCartUI(); openCart(); }
+
+// ── CHECKOUT ──
+function renderCheckout() {
+  document.getElementById('checkout-items').innerHTML = cart.map(c => `
+    <div class="flex items-center gap-3 bg-white rounded-xl p-4 border border-beige-200">
+      <span class="text-2xl">${c.emoji}</span>
+      <div class="flex-1"><p class="font-medium text-sm">${c.name}</p><p class="text-xs text-beige-400">${c.size ? 'Talla: ' + c.size + ' · ' : ''}x${c.qty}</p></div>
+      <span class="font-medium text-sm">$${(c.price * c.qty).toLocaleString()}</span>
+    </div>`).join('');
+  document.getElementById('checkout-total').textContent = '$' + cart.reduce((s, c) => s + c.price * c.qty, 0).toLocaleString();
+  renderShippingOptions();
+}
+
+function renderShippingOptions() {
+  const container = document.getElementById('shipping-options');
+  const address = document.getElementById('ch-address').value.trim();
+  const warning = document.getElementById('address-warning');
+  
+  if (!address) {
+    container.innerHTML = '<div class="text-xs text-beige-400 italic">Completa tu dirección para ver opciones</div>';
+    warning.classList.remove('hidden');
+    return;
+  }
+  warning.classList.add('hidden');
+  
+  container.innerHTML = shippingMethods.map(m => `
+    <label class="flex items-center gap-3 p-3 rounded-lg border border-beige-200 cursor-pointer hover:bg-beige-50 transition">
+      <input type="radio" name="shipping" value="${m.name}" class="accent-ink-900">
+      <div class="flex-1">
+        <span class="font-medium text-sm">${m.name}</span>
+        <span class="text-xs text-beige-400 block">${m.desc}</span>
+      </div>
+      <span class="text-sm font-medium">$${m.price}</span>
+    </label>`).join('');
+}
+
+// Update shipping options when address changes
+document.addEventListener('input', function(e) {
+  if (e.target.id === 'ch-address' && currentView === 'checkout') {
+    renderShippingOptions();
+  }
+}, true);
+
+function placeOrder() {
+  const name = document.getElementById('ch-name').value;
+  const email = document.getElementById('ch-email').value;
+  const address = document.getElementById('ch-address').value;
+  if (!name || !email || !address) { showToast('Por favor completa los campos requeridos'); return; }
+  navigateTo('confirm');
+}
+
+// ── ADMIN ──
+function openAdminLogin() { document.getElementById('admin-login').classList.remove('hidden'); document.getElementById('admin-code').value = ''; document.getElementById('admin-error').classList.add('hidden'); lucide.createIcons(); }
+function closeAdminLogin() { document.getElementById('admin-login').classList.add('hidden'); }
+
+function tryAdminLogin() {
+  if (document.getElementById('admin-code').value === ADMIN_CODE) {
+    adminAuthenticated = true;
+    closeAdminLogin();
+    navigateTo('admin');
+  } else {
+    document.getElementById('admin-error').classList.remove('hidden');
+  }
+}
+
+function adminLogout() { adminAuthenticated = false; navigateTo('home'); }
+
+function setAdminTab(tab) {
+  document.getElementById('admin-products').classList.toggle('hidden', tab !== 'products');
+  document.getElementById('admin-categories').classList.toggle('hidden', tab !== 'categories');
+  document.getElementById('admin-discounts').classList.toggle('hidden', tab !== 'discounts');
+  document.getElementById('admin-payments').classList.toggle('hidden', tab !== 'payments');
+  document.getElementById('admin-shipping').classList.toggle('hidden', tab !== 'shipping');
+  document.getElementById('tab-products').className = `flex-1 py-2.5 rounded-lg text-sm font-medium transition ${tab === 'products' ? 'bg-white shadow-sm' : 'text-beige-500'}`;
+  document.getElementById('tab-categories').className = `flex-1 py-2.5 rounded-lg text-sm font-medium transition ${tab === 'categories' ? 'bg-white shadow-sm' : 'text-beige-500'}`;
+  document.getElementById('tab-discounts').className = `flex-1 py-2.5 rounded-lg text-sm font-medium transition ${tab === 'discounts' ? 'bg-white shadow-sm' : 'text-beige-500'}`;
+  document.getElementById('tab-payments').className = `flex-1 py-2.5 rounded-lg text-sm font-medium transition ${tab === 'payments' ? 'bg-white shadow-sm' : 'text-beige-500'}`;
+  document.getElementById('tab-shipping').className = `flex-1 py-2.5 rounded-lg text-sm font-medium transition ${tab === 'shipping' ? 'bg-white shadow-sm' : 'text-beige-500'}`;
+  if (tab === 'discounts') renderDiscountSelect();
+}
+
+async function addProduct() {
+  const name = document.getElementById('ap-name').value.trim();
+  const price = parseFloat(document.getElementById('ap-price').value);
+  const category = document.getElementById('ap-category').value;
+  const imageFile = document.getElementById('ap-image').files[0];
+  const desc = document.getElementById('ap-desc').value.trim();
+  const sizes = document.getElementById('ap-sizes').value.trim();
+  if (!name || isNaN(price)) { showToast('Completa nombre y precio'); return; }
+
+  const totalRecords = products.length + categories.length;
+  if (totalRecords >= 999) { showToast('Límite de 999 registros alcanzado'); return; }
+
+  let imageUrl = '';
+  if (imageFile) {
+    imageUrl = await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result);
+      reader.readAsDataURL(imageFile);
+    });
+  }
+
+  const btn = document.getElementById('add-product-btn');
+  btn.textContent = 'Guardando...'; btn.disabled = true;
+  const r = await window.dataSdk.create({ type: 'product', name, price, category, description: desc, sizes, image_url: imageUrl, payment_methods: '', shipping_methods: '' });
+  btn.textContent = 'Agregar producto'; btn.disabled = false;
+  if (r.isOk) {
+    showToast('Producto agregado');
+    document.getElementById('ap-name').value = '';
+    document.getElementById('ap-price').value = '';
+    document.getElementById('ap-desc').value = '';
+    document.getElementById('ap-sizes').value = '';
+    document.getElementById('ap-image').value = '';
+  } else showToast('Error al guardar');
+}
+
+function renderAdminProducts() {
+  const list = document.getElementById('admin-product-list');
+  if (!list) return;
+  list.innerHTML = products.map(p => `
+    <div class="flex items-center gap-3 bg-white rounded-xl p-4 border border-beige-200">
+      <div class="w-16 h-16 bg-gradient-to-br from-beige-100 to-beige-50 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+        ${p.image_url ? `<img src="${p.image_url}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'">` : '<span class="text-2xl">👗</span>'}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="font-medium text-sm truncate">${p.name}</p>
+        <p class="text-xs text-beige-400">${p.category} · $${Number(p.price).toLocaleString()}</p>
+      </div>
+      <button onclick="deleteProduct('${p.__backendId}')" class="p-2 hover:bg-red-50 rounded-full transition text-red-400 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+    </div>`).join('');
+  lucide.createIcons();
+}
+
+async function deleteProduct(id) {
+  const p = products.find(x => x.__backendId === id);
+  if (!p) return;
+  const r = await window.dataSdk.delete(p);
+  if (r.isOk) showToast('Producto eliminado');
+  else showToast('Error al eliminar');
+}
+
+function updateCategorySelect() {
+  const sel = document.getElementById('ap-category');
+  if (!sel) return;
+  sel.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+async function addCategory() {
+  const input = document.getElementById('new-cat');
+  const name = input.value.trim();
+  if (!name) return;
+  if (categories.includes(name)) { showToast('Esa categoría ya existe'); return; }
+
+  const totalRecords = products.length + categories.length;
+  if (totalRecords >= 999) { showToast('Límite de 999 registros alcanzado'); return; }
+
+  const r = await window.dataSdk.create({ type: 'category', name, price: 0, category: '', description: '', sizes: '', image_emoji: '' });
+  if (r.isOk) { input.value = ''; showToast('Categoría agregada'); }
+  else showToast('Error al guardar');
+}
+
+function renderAdminCategories() {
+  const list = document.getElementById('cat-list');
+  if (!list) return;
+  list.innerHTML = categories.map(c => {
+    const rec = products.length ? null : null;
+    return `
+    <div class="flex items-center justify-between bg-white rounded-xl p-4 border border-beige-200">
+      <span class="font-medium text-sm">${c}</span>
+      <button onclick="deleteCategory('${c}')" class="p-2 hover:bg-red-50 rounded-full transition text-red-400 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+    </div>`;
+  }).join('');
+  lucide.createIcons();
+}
+
+async function deleteCategory(name) {
+  // Find the category record from raw data
+  const allData = [...products];
+  // We need to search from the last onDataChanged data
+  // Categories are stored as type:'category' - we need the raw reference
+  // Re-query: onDataChanged stores in products/categories but we need __backendId
+  // Fix: store raw data
+  const catRecord = _allData.find(d => d.type === 'category' && d.name === name);
+  if (!catRecord) return;
+  const r = await window.dataSdk.delete(catRecord);
+  if (r.isOk) showToast('Categoría eliminada');
+  else showToast('Error al eliminar');
+}
+
+// Payment methods management
+let paymentMethods = [];
+function renderPaymentMethods() {
+  const list = document.getElementById('payment-list');
+  if (!list) return;
+  list.innerHTML = paymentMethods.map((m, i) => `
+    <div class="flex items-center justify-between bg-beige-50 rounded-lg p-3 border border-beige-200">
+      <span class="text-sm">${m}</span>
+      <button onclick="removePaymentMethod(${i})" class="p-1 hover:bg-red-50 rounded text-red-400 hover:text-red-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>`).join('');
+  lucide.createIcons();
+}
+
+function addPaymentMethod() {
+  const input = document.getElementById('new-payment');
+  const method = input.value.trim();
+  if (!method) return;
+  if (paymentMethods.includes(method)) { showToast('Ya existe ese método de pago'); return; }
+  paymentMethods.push(method);
+  input.value = '';
+  renderPaymentMethods();
+  showToast('Método de pago agregado');
+}
+
+function removePaymentMethod(i) {
+  paymentMethods.splice(i, 1);
+  renderPaymentMethods();
+}
+
+// Shipping methods management
+let shippingMethods = [];
+function renderShippingMethods() {
+  const list = document.getElementById('shipping-list');
+  if (!list) return;
+  list.innerHTML = shippingMethods.map((m, i) => `
+    <div class="flex items-center justify-between bg-beige-50 rounded-lg p-3 border border-beige-200">
+      <div class="flex-1">
+        <p class="text-sm font-medium">${m.name}</p>
+        <p class="text-xs text-beige-400">${m.desc} • $${m.price}</p>
+      </div>
+      <button onclick="removeShippingMethod(${i})" class="p-1 hover:bg-red-50 rounded text-red-400 hover:text-red-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>`).join('');
+  lucide.createIcons();
+}
+
+function addShippingMethod() {
+  const name = document.getElementById('new-shipping-name').value.trim();
+  const price = document.getElementById('new-shipping-price').value.trim();
+  const desc = document.getElementById('new-shipping-desc').value.trim();
+  if (!name || !price) { showToast('Completa nombre y precio'); return; }
+  shippingMethods.push({ name, price: parseFloat(price), desc });
+  document.getElementById('new-shipping-name').value = '';
+  document.getElementById('new-shipping-price').value = '';
+  document.getElementById('new-shipping-desc').value = '';
+  renderShippingMethods();
+  showToast('Método de envío agregado');
+}
+
+function removeShippingMethod(i) {
+  shippingMethods.splice(i, 1);
+  renderShippingMethods();
+}
+
+// Store all raw data for delete operations
+let _allData = [];
+const _origOnDataChanged = dataHandler.onDataChanged;
+dataHandler.onDataChanged = function(data) {
+  _allData = data;
+  _origOnDataChanged(data);
+};
+
+// ── DISCOUNTS ──
+function renderDiscountSelect() {
+  const sel = document.getElementById('discount-product');
+  sel.innerHTML = '<option value="">-- Selecciona una prenda --</option>' + products.map(p => `<option value="${p.__backendId}" data-price="${p.price}">${p.name} ($${Number(p.price).toLocaleString()})</option>`).join('');
+}
+
+function addDiscount() {
+  const sel = document.getElementById('discount-product');
+  const productId = sel.value;
+  const amount = parseInt(document.getElementById('discount-amount').value);
+  const code = document.getElementById('discount-code').value.trim();
+  if (!productId || isNaN(amount) || amount <= 0 || amount > 100) { showToast('Completa porcentaje válido (1-100)'); return; }
+  discounts[productId] = { amount, code: code || '' };
+  renderDiscountList();
+  renderProducts();
+  document.getElementById('discount-product').value = '';
+  document.getElementById('discount-amount').value = '';
+  document.getElementById('discount-code').value = '';
+  showToast('Descuento aplicado');
+}
+
+function renderDiscountList() {
+  const list = document.getElementById('discount-list');
+  const items = Object.entries(discounts).map(([pId, disc]) => {
+    const p = products.find(x => x.__backendId === pId);
+    if (!p) return '';
+    const originalPrice = Number(p.price);
+    const newPrice = originalPrice * (1 - disc.amount / 100);
+    return `
+    <div class="flex items-center justify-between bg-white rounded-xl p-4 border border-beige-200">
+      <div class="flex-1 min-w-0">
+        <p class="font-medium text-sm">${p.name}</p>
+        <p class="text-xs text-beige-400">-${disc.amount}% • <span class="line-through">$${originalPrice.toLocaleString()}</span> → <span class="text-accent-500 font-bold">$${newPrice.toLocaleString()}</span></p>
+        ${disc.code ? `<p class="text-xs text-accent-500 mt-1">Código: <strong>${disc.code}</strong></p>` : ''}
+      </div>
+      <button onclick="removeDiscount('${pId}')" class="p-2 hover:bg-red-50 rounded-full transition text-red-400 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+    </div>`;
+  }).join('');
+  list.innerHTML = items;
+  lucide.createIcons();
+}
+
+function removeDiscount(pId) {
+  delete discounts[pId];
+  renderDiscountList();
+  renderProducts();
+  showToast('Descuento removido');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+  t.classList.add('opacity-100', 'translate-y-0');
+  setTimeout(() => { t.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'); t.classList.remove('opacity-100', 'translate-y-0'); }, 2500);
+}
+
+// Init filters
+renderCategoryFilters();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ec41adfc73769a7',t:'MTc3NjE4NDMzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
