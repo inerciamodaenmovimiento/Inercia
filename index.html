@@ -118,7 +118,11 @@
             </div>
 
             <!-- TAB PRODUCTOS -->
-            <div id="admin-products" class="admin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
+<div class="space-y-2">
+    <label class="text-[10px] uppercase font-bold text-beige-400 px-1">Foto de la prenda</label>
+    <input type="file" id="p-image" accept="image/*" class="w-full bg-white border border-beige-200 p-3 rounded-xl text-xs outline-none file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-beige-100 file:text-ink-900">
+</div>
+
                 <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-5">
                     <h3 class="font-display text-2xl">Crear Prenda</h3>
                     <input type="text" id="p-name" placeholder="Nombre" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
@@ -313,152 +317,39 @@
         }
     }
 
-    function saveProduct() {
-        const name = document.getElementById('p-name').value;
-        const price = document.getElementById('p-price').value;
-        const stock = document.getElementById('p-stock').value;
-        const cat = document.getElementById('p-cat').value;
-        const img = document.getElementById('p-img-data').value;
+    function guardarNuevoProducto() {
+    const nombre = document.getElementById('p-name').value;
+    const precio = document.getElementById('p-price').value;
+    const stock = document.getElementById('p-stock').value;
+    const imagenInput = document.getElementById('p-image');
 
-        if(!name || !price || !img) return showToast("Faltan datos");
-
-        const newP = {
-            id: Date.now(),
-            name,
-            price: parseFloat(price),
-            stock: parseInt(stock) || 0,
-            category: cat,
-            image: img
-        };
-
-        state.products.push(newP);
-        save();
-        renderAdmin();
-        
-        // Limpiar
-        document.getElementById('p-name').value = '';
-        document.getElementById('p-price').value = '';
-        document.getElementById('p-stock').value = '';
-        document.getElementById('p-img-data').value = '';
-        document.getElementById('p-img-label').innerText = "Subir Foto";
-        document.getElementById('p-img-label').classList.remove('text-green-500');
-        showToast("Producto Guardado");
-    }
-
-    // RENDERIZADO BÁSICO
-    function renderHome() {
-        const filters = document.getElementById('cat-filters');
-        if(filters) filters.innerHTML = ['Todos', ...state.categories].map(c => `<button onclick="state.currentCat='${c}';renderHome()" class="px-8 py-3 rounded-full text-[8px] uppercase font-bold tracking-widest border ${state.currentCat === c ? 'bg-ink-900 text-white' : 'bg-white text-beige-400 border-beige-200'} shrink-0">${c}</button>`).join('');
-        
-        const grid = document.getElementById('product-grid');
-        const filtered = state.currentCat === 'Todos' ? state.products : state.products.filter(p => p.category === state.currentCat);
-        if(grid) grid.innerHTML = filtered.map(p => `
-            <div class="group fade-in ${p.stock <= 0 ? 'opacity-40' : ''}">
-                <div class="aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-beige-100 relative mb-4">
-                    <img src="${p.image}" class="w-full h-full object-cover">
-                    ${p.stock > 0 ? `<button onclick="addToCart(${p.id})" class="absolute bottom-4 right-4 bg-white p-4 rounded-full shadow-lg translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all"><i data-lucide="plus" class="w-4 h-4"></i></button>` : '<div class="absolute inset-0 flex items-center justify-center bg-black/5 backdrop-blur-[2px]"><span class="text-[10px] font-bold uppercase tracking-widest text-ink-900 bg-white px-4 py-2 rounded-full">Sin Stock</span></div>'}
-                </div>
-                <div class="text-center px-2">
-                    <p class="text-[8px] uppercase font-bold text-beige-400 tracking-widest mb-1">${p.category}</p>
-                    <h3 class="font-display text-xl uppercase tracking-tight">${p.name}</h3>
-                    <p class="text-sm font-bold mt-1">$${p.price.toLocaleString()}</p>
-                </div>
-            </div>
-        `).join('');
-        lucide.createIcons();
-    }
-
-    function renderAdmin() {
-        const pList = document.getElementById('admin-product-list');
-        if(pList) pList.innerHTML = state.products.map(p => `
-            <div class="bg-beige-50 p-4 rounded-2xl border border-beige-100 flex items-center gap-4">
-                <img src="${p.image}" class="w-12 h-12 object-cover rounded-xl">
-                <div class="flex-grow">
-                    <p class="text-[10px] font-bold uppercase">${p.name}</p>
-                    <p class="text-[9px] text-beige-400">$${p.price}</p>
-                </div>
-                <button onclick="deleteProduct(${p.id})"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button>
-            </div>
-        `).join('');
-        
-        const catSelect = document.getElementById('p-cat');
-        if(catSelect) catSelect.innerHTML = state.categories.map(c => `<option value="${c}">${c}</option>`).join('');
-        
-        lucide.createIcons();
-    }
-
-    function deleteProduct(id) {
-        state.products = state.products.filter(p => p.id !== id);
-        save();
-        renderAdmin();
-    }
-
-    function addToCart(id) {
-        const p = state.products.find(x => x.id === id);
-        if(p) {
-            state.cart.push(p);
-            updateCartCount();
-            showToast("Añadido a la bolsa");
-        }
-    }
-
-    function updateCartCount() {
-        const count = document.getElementById('cart-count');
-        count.innerText = state.cart.length;
-        count.classList.toggle('hidden', state.cart.length === 0);
-    }
-
-    function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); }
-
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.innerText = msg;
-        t.classList.replace('opacity-0', 'opacity-100');
-        setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 2000);
-    }
-
-    function setAdminTab(tab) {
-        document.querySelectorAll('.admin-content').forEach(c => c.classList.add('hidden'));
-        document.getElementById('admin-' + tab).classList.remove('hidden');
-    }
-
-    // Inicializar
-    window.onload = () => {
-        renderHome();
-        lucide.createIcons();
-      async function saveProductWithImage() {
-    const name = document.getElementById('productName').value;
-    const price = document.getElementById('productPrice').value;
-    const imageInput = document.getElementById('productImage');
-    
-    if (!name || !price || imageInput.files.length === 0) {
-        alert("Por favor completa todos los campos y selecciona una imagen.");
+    if (!nombre || !precio || imagenInput.files.length === 0) {
+        alert("Completa nombre, precio y selecciona una imagen.");
         return;
     }
 
-    const file = imageInput.files[0];
     const reader = new FileReader();
-
     reader.onloadend = function() {
         const base64Image = reader.result;
-        
-        const newProduct = {
+
+        const nuevoProducto = {
             id: Date.now(),
-            name: name,
-            price: price,
+            name: nombre,
+            price: precio,
+            stock: stock,
             image: base64Image
         };
 
-        // Guardar en LocalStorage
-        const products = JSON.parse(localStorage.getItem('inercia_products') || '[]');
-        products.push(newProduct);
-        localStorage.setItem('inercia_products', JSON.stringify(products));
+        // Guardar en la lista (usando el nombre que ya tengas en tu código, ej: products)
+        let productos = JSON.parse(localStorage.getItem('inercia_products') || '[]');
+        productos.push(nuevoProducto);
+        localStorage.setItem('inercia_products', JSON.stringify(productos));
 
-        alert("Producto guardado correctamente");
-        location.reload();
-    };
+        alert("Producto subido con éxito");
+        location.reload(); 
+    }
 
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(imagenInput.files[0]);
 }
 
     };
