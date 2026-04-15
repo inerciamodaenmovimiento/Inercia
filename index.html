@@ -1,12 +1,11 @@
-
 <html lang="es" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INERCIA - Tienda Oficial</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://tailwindcss.com"></script>
+  <script src="https://jsdelivr.net"></script>
+  <link href="https://googleapis.com" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -80,49 +79,12 @@
             <div class="flex justify-between items-end mb-12 border-b border-beige-200 pb-8">
                 <div>
                     <h2 class="font-display text-6xl tracking-tighter uppercase">Estudio</h2>
-                    <div id="admin-notif-badge" class="mt-2 hidden">
-                        <span class="bg-red-500 text-white text-[8px] px-3 py-1 rounded-full font-bold uppercase animate-pulse">Nueva Venta Detectada</span>
-                    </div>
                 </div>
                 <button onclick="logoutAdmin()" class="text-[10px] uppercase font-bold text-red-400">Cerrar Sesión</button>
             </div>
 
-            <div class="flex flex-wrap gap-2 mb-10 overflow-x-auto no-scrollbar pb-2">
-                <button onclick="setAdminTab('orders')" class="admin-tab-btn active bg-ink-900 text-white px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="orders">Pedidos & Notificaciones</button>
-                <button onclick="setAdminTab('products')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="products">Productos</button>
-                <button onclick="setAdminTab('categories')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="categories">Categorías</button>
-                <button onclick="setAdminTab('brand')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="brand">Marca & Redes</button>
-                <button onclick="setAdminTab('shipping')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="shipping">Envíos</button>
-                <button onclick="setAdminTab('payment')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="payment">Pagos</button>
-            </div>
-
-            <!-- TAB PEDIDOS -->
-            <div id="admin-orders" class="admin-content space-y-8">
-                <div class="bg-red-50 p-6 rounded-[2rem] border border-red-100 space-y-4" id="admin-alerts-container">
-                    <p class="text-[9px] font-bold text-red-400 uppercase tracking-widest flex items-center gap-2">
-                        <i data-lucide="bell" class="w-3 h-3"></i> Mensajes de Venta Directa
-                    </p>
-                    <div id="admin-notif-list" class="space-y-3"></div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-beige-50 p-6 rounded-3xl border border-beige-100 text-center">
-                        <p class="text-[8px] font-bold text-beige-400 uppercase tracking-widest mb-1">Ingresos</p>
-                        <p id="stat-total-money" class="text-3xl font-display">$0</p>
-                    </div>
-                    <div class="bg-beige-50 p-6 rounded-3xl border border-beige-100 text-center">
-                        <p class="text-[8px] font-bold text-beige-400 uppercase tracking-widest mb-1">Ventas</p>
-                        <p id="stat-total-count" class="text-3xl font-display">0</p>
-                    </div>
-                </div>
-                <div id="admin-orders-list" class="space-y-6"></div>
-            </div>
-
             <!-- TAB PRODUCTOS -->
-<div class="space-y-2">
-    <label class="text-[10px] uppercase font-bold text-beige-400 px-1">Foto de la prenda</label>
-    <input type="file" id="p-image" accept="image/*" class="w-full bg-white border border-beige-200 p-3 rounded-xl text-xs outline-none file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-beige-100 file:text-ink-900">
-</div>
-
+            <div id="admin-products" class="admin-content grid grid-cols-1 lg:grid-cols-3 gap-12">
                 <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-5">
                     <h3 class="font-display text-2xl">Crear Prenda</h3>
                     <input type="text" id="p-name" placeholder="Nombre" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
@@ -130,229 +92,70 @@
                         <input type="number" id="p-price" placeholder="Precio" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
                         <input type="number" id="p-stock" placeholder="Stock" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
                     </div>
-                    <select id="p-cat" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none"></select>
-                    <div class="border-2 border-dashed border-beige-300 rounded-2xl p-6 text-center bg-white">
-                        <label class="cursor-pointer block text-[10px] uppercase font-bold text-beige-400" id="p-img-label">Subir Foto</label>
-                        <<label class="block text-sm font-medium text-ink-700">Foto del Producto</label>
-<input type="file" id="productImage" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-beige-100 file:text-ink-900 hover:file:bg-beige-200">
-
-                        <input type="hidden" id="p-img-data">
+                    <!-- INPUT DE FOTO AGREGADO -->
+                    <div class="space-y-1">
+                        <label class="text-[10px] uppercase font-bold text-beige-400 px-1">Foto de la prenda</label>
+                        <input type="file" id="p-image" accept="image/*" class="w-full bg-white border border-beige-200 p-3 rounded-xl text-xs outline-none file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-beige-100 file:text-ink-900">
                     </div>
-                    <button onclick="saveProductWithImage()" class="w-full bg-ink-900 text-white py-3 rounded-lg hover:bg-ink-800 transition-colors">
-    Guardar Producto
-</button>
-
+                    <!-- BOTÓN CON FUNCIÓN DE GUARDADO -->
+                    <button onclick="guardarProducto()" class="w-full bg-ink-900 text-white py-4 rounded-2xl text-[10px] uppercase font-bold tracking-[0.2em] hover:bg-ink-800 transition-all shadow-xl">
+                        Publicar Producto
+                    </button>
                 </div>
-                <div class="lg:col-span-2 space-y-4" id="admin-product-list"></div>
-            </div>
-
-            <!-- TAB CATEGORÍAS -->
-            <div id="admin-categories" class="admin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-5">
-                    <h3 class="font-display text-2xl">Nueva Categoría</h3>
-                    <input type="text" id="cat-name-input" placeholder="Nombre" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <button onclick="addCategory()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Agregar</button>
+                <div class="lg:col-span-2">
+                    <div id="admin-products-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
-                <div class="lg:col-span-2 space-y-4" id="admin-category-list"></div>
-            </div>
-
-            <!-- TAB MARCA -->
-            <div id="admin-brand" class="admin-content hidden space-y-6 max-w-md">
-                <div class="space-y-4">
-                    <input type="text" id="brand-name-input" placeholder="Nombre" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <input type="text" id="brand-slogan-input" placeholder="Slogan" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                </div>
-                <button onclick="updateBrandIdentity()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Guardar</button>
-            </div>
-
-            <!-- TAB ENVÍOS -->
-            <div id="admin-shipping" class="admin-content hidden space-y-6 max-w-md">
-                <div id="shipping-presets" class="space-y-3"></div>
-                <div id="admin-shipping-list" class="space-y-2"></div>
-            </div>
-
-            <!-- TAB PAGOS -->
-            <div id="admin-payment" class="admin-content hidden space-y-4 max-w-md">
-                <input type="text" id="pay-name" placeholder="Nombre Pago" class="w-full bg-beige-50 p-4 rounded-xl text-sm">
-                <textarea id="pay-details" placeholder="Datos" class="w-full bg-beige-50 p-4 rounded-xl text-sm h-40 outline-none"></textarea>
-                <button onclick="savePayment()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Añadir</button>
-                <div id="admin-payment-list" class="space-y-2"></div>
             </div>
         </div>
       </section>
-
-      <!-- VISTA CHECKOUT -->
-      <section id="view-checkout" class="view hidden py-20 px-4">
-          <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
-              <div class="space-y-8">
-                  <h2 class="font-display text-4xl uppercase border-b pb-4">Checkout</h2>
-                  <div class="space-y-4">
-                      <input type="text" id="c-name" placeholder="Nombre Completo" class="w-full border-b border-beige-300 py-3 outline-none focus:border-ink-900 text-sm">
-                      <input type="text" id="c-phone" placeholder="WhatsApp" class="w-full border-b border-beige-300 py-3 outline-none focus:border-ink-900 text-sm">
-                      <input type="text" id="c-address" placeholder="Dirección Completa" class="w-full border-b border-beige-300 py-3 outline-none focus:border-ink-900 text-sm">
-                  </div>
-                  <div id="checkout-shipping" class="space-y-3"></div>
-                  <div id="checkout-payment" class="space-y-3"></div>
-              </div>
-              <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-beige-100 h-fit">
-                  <div id="checkout-items" class="space-y-4 mb-8"></div>
-                  <div class="flex justify-between items-center pt-6 border-t border-beige-200">
-                      <span class="text-xs font-bold uppercase">Total</span>
-                      <span id="final-total" class="text-3xl font-display font-bold">$0</span>
-                  </div>
-                  <button onclick="confirmOrder()" class="w-full bg-ink-900 text-white py-5 rounded-full text-[10px] font-bold uppercase mt-8">Confirmar Pedido</button>
-              </div>
-          </div>
-      </section>
-
     </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-white border-t border-beige-100 py-12">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center text-center">
-            <h2 id="brand-name-foot" class="font-display text-2xl font-bold uppercase mb-2">INERCIA</h2>
-            <div class="flex gap-4 mb-8">
-                <a id="link-whatsapp" href="#" target="_blank" class="p-2 bg-beige-50 rounded-full"><i data-lucide="phone" class="w-4 h-4"></i></a>
-                <a id="link-instagram" href="#" target="_blank" class="p-2 bg-beige-50 rounded-full"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-            </div>
-            <button onclick="showAdminLogin()" class="text-[7px] font-bold text-beige-300 uppercase tracking-widest">PANEL DE CONTROL</button>
-        </div>
-    </footer>
-
-    <!-- CARRITO -->
-    <div id="cart-drawer" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-ink-900/40 backdrop-blur-sm" onclick="toggleCart()"></div>
-        <div class="absolute right-0 top-0 h-full w-full max-w-sm bg-white flex flex-col shadow-2xl">
-            <div class="p-6 border-b flex justify-between items-center">
-                <h3 class="font-display text-2xl uppercase">Tu Bolsa</h3>
-                <button onclick="toggleCart()"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div id="cart-items" class="flex-grow overflow-auto p-6 space-y-4"></div>
-            <div class="p-6 border-t bg-beige-50">
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-[9px] font-bold uppercase text-beige-400">Subtotal</span>
-                    <span id="cart-total" class="text-xl font-display font-bold">$0</span>
-                </div>
-                <button onclick="goToCheckout()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] font-bold uppercase">Continuar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- LOGIN -->
-    <div id="admin-login" class="fixed inset-0 z-[70] hidden flex items-center justify-center bg-ink-900/80 backdrop-blur-md p-4">
-        <div class="bg-white p-10 rounded-[2.5rem] w-full max-w-xs text-center">
-            <h3 class="font-display text-2xl mb-6 tracking-widest">ADMIN</h3>
-            <input type="password" id="admin-pin" placeholder="••••" class="w-full text-center text-3xl border-b border-ink-900 py-3 outline-none mb-6">
-            <button onclick="verifyAdmin()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] font-bold uppercase">Entrar</button>
-        </div>
-    </div>
-
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-ink-900 text-white px-8 py-3 rounded-full text-[9px] font-bold uppercase opacity-0 transition-all shadow-xl pointer-events-none"></div>
-
   </div>
 
   <script>
-    let state = {
-      brand: JSON.parse(localStorage.getItem('in_brand')) || { name: 'INERCIA', slogan: 'Moda en movimiento', whatsapp: '', instagram: '' },
-      products: JSON.parse(localStorage.getItem('in_products')) || [],
-      categories: JSON.parse(localStorage.getItem('in_categories')) || ['Esenciales'],
-      shippingMethods: JSON.parse(localStorage.getItem('in_ship')) || [
-          { name: 'Envío a Domicilio', price: 0 },
-          { name: 'Punto de Encuentro', price: 0 },
-          { name: 'Envío por Correo', price: 0 }
-      ],
-      paymentMethods: JSON.parse(localStorage.getItem('in_pay')) || [],
-      orders: JSON.parse(localStorage.getItem('in_orders')) || [],
-      notifications: JSON.parse(localStorage.getItem('in_notif')) || [],
-      cart: [],
-      currentCat: 'Todos'
-    };
+    // Lógica para procesar y guardar producto con imagen
+    async function guardarProducto() {
+        const nombre = document.getElementById('p-name').value;
+        const precio = document.getElementById('p-price').value;
+        const stock = document.getElementById('p-stock').value;
+        const imagenInput = document.getElementById('p-image');
 
-    const ADMIN_CODE = "0110";
-
-    function save() {
-      localStorage.setItem('in_products', JSON.stringify(state.products));
-      localStorage.setItem('in_brand', JSON.stringify(state.brand));
-      localStorage.setItem('in_categories', JSON.stringify(state.categories));
-      localStorage.setItem('in_ship', JSON.stringify(state.shippingMethods));
-      localStorage.setItem('in_pay', JSON.stringify(state.paymentMethods));
-      localStorage.setItem('in_orders', JSON.stringify(state.orders));
-      localStorage.setItem('in_notif', JSON.stringify(state.notifications));
-    }
-
-    // GESTIÓN DE VISTAS
-    function showView(id) {
-      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
-      document.getElementById('view-' + id).classList.remove('hidden');
-      if(id === 'home') renderHome();
-      if(id === 'admin') renderAdmin();
-      window.scrollTo(0,0);
-    }
-
-    // LOGIN ADMIN
-    function showAdminLogin() { document.getElementById('admin-login').classList.remove('hidden'); }
-    function verifyAdmin() {
-        const pin = document.getElementById('admin-pin').value;
-        if(pin === ADMIN_CODE) {
-            document.getElementById('admin-login').classList.add('hidden');
-            showView('admin');
-            document.getElementById('admin-pin').value = '';
-        } else {
-            showToast("Código Incorrecto");
+        if (!nombre || !precio || imagenInput.files.length === 0) {
+            alert("Por favor completa nombre, precio y selecciona una imagen.");
+            return;
         }
-    }
-    function logoutAdmin() { showView('home'); }
 
-    // ARREGLO SUBIDA DE FOTOS
-    function previewMedia(input, hiddenId, labelId) {
-        const file = input.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById(hiddenId).value = e.target.result;
-                document.getElementById(labelId).innerText = "Foto Lista ✓";
-                document.getElementById(labelId).classList.add('text-green-500');
-            }
-            reader.readAsDataURL(file);
-        }
-    }
+        const archivo = imagenInput.files[0];
+        const reader = new FileReader();
 
-    function guardarNuevoProducto() {
-    const nombre = document.getElementById('p-name').value;
-    const precio = document.getElementById('p-price').value;
-    const stock = document.getElementById('p-stock').value;
-    const imagenInput = document.getElementById('p-image');
+        reader.onloadend = function() {
+            const base64Image = reader.result;
 
-    if (!nombre || !precio || imagenInput.files.length === 0) {
-        alert("Completa nombre, precio y selecciona una imagen.");
-        return;
-    }
+            const nuevoProducto = {
+                id: Date.now(),
+                name: nombre,
+                price: parseFloat(precio),
+                stock: parseInt(stock),
+                image: base64Image
+            };
 
-    const reader = new FileReader();
-    reader.onloadend = function() {
-        const base64Image = reader.result;
+            let productos = JSON.parse(localStorage.getItem('inercia_inventory') || '[]');
+            productos.push(nuevoProducto);
+            localStorage.setItem('inercia_inventory', JSON.stringify(productos));
 
-        const nuevoProducto = {
-            id: Date.now(),
-            name: nombre,
-            price: precio,
-            stock: stock,
-            image: base64Image
+            alert("Producto guardado correctamente");
+            location.reload();
         };
 
-        // Guardar en la lista (usando el nombre que ya tengas en tu código, ej: products)
-        let productos = JSON.parse(localStorage.getItem('inercia_products') || '[]');
-        productos.push(nuevoProducto);
-        localStorage.setItem('inercia_products', JSON.stringify(productos));
-
-        alert("Producto subido con éxito");
-        location.reload(); 
+        reader.readAsDataURL(archivo);
     }
 
-    reader.readAsDataURL(imagenInput.files[0]);
-}
+    // Inicializar Lucide Icons
+    lucide.createIcons();
 
-    };
+    function showView(view) {
+        document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+        document.getElementById('view-' + view).classList.remove('hidden');
+    }
   </script>
 </body>
 </html>
