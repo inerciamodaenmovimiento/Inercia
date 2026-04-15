@@ -1,24 +1,20 @@
+<!DOCTYPE html>
 <html lang="es" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INERCIA | Moda en Movimiento</title>
-  <script src="https://tailwindcss.com"></script>
-  <script src="https://jsdelivr.net"></script>
+  <!-- CORRECCIÓN: CDN de Tailwind y Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com"></script>
   <link href="https://googleapis.com" rel="stylesheet">
+  
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            'marfil': '#fcfcfc',
-            'noche': '#0a0a0a',
-            'borde': '#e5e5e5'
-          },
-          fontFamily: {
-            'serif': ['Cormorant Garamond', 'serif'],
-            'sans': ['Outfit', 'sans-serif']
-          }
+          colors: { 'marfil': '#fcfcfc', 'noche': '#0a0a0a', 'borde': '#e5e5e5' },
+          fontFamily: { 'serif': ['Cormorant Garamond', 'serif'], 'sans': ['Outfit', 'sans-serif'] }
         }
       }
     }
@@ -28,13 +24,11 @@
     .font-logo { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-style: italic; }
     .nav-link { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
     .view { transition: opacity 0.4s ease; }
-    /* Estructura de cuadros para que no parezca incompleto */
-    .art-border { border: 1px solid #e5e5e5; }
+    .hidden { display: none; }
   </style>
 </head>
 <body class="text-noche">
 
-  <!-- CABECERA FIJA -->
   <header class="fixed top-0 w-full bg-marfil/90 backdrop-blur-sm z-50 border-b border-borde">
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
       <div class="flex flex-col cursor-pointer" onclick="showView('home')">
@@ -42,13 +36,13 @@
         <span class="text-[8px] uppercase tracking-[0.4em] text-stone-400 font-bold">Moda en movimiento</span>
       </div>
       <nav class="hidden md:flex gap-8 nav-link">
-        <a href="#" onclick="showView('home')" class="hover:text-stone-500 transition">Colección</a>
-        <a href="#" onclick="showView('admin')" class="hover:text-stone-500 transition">Estudio</a>
+        <a href="javascript:void(0)" onclick="showView('home')" class="hover:text-stone-500">Colección</a>
+        <a href="javascript:void(0)" onclick="showView('admin')" class="hover:text-stone-500">Estudio</a>
       </nav>
       <div class="flex items-center gap-4">
-        <button class="p-2"><i data-lucide="search" class="w-5 h-5 stroke-1"></i></button>
+        <button class="p-2"><i data-lucide="search" class="w-5 h-5"></i></button>
         <button class="p-2 relative">
-            <i data-lucide="shopping-bag" class="w-5 h-5 stroke-1"></i>
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
             <span id="cart-count" class="absolute top-1 right-1 text-[8px] bg-noche text-white w-3 h-3 rounded-full flex items-center justify-center">0</span>
         </button>
       </div>
@@ -56,57 +50,39 @@
   </header>
 
   <main class="pt-20">
-    <!-- SECCIÓN HOME -->
+    <!-- HOME -->
     <section id="view-home" class="view">
-      <!-- Banner Principal -->
-      <div class="border-b border-borde h-[60vh] flex items-center justify-center bg-stone-100 overflow-hidden relative">
+      <div class="border-b border-borde h-[40vh] flex items-center justify-center bg-stone-100 relative overflow-hidden">
           <div class="text-center z-10">
-              <h2 class="font-logo text-7xl md:text-9xl mb-2 italic">Nueva Era</h2>
+              <h2 class="font-logo text-6xl md:text-8xl mb-2 italic">Nueva Era</h2>
               <p class="nav-link text-stone-500">Curaduría de piezas únicas</p>
           </div>
-          <img src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover opacity-20 grayscale">
       </div>
-
-      <!-- Grilla de Productos -->
       <div class="max-w-7xl mx-auto px-6 py-20">
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-borde border border-borde">
-          <!-- Los productos se inyectan aquí -->
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Productos aquí -->
         </div>
       </div>
     </section>
 
-    <!-- SECCIÓN ADMINISTRADOR -->
+    <!-- ADMIN -->
     <section id="view-admin" class="view hidden min-h-screen bg-stone-50">
       <div class="max-w-5xl mx-auto px-6 py-20">
         <div class="flex justify-between items-end mb-12 border-b border-borde pb-6">
             <h2 class="font-logo text-5xl">Panel de Estudio</h2>
             <button onclick="showView('home')" class="nav-link text-stone-400 hover:text-noche">Salir</button>
         </div>
-
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <!-- Formulario -->
             <div class="lg:col-span-1 space-y-6 bg-white p-8 border border-borde shadow-sm">
                 <h3 class="nav-link font-bold">Nueva Pieza</h3>
-                <input type="text" id="p-name" placeholder="Nombre" class="w-full border-b border-borde py-3 outline-none focus:border-noche transition text-sm">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="p-price" placeholder="Precio ($)" class="w-full border-b border-borde py-3 outline-none focus:border-noche transition text-sm">
-                    <input type="number" id="p-stock" placeholder="Stock" class="w-full border-b border-borde py-3 outline-none focus:border-noche transition text-sm">
-                </div>
-                <div class="py-4">
-                    <label class="text-[9px] uppercase font-bold text-stone-400 block mb-2">Imagen de la prenda</label>
-                    <input type="file" id="p-image" accept="image/*" class="text-[10px] block w-full text-stone-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:bg-stone-100 file:text-noche file:font-bold">
-                </div>
-                <button onclick="guardarProducto()" class="w-full bg-noche text-white py-4 nav-link tracking-widest hover:bg-stone-800 transition">
-                    Publicar Pieza
-                </button>
+                <input type="text" id="p-name" placeholder="Nombre" class="w-full border-b border-borde py-3 outline-none text-sm">
+                <input type="number" id="p-price" placeholder="Precio ($)" class="w-full border-b border-borde py-3 outline-none text-sm">
+                <input type="file" id="p-image" accept="image/*" class="text-[10px] w-full">
+                <button onclick="guardarProducto()" class="w-full bg-noche text-white py-4 nav-link hover:bg-stone-800 transition">Publicar</button>
             </div>
-
-            <!-- Lista de Control -->
             <div class="lg:col-span-2 bg-white border border-borde p-6">
-                <h3 class="nav-link font-bold mb-6">Inventario Actual</h3>
-                <div id="admin-list" class="space-y-4">
-                    <!-- Lista de administración -->
-                </div>
+                <h3 class="nav-link font-bold mb-6">Inventario</h3>
+                <div id="admin-list" class="space-y-4"></div>
             </div>
         </div>
       </div>
@@ -114,87 +90,65 @@
   </main>
 
   <script>
-    // Inicialización de iconos
-    lucide.createIcons();
+    // 1. Navegación entre Vistas
+    function showView(viewName) {
+        document.getElementById('view-home').classList.add('hidden');
+        document.getElementById('view-admin').classList.add('hidden');
+        document.getElementById('view-' + viewName).classList.remove('hidden');
+    }
 
-    // LÓGICA DE DATOS
+    // 2. Guardar Datos
     function guardarProducto() {
         const name = document.getElementById('p-name').value;
         const price = document.getElementById('p-price').value;
-        const stock = document.getElementById('p-stock').value;
         const imageFile = document.getElementById('p-image').files[0];
 
-        if (!name || !price || !imageFile) {
-            alert("Completa todos los campos");
-            return;
-        }
+        if (!name || !price || !imageFile) return alert("Completa los datos");
 
         const reader = new FileReader();
         reader.onloadend = function() {
-            const nuevo = {
-                id: Date.now(),
-                name,
-                price,
-                stock,
-                image: reader.result
-            };
-
+            const nuevo = { id: Date.now(), name, price, image: reader.result };
             let inventario = JSON.parse(localStorage.getItem('inercia_v2') || '[]');
             inventario.push(nuevo);
             localStorage.setItem('inercia_v2', JSON.stringify(inventario));
-            
-            alert("Cargado con éxito");
-            location.reload();
+            renderProducts();
         }
         reader.readAsDataURL(imageFile);
     }
 
+    // 3. Renderizar
     function renderProducts() {
+        const productos = JSON.parse(localStorage.getItem('inercia_v2') || '[]');
         const grid = document.getElementById('product-grid');
         const list = document.getElementById('admin-list');
-        const productos = JSON.parse(localStorage.getItem('inercia_v2') || '[]');
 
-        if (productos.length === 0) {
-            grid.innerHTML = '<div class="col-span-full py-20 text-center bg-white italic text-stone-400">No hay piezas disponibles en la colección actual.</div>';
-        } else {
-            grid.innerHTML = productos.map(p => `
-                <div class="bg-white group cursor-pointer p-6 border-r border-b border-borde last:border-r-0">
-                    <div class="aspect-[4/5] overflow-hidden mb-6 bg-stone-50">
-                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                    </div>
-                    <div class="space-y-1">
-                        <h3 class="font-logo text-xl italic">${p.name}</h3>
-                        <p class="text-xs text-stone-400 uppercase tracking-widest">$${p.price}</p>
-                    </div>
-                </div>
-            `).join('');
+        grid.innerHTML = productos.map(p => `
+            <div class="bg-white p-4 border border-borde">
+                <img src="${p.image}" class="w-full h-64 object-cover mb-4">
+                <h3 class="font-logo text-xl italic">${p.name}</h3>
+                <p class="text-xs text-stone-400">$${p.price}</p>
+            </div>
+        `).join('');
 
-            list.innerHTML = productos.map(p => `
-                <div class="flex items-center justify-between p-4 border border-borde rounded-lg">
-                    <div class="flex items-center gap-4">
-                        <img src="${p.image}" class="w-12 h-12 object-cover rounded">
-                        <span class="font-bold text-sm">${p.name}</span>
-                    </div>
-                    <button onclick="eliminarProducto(${p.id})" class="text-red-400 text-[10px] font-bold uppercase">Eliminar</button>
+        list.innerHTML = productos.map(p => `
+            <div class="flex items-center justify-between p-3 border border-borde">
+                <div class="flex items-center gap-3">
+                    <img src="${p.image}" class="w-10 h-10 object-cover">
+                    <span class="text-sm font-bold">${p.name}</span>
                 </div>
-            `).join('');
-        }
+                <button onclick="eliminar(${p.id})" class="text-red-400 text-xs uppercase font-bold">Borrar</button>
+            </div>
+        `).join('');
     }
 
-    function eliminarProducto(id) {
-        let inventario = JSON.parse(localStorage.getItem('inercia_v2') || '[]');
-        inventario = inventario.filter(p => p.id !== id);
-        localStorage.setItem('inercia_v2', JSON.stringify(inventario));
+    function eliminar(id) {
+        let inv = JSON.parse(localStorage.getItem('inercia_v2')).filter(p => p.id !== id);
+        localStorage.setItem('inercia_v2', JSON.stringify(inv));
         renderProducts();
     }
 
-    function showView(viewName) {
-        document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
-        document.getElementById('view-' + viewName).classList.remove('hidden');
-        window.scrollTo(0,0);
-    }
-
-    // Al cargar la página
+    // Inicializar
+    lucide.createIcons();
     renderProducts();
   </script>
 </body>
