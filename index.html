@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INERCIA - Piezas Únicas</title>
+  <title>INERCIA | Moda en Movimiento</title>
   <script src="https://tailwindcss.com"></script>
   <script src="https://jsdelivr.net"></script>
   <link href="https://googleapis.com" rel="stylesheet">
@@ -11,164 +11,191 @@
       theme: {
         extend: {
           colors: {
-            crema: '#FDFCF8',
-            carbon: '#121212',
-            acento: '#2A3B4C'
+            'marfil': '#fcfcfc',
+            'noche': '#0a0a0a',
+            'borde': '#e5e5e5'
           },
           fontFamily: {
-            serif: ['Cormorant Garamond', 'serif'],
-            display: ['Playfair Display', 'serif']
+            'serif': ['Cormorant Garamond', 'serif'],
+            'sans': ['Outfit', 'sans-serif']
           }
         }
       }
     }
   </script>
   <style>
-    body { background-color: #FDFCF8; font-family: 'Cormorant Garamond', serif; overflow-x: hidden; }
-    .art-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
-    .hero-text { font-size: clamp(3rem, 10vw, 8rem); line-height: 0.8; letter-spacing: -0.05em; }
-    /* Efecto de revelado artístico para las fotos */
-    .img-reveal { clip-path: inset(100% 0 0 0); animation: reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
-    @keyframes reveal { to { clip-path: inset(0 0 0 0); } }
-    .product-card:nth-child(even) { margin-top: 4rem; } /* Grilla asimétrica */
+    body { font-family: 'Outfit', sans-serif; background-color: #fcfcfc; }
+    .font-logo { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-style: italic; }
+    .nav-link { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
+    .view { transition: opacity 0.4s ease; }
+    /* Estructura de cuadros para que no parezca incompleto */
+    .art-border { border: 1px solid #e5e5e5; }
   </style>
 </head>
-<body class="text-carbon">
+<body class="text-noche">
 
-  <!-- NAVEGACIÓN EDITORIAL -->
-  <nav class="fixed w-full z-50 mix-blend-difference text-crema p-8 flex justify-between items-start">
-    <div class="cursor-pointer group" onclick="showView('home')">
-      <h1 class="font-display text-4xl leading-none italic">Inercia</h1>
-      <p class="text-[10px] tracking-[0.4em] uppercase opacity-60 group-hover:opacity-100 transition-opacity">Moda en movimiento</p>
-    </div>
-    <div class="flex flex-col items-end gap-4">
-        <button onclick="showView('admin')" class="text-[10px] uppercase tracking-widest border-b border-crema/30 pb-1 hover:border-crema transition-all">Acceso Estudio</button>
-        <button onclick="toggleCart()" class="relative">
-            <i data-lucide="shopping-bag" class="w-6 h-6 stroke-1"></i>
-            <span id="cart-count" class="absolute -bottom-1 -right-1 text-[9px] font-bold">0</span>
+  <!-- CABECERA FIJA -->
+  <header class="fixed top-0 w-full bg-marfil/90 backdrop-blur-sm z-50 border-b border-borde">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex flex-col cursor-pointer" onclick="showView('home')">
+        <h1 class="font-logo text-3xl tracking-tighter leading-none">Inercia</h1>
+        <span class="text-[8px] uppercase tracking-[0.4em] text-stone-400 font-bold">Moda en movimiento</span>
+      </div>
+      <nav class="hidden md:flex gap-8 nav-link">
+        <a href="#" onclick="showView('home')" class="hover:text-stone-500 transition">Colección</a>
+        <a href="#" onclick="showView('admin')" class="hover:text-stone-500 transition">Estudio</a>
+      </nav>
+      <div class="flex items-center gap-4">
+        <button class="p-2"><i data-lucide="search" class="w-5 h-5 stroke-1"></i></button>
+        <button class="p-2 relative">
+            <i data-lucide="shopping-bag" class="w-5 h-5 stroke-1"></i>
+            <span id="cart-count" class="absolute top-1 right-1 text-[8px] bg-noche text-white w-3 h-3 rounded-full flex items-center justify-center">0</span>
         </button>
+      </div>
     </div>
-  </nav>
+  </header>
 
-  <main>
-    <!-- VISTA HOME: ESTILO GALERÍA DE ARTE -->
-    <section id="view-home" class="view min-h-screen">
-      <!-- Hero Section Asimétrico -->
-      <section class="relative h-screen flex items-center px-8 md:px-20">
-        <div class="z-10">
-            <h2 class="hero-text font-display italic text-carbon mb-4">Piezas<br><span class="ml-20">Únicas.</span></h2>
-            <p class="max-w-xs text-xl italic opacity-70">Curaduría de movimiento y textil diseñada para perdurar.</p>
-        </div>
-        <div class="absolute right-0 top-0 w-1/2 h-full bg-stone-200 -z-10 overflow-hidden">
-            <img src="https://unsplash.com" class="w-full h-full object-cover grayscale brightness-90 hover:scale-105 transition-transform duration-1000">
-        </div>
-      </section>
+  <main class="pt-20">
+    <!-- SECCIÓN HOME -->
+    <section id="view-home" class="view">
+      <!-- Banner Principal -->
+      <div class="border-b border-borde h-[60vh] flex items-center justify-center bg-stone-100 overflow-hidden relative">
+          <div class="text-center z-10">
+              <h2 class="font-logo text-7xl md:text-9xl mb-2 italic">Nueva Era</h2>
+              <p class="nav-link text-stone-500">Curaduría de piezas únicas</p>
+          </div>
+          <img src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover opacity-20 grayscale">
+      </div>
 
-      <!-- Grilla de Productos Asimétrica -->
-      <div class="max-w-7xl mx-auto px-8 py-32">
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
-            <!-- Los productos se cargarán aquí -->
+      <!-- Grilla de Productos -->
+      <div class="max-w-7xl mx-auto px-6 py-20">
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-borde border border-borde">
+          <!-- Los productos se inyectan aquí -->
         </div>
       </div>
     </section>
 
-    <!-- VISTA ADMINISTRADOR (Mantiene tu funcionalidad intacta) -->
-    <section id="view-admin" class="view hidden bg-white min-h-screen p-12">
-        <div class="max-w-4xl mx-auto pt-20">
-            <div class="flex justify-between items-baseline mb-20 border-b border-stone-200 pb-10">
-                <h2 class="font-display text-7xl italic">Estudio</h2>
-                <button onclick="showView('home')" class="text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition">Regresar</button>
+    <!-- SECCIÓN ADMINISTRADOR -->
+    <section id="view-admin" class="view hidden min-h-screen bg-stone-50">
+      <div class="max-w-5xl mx-auto px-6 py-20">
+        <div class="flex justify-between items-end mb-12 border-b border-borde pb-6">
+            <h2 class="font-logo text-5xl">Panel de Estudio</h2>
+            <button onclick="showView('home')" class="nav-link text-stone-400 hover:text-noche">Salir</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <!-- Formulario -->
+            <div class="lg:col-span-1 space-y-6 bg-white p-8 border border-borde shadow-sm">
+                <h3 class="nav-link font-bold">Nueva Pieza</h3>
+                <input type="text" id="p-name" placeholder="Nombre" class="w-full border-b border-borde py-3 outline-none focus:border-noche transition text-sm">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="number" id="p-price" placeholder="Precio ($)" class="w-full border-b border-borde py-3 outline-none focus:border-noche transition text-sm">
+                    <input type="number" id="p-stock" placeholder="Stock" class="w-full border-b border-borde py-3 outline-none focus:border-noche transition text-sm">
+                </div>
+                <div class="py-4">
+                    <label class="text-[9px] uppercase font-bold text-stone-400 block mb-2">Imagen de la prenda</label>
+                    <input type="file" id="p-image" accept="image/*" class="text-[10px] block w-full text-stone-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:bg-stone-100 file:text-noche file:font-bold">
+                </div>
+                <button onclick="guardarProducto()" class="w-full bg-noche text-white py-4 nav-link tracking-widest hover:bg-stone-800 transition">
+                    Publicar Pieza
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
-                <!-- FORMULARIO QUE YA DESARROLLAMOS -->
-                <div class="space-y-6">
-                    <h3 class="text-2xl italic mb-8">Nueva Curaduría</h3>
-                    <input type="text" id="p-name" placeholder="Nombre de la pieza" class="w-full bg-transparent border-b border-stone-300 p-4 focus:border-carbon outline-none transition-colors italic text-xl">
-                    <div class="grid grid-cols-2 gap-8">
-                        <input type="number" id="p-price" placeholder="Precio ($)" class="w-full bg-transparent border-b border-stone-300 p-4 outline-none">
-                        <input type="number" id="p-stock" placeholder="Stock" class="w-full bg-transparent border-b border-stone-300 p-4 outline-none">
-                    </div>
-                    <div class="pt-4">
-                        <label class="text-[10px] uppercase tracking-widest block mb-4">Cargar Imagen Artística</label>
-                        <input type="file" id="p-image" accept="image/*" class="text-xs file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-carbon file:text-crema cursor-pointer">
-                    </div>
-                    <button onclick="guardarProducto()" class="w-full bg-carbon text-crema py-6 mt-10 hover:bg-stone-800 transition-all font-display text-xl italic tracking-widest">
-                        Registrar Pieza
-                    </button>
-                </div>
-
-                <div id="admin-products-list" class="space-y-4 max-h-[600px] overflow-y-auto pr-4">
-                    <!-- Lista de control -->
+            <!-- Lista de Control -->
+            <div class="lg:col-span-2 bg-white border border-borde p-6">
+                <h3 class="nav-link font-bold mb-6">Inventario Actual</h3>
+                <div id="admin-list" class="space-y-4">
+                    <!-- Lista de administración -->
                 </div>
             </div>
         </div>
+      </div>
     </section>
   </main>
 
   <script>
-    // --- TU LÓGICA DE FUNCIONALIDAD (SIN CAMBIOS) ---
-    async function guardarProducto() {
-        const nombre = document.getElementById('p-name').value;
-        const precio = document.getElementById('p-price').value;
-        const stock = document.getElementById('p-stock').value;
-        const imagenInput = document.getElementById('p-image');
+    // Inicialización de iconos
+    lucide.createIcons();
 
-        if (!nombre || !precio || imagenInput.files.length === 0) {
-            alert("Información incompleta para la pieza.");
+    // LÓGICA DE DATOS
+    function guardarProducto() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const stock = document.getElementById('p-stock').value;
+        const imageFile = document.getElementById('p-image').files[0];
+
+        if (!name || !price || !imageFile) {
+            alert("Completa todos los campos");
             return;
         }
 
         const reader = new FileReader();
         reader.onloadend = function() {
-            const nuevoProducto = {
+            const nuevo = {
                 id: Date.now(),
-                name: nombre,
-                price: precio,
-                stock: stock,
+                name,
+                price,
+                stock,
                 image: reader.result
             };
 
-            let productos = JSON.parse(localStorage.getItem('inercia_db') || '[]');
-            productos.push(nuevoProducto);
-            localStorage.setItem('inercia_db', JSON.stringify(productos));
+            let inventario = JSON.parse(localStorage.getItem('inercia_v2') || '[]');
+            inventario.push(nuevo);
+            localStorage.setItem('inercia_v2', JSON.stringify(inventario));
             
-            alert("Pieza añadida a la colección.");
+            alert("Cargado con éxito");
             location.reload();
-        };
-        reader.readAsDataURL(imagenInput.files[0]);
+        }
+        reader.readAsDataURL(imageFile);
     }
 
-    function renderHome() {
+    function renderProducts() {
         const grid = document.getElementById('product-grid');
-        const productos = JSON.parse(localStorage.getItem('inercia_db') || '[]');
-        
-        grid.innerHTML = productos.map(p => `
-            <div class="product-card group cursor-pointer overflow-hidden">
-                <div class="aspect-[3/4] bg-stone-100 mb-6 overflow-hidden relative">
-                    <img src="${p.image}" class="w-full h-full object-cover img-reveal group-hover:scale-105 transition-transform duration-700">
-                </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="text-2xl italic font-display">${p.name}</h3>
-                        <p class="text-xs uppercase tracking-widest opacity-50">Edición Limitada</p>
+        const list = document.getElementById('admin-list');
+        const productos = JSON.parse(localStorage.getItem('inercia_v2') || '[]');
+
+        if (productos.length === 0) {
+            grid.innerHTML = '<div class="col-span-full py-20 text-center bg-white italic text-stone-400">No hay piezas disponibles en la colección actual.</div>';
+        } else {
+            grid.innerHTML = productos.map(p => `
+                <div class="bg-white group cursor-pointer p-6 border-r border-b border-borde last:border-r-0">
+                    <div class="aspect-[4/5] overflow-hidden mb-6 bg-stone-50">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                     </div>
-                    <span class="text-xl font-light">$${p.price}</span>
+                    <div class="space-y-1">
+                        <h3 class="font-logo text-xl italic">${p.name}</h3>
+                        <p class="text-xs text-stone-400 uppercase tracking-widest">$${p.price}</p>
+                    </div>
                 </div>
-            </div>
-        `).join('');
+            `).join('');
+
+            list.innerHTML = productos.map(p => `
+                <div class="flex items-center justify-between p-4 border border-borde rounded-lg">
+                    <div class="flex items-center gap-4">
+                        <img src="${p.image}" class="w-12 h-12 object-cover rounded">
+                        <span class="font-bold text-sm">${p.name}</span>
+                    </div>
+                    <button onclick="eliminarProducto(${p.id})" class="text-red-400 text-[10px] font-bold uppercase">Eliminar</button>
+                </div>
+            `).join('');
+        }
     }
 
-    function showView(view) {
+    function eliminarProducto(id) {
+        let inventario = JSON.parse(localStorage.getItem('inercia_v2') || '[]');
+        inventario = inventario.filter(p => p.id !== id);
+        localStorage.setItem('inercia_v2', JSON.stringify(inventario));
+        renderProducts();
+    }
+
+    function showView(viewName) {
         document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
-        document.getElementById('view-' + view).classList.remove('hidden');
-        if(view === 'home') renderHome();
+        document.getElementById('view-' + viewName).classList.remove('hidden');
+        window.scrollTo(0,0);
     }
 
-    // Inicialización
-    lucide.createIcons();
-    renderHome();
+    // Al cargar la página
+    renderProducts();
   </script>
 </body>
 </html>
-
