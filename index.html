@@ -1,155 +1,261 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INERCIA | Moda en Movimiento</title>
-  <!-- CORRECCIÓN: CDN de Tailwind y Lucide Icons -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com"></script>
-  <link href="https://googleapis.com" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: { 'marfil': '#fcfcfc', 'noche': '#0a0a0a', 'borde': '#e5e5e5' },
-          fontFamily: { 'serif': ['Cormorant Garamond', 'serif'], 'sans': ['Outfit', 'sans-serif'] }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INERCIA | Moda en Movimiento</title>
+    <script src="https://tailwindcss.com"></script>
+    <script src="https://unpkg.com"></script>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pastel-pink': '#FFF0F5',
+                        'vibrant-mint': '#98FF98',
+                        'vibrant-lavender': '#E6E6FA',
+                        'vibrant-coral': '#FF7F50',
+                        'noche': '#1A1A1A'
+                    },
+                    fontFamily: {
+                        'serif': ['Cormorant Garamond', 'serif'],
+                        'sans': ['Outfit', 'sans-serif']
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
-  <style>
-    body { font-family: 'Outfit', sans-serif; background-color: #fcfcfc; }
-    .font-logo { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-style: italic; }
-    .nav-link { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
-    .view { transition: opacity 0.4s ease; }
-    .hidden { display: none; }
-  </style>
+    </script>
+    <style>
+        body { background-color: #FFFBFA; font-family: 'Outfit', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
+        .card-hover { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(255,127,80,0.1); }
+        .hidden { display: none; }
+        .cart-open { transform: translateX(0) !important; }
+    </style>
 </head>
 <body class="text-noche">
 
-  <header class="fixed top-0 w-full bg-marfil/90 backdrop-blur-sm z-50 border-b border-borde">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <div class="flex flex-col cursor-pointer" onclick="showView('home')">
-        <h1 class="font-logo text-3xl tracking-tighter leading-none">Inercia</h1>
-        <span class="text-[8px] uppercase tracking-[0.4em] text-stone-400 font-bold">Moda en movimiento</span>
-      </div>
-      <nav class="hidden md:flex gap-8 nav-link">
-        <a href="javascript:void(0)" onclick="showView('home')" class="hover:text-stone-500">Colección</a>
-        <a href="javascript:void(0)" onclick="showView('admin')" class="hover:text-stone-500">Estudio</a>
-      </nav>
-      <div class="flex items-center gap-4">
-        <button class="p-2"><i data-lucide="search" class="w-5 h-5"></i></button>
-        <button class="p-2 relative">
-            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-            <span id="cart-count" class="absolute top-1 right-1 text-[8px] bg-noche text-white w-3 h-3 rounded-full flex items-center justify-center">0</span>
-        </button>
-      </div>
+    <!-- NAV -->
+    <nav class="fixed top-0 w-full z-40 border-b border-vibrant-lavender glass">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+            <div class="flex flex-col cursor-pointer" onclick="showView('home')">
+                <h1 class="font-serif text-4xl italic font-semibold tracking-tighter text-vibrant-coral">Inercia</h1>
+                <span class="text-[9px] uppercase tracking-[0.5em] text-stone-500">Moda en movimiento</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="#productos" class="nav-link text-xs uppercase tracking-widest font-bold hover:text-vibrant-coral transition">Colección</a>
+                <button onclick="toggleCart()" class="relative p-2 bg-vibrant-lavender rounded-full">
+                    <i data-lucide="shopping-cart" class="w-5 h-5 text-vibrant-coral"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-vibrant-coral text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CARRITO (SIDEBAR) -->
+    <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-full md:w-96 bg-white z-50 shadow-2xl transition-transform transform translate-x-full border-l border-vibrant-lavender p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="font-serif text-3xl italic">Tu Bolsa</h2>
+            <button onclick="toggleCart()"><i data-lucide="x"></i></button>
+        </div>
+        <div id="cart-items" class="space-y-6"></div>
+        <div class="mt-12 border-t pt-6">
+            <div class="flex justify-between mb-4 font-bold text-xl">
+                <span>Total:</span>
+                <span id="cart-total">$0</span>
+            </div>
+            <button onclick="checkout()" class="w-full bg-vibrant-coral text-white py-4 rounded-full font-bold uppercase tracking-widest hover:bg-noche transition">Finalizar por WhatsApp</button>
+        </div>
     </div>
-  </header>
 
-  <main class="pt-20">
-    <!-- HOME -->
-    <section id="view-home" class="view">
-      <div class="border-b border-borde h-[40vh] flex items-center justify-center bg-stone-100 relative overflow-hidden">
-          <div class="text-center z-10">
-              <h2 class="font-logo text-6xl md:text-8xl mb-2 italic">Nueva Era</h2>
-              <p class="nav-link text-stone-500">Curaduría de piezas únicas</p>
-          </div>
-      </div>
-      <div class="max-w-7xl mx-auto px-6 py-20">
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Productos aquí -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ADMIN -->
-    <section id="view-admin" class="view hidden min-h-screen bg-stone-50">
-      <div class="max-w-5xl mx-auto px-6 py-20">
-        <div class="flex justify-between items-end mb-12 border-b border-borde pb-6">
-            <h2 class="font-logo text-5xl">Panel de Estudio</h2>
-            <button onclick="showView('home')" class="nav-link text-stone-400 hover:text-noche">Salir</button>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div class="lg:col-span-1 space-y-6 bg-white p-8 border border-borde shadow-sm">
-                <h3 class="nav-link font-bold">Nueva Pieza</h3>
-                <input type="text" id="p-name" placeholder="Nombre" class="w-full border-b border-borde py-3 outline-none text-sm">
-                <input type="number" id="p-price" placeholder="Precio ($)" class="w-full border-b border-borde py-3 outline-none text-sm">
-                <input type="file" id="p-image" accept="image/*" class="text-[10px] w-full">
-                <button onclick="guardarProducto()" class="w-full bg-noche text-white py-4 nav-link hover:bg-stone-800 transition">Publicar</button>
-            </div>
-            <div class="lg:col-span-2 bg-white border border-borde p-6">
-                <h3 class="nav-link font-bold mb-6">Inventario</h3>
-                <div id="admin-list" class="space-y-4"></div>
-            </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    // 1. Navegación entre Vistas
-    function showView(viewName) {
-        document.getElementById('view-home').classList.add('hidden');
-        document.getElementById('view-admin').classList.add('hidden');
-        document.getElementById('view-' + viewName).classList.remove('hidden');
-    }
-
-    // 2. Guardar Datos
-    function guardarProducto() {
-        const name = document.getElementById('p-name').value;
-        const price = document.getElementById('p-price').value;
-        const imageFile = document.getElementById('p-image').files[0];
-
-        if (!name || !price || !imageFile) return alert("Completa los datos");
-
-        const reader = new FileReader();
-        reader.onloadend = function() {
-            const nuevo = { id: Date.now(), name, price, image: reader.result };
-            let inventario = JSON.parse(localStorage.getItem('inercia_v2') || '[]');
-            inventario.push(nuevo);
-            localStorage.setItem('inercia_v2', JSON.stringify(inventario));
-            renderProducts();
-        }
-        reader.readAsDataURL(imageFile);
-    }
-
-    // 3. Renderizar
-    function renderProducts() {
-        const productos = JSON.parse(localStorage.getItem('inercia_v2') || '[]');
-        const grid = document.getElementById('product-grid');
-        const list = document.getElementById('admin-list');
-
-        grid.innerHTML = productos.map(p => `
-            <div class="bg-white p-4 border border-borde">
-                <img src="${p.image}" class="w-full h-64 object-cover mb-4">
-                <h3 class="font-logo text-xl italic">${p.name}</h3>
-                <p class="text-xs text-stone-400">$${p.price}</p>
-            </div>
-        `).join('');
-
-        list.innerHTML = productos.map(p => `
-            <div class="flex items-center justify-between p-3 border border-borde">
-                <div class="flex items-center gap-3">
-                    <img src="${p.image}" class="w-10 h-10 object-cover">
-                    <span class="text-sm font-bold">${p.name}</span>
+    <main class="pt-24">
+        <!-- VISTA HOME -->
+        <section id="view-home" class="view">
+            <!-- Banner Artístico -->
+            <div class="relative h-[80vh] flex items-center justify-center overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-pastel-pink to-vibrant-lavender opacity-50"></div>
+                <div class="z-10 text-center px-6">
+                    <span class="text-xs uppercase tracking-[1em] mb-4 block text-vibrant-coral font-bold">Nueva Curaduría</span>
+                    <h2 class="font-serif text-7xl md:text-9xl italic leading-none mb-6">El Arte de<br>Vibrar</h2>
+                    <button class="px-10 py-4 border border-noche rounded-full hover:bg-noche hover:text-white transition uppercase text-xs tracking-widest font-bold">Explorar Piezas</button>
                 </div>
-                <button onclick="eliminar(${p.id})" class="text-red-400 text-xs uppercase font-bold">Borrar</button>
             </div>
-        `).join('');
-    }
 
-    function eliminar(id) {
-        let inv = JSON.parse(localStorage.getItem('inercia_v2')).filter(p => p.id !== id);
-        localStorage.setItem('inercia_v2', JSON.stringify(inv));
-        renderProducts();
-    }
+            <!-- Categorías -->
+            <div class="py-12 px-6 flex flex-wrap justify-center gap-4" id="category-filter">
+                <button onclick="filterCat('todos')" class="px-6 py-2 rounded-full bg-vibrant-mint text-xs font-bold uppercase tracking-tighter">Todos</button>
+            </div>
 
-    // Inicializar
-    lucide.createIcons();
-    renderProducts();
-  </script>
+            <!-- Productos -->
+            <div id="productos" class="max-w-7xl mx-auto px-6 py-20">
+                <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    <!-- Se inyecta con JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA ADMIN (PROTEGIDA) -->
+        <section id="view-admin" class="view hidden min-h-screen p-10 bg-vibrant-lavender/20">
+            <div class="max-w-6xl mx-auto bg-white p-10 rounded-3xl shadow-sm border border-vibrant-lavender">
+                <div class="flex justify-between items-center mb-10">
+                    <h2 class="font-serif text-5xl italic text-vibrant-coral">Panel de Estudio</h2>
+                    <button onclick="showView('home')" class="text-xs font-bold uppercase tracking-widest">Cerrar Sesión</button>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <!-- Formulario -->
+                    <div class="space-y-6">
+                        <input type="text" id="adm-name" placeholder="Nombre de la prenda" class="w-full p-4 border-b border-vibrant-lavender outline-none focus:border-vibrant-coral transition">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="number" id="adm-price" placeholder="Precio ($)" class="w-full p-4 border-b border-vibrant-lavender outline-none">
+                            <select id="adm-cat" class="w-full p-4 border-b border-vibrant-lavender outline-none bg-transparent">
+                                <option value="Vestidos">Vestidos</option>
+                                <option value="Accesorios">Accesorios</option>
+                                <option value="Sastrería">Sastrería</option>
+                            </select>
+                        </div>
+                        <input type="file" id="adm-img" class="w-full text-xs">
+                        <button onclick="admSave()" class="w-full bg-vibrant-coral text-white py-4 rounded-xl font-bold uppercase">Publicar en Inercia</button>
+                    </div>
+                    <!-- Lista -->
+                    <div id="adm-list" class="space-y-4 max-h-[500px] overflow-y-auto"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER CON ENTRADA OCULTA -->
+    <footer class="py-20 border-t border-vibrant-lavender text-center space-y-6">
+        <div class="flex justify-center gap-8">
+            <a href="#" class="text-vibrant-coral flex items-center gap-2 font-bold"><i data-lucide="instagram"></i> Instagram</a>
+            <a href="#" class="text-vibrant-coral flex items-center gap-2 font-bold"><i data-lucide="message-circle"></i> WhatsApp</a>
+        </div>
+        <p class="text-[10px] text-stone-400 uppercase tracking-widest">© 2024 INERCIA - MODA EN MOVIMIENTO<span class="cursor-default" onclick="loginAdmin()">.</span></p>
+    </footer>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('inercia_v3')) || [];
+        let cart = [];
+
+        // NAVEGACIÓN Y LOGIN
+        function showView(view) {
+            document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+            document.getElementById('view-' + view).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function loginAdmin() {
+            const pass = prompt("Código de acceso:");
+            if(pass === "0110") showView('admin');
+            else alert("Acceso denegado");
+        }
+
+        // GESTIÓN DE PRODUCTOS
+        function admSave() {
+            const name = document.getElementById('adm-name').value;
+            const price = document.getElementById('adm-price').value;
+            const cat = document.getElementById('adm-cat').value;
+            const imgFile = document.getElementById('adm-img').files[0];
+
+            if(!name || !price || !imgFile) return alert("Completa todo");
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                db.push({ id: Date.now(), name, price, cat, img: e.target.result });
+                localStorage.setItem('inercia_v3', JSON.stringify(db));
+                render();
+            };
+            reader.readAsDataURL(imgFile);
+        }
+
+        function render(filter = 'todos') {
+            const grid = document.getElementById('product-grid');
+            const admList = document.getElementById('adm-list');
+            
+            // Render Tienda
+            const filtered = filter === 'todos' ? db : db.filter(p => p.cat === filter);
+            grid.innerHTML = filtered.map(p => `
+                <div class="card-hover group">
+                    <div class="relative overflow-hidden rounded-[2rem] bg-stone-100 aspect-[3/4]">
+                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                        <button onclick="addToCart(${p.id})" class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white px-8 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
+                            Agregar al carrito
+                        </button>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <span class="text-[10px] text-vibrant-coral font-bold uppercase tracking-widest">${p.cat}</span>
+                        <h3 class="font-serif text-2xl italic mt-1">${p.name}</h3>
+                        <p class="font-bold text-lg mt-1">$${p.price}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Admin
+            admList.innerHTML = db.map(p => `
+                <div class="flex items-center justify-between p-4 border rounded-2xl">
+                    <div class="flex items-center gap-4">
+                        <img src="${p.img}" class="w-12 h-12 rounded-lg object-cover">
+                        <div><p class="font-bold text-sm">${p.name}</p><p class="text-xs text-stone-400">${p.cat}</p></div>
+                    </div>
+                    <button onclick="deleteProd(${p.id})" class="text-red-400 p-2 hover:bg-red-50 rounded-full"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function deleteProd(id) {
+            db = db.filter(p => p.id !== id);
+            localStorage.setItem('inercia_v3', JSON.stringify(db));
+            render();
+        }
+
+        // CARRITO
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('cart-open');
+        }
+
+        function addToCart(id) {
+            const prod = db.find(p => p.id === id);
+            cart.push(prod);
+            updateCart();
+        }
+
+        function updateCart() {
+            const container = document.getElementById('cart-items');
+            document.getElementById('cart-count').innerText = cart.length;
+            
+            container.innerHTML = cart.map((item, index) => `
+                <div class="flex gap-4 border-b border-pastel-pink pb-4">
+                    <img src="${item.img}" class="w-20 h-24 object-cover rounded-xl">
+                    <div class="flex-1">
+                        <h4 class="font-serif italic text-xl">${item.name}</h4>
+                        <p class="font-bold text-vibrant-coral">$${item.price}</p>
+                        <button onclick="removeFromCart(${index})" class="text-[10px] uppercase font-bold text-stone-400 mt-2">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+            document.getElementById('cart-total').innerText = `$${total}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function checkout() {
+            const total = document.getElementById('cart-total').innerText;
+            const items = cart.map(i => i.name).join(', ');
+            const msg = `¡Hola Inercia! Quisiera comprar: ${items}. Total: ${total}`;
+            window.open(`https://wa.me{encodeURIComponent(msg)}`);
+        }
+
+        // Iniciar
+        lucide.createIcons();
+        render();
+    </script>
 </body>
 </html>
