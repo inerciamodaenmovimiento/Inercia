@@ -34,8 +34,6 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .banner-slide { opacity: 0; transition: opacity 1s ease-in-out; position: absolute; inset: 0; }
     .banner-slide.active { opacity: 1; z-index: 10; }
-    .hero-text { transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(30px); opacity: 0; }
-    .active .hero-text { transform: translateY(0); opacity: 1; }
   </style>
 </head>
 <body class="bg-beige-50 text-ink-900 h-full">
@@ -62,23 +60,15 @@
       
       <!-- VISTA HOME -->
       <section id="view-home" class="view">
-        <div id="hero-carousel" class="relative w-full h-[75vh] md:h-[85vh] overflow-hidden bg-beige-100">
+        <div id="hero-carousel" class="relative w-full h-[70vh] overflow-hidden bg-beige-100">
             <div id="banner-container" class="h-full w-full"></div>
             <div class="absolute bottom-10 right-10 z-20 flex gap-4">
-                <button onclick="prevSlide()" class="p-3 border border-white/50 rounded-full text-white hover:bg-white hover:text-ink-900 transition backdrop-blur-sm">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                </button>
-                <button onclick="nextSlide()" class="p-3 border border-white/50 rounded-full text-white hover:bg-white hover:text-ink-900 transition backdrop-blur-sm">
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
+                <button onclick="prevSlide()" class="p-3 border border-white/50 rounded-full text-white hover:bg-white hover:text-ink-900 transition backdrop-blur-sm"><i data-lucide="arrow-left" class="w-4 h-4"></i></button>
+                <button onclick="nextSlide()" class="p-3 border border-white/50 rounded-full text-white hover:bg-white hover:text-ink-900 transition backdrop-blur-sm"><i data-lucide="arrow-right" class="w-4 h-4"></i></button>
             </div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 py-20">
-          <div class="text-center mb-16 space-y-2">
-            <p class="text-[9px] tracking-[0.5em] uppercase text-beige-400 font-bold">Colección</p>
-            <h2 class="font-display text-5xl md:text-7xl uppercase tracking-tighter">Esenciales</h2>
-          </div>
           <div id="cat-filters" class="flex gap-4 mb-16 overflow-x-auto no-scrollbar pb-4 justify-start md:justify-center"></div>
           <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12"></div>
         </div>
@@ -87,202 +77,212 @@
       <!-- VISTA ADMINISTRADOR -->
       <section id="view-admin" class="view hidden bg-white min-h-screen">
         <div class="max-w-6xl mx-auto px-4 py-16">
-            <div class="flex justify-between items-end mb-16 border-b border-beige-200 pb-8">
+            <div class="flex justify-between items-end mb-12 border-b border-beige-200 pb-8">
                 <div>
-                    <h2 class="font-display text-6xl tracking-tighter uppercase">Panel</h2>
-                    <p class="text-beige-400 text-[10px] uppercase tracking-widest mt-2">Configuración de Tienda</p>
+                    <h2 class="font-display text-6xl tracking-tighter uppercase">Estudio</h2>
+                    <div id="admin-notif-badge" class="mt-2 hidden">
+                        <span class="bg-red-500 text-white text-[8px] px-3 py-1 rounded-full font-bold uppercase animate-pulse">Nueva Venta Detectada</span>
+                    </div>
                 </div>
-                <button onclick="showView('home')" class="text-[10px] uppercase font-bold tracking-widest text-red-400 hover:text-red-600 transition">Salir</button>
+                <button onclick="logoutAdmin()" class="text-[10px] uppercase font-bold text-red-400">Cerrar Sesión</button>
             </div>
 
-            <div class="flex flex-wrap gap-3 mb-12 overflow-x-auto no-scrollbar pb-2">
-                <button onclick="setAdminTab('brand')" class="admin-tab-btn active bg-ink-900 text-white px-8 py-3 rounded-full text-[10px] uppercase font-bold tracking-widest transition shrink-0" data-tab="brand">Identidad y Contacto</button>
-                <button onclick="setAdminTab('banners')" class="admin-tab-btn bg-beige-100 text-beige-500 px-8 py-3 rounded-full text-[10px] uppercase font-bold tracking-widest transition shrink-0" data-tab="banners">Banners</button>
-                <button onclick="setAdminTab('categories')" class="admin-tab-btn bg-beige-100 text-beige-500 px-8 py-3 rounded-full text-[10px] uppercase font-bold tracking-widest transition shrink-0" data-tab="categories">Categorías</button>
-                <button onclick="setAdminTab('products')" class="admin-tab-btn bg-beige-100 text-beige-500 px-8 py-3 rounded-full text-[10px] uppercase font-bold tracking-widest transition shrink-0" data-tab="products">Productos</button>
-                <button onclick="setAdminTab('shipping')" class="admin-tab-btn bg-beige-100 text-beige-500 px-8 py-3 rounded-full text-[10px] uppercase font-bold tracking-widest transition shrink-0" data-tab="shipping">Envíos</button>
-                <button onclick="setAdminTab('payment')" class="admin-tab-btn bg-beige-100 text-beige-500 px-8 py-3 rounded-full text-[10px] uppercase font-bold tracking-widest transition shrink-0" data-tab="payment">Pagos</button>
+            <div class="flex flex-wrap gap-2 mb-10 overflow-x-auto no-scrollbar pb-2">
+                <button onclick="setAdminTab('orders')" class="admin-tab-btn active bg-ink-900 text-white px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="orders">Pedidos & Notificaciones</button>
+                <button onclick="setAdminTab('products')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="products">Productos</button>
+                <button onclick="setAdminTab('categories')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="categories">Categorías</button>
+                <button onclick="setAdminTab('brand')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="brand">Marca & Redes</button>
+                <button onclick="setAdminTab('shipping')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="shipping">Envíos</button>
+                <button onclick="setAdminTab('payment')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="payment">Pagos</button>
             </div>
 
-            <!-- Identidad, Contacto e Instagram -->
-            <div id="admin-brand" class="admin-content space-y-8 max-w-xl">
-                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 space-y-6">
-                    <h3 class="font-display text-2xl border-b border-beige-200 pb-4">Ajustar Datos Generales</h3>
-                    <div>
-                        <label class="text-[9px] uppercase font-bold text-beige-400 mb-2 block">Nombre de la Marca</label>
-                        <input type="text" id="brand-name-input" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[9px] uppercase font-bold text-beige-400 mb-2 block">Eslogan</label>
-                        <input type="text" id="brand-slogan-input" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[9px] uppercase font-bold text-beige-400 mb-2 block">URL de Instagram</label>
-                        <input type="text" id="brand-ig-input" placeholder="https://instagram.com/tu_marca" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[9px] uppercase font-bold text-beige-400 mb-2 block">Contacto (Email / Tel)</label>
-                        <input type="text" id="brand-contact-input" placeholder="hola@inercia.com" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    </div>
-                    <button onclick="updateBrandIdentity()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest hover:bg-beige-500 transition">Guardar Cambios</button>
+            <!-- TAB PEDIDOS (CON SISTEMA DE AVISO) -->
+            <div id="admin-orders" class="admin-content space-y-8">
+                <div class="bg-red-50 p-6 rounded-[2rem] border border-red-100 space-y-4" id="admin-alerts-container">
+                    <p class="text-[9px] font-bold text-red-400 uppercase tracking-widest flex items-center gap-2">
+                        <i data-lucide="bell" class="w-3 h-3"></i> Mensajes de Venta Directa
+                    </p>
+                    <div id="admin-notif-list" class="space-y-3"></div>
                 </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-beige-50 p-6 rounded-3xl border border-beige-100 text-center">
+                        <p class="text-[8px] font-bold text-beige-400 uppercase tracking-widest mb-1">Ingresos</p>
+                        <p id="stat-total-money" class="text-3xl font-display">$0</p>
+                    </div>
+                    <div class="bg-beige-50 p-6 rounded-3xl border border-beige-100 text-center">
+                        <p class="text-[8px] font-bold text-beige-400 uppercase tracking-widest mb-1">Ventas</p>
+                        <p id="stat-total-count" class="text-3xl font-display">0</p>
+                    </div>
+                </div>
+                <div id="admin-orders-list" class="space-y-6"></div>
             </div>
 
-            <!-- Categorías -->
+            <!-- TAB CATEGORÍAS -->
             <div id="admin-categories" class="admin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-6">
-                    <h3 class="font-display text-2xl border-b border-beige-200 pb-4">Nueva Categoría</h3>
-                    <input type="text" id="cat-name-input" placeholder="Ej: Abrigos" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <button onclick="addCategory()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest hover:bg-beige-500 transition">Agregar</button>
+                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-5">
+                    <h3 class="font-display text-2xl">Nueva Categoría</h3>
+                    <input type="text" id="cat-name-input" placeholder="Nombre" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
+                    <button onclick="addCategory()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Agregar</button>
                 </div>
                 <div class="lg:col-span-2 space-y-4" id="admin-category-list"></div>
             </div>
 
-            <!-- Envío -->
-            <div id="admin-shipping" class="admin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-6">
-                    <h3 class="font-display text-2xl border-b border-beige-200 pb-4">Nuevo Método de Envío</h3>
-                    <input type="text" id="s-name" placeholder="Ej: Correo Argentino" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <input type="text" id="s-time" placeholder="Ej: 3 a 5 días" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <input type="number" id="s-price" placeholder="Precio (0 para gratis)" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <button onclick="saveShipping()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest hover:bg-beige-500 transition shadow-lg">Agregar Método</button>
-                </div>
-                <div class="lg:col-span-2 space-y-4" id="admin-shipping-list"></div>
-            </div>
-
-            <!-- Pago -->
-            <div id="admin-payment" class="admin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-6">
-                    <h3 class="font-display text-2xl border-b border-beige-200 pb-4">Nuevo Método de Pago</h3>
-                    <input type="text" id="pay-name" placeholder="Ej: Transferencia Bancaria" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <textarea id="pay-details" placeholder="Datos de cuenta o instrucciones" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none h-32"></textarea>
-                    <button onclick="savePayment()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest hover:bg-beige-500 transition shadow-lg">Agregar Método</button>
-                </div>
-                <div class="lg:col-span-2 space-y-4" id="admin-payment-list"></div>
-            </div>
-
-            <!-- Banners -->
-            <div id="admin-banners" class="admin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-6">
-                    <h3 class="font-display text-2xl border-b border-beige-200 pb-4">Nuevo Banner</h3>
-                    <input type="text" id="b-title" placeholder="Título" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <input type="text" id="b-sub" placeholder="Subtítulo" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <div class="border-2 border-dashed border-beige-300 rounded-2xl p-6 text-center bg-white">
-                        <label class="cursor-pointer block">
-                            <span id="b-img-label" class="text-[10px] uppercase font-bold text-beige-400">Imagen</span>
-                            <input type="file" id="b-file" class="hidden" accept="image/*" onchange="previewMedia(this, 'b-img-data', 'b-img-label')">
-                        </label>
-                        <input type="hidden" id="b-img-data">
-                    </div>
-                    <button onclick="saveBanner()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest hover:bg-beige-500 transition">Guardar</button>
-                </div>
-                <div class="lg:col-span-2 space-y-4" id="admin-banner-list"></div>
-            </div>
-
-            <!-- Productos -->
+            <!-- TAB PRODUCTOS -->
             <div id="admin-products" class="admin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-6">
-                    <h3 class="font-display text-2xl border-b border-beige-200 pb-4">Nuevo Producto</h3>
+                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-5">
+                    <h3 class="font-display text-2xl">Crear Prenda</h3>
                     <input type="text" id="p-name" placeholder="Nombre" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <input type="number" id="p-price" placeholder="Precio" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="p-price" placeholder="Precio" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
+                        <input type="number" id="p-stock" placeholder="Stock" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
+                    </div>
                     <select id="p-cat" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none"></select>
                     <div class="border-2 border-dashed border-beige-300 rounded-2xl p-6 text-center bg-white">
-                        <label class="cursor-pointer block">
-                            <span id="p-img-label" class="text-[10px] uppercase font-bold text-beige-400">Imagen</span>
-                            <input type="file" class="hidden" accept="image/*" onchange="previewMedia(this, 'p-img-data', 'p-img-label')">
-                        </label>
+                        <label class="cursor-pointer block text-[10px] uppercase font-bold text-beige-400" id="p-img-label">Subir Foto</label>
+                        <input type="file" class="hidden" accept="image/*" onchange="previewMedia(this, 'p-img-data', 'p-img-label')">
                         <input type="hidden" id="p-img-data">
                     </div>
-                    <button onclick="saveProduct()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest hover:bg-beige-500 transition">Guardar</button>
+                    <button onclick="saveProduct()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Guardar</button>
                 </div>
-                <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4" id="admin-product-list"></div>
+                <div class="lg:col-span-2 space-y-4" id="admin-product-list"></div>
+            </div>
+
+            <!-- TAB MARCA & REDES -->
+            <div id="admin-brand" class="admin-content hidden space-y-6 max-w-md">
+                <div class="space-y-4">
+                    <p class="text-[8px] font-bold text-beige-400 uppercase tracking-widest">Marca</p>
+                    <input type="text" id="brand-name-input" placeholder="Nombre" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
+                    <input type="text" id="brand-slogan-input" placeholder="Slogan" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
+                </div>
+                <div class="space-y-4">
+                    <p class="text-[8px] font-bold text-beige-400 uppercase tracking-widest">Redes</p>
+                    <input type="text" id="brand-whatsapp" placeholder="WhatsApp (549...)" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
+                    <input type="text" id="brand-instagram" placeholder="Usuario Instagram" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
+                </div>
+                <button onclick="updateBrandIdentity()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Guardar Cambios</button>
+            </div>
+
+            <!-- TAB ENVÍOS (CON OPCIONES SOLICITADAS) -->
+            <div id="admin-shipping" class="admin-content hidden space-y-6 max-w-md">
+                <div class="space-y-4">
+                    <h3 class="font-display text-2xl">Gestionar Métodos</h3>
+                    <div class="space-y-3" id="shipping-presets">
+                        <!-- Los presets se manejan aquí -->
+                    </div>
+                </div>
+                <div class="pt-6 border-t border-beige-100">
+                    <p class="text-[8px] font-bold text-beige-400 uppercase mb-4 tracking-widest">Añadir Otro Personalizado</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="s-name" placeholder="Método" class="flex-grow bg-beige-50 p-4 rounded-xl text-sm">
+                        <input type="number" id="s-price" placeholder="$" class="w-20 bg-beige-50 p-4 rounded-xl text-sm">
+                        <button onclick="saveShipping()" class="bg-ink-900 text-white px-6 rounded-xl text-[10px] font-bold">+</button>
+                    </div>
+                </div>
+                <div id="admin-shipping-list" class="space-y-2"></div>
+            </div>
+
+            <!-- TAB PAGOS -->
+            <div id="admin-payment" class="admin-content hidden space-y-4 max-w-md">
+                <h3 class="font-display text-2xl">Cuentas de Cobro</h3>
+                <input type="text" id="pay-name" placeholder="Nombre (ej: Transferencia)" class="w-full bg-beige-50 p-4 rounded-xl text-sm">
+                <textarea id="pay-details" placeholder="Datos de cuenta..." class="w-full bg-beige-50 p-4 rounded-xl text-sm h-40 outline-none border border-beige-200"></textarea>
+                <button onclick="savePayment()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Añadir Pago</button>
+                <div id="admin-payment-list" class="space-y-2"></div>
             </div>
         </div>
       </section>
 
-      <!-- CHECKOUT -->
+      <!-- VISTA CHECKOUT -->
       <section id="view-checkout" class="view hidden py-20 px-4">
-          <div class="max-w-5xl mx-auto">
-              <h2 class="font-display text-5xl mb-12 border-b border-beige-200 pb-6 uppercase tracking-tighter">Finalizar Pedido</h2>
-              <div id="checkout-container" class="grid grid-cols-1 lg:grid-cols-2 gap-16"></div>
+          <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+              <div class="space-y-8">
+                  <h2 class="font-display text-4xl uppercase border-b pb-4">Checkout</h2>
+                  <div class="space-y-4">
+                      <input type="text" id="c-name" placeholder="Nombre Completo" class="w-full border-b border-beige-300 py-3 outline-none focus:border-ink-900 text-sm">
+                      <input type="text" id="c-phone" placeholder="WhatsApp" class="w-full border-b border-beige-300 py-3 outline-none focus:border-ink-900 text-sm">
+                      <input type="text" id="c-address" placeholder="Dirección Completa" class="w-full border-b border-beige-300 py-3 outline-none focus:border-ink-900 text-sm">
+                  </div>
+                  
+                  <h3 class="text-[10px] font-bold uppercase tracking-widest text-beige-400">Método de Envío</h3>
+                  <div id="checkout-shipping" class="space-y-3"></div>
+
+                  <h3 class="text-[10px] font-bold uppercase tracking-widest text-beige-400">Método de Pago</h3>
+                  <div id="checkout-payment" class="space-y-3"></div>
+              </div>
+
+              <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-beige-100 h-fit">
+                  <h3 class="text-[10px] font-bold uppercase tracking-widest mb-6">Tu Pedido</h3>
+                  <div id="checkout-items" class="space-y-4 mb-8"></div>
+                  <div class="flex justify-between items-center pt-6 border-t border-beige-200">
+                      <span class="text-xs font-bold uppercase tracking-widest">Total</span>
+                      <span id="final-total" class="text-3xl font-display font-bold">$0</span>
+                  </div>
+                  <button onclick="confirmOrder()" class="w-full bg-ink-900 text-white py-5 rounded-full text-[10px] font-bold uppercase mt-8">Confirmar Pedido</button>
+              </div>
           </div>
       </section>
 
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-white border-t border-beige-100 py-16">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center gap-6 text-center">
-            <div class="flex flex-col">
-              <h2 id="brand-name-foot" class="font-display text-3xl font-bold tracking-tighter text-ink-900 uppercase">INERCIA</h2>
-              <span id="brand-slogan-foot" class="text-[8px] tracking-[0.4em] uppercase font-bold text-beige-400">Moda en movimiento</span>
+    <footer class="bg-white border-t border-beige-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center text-center">
+            <h2 id="brand-name-foot" class="font-display text-2xl font-bold uppercase mb-2">INERCIA</h2>
+            <div class="flex gap-4 mb-8">
+                <a id="link-whatsapp" href="#" target="_blank" class="p-2 bg-beige-50 rounded-full hover:bg-beige-100 transition"><i data-lucide="phone" class="w-4 h-4"></i></a>
+                <a id="link-instagram" href="#" target="_blank" class="p-2 bg-beige-50 rounded-full hover:bg-beige-100 transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
             </div>
-            <nav class="flex gap-8 text-[9px] uppercase font-bold tracking-widest text-beige-300 mt-4">
-                <a id="footer-ig" href="#" target="_blank" class="hover:text-ink-900 transition">Instagram</a>
-                <a href="#" class="hover:text-ink-900 transition">Envíos</a>
-                <a id="footer-contact" href="#" class="hover:text-ink-900 transition">Contacto</a>
-            </nav>
-            <button onclick="showAdminLogin()" class="text-[8px] uppercase tracking-[0.5em] font-bold text-beige-200 hover:text-beige-400 transition mt-10">
-                ADMIN PANEL
-            </button>
+            <button onclick="showAdminLogin()" class="text-[7px] font-bold text-beige-300 uppercase tracking-widest">PANEL DE CONTROL</button>
         </div>
     </footer>
 
     <!-- CARRITO -->
     <div id="cart-drawer" class="fixed inset-0 z-[60] hidden">
         <div class="absolute inset-0 bg-ink-900/40 backdrop-blur-sm" onclick="toggleCart()"></div>
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
-            <div class="p-8 border-b border-beige-100 flex justify-between items-center">
-                <h3 class="font-display text-3xl uppercase tracking-tighter">Bolsa</h3>
-                <button onclick="toggleCart()" class="p-2"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <div class="absolute right-0 top-0 h-full w-full max-w-sm bg-white flex flex-col shadow-2xl">
+            <div class="p-6 border-b flex justify-between items-center">
+                <h3 class="font-display text-2xl uppercase">Tu Bolsa</h3>
+                <button onclick="toggleCart()"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div id="cart-items" class="flex-grow overflow-auto p-8 space-y-6"></div>
-            <div class="p-8 border-t border-beige-100 bg-beige-50/50">
-                <div class="flex justify-between items-center mb-8">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-beige-400">Subtotal</span>
-                    <span id="cart-total" class="text-2xl font-display">$0</span>
+            <div id="cart-items" class="flex-grow overflow-auto p-6 space-y-4"></div>
+            <div class="p-6 border-t bg-beige-50">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-[9px] font-bold uppercase text-beige-400">Subtotal</span>
+                    <span id="cart-total" class="text-xl font-display font-bold">$0</span>
                 </div>
-                <button onclick="goToCheckout()" class="w-full bg-ink-900 text-white py-5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-beige-500 transition">Comprar</button>
+                <button onclick="goToCheckout()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] font-bold uppercase">Continuar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL LOGIN PIN 0110 -->
-    <div id="admin-login" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-ink-900/80 backdrop-blur-md" onclick="hideAdminLogin()"></div>
-        <div class="bg-white p-12 rounded-[3rem] w-full max-w-sm relative shadow-2xl text-center">
-            <h3 class="font-display text-3xl mb-8 uppercase tracking-tighter">Estudio</h3>
-            <input type="password" id="admin-pin" placeholder="PIN" class="w-full text-center text-2xl tracking-[0.5em] border-b-2 border-ink-900 py-4 outline-none font-bold mb-8">
-            <button onclick="verifyAdmin()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] font-bold uppercase tracking-widest">Entrar</button>
+    <!-- LOGIN -->
+    <div id="admin-login" class="fixed inset-0 z-[70] hidden flex items-center justify-center bg-ink-900/80 backdrop-blur-md p-4">
+        <div class="bg-white p-10 rounded-[2.5rem] w-full max-w-xs text-center">
+            <h3 class="font-display text-2xl mb-6 tracking-widest">ADMIN</h3>
+            <input type="password" id="admin-pin" placeholder="••••" class="w-full text-center text-3xl border-b border-ink-900 py-3 outline-none mb-6">
+            <button onclick="verifyAdmin()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] font-bold uppercase">Entrar</button>
         </div>
     </div>
 
-    <!-- TOAST -->
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-ink-900 text-white px-10 py-4 rounded-full text-[10px] uppercase font-bold tracking-widest opacity-0 translate-y-10 transition-all pointer-events-none shadow-2xl"></div>
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] bg-ink-900 text-white px-8 py-3 rounded-full text-[9px] font-bold uppercase opacity-0 transition-all shadow-xl pointer-events-none"></div>
 
   </div>
 
   <script>
     let state = {
-      brand: JSON.parse(localStorage.getItem('in_brand')) || { 
-        name: 'INERCIA', 
-        slogan: 'Moda en movimiento',
-        instagram: 'https://instagram.com',
-        contact: 'hola@inercia.com'
-      },
-      products: JSON.parse(localStorage.getItem('in_products')) || [
-          { id: 1, name: 'Vestido Lino', price: 45000, category: 'Vestidos', image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800' }
-      ],
-      categories: JSON.parse(localStorage.getItem('in_categories')) || ['Vestidos', 'Tops', 'Pantalones', 'Accesorios'],
-      banners: JSON.parse(localStorage.getItem('in_banners')) || [
-        { title: 'Inercia', sub: 'Nueva Colección', image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600' }
-      ],
+      brand: JSON.parse(localStorage.getItem('in_brand')) || { name: 'INERCIA', slogan: 'Moda en movimiento', whatsapp: '', instagram: '' },
+      products: JSON.parse(localStorage.getItem('in_products')) || [],
+      categories: JSON.parse(localStorage.getItem('in_categories')) || ['Esenciales'],
+      banners: JSON.parse(localStorage.getItem('in_banners')) || [],
       shippingMethods: JSON.parse(localStorage.getItem('in_ship')) || [
-        { name: 'Envío a Domicilio', time: '3-5 días hábiles', price: 2500 }
+          { name: 'Envío a Domicilio', price: 0 },
+          { name: 'Punto de Encuentro', price: 0 },
+          { name: 'Envío por Correo', price: 0 }
       ],
-      paymentMethods: JSON.parse(localStorage.getItem('in_pay')) || [
-        { name: 'Transferencia Bancaria', details: 'Alias: INERCIA.MODA.OK | Enviar comprobante por WhatsApp.' }
-      ],
+      paymentMethods: JSON.parse(localStorage.getItem('in_pay')) || [],
+      orders: JSON.parse(localStorage.getItem('in_orders')) || [],
+      notifications: JSON.parse(localStorage.getItem('in_notif')) || [], // Guardamos los mensajes de aviso aquí
       cart: [],
       currentCat: 'Todos',
       currentSlide: 0
@@ -295,17 +295,22 @@
       localStorage.setItem('in_categories', JSON.stringify(state.categories));
       localStorage.setItem('in_ship', JSON.stringify(state.shippingMethods));
       localStorage.setItem('in_pay', JSON.stringify(state.paymentMethods));
+      localStorage.setItem('in_orders', JSON.stringify(state.orders));
+      localStorage.setItem('in_notif', JSON.stringify(state.notifications));
     }
 
     function showView(id) {
       document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
       document.getElementById('view-' + id).classList.remove('hidden');
-      if(id === 'home') { renderBanners(); renderHome(); }
+      if(id === 'home') renderHome();
       if(id === 'admin') renderAdmin();
       window.scrollTo(0,0);
     }
 
     function setAdminTab(tab) {
+        if(tab === 'orders') {
+            document.getElementById('admin-notif-badge').classList.add('hidden');
+        }
         document.querySelectorAll('.admin-content').forEach(c => c.classList.add('hidden'));
         document.getElementById('admin-' + tab).classList.remove('hidden');
         document.querySelectorAll('.admin-tab-btn').forEach(b => {
@@ -315,214 +320,229 @@
         activeBtn.classList.replace('bg-beige-100', 'bg-ink-900'); activeBtn.classList.replace('text-beige-500', 'text-white');
     }
 
-    // GESTIÓN DE CATEGORÍAS
-    function addCategory() {
-        const val = document.getElementById('cat-name-input').value.trim();
-        if(val && !state.categories.includes(val)) {
-            state.categories.push(val);
-            save(); renderAdmin(); showToast("Categoría añadida");
-            document.getElementById('cat-name-input').value = '';
-        }
-    }
-
-    function removeCategory(index) {
-        state.categories.splice(index, 1);
-        save(); renderAdmin(); showToast("Categoría eliminada");
-    }
-
-    // GESTION ENVIO Y PAGO EN ADMIN
-    function saveShipping() {
-        const name = document.getElementById('s-name').value;
-        const time = document.getElementById('s-time').value;
-        const price = parseFloat(document.getElementById('s-price').value);
-        if(name && time) {
-            state.shippingMethods.push({ name, time, price });
-            save(); renderAdmin(); showToast("Método de envío agregado");
-        }
-    }
-
-    function savePayment() {
-        const name = document.getElementById('pay-name').value;
-        const details = document.getElementById('pay-details').value;
-        if(name && details) {
-            state.paymentMethods.push({ name, details });
-            save(); renderAdmin(); showToast("Método de pago agregado");
-        }
-    }
-
+    // ADMIN RENDER
     function renderAdmin() {
-        updateBrandUI();
-        
-        // Render Categorías
-        document.getElementById('admin-category-list').innerHTML = state.categories.map((c, i) => `
-            <div class="flex justify-between items-center bg-beige-50 p-4 rounded-xl border border-beige-100">
-                <span class="text-xs font-bold uppercase tracking-widest">${c}</span>
-                <button onclick="removeCategory(${i})"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button>
+        // Alertas de Notificación (Sistema de Avisos)
+        const alertList = document.getElementById('admin-notif-list');
+        alertList.innerHTML = state.notifications.slice().reverse().map((n, i) => `
+            <div class="bg-white p-4 rounded-2xl border border-red-100 flex justify-between items-start gap-4 shadow-sm animate-pulse">
+                <div class="space-y-1">
+                    <p class="text-[10px] font-bold text-ink-900 uppercase">NUEVA COMPRA: ${n.customer}</p>
+                    <p class="text-[8px] text-beige-500 leading-relaxed">${n.summary}</p>
+                    <p class="text-[7px] font-bold text-red-400 uppercase">${n.time}</p>
+                </div>
+                <button onclick="clearNotif(${state.notifications.length - 1 - i})" class="text-red-200 hover:text-red-400"><i data-lucide="check-circle" class="w-4 h-4"></i></button>
+            </div>
+        `).join('') || '<p class="text-[8px] text-red-300 uppercase text-center py-2">Sin avisos pendientes</p>';
+
+        // Stats
+        const totalMoney = state.orders.reduce((acc, o) => acc + o.total, 0);
+        document.getElementById('stat-total-money').innerText = `$${totalMoney.toLocaleString()}`;
+        document.getElementById('stat-total-count').innerText = state.orders.length;
+
+        // Lista de Pedidos (Visual mejorada)
+        document.getElementById('admin-orders-list').innerHTML = state.orders.slice().reverse().map(o => `
+            <div class="bg-white border border-beige-200 p-6 rounded-[2rem] space-y-4 shadow-sm">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-[7px] font-bold text-beige-300 uppercase">#${o.id} - ${o.date}</p>
+                        <h4 class="font-display text-2xl uppercase">${o.customer.name}</h4>
+                        <p class="text-[9px] text-ink-700 uppercase font-bold tracking-widest">${o.customer.phone}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xl font-display font-bold">$${o.total.toLocaleString()}</p>
+                        <span class="text-[7px] bg-beige-50 px-2 py-1 rounded-full uppercase font-bold text-beige-400">Venta Finalizada</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-beige-50 text-[8px] font-bold uppercase">
+                    <div class="bg-beige-50 p-3 rounded-xl"><p class="text-beige-300 mb-1">Pago</p> ${o.paymentMethod}</div>
+                    <div class="bg-beige-50 p-3 rounded-xl"><p class="text-beige-300 mb-1">Envío</p> ${o.shippingMethod}</div>
+                </div>
+                <div class="space-y-1">
+                    ${o.items.map(i => `<p class="text-[9px] flex justify-between uppercase"><span>• ${i.name}</span> <span class="text-beige-400">$${i.price}</span></p>`).join('')}
+                </div>
             </div>
         `).join('');
 
-        // Render Envío
-        document.getElementById('admin-shipping-list').innerHTML = state.shippingMethods.map((s, i) => `
-            <div class="flex justify-between items-center bg-beige-50 p-4 rounded-xl border border-beige-100">
-                <div><h4 class="text-xs font-bold uppercase">${s.name}</h4><p class="text-[10px] text-beige-400">${s.time} - $${s.price}</p></div>
-                <button onclick="state.shippingMethods.splice(${i},1);save();renderAdmin()"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button>
-            </div>
-        `).join('');
-        
-        // Render Pago
-        document.getElementById('admin-payment-list').innerHTML = state.paymentMethods.map((p, i) => `
-            <div class="flex justify-between items-center bg-beige-50 p-4 rounded-xl border border-beige-100">
-                <div><h4 class="text-xs font-bold uppercase">${p.name}</h4><p class="text-[10px] text-beige-400 truncate w-40">${p.details}</p></div>
-                <button onclick="state.paymentMethods.splice(${i},1);save();renderAdmin()"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button>
-            </div>
-        `).join('');
-
-        // Render Productos y Banners
+        // Categorías y Productos
+        document.getElementById('admin-category-list').innerHTML = state.categories.map((c, i) => `<div class="bg-beige-50 p-4 rounded-xl flex justify-between items-center text-[10px] font-bold uppercase"><span>${c}</span><button onclick="state.categories.splice(${i},1);save();renderAdmin()"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button></div>`).join('');
         document.getElementById('p-cat').innerHTML = state.categories.map(c => `<option value="${c}">${c}</option>`).join('');
-        document.getElementById('admin-product-list').innerHTML = state.products.map(p => `<div class="bg-beige-50 p-4 rounded-xl border border-beige-100 flex items-center gap-4"><img src="${p.image}" class="w-10 h-10 object-cover rounded-lg"><div class="flex-grow text-[10px] uppercase font-bold">${p.name}</div><button onclick="state.products = state.products.filter(x=>x.id!==${p.id});save();renderAdmin()"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button></div>`).join('');
-        document.getElementById('admin-banner-list').innerHTML = state.banners.map((b, i) => `<div class="bg-beige-50 p-4 rounded-xl border border-beige-100 flex items-center gap-4"><div class="flex-grow text-[10px] uppercase font-bold">${b.title}</div><button onclick="state.banners.splice(${i},1);save();renderAdmin()"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button></div>`).join('');
+        document.getElementById('admin-product-list').innerHTML = state.products.map(p => `
+            <div class="bg-beige-50 p-4 rounded-2xl border border-beige-100 flex items-center gap-4">
+                <img src="${p.image}" class="w-12 h-12 object-cover rounded-xl">
+                <div class="flex-grow">
+                    <p class="text-[10px] font-bold uppercase">${p.name}</p>
+                    <p class="text-[9px] text-beige-400">$${p.price}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="number" value="${p.stock}" onchange="updateStock(${p.id}, this.value)" class="w-12 p-2 rounded-lg text-xs border border-beige-200 outline-none text-center">
+                </div>
+                <button onclick="state.products = state.products.filter(x=>x.id!==${p.id});save();renderAdmin()"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button>
+            </div>
+        `).join('');
+
+        // Envíos
+        document.getElementById('shipping-presets').innerHTML = state.shippingMethods.slice(0,3).map((s,i) => `
+            <div class="flex items-center gap-3 bg-white p-4 rounded-2xl border border-beige-100 shadow-sm">
+                <span class="text-[10px] font-bold uppercase flex-grow">${s.name}</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-[8px] text-beige-300 font-bold">$</span>
+                    <input type="number" value="${s.price}" onchange="updateShipPrice(${i}, this.value)" class="w-20 p-2 bg-beige-50 rounded-lg text-xs border-none outline-none font-bold">
+                </div>
+            </div>
+        `).join('');
+
+        document.getElementById('admin-shipping-list').innerHTML = state.shippingMethods.slice(3).map((s,i) => `<div class="bg-beige-50 p-3 rounded-xl flex justify-between items-center text-[10px] font-bold"><span>${s.name} ($${s.price})</span><button onclick="state.shippingMethods.splice(${i+3},1);save();renderAdmin()">✕</button></div>`).join('');
         
+        // Pagos
+        document.getElementById('admin-payment-list').innerHTML = state.paymentMethods.map((p,i) => `
+            <div class="bg-beige-50 p-4 rounded-xl space-y-2 border border-beige-200">
+                <div class="flex justify-between items-center"><span class="text-[10px] font-bold uppercase">${p.name}</span><button onclick="state.paymentMethods.splice(${i},1);save();renderAdmin()" class="text-red-300">✕</button></div>
+                <pre class="text-[9px] font-body text-beige-500 whitespace-pre-wrap leading-relaxed">${p.details}</pre>
+            </div>
+        `).join('');
+
+        updateBrandUI();
         lucide.createIcons();
     }
 
-    // LOGICA UI
-    function updateBrandUI() {
-        ['nav','foot'].forEach(s => {
-            document.getElementById(`brand-name-${s}`).innerText = state.brand.name;
-            document.getElementById(`brand-slogan-${s}`).innerText = state.brand.slogan;
+    function clearNotif(index) {
+        state.notifications.splice(index, 1);
+        save(); renderAdmin();
+    }
+
+    // OPERACIONES
+    function updateStock(id, val) { const p = state.products.find(x=>x.id===id); if(p) { p.stock = parseInt(val); save(); } }
+    function updateShipPrice(index, val) { state.shippingMethods[index].price = parseFloat(val) || 0; save(); }
+
+    function confirmOrder() {
+        const name = document.getElementById('c-name').value;
+        const phone = document.getElementById('c-phone').value;
+        const address = document.getElementById('c-address').value;
+        const ship = document.querySelector('input[name="c-ship"]:checked');
+        const pay = document.querySelector('input[name="c-pay"]:checked');
+
+        if(!name || !phone || !address || !ship || !pay) return showToast("Completar todos los campos");
+
+        const subtotal = state.cart.reduce((s,i) => s + i.price, 0);
+        const order = {
+            id: Math.floor(Math.random() * 90000 + 10000),
+            date: new Date().toLocaleDateString('es-AR'),
+            customer: { name, phone, address },
+            items: [...state.cart],
+            total: subtotal + parseFloat(ship.value),
+            shippingMethod: ship.getAttribute('data-name'),
+            paymentMethod: pay.getAttribute('data-name')
+        };
+
+        // Crear Notificación de Aviso (Para el Admin)
+        const itemsList = state.cart.map(i => i.name).join(', ');
+        state.notifications.push({
+            customer: name.toUpperCase(),
+            summary: `Compró: ${itemsList}. Pagó con ${order.paymentMethod} y eligió ${order.shippingMethod}.`,
+            time: new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
         });
-        document.getElementById('brand-name-input').value = state.brand.name;
-        document.getElementById('brand-slogan-input').value = state.brand.slogan;
-        document.getElementById('brand-ig-input').value = state.brand.instagram || '';
-        document.getElementById('brand-contact-input').value = state.brand.contact || '';
-        
-        // Footer links
-        document.getElementById('footer-ig').href = state.brand.instagram || '#';
-        document.getElementById('footer-contact').href = state.brand.contact.includes('@') ? `mailto:${state.brand.contact}` : `tel:${state.brand.contact}`;
-        document.getElementById('footer-contact').innerText = state.brand.contact ? 'Contacto' : '';
+
+        state.orders.push(order);
+        state.cart = [];
+        save();
+        updateCartCount();
+        showView('home');
+        showToast("¡Pedido recibido exitosamente!");
     }
 
-    function updateBrandIdentity() {
-        state.brand.name = document.getElementById('brand-name-input').value;
-        state.brand.slogan = document.getElementById('brand-slogan-input').value;
-        state.brand.instagram = document.getElementById('brand-ig-input').value;
-        state.brand.contact = document.getElementById('brand-contact-input').value;
-        save(); updateBrandUI(); showToast("Datos actualizados");
+    function goToCheckout() {
+        if(!state.cart.length) return;
+        toggleCart(); showView('checkout');
+        const subtotal = state.cart.reduce((s,i) => s + i.price, 0);
+        document.getElementById('checkout-items').innerHTML = state.cart.map(i => `<div class="flex justify-between text-[10px] font-bold uppercase"><span>${i.name}</span><span>$${i.price}</span></div>`).join('');
+        document.getElementById('checkout-shipping').innerHTML = state.shippingMethods.map((s,i) => `
+            <label class="flex items-center gap-3 p-4 bg-beige-50 rounded-2xl cursor-pointer hover:bg-white border border-transparent hover:border-ink-900 transition" onclick="updateCheckoutTotal(${subtotal}, ${s.price})">
+                <input type="radio" name="c-ship" value="${s.price}" data-name="${s.name}" class="accent-ink-900" ${i === 0 ? 'checked' : ''}>
+                <span class="text-[10px] font-bold uppercase flex-grow">${s.name}</span>
+                <span class="text-[10px] font-bold">$${s.price}</span>
+            </label>
+        `).join('');
+        document.getElementById('checkout-payment').innerHTML = state.paymentMethods.map((p,i) => `
+            <label class="flex flex-col gap-2 p-4 bg-beige-50 rounded-2xl cursor-pointer border border-transparent hover:border-ink-900 transition">
+                <div class="flex items-center gap-3"><input type="radio" name="c-pay" data-name="${p.name}" class="accent-ink-900" ${i === 0 ? 'checked' : ''}><span class="text-[10px] font-bold uppercase">${p.name}</span></div>
+                <pre class="text-[8px] font-body text-beige-400 whitespace-pre-wrap ml-7">${p.details}</pre>
+            </label>
+        `).join('') || '<p class="text-[9px] uppercase text-beige-300">No hay pagos configurados</p>';
+        updateCheckoutTotal(subtotal, state.shippingMethods[0]?.price || 0);
     }
 
-    function previewMedia(input, hiddenId, labelId) {
-        if(input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = (e) => { document.getElementById(hiddenId).value = e.target.result; document.getElementById(labelId).innerText = "Cargado ✓"; };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function saveProduct() {
-        const name = document.getElementById('p-name').value;
-        const price = parseFloat(document.getElementById('p-price').value);
-        const cat = document.getElementById('p-cat').value;
-        const img = document.getElementById('p-img-data').value;
-        if(name && price && img) { state.products.push({ id: Date.now(), name, price, category: cat, image: img }); save(); renderAdmin(); showToast("Producto guardado"); }
-    }
-
-    function saveBanner() {
-        const title = document.getElementById('b-title').value;
-        const img = document.getElementById('b-img-data').value;
-        if(title && img) { state.banners.push({ title, sub: document.getElementById('b-sub').value, image: img }); save(); renderAdmin(); showToast("Banner guardado"); }
+    function updateCheckoutTotal(sub, ship) { document.getElementById('final-total').innerText = `$${(sub + ship).toLocaleString()}`; }
+    
+    // UI BASICS
+    function renderHome() {
+        document.getElementById('cat-filters').innerHTML = ['Todos', ...state.categories].map(c => `<button onclick="state.currentCat='${c}';renderHome()" class="px-8 py-3 rounded-full text-[8px] uppercase font-bold tracking-widest border ${state.currentCat === c ? 'bg-ink-900 text-white' : 'bg-white text-beige-400 border-beige-200'} shrink-0">${c}</button>`).join('');
+        const filtered = state.currentCat === 'Todos' ? state.products : state.products.filter(p => p.category === state.currentCat);
+        document.getElementById('product-grid').innerHTML = filtered.map(p => `
+            <div class="group fade-in ${p.stock <= 0 ? 'opacity-40' : ''}">
+                <div class="aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-beige-100 relative mb-4">
+                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    ${p.stock > 0 ? `<button onclick="addToCart(${p.id})" class="absolute inset-x-6 bottom-6 bg-white py-4 rounded-2xl text-[8px] font-bold uppercase opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all shadow-xl">Añadir</button>` : ''}
+                </div>
+                <div class="px-2">
+                    <h3 class="font-display text-lg uppercase tracking-tighter">${p.name}</h3>
+                    <p class="text-xs font-bold">$${p.price.toLocaleString()}</p>
+                </div>
+            </div>`).join('') || '<p class="col-span-full text-center py-20 text-[9px] font-bold text-beige-300">Sin stock disponible</p>';
+        renderBanners();
     }
 
     function renderBanners() {
-        if(!state.banners.length) return;
-        document.getElementById('banner-container').innerHTML = state.banners.map((b, i) => `
-            <div class="banner-slide ${i === state.currentSlide ? 'active' : ''}">
-                <img src="${b.image}" class="w-full h-full object-cover grayscale-[10%] brightness-[0.85]">
-                <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-6">
-                    <h2 class="font-display text-7xl md:text-9xl font-bold uppercase tracking-tighter hero-text">${b.title}</h2>
-                    <p class="text-[10px] uppercase tracking-[0.6em] font-bold hero-text">${b.sub}</p>
-                </div>
-            </div>`).join('');
+        if(!state.banners.length) {
+            document.getElementById('banner-container').innerHTML = `<div class="absolute inset-0 flex flex-col items-center justify-center bg-beige-100"><h2 class="font-display text-8xl md:text-9xl uppercase tracking-tighter">${state.brand.name}</h2></div>`;
+            return;
+        }
+        document.getElementById('banner-container').innerHTML = state.banners.map((b, i) => `<div class="banner-slide ${i === state.currentSlide ? 'active' : ''}"><img src="${b.image}" class="w-full h-full object-cover brightness-75"><div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-6"><h2 class="font-display text-7xl md:text-9xl uppercase tracking-tighter">${b.title}</h2></div></div>`).join('');
     }
 
-    function nextSlide() { if(!state.banners.length) return; state.currentSlide = (state.currentSlide + 1) % state.banners.length; renderBanners(); }
-    function prevSlide() { if(!state.banners.length) return; state.currentSlide = (state.currentSlide - 1 + state.banners.length) % state.banners.length; renderBanners(); }
-
-    function renderHome() {
-        document.getElementById('cat-filters').innerHTML = ['Todos', ...state.categories].map(c => `<button onclick="state.currentCat='${c}';renderHome()" class="px-8 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest border ${state.currentCat === c ? 'bg-ink-900 text-white' : 'bg-white text-beige-400 border-beige-200'} transition shrink-0">${c}</button>`).join('');
-        const list = state.currentCat === 'Todos' ? state.products : state.products.filter(p => p.category === state.currentCat);
-        document.getElementById('product-grid').innerHTML = list.map(p => `
-            <div class="group fade-in">
-                <div class="aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-beige-100 relative mb-6">
-                    <img src="${p.image}" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
-                    <button onclick="addToCart(${p.id})" class="absolute inset-x-6 bottom-6 bg-white py-4 rounded-2xl text-[9px] font-bold uppercase opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all shadow-2xl">Añadir</button>
-                </div>
-                <div class="px-2">
-                    <h3 class="font-display text-xl uppercase tracking-tighter">${p.name}</h3>
-                    <p class="text-xs font-bold">$${p.price.toLocaleString()}</p>
-                </div>
-            </div>`).join('');
-    }
-
-    function verifyAdmin() { if(document.getElementById('admin-pin').value === '0110') { hideAdminLogin(); showView('admin'); } else showToast("PIN incorrecto"); }
-    function showAdminLogin() { document.getElementById('admin-login').classList.remove('hidden'); }
-    function hideAdminLogin() { document.getElementById('admin-login').classList.add('hidden'); }
-    function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); renderCart(); }
-    function addToCart(id) { state.cart.push(state.products.find(x => x.id === id)); updateCartCount(); showToast("Añadido"); }
+    function previewMedia(input, hiddenId, labelId) { if(input.files && input.files[0]) { const reader = new FileReader(); reader.onload = (e) => { document.getElementById(hiddenId).value = e.target.result; document.getElementById(labelId).innerText = "OK"; }; reader.readAsDataURL(input.files[0]); } }
+    function addToCart(id) { const p = state.products.find(x=>x.id===id); if(p && p.stock > 0) { state.cart.push(p); updateCartCount(); showToast("Añadido"); } }
     function updateCartCount() { const el = document.getElementById('cart-count'); el.innerText = state.cart.length; el.classList.toggle('hidden', !state.cart.length); }
-    function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.replace('opacity-0', 'opacity-100'); t.classList.replace('translate-y-10', 'translate-y-0'); setTimeout(() => { t.classList.replace('opacity-100', 'opacity-0'); t.classList.replace('translate-y-0', 'translate-y-10'); }, 2000); }
-
+    function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); renderCart(); }
+    function showAdminLogin() { document.getElementById('admin-login').classList.remove('hidden'); }
+    function verifyAdmin() { if(document.getElementById('admin-pin').value === '0110') { document.getElementById('admin-login').classList.add('hidden'); showView('admin'); } else showToast("PIN Incorrecto"); }
+    function logoutAdmin() { showView('home'); document.getElementById('admin-pin').value = ''; }
+    function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.replace('opacity-0', 'opacity-100'); setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 2000); }
+    function addCategory() { const val = document.getElementById('cat-name-input').value.trim(); if(val) { state.categories.push(val); save(); renderAdmin(); document.getElementById('cat-name-input').value=''; } }
+    function saveProduct() { 
+        const name = document.getElementById('p-name').value;
+        const price = parseFloat(document.getElementById('p-price').value);
+        const stock = parseInt(document.getElementById('p-stock').value) || 0;
+        const cat = document.getElementById('p-cat').value;
+        const img = document.getElementById('p-img-data').value;
+        if(name && price && img) { state.products.push({ id: Date.now(), name, price, stock, category: cat, image: img }); save(); renderAdmin(); }
+    }
+    function saveShipping() { const n = document.getElementById('s-name').value; const p = parseFloat(document.getElementById('s-price').value); if(n) { state.shippingMethods.push({name:n, price:p}); save(); renderAdmin(); } }
+    function savePayment() { const n = document.getElementById('pay-name').value; const d = document.getElementById('pay-details').value; if(n && d) { state.paymentMethods.push({name:n, details:d}); save(); renderAdmin(); } }
+    function updateBrandIdentity() { 
+        state.brand.name = document.getElementById('brand-name-input').value; 
+        state.brand.slogan = document.getElementById('brand-slogan-input').value; 
+        state.brand.whatsapp = document.getElementById('brand-whatsapp').value;
+        state.brand.instagram = document.getElementById('brand-instagram').value;
+        save(); updateBrandUI(); showToast("Guardado"); 
+    }
+    function updateBrandUI() { 
+        document.getElementById('brand-name-nav').innerText = state.brand.name;
+        document.getElementById('brand-name-foot').innerText = state.brand.name;
+        document.getElementById('brand-slogan-nav').innerText = state.brand.slogan;
+        document.getElementById('link-whatsapp').href = `https://wa.me/${state.brand.whatsapp}`;
+        document.getElementById('link-instagram').href = `https://instagram.com/${state.brand.instagram}`;
+    }
+    function nextSlide() { if(state.banners.length) { state.currentSlide = (state.currentSlide + 1) % state.banners.length; renderBanners(); } }
+    function prevSlide() { if(state.banners.length) { state.currentSlide = (state.currentSlide - 1 + state.banners.length) % state.banners.length; renderBanners(); } }
     function renderCart() {
         const items = document.getElementById('cart-items');
-        items.innerHTML = state.cart.length ? state.cart.map((item, i) => `<div class="flex gap-4 items-center"><img src="${item.image}" class="w-14 h-18 object-cover rounded-lg"><div class="flex-grow"><h4 class="font-display text-md uppercase">${item.name}</h4><p class="text-[10px] font-bold text-beige-400">$${item.price}</p></div><button onclick="state.cart.splice(${i},1);renderCart();updateCartCount()"><i data-lucide="x-circle" class="w-4 h-4 text-beige-200"></i></button></div>`).join('') : '<p class="text-center py-20 text-beige-300 text-[10px] font-bold uppercase tracking-widest">Bolsa vacía</p>';
+        items.innerHTML = state.cart.length ? state.cart.map((item, i) => `<div class="flex gap-4 items-center bg-beige-50 p-3 rounded-2xl"><img src="${item.image}" class="w-12 h-16 object-cover rounded-lg"><div class="flex-grow"><h4 class="font-display text-sm uppercase">${item.name}</h4><p class="text-[9px] font-bold text-beige-400">$${item.price}</p></div><button onclick="state.cart.splice(${i},1);renderCart();updateCartCount()"><i data-lucide="x" class="w-4 h-4 text-beige-200"></i></button></div>`).join('') : '<p class="text-center py-20 text-[9px] font-bold uppercase text-beige-300">Bolsa Vacía</p>';
         document.getElementById('cart-total').innerText = `$${state.cart.reduce((s,i) => s + i.price, 0).toLocaleString()}`;
         lucide.createIcons();
     }
 
-    function goToCheckout() {
-        if(!state.cart.length) return; 
-        toggleCart(); showView('checkout');
-        const total = state.cart.reduce((s,i) => s + i.price, 0);
-        
-        document.getElementById('checkout-container').innerHTML = `
-            <div class="space-y-12">
-                <div class="space-y-6">
-                    <h3 class="text-[10px] font-bold uppercase tracking-[0.3em] text-beige-400">01. Envío</h3>
-                    <div class="space-y-3">
-                        ${state.shippingMethods.length ? state.shippingMethods.map((s, i) => `
-                        <label class="flex items-center gap-4 p-4 border border-beige-200 rounded-xl bg-white cursor-pointer hover:border-ink-900 transition">
-                            <input type="radio" name="shipping" ${i === 0 ? 'checked' : ''} class="accent-ink-900">
-                            <div class="flex-grow"><p class="text-xs font-bold uppercase tracking-widest">${s.name}</p><p class="text-[10px] text-beige-400">${s.time}</p></div>
-                            <span class="text-xs font-bold">$${s.price}</span>
-                        </label>`).join('') : '<p class="text-[10px] uppercase text-beige-300">No hay métodos configurados</p>'}
-                    </div>
-                    <textarea placeholder="Dirección de entrega" class="w-full bg-white border border-beige-200 p-4 rounded-xl outline-none text-sm h-24"></textarea>
-                </div>
-                <div class="space-y-6">
-                    <h3 class="text-[10px] font-bold uppercase tracking-[0.3em] text-beige-400">02. Pago</h3>
-                    <div class="space-y-3">
-                        ${state.paymentMethods.length ? state.paymentMethods.map((p, i) => `
-                        <label class="flex items-center gap-4 p-4 border border-beige-200 rounded-xl bg-white cursor-pointer hover:border-ink-900 transition" onclick="document.getElementById('pay-info').innerText = \`${p.details}\`Value">
-                            <input type="radio" name="payment" ${i === 0 ? 'checked' : ''} class="accent-ink-900">
-                            <span class="text-xs font-bold uppercase tracking-widest">${p.name}</span>
-                        </label>`).join('') : '<p class="text-[10px] uppercase text-beige-300">No hay métodos configurados</p>'}
-                    </div>
-                    <div id="pay-info" class="p-6 bg-beige-100/50 rounded-2xl border border-beige-200 text-[10px] text-ink-700 font-medium whitespace-pre-line">Selecciona un método para ver detalles</div>
-                </div>
-                <button onclick="state.cart=[];updateCartCount();showView('home');showToast('¡Pedido enviado!')" class="w-full bg-ink-900 text-white py-6 rounded-full text-xs font-bold uppercase tracking-widest">Finalizar Compra</button>
-            </div>
-            <div class="bg-white p-10 rounded-[3rem] border border-beige-100 h-fit">
-                <h3 class="text-[10px] font-bold uppercase tracking-[0.3em] text-beige-400 mb-8">Resumen</h3>
-                <div class="space-y-4 mb-8">
-                    ${state.cart.map(i => `<div class="flex justify-between text-[10px] font-bold uppercase border-b border-beige-50 pb-2"><span>${i.name}</span><span>$${i.price}</span></div>`).join('')}
-                </div>
-                <div class="flex justify-between items-center pt-6 border-t border-beige-200">
-                    <span class="text-xs font-bold uppercase tracking-widest">Total</span>
-                    <span class="text-3xl font-display font-bold">$${total.toLocaleString()}</span>
-                </div>
-            </div>`;
-    }
-
-    window.onload = () => { updateBrandUI(); renderBanners(); renderHome(); lucide.createIcons(); };
+    window.onload = () => { renderHome(); renderAdmin(); };
   </script>
 </body>
 </html>
