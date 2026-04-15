@@ -1,4 +1,4 @@
-<!doctype html>
+
 <html lang="es" class="h-full">
 <head>
   <meta charset="UTF-8">
@@ -96,7 +96,7 @@
                 <button onclick="setAdminTab('payment')" class="admin-tab-btn bg-beige-100 text-beige-500 px-6 py-3 rounded-full text-[9px] uppercase font-bold tracking-widest" data-tab="payment">Pagos</button>
             </div>
 
-            <!-- TAB PEDIDOS (CON SISTEMA DE AVISO) -->
+            <!-- TAB PEDIDOS -->
             <div id="admin-orders" class="admin-content space-y-8">
                 <div class="bg-red-50 p-6 rounded-[2rem] border border-red-100 space-y-4" id="admin-alerts-container">
                     <p class="text-[9px] font-bold text-red-400 uppercase tracking-widest flex items-center gap-2">
@@ -104,7 +104,6 @@
                     </p>
                     <div id="admin-notif-list" class="space-y-3"></div>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-beige-50 p-6 rounded-3xl border border-beige-100 text-center">
                         <p class="text-[8px] font-bold text-beige-400 uppercase tracking-widest mb-1">Ingresos</p>
@@ -116,16 +115,6 @@
                     </div>
                 </div>
                 <div id="admin-orders-list" class="space-y-6"></div>
-            </div>
-
-            <!-- TAB CATEGORÍAS -->
-            <div id="admin-categories" class="admin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-5">
-                    <h3 class="font-display text-2xl">Nueva Categoría</h3>
-                    <input type="text" id="cat-name-input" placeholder="Nombre" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <button onclick="addCategory()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Agregar</button>
-                </div>
-                <div class="lg:col-span-2 space-y-4" id="admin-category-list"></div>
             </div>
 
             <!-- TAB PRODUCTOS -->
@@ -140,7 +129,7 @@
                     <select id="p-cat" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none"></select>
                     <div class="border-2 border-dashed border-beige-300 rounded-2xl p-6 text-center bg-white">
                         <label class="cursor-pointer block text-[10px] uppercase font-bold text-beige-400" id="p-img-label">Subir Foto</label>
-                        <input type="file" class="hidden" accept="image/*" onchange="previewMedia(this, 'p-img-data', 'p-img-label')">
+                        <input type="file" class="hidden" id="p-file-input" accept="image/*" onchange="previewMedia(this, 'p-img-data', 'p-img-label')">
                         <input type="hidden" id="p-img-data">
                     </div>
                     <button onclick="saveProduct()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Guardar</button>
@@ -148,46 +137,36 @@
                 <div class="lg:col-span-2 space-y-4" id="admin-product-list"></div>
             </div>
 
-            <!-- TAB MARCA & REDES -->
+            <!-- TAB CATEGORÍAS -->
+            <div id="admin-categories" class="admin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div class="bg-beige-50 p-8 rounded-3xl border border-beige-200 h-fit space-y-5">
+                    <h3 class="font-display text-2xl">Nueva Categoría</h3>
+                    <input type="text" id="cat-name-input" placeholder="Nombre" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none">
+                    <button onclick="addCategory()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Agregar</button>
+                </div>
+                <div class="lg:col-span-2 space-y-4" id="admin-category-list"></div>
+            </div>
+
+            <!-- TAB MARCA -->
             <div id="admin-brand" class="admin-content hidden space-y-6 max-w-md">
                 <div class="space-y-4">
-                    <p class="text-[8px] font-bold text-beige-400 uppercase tracking-widest">Marca</p>
                     <input type="text" id="brand-name-input" placeholder="Nombre" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
                     <input type="text" id="brand-slogan-input" placeholder="Slogan" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
                 </div>
-                <div class="space-y-4">
-                    <p class="text-[8px] font-bold text-beige-400 uppercase tracking-widest">Redes</p>
-                    <input type="text" id="brand-whatsapp" placeholder="WhatsApp (549...)" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                    <input type="text" id="brand-instagram" placeholder="Usuario Instagram" class="w-full bg-beige-50 border border-beige-200 p-4 rounded-xl text-sm outline-none">
-                </div>
-                <button onclick="updateBrandIdentity()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Guardar Cambios</button>
+                <button onclick="updateBrandIdentity()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Guardar</button>
             </div>
 
-            <!-- TAB ENVÍOS (CON OPCIONES SOLICITADAS) -->
+            <!-- TAB ENVÍOS -->
             <div id="admin-shipping" class="admin-content hidden space-y-6 max-w-md">
-                <div class="space-y-4">
-                    <h3 class="font-display text-2xl">Gestionar Métodos</h3>
-                    <div class="space-y-3" id="shipping-presets">
-                        <!-- Los presets se manejan aquí -->
-                    </div>
-                </div>
-                <div class="pt-6 border-t border-beige-100">
-                    <p class="text-[8px] font-bold text-beige-400 uppercase mb-4 tracking-widest">Añadir Otro Personalizado</p>
-                    <div class="flex gap-2">
-                        <input type="text" id="s-name" placeholder="Método" class="flex-grow bg-beige-50 p-4 rounded-xl text-sm">
-                        <input type="number" id="s-price" placeholder="$" class="w-20 bg-beige-50 p-4 rounded-xl text-sm">
-                        <button onclick="saveShipping()" class="bg-ink-900 text-white px-6 rounded-xl text-[10px] font-bold">+</button>
-                    </div>
-                </div>
+                <div id="shipping-presets" class="space-y-3"></div>
                 <div id="admin-shipping-list" class="space-y-2"></div>
             </div>
 
             <!-- TAB PAGOS -->
             <div id="admin-payment" class="admin-content hidden space-y-4 max-w-md">
-                <h3 class="font-display text-2xl">Cuentas de Cobro</h3>
-                <input type="text" id="pay-name" placeholder="Nombre (ej: Transferencia)" class="w-full bg-beige-50 p-4 rounded-xl text-sm">
-                <textarea id="pay-details" placeholder="Datos de cuenta..." class="w-full bg-beige-50 p-4 rounded-xl text-sm h-40 outline-none border border-beige-200"></textarea>
-                <button onclick="savePayment()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Añadir Pago</button>
+                <input type="text" id="pay-name" placeholder="Nombre Pago" class="w-full bg-beige-50 p-4 rounded-xl text-sm">
+                <textarea id="pay-details" placeholder="Datos" class="w-full bg-beige-50 p-4 rounded-xl text-sm h-40 outline-none"></textarea>
+                <button onclick="savePayment()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Añadir</button>
                 <div id="admin-payment-list" class="space-y-2"></div>
             </div>
         </div>
@@ -203,19 +182,13 @@
                       <input type="text" id="c-phone" placeholder="WhatsApp" class="w-full border-b border-beige-300 py-3 outline-none focus:border-ink-900 text-sm">
                       <input type="text" id="c-address" placeholder="Dirección Completa" class="w-full border-b border-beige-300 py-3 outline-none focus:border-ink-900 text-sm">
                   </div>
-                  
-                  <h3 class="text-[10px] font-bold uppercase tracking-widest text-beige-400">Método de Envío</h3>
                   <div id="checkout-shipping" class="space-y-3"></div>
-
-                  <h3 class="text-[10px] font-bold uppercase tracking-widest text-beige-400">Método de Pago</h3>
                   <div id="checkout-payment" class="space-y-3"></div>
               </div>
-
               <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-beige-100 h-fit">
-                  <h3 class="text-[10px] font-bold uppercase tracking-widest mb-6">Tu Pedido</h3>
                   <div id="checkout-items" class="space-y-4 mb-8"></div>
                   <div class="flex justify-between items-center pt-6 border-t border-beige-200">
-                      <span class="text-xs font-bold uppercase tracking-widest">Total</span>
+                      <span class="text-xs font-bold uppercase">Total</span>
                       <span id="final-total" class="text-3xl font-display font-bold">$0</span>
                   </div>
                   <button onclick="confirmOrder()" class="w-full bg-ink-900 text-white py-5 rounded-full text-[10px] font-bold uppercase mt-8">Confirmar Pedido</button>
@@ -230,8 +203,8 @@
         <div class="max-w-7xl mx-auto px-4 flex flex-col items-center text-center">
             <h2 id="brand-name-foot" class="font-display text-2xl font-bold uppercase mb-2">INERCIA</h2>
             <div class="flex gap-4 mb-8">
-                <a id="link-whatsapp" href="#" target="_blank" class="p-2 bg-beige-50 rounded-full hover:bg-beige-100 transition"><i data-lucide="phone" class="w-4 h-4"></i></a>
-                <a id="link-instagram" href="#" target="_blank" class="p-2 bg-beige-50 rounded-full hover:bg-beige-100 transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                <a id="link-whatsapp" href="#" target="_blank" class="p-2 bg-beige-50 rounded-full"><i data-lucide="phone" class="w-4 h-4"></i></a>
+                <a id="link-instagram" href="#" target="_blank" class="p-2 bg-beige-50 rounded-full"><i data-lucide="instagram" class="w-4 h-4"></i></a>
             </div>
             <button onclick="showAdminLogin()" class="text-[7px] font-bold text-beige-300 uppercase tracking-widest">PANEL DE CONTROL</button>
         </div>
@@ -274,7 +247,6 @@
       brand: JSON.parse(localStorage.getItem('in_brand')) || { name: 'INERCIA', slogan: 'Moda en movimiento', whatsapp: '', instagram: '' },
       products: JSON.parse(localStorage.getItem('in_products')) || [],
       categories: JSON.parse(localStorage.getItem('in_categories')) || ['Esenciales'],
-      banners: JSON.parse(localStorage.getItem('in_banners')) || [],
       shippingMethods: JSON.parse(localStorage.getItem('in_ship')) || [
           { name: 'Envío a Domicilio', price: 0 },
           { name: 'Punto de Encuentro', price: 0 },
@@ -282,15 +254,15 @@
       ],
       paymentMethods: JSON.parse(localStorage.getItem('in_pay')) || [],
       orders: JSON.parse(localStorage.getItem('in_orders')) || [],
-      notifications: JSON.parse(localStorage.getItem('in_notif')) || [], // Guardamos los mensajes de aviso aquí
+      notifications: JSON.parse(localStorage.getItem('in_notif')) || [],
       cart: [],
-      currentCat: 'Todos',
-      currentSlide: 0
+      currentCat: 'Todos'
     };
+
+    const ADMIN_CODE = "0110";
 
     function save() {
       localStorage.setItem('in_products', JSON.stringify(state.products));
-      localStorage.setItem('in_banners', JSON.stringify(state.banners));
       localStorage.setItem('in_brand', JSON.stringify(state.brand));
       localStorage.setItem('in_categories', JSON.stringify(state.categories));
       localStorage.setItem('in_ship', JSON.stringify(state.shippingMethods));
@@ -299,6 +271,7 @@
       localStorage.setItem('in_notif', JSON.stringify(state.notifications));
     }
 
+    // GESTIÓN DE VISTAS
     function showView(id) {
       document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
       document.getElementById('view-' + id).classList.remove('hidden');
@@ -307,242 +280,148 @@
       window.scrollTo(0,0);
     }
 
-    function setAdminTab(tab) {
-        if(tab === 'orders') {
-            document.getElementById('admin-notif-badge').classList.add('hidden');
+    // LOGIN ADMIN
+    function showAdminLogin() { document.getElementById('admin-login').classList.remove('hidden'); }
+    function verifyAdmin() {
+        const pin = document.getElementById('admin-pin').value;
+        if(pin === ADMIN_CODE) {
+            document.getElementById('admin-login').classList.add('hidden');
+            showView('admin');
+            document.getElementById('admin-pin').value = '';
+        } else {
+            showToast("Código Incorrecto");
         }
-        document.querySelectorAll('.admin-content').forEach(c => c.classList.add('hidden'));
-        document.getElementById('admin-' + tab).classList.remove('hidden');
-        document.querySelectorAll('.admin-tab-btn').forEach(b => {
-            b.classList.replace('bg-ink-900', 'bg-beige-100'); b.classList.replace('text-white', 'text-beige-500');
-        });
-        const activeBtn = document.querySelector(`[data-tab="${tab}"]`);
-        activeBtn.classList.replace('bg-beige-100', 'bg-ink-900'); activeBtn.classList.replace('text-beige-500', 'text-white');
+    }
+    function logoutAdmin() { showView('home'); }
+
+    // ARREGLO SUBIDA DE FOTOS
+    function previewMedia(input, hiddenId, labelId) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(hiddenId).value = e.target.result;
+                document.getElementById(labelId).innerText = "Foto Lista ✓";
+                document.getElementById(labelId).classList.add('text-green-500');
+            }
+            reader.readAsDataURL(file);
+        }
     }
 
-    // ADMIN RENDER
-    function renderAdmin() {
-        // Alertas de Notificación (Sistema de Avisos)
-        const alertList = document.getElementById('admin-notif-list');
-        alertList.innerHTML = state.notifications.slice().reverse().map((n, i) => `
-            <div class="bg-white p-4 rounded-2xl border border-red-100 flex justify-between items-start gap-4 shadow-sm animate-pulse">
-                <div class="space-y-1">
-                    <p class="text-[10px] font-bold text-ink-900 uppercase">NUEVA COMPRA: ${n.customer}</p>
-                    <p class="text-[8px] text-beige-500 leading-relaxed">${n.summary}</p>
-                    <p class="text-[7px] font-bold text-red-400 uppercase">${n.time}</p>
-                </div>
-                <button onclick="clearNotif(${state.notifications.length - 1 - i})" class="text-red-200 hover:text-red-400"><i data-lucide="check-circle" class="w-4 h-4"></i></button>
-            </div>
-        `).join('') || '<p class="text-[8px] text-red-300 uppercase text-center py-2">Sin avisos pendientes</p>';
+    function saveProduct() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const stock = document.getElementById('p-stock').value;
+        const cat = document.getElementById('p-cat').value;
+        const img = document.getElementById('p-img-data').value;
 
-        // Stats
-        const totalMoney = state.orders.reduce((acc, o) => acc + o.total, 0);
-        document.getElementById('stat-total-money').innerText = `$${totalMoney.toLocaleString()}`;
-        document.getElementById('stat-total-count').innerText = state.orders.length;
+        if(!name || !price || !img) return showToast("Faltan datos");
 
-        // Lista de Pedidos (Visual mejorada)
-        document.getElementById('admin-orders-list').innerHTML = state.orders.slice().reverse().map(o => `
-            <div class="bg-white border border-beige-200 p-6 rounded-[2rem] space-y-4 shadow-sm">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-[7px] font-bold text-beige-300 uppercase">#${o.id} - ${o.date}</p>
-                        <h4 class="font-display text-2xl uppercase">${o.customer.name}</h4>
-                        <p class="text-[9px] text-ink-700 uppercase font-bold tracking-widest">${o.customer.phone}</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-xl font-display font-bold">$${o.total.toLocaleString()}</p>
-                        <span class="text-[7px] bg-beige-50 px-2 py-1 rounded-full uppercase font-bold text-beige-400">Venta Finalizada</span>
-                    </div>
+        const newP = {
+            id: Date.now(),
+            name,
+            price: parseFloat(price),
+            stock: parseInt(stock) || 0,
+            category: cat,
+            image: img
+        };
+
+        state.products.push(newP);
+        save();
+        renderAdmin();
+        
+        // Limpiar
+        document.getElementById('p-name').value = '';
+        document.getElementById('p-price').value = '';
+        document.getElementById('p-stock').value = '';
+        document.getElementById('p-img-data').value = '';
+        document.getElementById('p-img-label').innerText = "Subir Foto";
+        document.getElementById('p-img-label').classList.remove('text-green-500');
+        showToast("Producto Guardado");
+    }
+
+    // RENDERIZADO BÁSICO
+    function renderHome() {
+        const filters = document.getElementById('cat-filters');
+        if(filters) filters.innerHTML = ['Todos', ...state.categories].map(c => `<button onclick="state.currentCat='${c}';renderHome()" class="px-8 py-3 rounded-full text-[8px] uppercase font-bold tracking-widest border ${state.currentCat === c ? 'bg-ink-900 text-white' : 'bg-white text-beige-400 border-beige-200'} shrink-0">${c}</button>`).join('');
+        
+        const grid = document.getElementById('product-grid');
+        const filtered = state.currentCat === 'Todos' ? state.products : state.products.filter(p => p.category === state.currentCat);
+        if(grid) grid.innerHTML = filtered.map(p => `
+            <div class="group fade-in ${p.stock <= 0 ? 'opacity-40' : ''}">
+                <div class="aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-beige-100 relative mb-4">
+                    <img src="${p.image}" class="w-full h-full object-cover">
+                    ${p.stock > 0 ? `<button onclick="addToCart(${p.id})" class="absolute bottom-4 right-4 bg-white p-4 rounded-full shadow-lg translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all"><i data-lucide="plus" class="w-4 h-4"></i></button>` : '<div class="absolute inset-0 flex items-center justify-center bg-black/5 backdrop-blur-[2px]"><span class="text-[10px] font-bold uppercase tracking-widest text-ink-900 bg-white px-4 py-2 rounded-full">Sin Stock</span></div>'}
                 </div>
-                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-beige-50 text-[8px] font-bold uppercase">
-                    <div class="bg-beige-50 p-3 rounded-xl"><p class="text-beige-300 mb-1">Pago</p> ${o.paymentMethod}</div>
-                    <div class="bg-beige-50 p-3 rounded-xl"><p class="text-beige-300 mb-1">Envío</p> ${o.shippingMethod}</div>
-                </div>
-                <div class="space-y-1">
-                    ${o.items.map(i => `<p class="text-[9px] flex justify-between uppercase"><span>• ${i.name}</span> <span class="text-beige-400">$${i.price}</span></p>`).join('')}
+                <div class="text-center px-2">
+                    <p class="text-[8px] uppercase font-bold text-beige-400 tracking-widest mb-1">${p.category}</p>
+                    <h3 class="font-display text-xl uppercase tracking-tight">${p.name}</h3>
+                    <p class="text-sm font-bold mt-1">$${p.price.toLocaleString()}</p>
                 </div>
             </div>
         `).join('');
+        lucide.createIcons();
+    }
 
-        // Categorías y Productos
-        document.getElementById('admin-category-list').innerHTML = state.categories.map((c, i) => `<div class="bg-beige-50 p-4 rounded-xl flex justify-between items-center text-[10px] font-bold uppercase"><span>${c}</span><button onclick="state.categories.splice(${i},1);save();renderAdmin()"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button></div>`).join('');
-        document.getElementById('p-cat').innerHTML = state.categories.map(c => `<option value="${c}">${c}</option>`).join('');
-        document.getElementById('admin-product-list').innerHTML = state.products.map(p => `
+    function renderAdmin() {
+        const pList = document.getElementById('admin-product-list');
+        if(pList) pList.innerHTML = state.products.map(p => `
             <div class="bg-beige-50 p-4 rounded-2xl border border-beige-100 flex items-center gap-4">
                 <img src="${p.image}" class="w-12 h-12 object-cover rounded-xl">
                 <div class="flex-grow">
                     <p class="text-[10px] font-bold uppercase">${p.name}</p>
                     <p class="text-[9px] text-beige-400">$${p.price}</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <input type="number" value="${p.stock}" onchange="updateStock(${p.id}, this.value)" class="w-12 p-2 rounded-lg text-xs border border-beige-200 outline-none text-center">
-                </div>
-                <button onclick="state.products = state.products.filter(x=>x.id!==${p.id});save();renderAdmin()"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button>
+                <button onclick="deleteProduct(${p.id})"><i data-lucide="trash" class="w-4 h-4 text-red-300"></i></button>
             </div>
         `).join('');
-
-        // Envíos
-        document.getElementById('shipping-presets').innerHTML = state.shippingMethods.slice(0,3).map((s,i) => `
-            <div class="flex items-center gap-3 bg-white p-4 rounded-2xl border border-beige-100 shadow-sm">
-                <span class="text-[10px] font-bold uppercase flex-grow">${s.name}</span>
-                <div class="flex items-center gap-2">
-                    <span class="text-[8px] text-beige-300 font-bold">$</span>
-                    <input type="number" value="${s.price}" onchange="updateShipPrice(${i}, this.value)" class="w-20 p-2 bg-beige-50 rounded-lg text-xs border-none outline-none font-bold">
-                </div>
-            </div>
-        `).join('');
-
-        document.getElementById('admin-shipping-list').innerHTML = state.shippingMethods.slice(3).map((s,i) => `<div class="bg-beige-50 p-3 rounded-xl flex justify-between items-center text-[10px] font-bold"><span>${s.name} ($${s.price})</span><button onclick="state.shippingMethods.splice(${i+3},1);save();renderAdmin()">✕</button></div>`).join('');
         
-        // Pagos
-        document.getElementById('admin-payment-list').innerHTML = state.paymentMethods.map((p,i) => `
-            <div class="bg-beige-50 p-4 rounded-xl space-y-2 border border-beige-200">
-                <div class="flex justify-between items-center"><span class="text-[10px] font-bold uppercase">${p.name}</span><button onclick="state.paymentMethods.splice(${i},1);save();renderAdmin()" class="text-red-300">✕</button></div>
-                <pre class="text-[9px] font-body text-beige-500 whitespace-pre-wrap leading-relaxed">${p.details}</pre>
-            </div>
-        `).join('');
-
-        updateBrandUI();
+        const catSelect = document.getElementById('p-cat');
+        if(catSelect) catSelect.innerHTML = state.categories.map(c => `<option value="${c}">${c}</option>`).join('');
+        
         lucide.createIcons();
     }
 
-    function clearNotif(index) {
-        state.notifications.splice(index, 1);
-        save(); renderAdmin();
-    }
-
-    // OPERACIONES
-    function updateStock(id, val) { const p = state.products.find(x=>x.id===id); if(p) { p.stock = parseInt(val); save(); } }
-    function updateShipPrice(index, val) { state.shippingMethods[index].price = parseFloat(val) || 0; save(); }
-
-    function confirmOrder() {
-        const name = document.getElementById('c-name').value;
-        const phone = document.getElementById('c-phone').value;
-        const address = document.getElementById('c-address').value;
-        const ship = document.querySelector('input[name="c-ship"]:checked');
-        const pay = document.querySelector('input[name="c-pay"]:checked');
-
-        if(!name || !phone || !address || !ship || !pay) return showToast("Completar todos los campos");
-
-        const subtotal = state.cart.reduce((s,i) => s + i.price, 0);
-        const order = {
-            id: Math.floor(Math.random() * 90000 + 10000),
-            date: new Date().toLocaleDateString('es-AR'),
-            customer: { name, phone, address },
-            items: [...state.cart],
-            total: subtotal + parseFloat(ship.value),
-            shippingMethod: ship.getAttribute('data-name'),
-            paymentMethod: pay.getAttribute('data-name')
-        };
-
-        // Crear Notificación de Aviso (Para el Admin)
-        const itemsList = state.cart.map(i => i.name).join(', ');
-        state.notifications.push({
-            customer: name.toUpperCase(),
-            summary: `Compró: ${itemsList}. Pagó con ${order.paymentMethod} y eligió ${order.shippingMethod}.`,
-            time: new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
-        });
-
-        state.orders.push(order);
-        state.cart = [];
+    function deleteProduct(id) {
+        state.products = state.products.filter(p => p.id !== id);
         save();
-        updateCartCount();
-        showView('home');
-        showToast("¡Pedido recibido exitosamente!");
+        renderAdmin();
     }
 
-    function goToCheckout() {
-        if(!state.cart.length) return;
-        toggleCart(); showView('checkout');
-        const subtotal = state.cart.reduce((s,i) => s + i.price, 0);
-        document.getElementById('checkout-items').innerHTML = state.cart.map(i => `<div class="flex justify-between text-[10px] font-bold uppercase"><span>${i.name}</span><span>$${i.price}</span></div>`).join('');
-        document.getElementById('checkout-shipping').innerHTML = state.shippingMethods.map((s,i) => `
-            <label class="flex items-center gap-3 p-4 bg-beige-50 rounded-2xl cursor-pointer hover:bg-white border border-transparent hover:border-ink-900 transition" onclick="updateCheckoutTotal(${subtotal}, ${s.price})">
-                <input type="radio" name="c-ship" value="${s.price}" data-name="${s.name}" class="accent-ink-900" ${i === 0 ? 'checked' : ''}>
-                <span class="text-[10px] font-bold uppercase flex-grow">${s.name}</span>
-                <span class="text-[10px] font-bold">$${s.price}</span>
-            </label>
-        `).join('');
-        document.getElementById('checkout-payment').innerHTML = state.paymentMethods.map((p,i) => `
-            <label class="flex flex-col gap-2 p-4 bg-beige-50 rounded-2xl cursor-pointer border border-transparent hover:border-ink-900 transition">
-                <div class="flex items-center gap-3"><input type="radio" name="c-pay" data-name="${p.name}" class="accent-ink-900" ${i === 0 ? 'checked' : ''}><span class="text-[10px] font-bold uppercase">${p.name}</span></div>
-                <pre class="text-[8px] font-body text-beige-400 whitespace-pre-wrap ml-7">${p.details}</pre>
-            </label>
-        `).join('') || '<p class="text-[9px] uppercase text-beige-300">No hay pagos configurados</p>';
-        updateCheckoutTotal(subtotal, state.shippingMethods[0]?.price || 0);
-    }
-
-    function updateCheckoutTotal(sub, ship) { document.getElementById('final-total').innerText = `$${(sub + ship).toLocaleString()}`; }
-    
-    // UI BASICS
-    function renderHome() {
-        document.getElementById('cat-filters').innerHTML = ['Todos', ...state.categories].map(c => `<button onclick="state.currentCat='${c}';renderHome()" class="px-8 py-3 rounded-full text-[8px] uppercase font-bold tracking-widest border ${state.currentCat === c ? 'bg-ink-900 text-white' : 'bg-white text-beige-400 border-beige-200'} shrink-0">${c}</button>`).join('');
-        const filtered = state.currentCat === 'Todos' ? state.products : state.products.filter(p => p.category === state.currentCat);
-        document.getElementById('product-grid').innerHTML = filtered.map(p => `
-            <div class="group fade-in ${p.stock <= 0 ? 'opacity-40' : ''}">
-                <div class="aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-beige-100 relative mb-4">
-                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                    ${p.stock > 0 ? `<button onclick="addToCart(${p.id})" class="absolute inset-x-6 bottom-6 bg-white py-4 rounded-2xl text-[8px] font-bold uppercase opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all shadow-xl">Añadir</button>` : ''}
-                </div>
-                <div class="px-2">
-                    <h3 class="font-display text-lg uppercase tracking-tighter">${p.name}</h3>
-                    <p class="text-xs font-bold">$${p.price.toLocaleString()}</p>
-                </div>
-            </div>`).join('') || '<p class="col-span-full text-center py-20 text-[9px] font-bold text-beige-300">Sin stock disponible</p>';
-        renderBanners();
-    }
-
-    function renderBanners() {
-        if(!state.banners.length) {
-            document.getElementById('banner-container').innerHTML = `<div class="absolute inset-0 flex flex-col items-center justify-center bg-beige-100"><h2 class="font-display text-8xl md:text-9xl uppercase tracking-tighter">${state.brand.name}</h2></div>`;
-            return;
+    function addToCart(id) {
+        const p = state.products.find(x => x.id === id);
+        if(p) {
+            state.cart.push(p);
+            updateCartCount();
+            showToast("Añadido a la bolsa");
         }
-        document.getElementById('banner-container').innerHTML = state.banners.map((b, i) => `<div class="banner-slide ${i === state.currentSlide ? 'active' : ''}"><img src="${b.image}" class="w-full h-full object-cover brightness-75"><div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-6"><h2 class="font-display text-7xl md:text-9xl uppercase tracking-tighter">${b.title}</h2></div></div>`).join('');
     }
 
-    function previewMedia(input, hiddenId, labelId) { if(input.files && input.files[0]) { const reader = new FileReader(); reader.onload = (e) => { document.getElementById(hiddenId).value = e.target.result; document.getElementById(labelId).innerText = "OK"; }; reader.readAsDataURL(input.files[0]); } }
-    function addToCart(id) { const p = state.products.find(x=>x.id===id); if(p && p.stock > 0) { state.cart.push(p); updateCartCount(); showToast("Añadido"); } }
-    function updateCartCount() { const el = document.getElementById('cart-count'); el.innerText = state.cart.length; el.classList.toggle('hidden', !state.cart.length); }
-    function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); renderCart(); }
-    function showAdminLogin() { document.getElementById('admin-login').classList.remove('hidden'); }
-    function verifyAdmin() { if(document.getElementById('admin-pin').value === '0110') { document.getElementById('admin-login').classList.add('hidden'); showView('admin'); } else showToast("PIN Incorrecto"); }
-    function logoutAdmin() { showView('home'); document.getElementById('admin-pin').value = ''; }
-    function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.replace('opacity-0', 'opacity-100'); setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 2000); }
-    function addCategory() { const val = document.getElementById('cat-name-input').value.trim(); if(val) { state.categories.push(val); save(); renderAdmin(); document.getElementById('cat-name-input').value=''; } }
-    function saveProduct() { 
-        const name = document.getElementById('p-name').value;
-        const price = parseFloat(document.getElementById('p-price').value);
-        const stock = parseInt(document.getElementById('p-stock').value) || 0;
-        const cat = document.getElementById('p-cat').value;
-        const img = document.getElementById('p-img-data').value;
-        if(name && price && img) { state.products.push({ id: Date.now(), name, price, stock, category: cat, image: img }); save(); renderAdmin(); }
+    function updateCartCount() {
+        const count = document.getElementById('cart-count');
+        count.innerText = state.cart.length;
+        count.classList.toggle('hidden', state.cart.length === 0);
     }
-    function saveShipping() { const n = document.getElementById('s-name').value; const p = parseFloat(document.getElementById('s-price').value); if(n) { state.shippingMethods.push({name:n, price:p}); save(); renderAdmin(); } }
-    function savePayment() { const n = document.getElementById('pay-name').value; const d = document.getElementById('pay-details').value; if(n && d) { state.paymentMethods.push({name:n, details:d}); save(); renderAdmin(); } }
-    function updateBrandIdentity() { 
-        state.brand.name = document.getElementById('brand-name-input').value; 
-        state.brand.slogan = document.getElementById('brand-slogan-input').value; 
-        state.brand.whatsapp = document.getElementById('brand-whatsapp').value;
-        state.brand.instagram = document.getElementById('brand-instagram').value;
-        save(); updateBrandUI(); showToast("Guardado"); 
+
+    function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.replace('opacity-0', 'opacity-100');
+        setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 2000);
     }
-    function updateBrandUI() { 
-        document.getElementById('brand-name-nav').innerText = state.brand.name;
-        document.getElementById('brand-name-foot').innerText = state.brand.name;
-        document.getElementById('brand-slogan-nav').innerText = state.brand.slogan;
-        document.getElementById('link-whatsapp').href = `https://wa.me/${state.brand.whatsapp}`;
-        document.getElementById('link-instagram').href = `https://instagram.com/${state.brand.instagram}`;
+
+    function setAdminTab(tab) {
+        document.querySelectorAll('.admin-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById('admin-' + tab).classList.remove('hidden');
     }
-    function nextSlide() { if(state.banners.length) { state.currentSlide = (state.currentSlide + 1) % state.banners.length; renderBanners(); } }
-    function prevSlide() { if(state.banners.length) { state.currentSlide = (state.currentSlide - 1 + state.banners.length) % state.banners.length; renderBanners(); } }
-    function renderCart() {
-        const items = document.getElementById('cart-items');
-        items.innerHTML = state.cart.length ? state.cart.map((item, i) => `<div class="flex gap-4 items-center bg-beige-50 p-3 rounded-2xl"><img src="${item.image}" class="w-12 h-16 object-cover rounded-lg"><div class="flex-grow"><h4 class="font-display text-sm uppercase">${item.name}</h4><p class="text-[9px] font-bold text-beige-400">$${item.price}</p></div><button onclick="state.cart.splice(${i},1);renderCart();updateCartCount()"><i data-lucide="x" class="w-4 h-4 text-beige-200"></i></button></div>`).join('') : '<p class="text-center py-20 text-[9px] font-bold uppercase text-beige-300">Bolsa Vacía</p>';
-        document.getElementById('cart-total').innerText = `$${state.cart.reduce((s,i) => s + i.price, 0).toLocaleString()}`;
+
+    // Inicializar
+    window.onload = () => {
+        renderHome();
         lucide.createIcons();
-    }
-
-    window.onload = () => { renderHome(); renderAdmin(); };
+    };
   </script>
 </body>
 </html>
