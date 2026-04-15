@@ -129,10 +129,15 @@
                     <select id="p-cat" class="w-full bg-white border border-beige-200 p-4 rounded-xl text-sm outline-none"></select>
                     <div class="border-2 border-dashed border-beige-300 rounded-2xl p-6 text-center bg-white">
                         <label class="cursor-pointer block text-[10px] uppercase font-bold text-beige-400" id="p-img-label">Subir Foto</label>
-                        <input type="file" class="hidden" id="p-file-input" accept="image/*" onchange="previewMedia(this, 'p-img-data', 'p-img-label')">
+                        <<label class="block text-sm font-medium text-ink-700">Foto del Producto</label>
+<input type="file" id="productImage" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-beige-100 file:text-ink-900 hover:file:bg-beige-200">
+
                         <input type="hidden" id="p-img-data">
                     </div>
-                    <button onclick="saveProduct()" class="w-full bg-ink-900 text-white py-4 rounded-full text-[10px] uppercase font-bold tracking-widest">Guardar</button>
+                    <button onclick="saveProductWithImage()" class="w-full bg-ink-900 text-white py-3 rounded-lg hover:bg-ink-800 transition-colors">
+    Guardar Producto
+</button>
+
                 </div>
                 <div class="lg:col-span-2 space-y-4" id="admin-product-list"></div>
             </div>
@@ -421,6 +426,41 @@
     window.onload = () => {
         renderHome();
         lucide.createIcons();
+      async function saveProductWithImage() {
+    const name = document.getElementById('productName').value;
+    const price = document.getElementById('productPrice').value;
+    const imageInput = document.getElementById('productImage');
+    
+    if (!name || !price || imageInput.files.length === 0) {
+        alert("Por favor completa todos los campos y selecciona una imagen.");
+        return;
+    }
+
+    const file = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = function() {
+        const base64Image = reader.result;
+        
+        const newProduct = {
+            id: Date.now(),
+            name: name,
+            price: price,
+            image: base64Image
+        };
+
+        // Guardar en LocalStorage
+        const products = JSON.parse(localStorage.getItem('inercia_products') || '[]');
+        products.push(newProduct);
+        localStorage.setItem('inercia_products', JSON.stringify(products));
+
+        alert("Producto guardado correctamente");
+        location.reload();
+    };
+
+    reader.readAsDataURL(file);
+}
+
     };
   </script>
 </body>
