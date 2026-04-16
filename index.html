@@ -3,115 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keyn | Admin Editorial</title>
+    <title>INERCIA | Admin Panel & Store</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        @import url('https://googleapis.com');
+        :root { --bg: #ffffff; --text: #000000; --muted: #757575; --accent: #000000; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); }
 
-        :root {
-            --bg: #ffffff;
-            --text: #1a1a1a;
-            --muted: #767676;
-            --accent: #000000;
-        }
+        /* HEADER INERCIA */
+        header { padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; position: sticky; top: 0; background: white; z-index: 1000; }
+        .logo { font-size: 35px; font-weight: 800; letter-spacing: -2px; text-transform: lowercase; }
+        nav span { margin: 0 20px; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; color: var(--muted); transition: 0.3s; }
+        nav span:hover { color: var(--text); }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        /* HERO SECTION */
+        .hero { padding: 20px 50px; }
+        .hero-banner { width: 100%; height: 75vh; background: url('https://unsplash.com') center/cover; border-radius: 20px; display: flex; align-items: flex-end; padding: 50px; color: white; }
+        .hero-banner h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 4px; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 50px; }
 
-        /* Navbar Estilo Editorial */
-        nav { display: flex; justify-content: center; align-items: center; padding: 20px 40px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100; }
-        .nav-links { display: flex; gap: 30px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-        .logo { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 2rem; margin: 0 50px; letter-spacing: -2px; }
+        /* CATALOGO */
+        .catalog-container { padding: 80px 50px; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 60px; font-weight: 300; letter-spacing: -3px; }
 
-        /* Hero / Banner Admin */
-        .hero { position: relative; height: 60vh; background: #f4f4f4; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 60px; }
-        .hero img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
-        .hero-text { position: absolute; text-align: center; color: white; }
-        .hero-text h2 { font-family: 'Playfair Display', serif; font-size: 4rem; font-style: italic; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
+        .product-card { position: relative; overflow: hidden; }
+        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 12px; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .product-card:hover img { transform: scale(1.02); }
+        
+        .product-info { margin-top: 20px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .product-name { font-size: 18px; font-weight: 400; }
+        .product-price { font-size: 16px; color: var(--muted); }
 
-        /* Sección de Gestión */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .section-title { font-family: 'Inter', sans-serif; font-size: 3rem; text-align: center; margin-bottom: 50px; font-weight: 400; letter-spacing: -1px; }
+        /* PANEL ADMIN FUNCIONAL */
+        .admin-trigger { position: fixed; bottom: 30px; left: 30px; background: #000; color: #fff; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 2000; }
+        
+        .admin-modal { position: fixed; bottom: 100px; left: 30px; width: 350px; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid #eee; padding: 25px; display: none; z-index: 2000; }
+        .admin-modal.active { display: block; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Grid de Productos Functional */
-        .catalog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 80px; }
-        .product-card { position: relative; transition: 0.3s; }
-        .product-img { width: 100%; aspect-ratio: 3/4; background: #f9f9f9; object-fit: cover; margin-bottom: 15px; }
-        .product-info { text-align: center; }
-        .product-name { font-size: 1rem; font-weight: 400; margin-bottom: 5px; }
-        .product-price { color: var(--muted); font-size: 0.9rem; }
+        .admin-modal h3 { margin-bottom: 20px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; font-weight: 600; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 8px; outline: none; }
+        .btn-submit { width: 100%; padding: 15px; background: #000; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-submit:hover { opacity: 0.8; }
 
-        /* Panel de Control Flotante */
-        .admin-controls { background: black; color: white; padding: 20px; border-radius: 50px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; }
-        .btn-admin { background: transparent; border: 1px solid white; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; }
-        .btn-admin:hover { background: white; color: black; }
-
-        /* Botón de Borrar sobre imagen */
-        .delete-overlay { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.8); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; opacity: 0; transition: 0.3s; }
+        .delete-overlay { position: absolute; top: 15px; right: 15px; background: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: 0.3s; border: none; }
         .product-card:hover .delete-overlay { opacity: 1; }
 
-        /* Sección de Filosofía (Footer Estilo Imagen) */
-        .philosophy { display: flex; gap: 50px; padding: 100px 0; border-top: 1px solid #eee; }
+        /* FILOSOFIA */
+        .philosophy { padding: 100px 50px; background: #fafafa; display: flex; align-items: center; gap: 80px; }
         .philosophy-text { flex: 1; }
-        .philosophy-text h3 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 20px; }
-        .philosophy-text p { color: var(--muted); max-width: 400px; font-size: 0.9rem; }
+        .philosophy-text h3 { font-family: 'Playfair Display', serif; font-size: 65px; font-style: italic; margin-bottom: 30px; }
+        .philosophy-text p { font-size: 18px; line-height: 1.8; color: #444; max-width: 600px; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="nav-links"><span>Catálogo</span> <span>Información</span></div>
-        <div class="logo">keyn</div>
-        <div class="nav-links"><span>Contacto</span> <span><i class="fa-solid fa-magnifying-glass"></i></span></div>
-    </nav>
+    <header>
+        <nav><span>Hombres</span> <span>Mujeres</span></nav>
+        <div class="logo">inercia</div>
+        <nav><span>Admin</span> <span>Carrito (0)</span></nav>
+    </header>
 
     <div class="hero">
-        <img src="https://unsplash.com" alt="Banner">
-        <div class="hero-text">
-            <h2>Gestión de Colección</h2>
+        <div class="hero-banner">
+            <h2>Colección Invierno 2024</h2>
         </div>
     </div>
 
-    <div class="container">
-        <h2 class="section-title">catalog</h2>
-        
-        <div class="catalog-grid" id="catalog-container">
+    <div class="catalog-container">
+        <div class="section-header">
+            <h2>nuestro catálogo</h2>
+        </div>
+        <div class="grid" id="main-grid">
             <!-- Los productos se cargan aquí -->
         </div>
-
-        <section class="philosophy">
-            <div class="philosophy-text">
-                <h3>Our philosophy</h3>
-                <p>Nuestra ropa no son solo cosas. Es ropa que da confianza en uno mismo. Es lo que ayuda a amarse y sentir que eres capaz de todo.</p>
-            </div>
-            <div style="flex: 1; display: flex; justify-content: flex-end;">
-                <img src="https://unsplash.com" style="width: 250px; height: 350px; object-fit: cover;">
-            </div>
-        </section>
     </div>
 
-    <div class="admin-controls">
-        <button class="btn-admin" onclick="addProduct()">+ Agregar Producto</button>
-        <span id="product-count" style="font-size: 0.8rem; align-self: center;">Productos: 3</span>
+    <section class="philosophy">
+        <div class="philosophy-text">
+            <h3>Nuestra filosofía</h3>
+            <p>En <strong>Inercia</strong>, no solo creamos prendas; capturamos el movimiento constante de la moda contemporánea. Cada diseño es una prueba de que la elegancia y la funcionalidad pueden coexistir en un estado de flujo perfecto.</p>
+        </div>
+        <div style="flex: 1;">
+            <img src="https://unsplash.com" style="width: 100%; border-radius: 20px;">
+        </div>
+    </section>
+
+    <!-- UI DE ADMINISTRACIÓN -->
+    <div class="admin-trigger" onclick="toggleAdmin()"><i class="fas fa-plus"></i></div>
+    
+    <div class="admin-modal" id="admin-modal">
+        <h3>Panel de Control - Inercia</h3>
+        <div class="form-group">
+            <label>Nombre del Producto</label>
+            <input type="text" id="p-name" placeholder="Ej: Bomber de Cuero">
+        </div>
+        <div class="form-group">
+            <label>Precio (ARS)</label>
+            <input type="text" id="p-price" placeholder="Ej: $45.000">
+        </div>
+        <div class="form-group">
+            <label>URL de Imagen</label>
+            <input type="text" id="p-img" placeholder="https://ejemplo.com">
+        </div>
+        <button class="btn-submit" onclick="addProduct()">Subir a la tienda</button>
     </div>
 
     <script>
+        // Base de datos de prueba
         let products = [
-            { id: 1, name: "Rashguard Negro", price: "12.900 P", img: "https://unsplash.com" },
-            { id: 2, name: "Rashguard Blanco", price: "12.900 P", img: "https://unsplash.com" },
-            { id: 3, name: "Bomber Suede", price: "18.900 P", img: "https://unsplash.com" }
+            { id: 1, name: "Rashguard Inercia Black", price: "$12.900", img: "https://unsplash.com" },
+            { id: 2, name: "Chaqueta Suede Arena", price: "$28.500", img: "https://unsplash.com" }
         ];
 
-        function render() {
-            const container = document.getElementById('catalog-container');
-            const count = document.getElementById('product-count');
-            container.innerHTML = '';
+        function renderProducts() {
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = '';
             
             products.forEach((p, index) => {
-                container.innerHTML += `
+                grid.innerHTML += `
                     <div class="product-card">
-                        <button class="delete-overlay" onclick="removeProduct(${index})"><i class="fa-solid fa-xmark"></i></button>
-                        <img src="${p.img}" class="product-img">
+                        <button class="delete-overlay" onclick="deleteProduct(${index})">
+                            <i class="fas fa-trash-alt" style="color: red;"></i>
+                        </button>
+                        <img src="${p.img}" alt="${p.name}">
                         <div class="product-info">
                             <div class="product-name">${p.name}</div>
                             <div class="product-price">${p.price}</div>
@@ -119,30 +138,39 @@
                     </div>
                 `;
             });
-            count.innerText = `Productos: ${products.length}`;
+        }
+
+        function toggleAdmin() {
+            document.getElementById('admin-modal').classList.toggle('active');
         }
 
         function addProduct() {
-            const name = prompt("Nombre de la prenda:");
-            if(name) {
-                products.push({
-                    id: Date.now(),
-                    name: name,
-                    price: "0.000 P",
-                    img: "https://unsplash.com"
-                });
-                render();
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const img = document.getElementById('p-img').value || 'https://unsplash.com';
+
+            if(name && price) {
+                products.push({ id: Date.now(), name, price, img });
+                renderProducts();
+                toggleAdmin();
+                // Limpiar campos
+                document.getElementById('p-name').value = '';
+                document.getElementById('p-price').value = '';
+                document.getElementById('p-img').value = '';
+            } else {
+                alert("Por favor completa los campos principales.");
             }
         }
 
-        function removeProduct(index) {
-            if(confirm("¿Eliminar del catálogo?")) {
+        function deleteProduct(index) {
+            if(confirm("¿Seguro que quieres quitar este producto de Inercia?")) {
                 products.splice(index, 1);
-                render();
+                renderProducts();
             }
         }
 
-        render();
+        // Carga inicial
+        renderProducts();
     </script>
 </body>
 </html>
