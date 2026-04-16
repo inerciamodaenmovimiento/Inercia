@@ -185,15 +185,18 @@
         save(); updateUI(); alert("Configuración guardada.");
     }
 
-    async function uploadProduct() {
-        const f = document.getElementById('p-img').files;
-        if(!f.length) return;
-        const imgs = [];
-        for(let file of f) {
-            imgs.push(await new Promise(res => { const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(file); }));
-        }
-        db.products.push({ id: Date.now(), name: document.getElementById('p-name').value, desc: document.getElementById('p-desc').value, price: document.getElementById('p-price').value, cat: document.getElementById('p-cat-select').value, imgs: imgs });
-        save(); renderShop(); alert("Producto subido");
+    function openProductDetails(idx) {
+    const p = db.products[idx];
+    document.getElementById('modal-content').innerHTML = `
+        <img src="${p.imgs[0]}" style="width:100%; max-height:250px; object-fit:cover; margin-bottom:15px;">
+        <h2 style="letter-spacing:2px;">${p.name}</h2>
+        <p style="font-family:sans-serif; margin:15px 0; color:#555;">${p.desc}</p>
+        <h3 style="margin-bottom:15px;">$${p.price}</h3>
+        <button class="btn-add" onclick="addToCart(${idx}); document.getElementById('p-modal').style.display='none'">AGREGAR AL CARRITO</button>
+    `;
+    document.getElementById('p-modal').style.display = 'flex';
+}
+    
     }
 
     function renderShop() {
