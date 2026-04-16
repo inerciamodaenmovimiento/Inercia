@@ -3,197 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Digital Flagship</title>
-    <!-- Google Fonts: Inter para UI y Playfair para estilo editorial -->
+    <title>INERCIA | Luxury Editorial</title>
     <link href="https://googleapis.com" rel="stylesheet">
-    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        :root { --bg: #ffffff; --text: #111111; --muted: #707070; }
+        :root { --main-bg: #ffffff; --text: #000000; --muted: #666; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+        body { background: var(--main-bg); color: var(--text); }
 
-        /* HEADER EDITORIAL */
-        header { padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; sticky top: 0; background: white; z-index: 100; }
-        .nav-left, .nav-right { display: flex; gap: 25px; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; }
-        .logo { font-size: 32px; font-weight: 800; letter-spacing: -2px; text-transform: lowercase; cursor: pointer; }
+        /* HEADER KEYN STYLE */
+        header { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; position: sticky; top: 0; background: white; z-index: 100; }
+        .nav-links { display: flex; gap: 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+        .logo-center { font-size: 38px; font-weight: 800; letter-spacing: -3px; text-transform: lowercase; cursor: pointer; user-select: none; }
+
+        /* HERO - REPLICANDO LA IMAGEN */
+        .hero { padding: 20px 5%; }
+        .hero-box { position: relative; width: 100%; height: 80vh; border-radius: 25px; overflow: hidden; }
+        .hero-box img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9); }
+        .hero-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
+        .hero-content h1 { font-size: 110px; font-weight: 800; letter-spacing: -6px; margin-bottom: 0; }
+        .hero-content p { font-size: 15px; letter-spacing: 3px; font-weight: 300; margin-top: -15px; text-transform: lowercase; }
+
+        /* CATALOG TITLE */
+        .cat-title { text-align: center; font-size: 60px; font-weight: 300; letter-spacing: -3px; margin: 70px 0; }
+
+        /* GRID PRODUCTOS */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 0 5%; margin-bottom: 100px; }
+        .product { text-align: center; cursor: pointer; position: relative; }
+        .product img { width: 100%; aspect-ratio: 1/1.2; object-fit: cover; border-radius: 5px; transition: 0.3s; }
+        .product:hover img { opacity: 0.85; }
+        .p-name { font-size: 16px; margin-top: 15px; font-weight: 400; }
+        .p-price { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+        /* SECTION PHILOSOPHY */
+        .philosophy { padding: 100px 5%; background: #fafafa; display: flex; gap: 80px; align-items: center; }
+        .phi-text { flex: 1; }
+        .phi-text h2 { font-family: 'Playfair Display', serif; font-size: 70px; font-style: italic; margin-bottom: 25px; letter-spacing: -2px; }
+        .phi-text p { font-size: 18px; line-height: 1.8; color: #444; max-width: 550px; }
+
+        /* --- PANEL ADMIN OCULTO --- */
+        #admin-panel { position: fixed; right: -450px; top: 0; width: 400px; height: 100vh; background: #fff; box-shadow: -10px 0 50px rgba(0,0,0,0.1); z-index: 1000; padding: 40px; transition: 0.4s cubic-bezier(0.1, 0.7, 0.1, 1); border-left: 1px solid #eee; overflow-y: auto; }
+        #admin-panel.active { right: 0; }
+        .admin-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .admin-sec { margin-bottom: 40px; }
+        .admin-sec h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #999; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         
-        /* HERO SECTION */
-        .hero { padding: 40px 5%; text-align: center; }
-        .hero-container { position: relative; width: 100%; height: 75vh; border-radius: 20px; overflow: hidden; }
-        .hero-img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; background: rgba(0,0,0,0.1); }
-        .hero-overlay h1 { font-size: 100px; font-weight: 800; letter-spacing: -5px; }
-        .hero-overlay p { font-size: 14px; text-transform: uppercase; letter-spacing: 4px; margin-top: -10px; }
-
-        /* CATALOG */
-        .catalog-section { padding: 80px 5%; }
-        .catalog-header { text-align: center; font-size: 55px; font-weight: 300; letter-spacing: -3px; margin-bottom: 60px; text-transform: lowercase; }
-        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .product-card { position: relative; text-align: center; cursor: pointer; }
-        .product-card img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 4px; transition: 0.4s ease; }
-        .product-card:hover img { opacity: 0.8; }
-        .product-name { font-size: 16px; margin-top: 20px; color: var(--text); }
-        .product-price { font-size: 14px; color: var(--muted); margin-top: 5px; }
-
-        /* PHILOSOPHY SECT */
-        .philosophy { padding: 100px 5%; display: flex; gap: 60px; align-items: center; border-top: 1px solid #f2f2f2; }
-        .phil-text { flex: 1; }
-        .phil-text h2 { font-family: 'Playfair Display', serif; font-size: 60px; font-style: italic; margin-bottom: 30px; }
-        .phil-text p { line-height: 1.8; color: #444; font-size: 17px; }
-
-        /* ADMIN MODAL COMPLETO */
-        #admin-panel { position: fixed; right: -400px; top: 0; width: 400px; height: 100vh; background: white; box-shadow: -10px 0 30px rgba(0,0,0,0.05); z-index: 1000; padding: 40px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid #eee; overflow-y: auto; }
-        #admin-panel.open { right: 0; }
-        .admin-toggle { position: fixed; bottom: 30px; right: 30px; background: black; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1001; }
+        .field { margin-bottom: 15px; }
+        .field label { display: block; font-size: 10px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; }
+        .field input, .field textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 8px; font-size: 13px; }
+        .btn-add { width: 100%; padding: 15px; background: #000; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
         
-        .admin-section { margin-bottom: 35px; border-bottom: 1px solid #f2f2f2; padding-bottom: 20px; }
-        .admin-section h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; color: var(--muted); }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
-        input, textarea { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 6px; font-size: 14px; }
-        .btn-action { width: 100%; padding: 15px; background: black; color: white; border: none; font-weight: 600; cursor: pointer; margin-top: 10px; }
-        
-        .delete-p { color: red; font-size: 11px; cursor: pointer; text-decoration: underline; margin-top: 5px; display: block; }
+        .item-list { margin-top: 20px; font-size: 12px; }
+        .item-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dotted #eee; }
+        .del-btn { color: red; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="nav-left"><span>Catálogo</span> <span>Información</span></div>
-        <div class="logo" id="main-logo">inercia</div>
-        <div class="nav-right"><span>Contacto</span> <span onclick="toggleAdmin()">Admin</span></div>
+        <div class="nav-links"><span>Catálogo</span> <span>Información</span></div>
+        <div class="logo-center" onclick="toggleAdmin()">inercia</div>
+        <div class="nav-links"><span>Contacto</span> <span>Cesta</span></div>
     </header>
 
     <div class="hero">
-        <div class="hero-container">
-            <img src="https://unsplash.com" id="hero-img-display" class="hero-img">
-            <div class="hero-overlay">
-                <h1 id="hero-title">inercia</h1>
-                <p id="hero-subtitle">la confianza empieza con la ropa</p>
+        <div class="hero-box">
+            <img src="https://unsplash.com" id="hero-img-bg">
+            <div class="hero-content">
+                <h1 id="hero-main-title">inercia</h1>
+                <p id="hero-tagline">la confianza empieza con la ropa</p>
             </div>
         </div>
     </div>
 
-    <h2 class="catalog-header">catalog</h2>
-    <div class="product-grid" id="main-grid"></div>
+    <h2 class="cat-title">catalog</h2>
+
+    <div class="grid" id="product-grid"></div>
 
     <section class="philosophy">
-        <div class="phil-text">
-            <h2 id="phil-title">Our philosophy</h2>
-            <p id="phil-body">En Inercia, no vendemos solo prendas. Vendemos la capacidad de sentirte seguro en cada paso. Ropa diseñada para el movimiento constante.</p>
+        <div class="phi-text">
+            <h2 id="phi-display-title">Our philosophy</h2>
+            <p id="phi-display-body">En Inercia, cada costura está pensada para el movimiento. No somos solo una marca, somos el impulso que necesitas para verte y sentirte imparable.</p>
         </div>
-        <img src="https://unsplash.com" style="width: 350px; border-radius: 10px;">
+        <img src="https://unsplash.com" style="width: 400px; border-radius: 15px;">
     </section>
 
-    <!-- ADMIN PANEL -->
-    <div class="admin-toggle" onclick="toggleAdmin()"><i class="fas fa-sliders-h"></i></div>
-    
+    <!-- ADMIN PANEL OCULTO -->
     <div id="admin-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h2 style="font-size:20px;">Configuración</h2>
-            <i class="fas fa-times" onclick="toggleAdmin()" style="cursor:pointer;"></i>
+        <div class="admin-head">
+            <h2>Configuración</h2>
+            <button onclick="toggleAdmin()" style="border:none; background:none; cursor:pointer; font-size:20px;">×</button>
         </div>
 
-        <!-- CONFIG HERO -->
-        <div class="admin-section">
-            <h3>Banner Principal</h3>
-            <div class="input-group">
-                <label>Título Banner</label>
-                <input type="text" id="in-hero-title" placeholder="inercia" oninput="updateHero()">
+        <div class="admin-sec">
+            <h3>Visual del Hero</h3>
+            <div class="field">
+                <label>Título Principal</label>
+                <input type="text" id="edit-title" value="inercia" oninput="liveUpdate()">
             </div>
-            <div class="input-group">
-                <label>Subtítulo</label>
-                <input type="text" id="in-hero-sub" placeholder="la confianza empieza..." oninput="updateHero()">
+            <div class="field">
+                <label>Slogan</label>
+                <input type="text" id="edit-tag" value="la confianza empieza con la ropa" oninput="liveUpdate()">
             </div>
         </div>
 
-        <!-- GESTIÓN PRODUCTOS -->
-        <div class="admin-section">
-            <h3>Agregar Producto</h3>
-            <div class="input-group">
-                <label>Nombre Prenda</label>
-                <input type="text" id="p-name">
+        <div class="admin-sec">
+            <h3>Gestión de Catálogo</h3>
+            <div class="field">
+                <label>Nombre del Producto</label>
+                <input type="text" id="new-p-name" placeholder="Ej: Bomber Jacket">
             </div>
-            <div class="input-group">
-                <label>Precio (ARS)</label>
-                <input type="text" id="p-price" placeholder="12.900 P">
+            <div class="field">
+                <label>Precio</label>
+                <input type="text" id="new-p-price" placeholder="12.900 P">
             </div>
-            <div class="input-group">
-                <label>Link de Imagen</label>
-                <input type="text" id="p-img" placeholder="https://...">
+            <div class="field">
+                <label>URL Imagen</label>
+                <input type="text" id="new-p-img" placeholder="https://...">
             </div>
-            <button class="btn-action" onclick="addProduct()">Añadir al Catálogo</button>
-        </div>
-
-        <div id="admin-inventory">
-            <h3>Inventario Actual</h3>
-            <!-- Lista para borrar -->
+            <button class="btn-add" onclick="addProduct()">Publicar Producto</button>
+            
+            <div class="item-list" id="inventory-list"></div>
         </div>
     </div>
 
     <script>
-        // DB Local
-        let products = [
-            { name: "Rashguard Negro", price: "12.900 P", img: "https://unsplash.com" },
-            { name: "Rashguard Blanco", price: "12.900 P", img: "https://unsplash.com" },
-            { name: "Bomber Suede", price: "18.900 P", img: "https://unsplash.com" }
-        ];
+        // Memoria de la App
+        let db = {
+            products: [
+                { name: "Rashguard Negro", price: "12.900 P", img: "https://unsplash.com" },
+                { name: "Rashguard Blanco", price: "12.900 P", img: "https://unsplash.com" },
+                { name: "Bomber Suede", price: "18.900 P", img: "https://unsplash.com" }
+            ]
+        };
 
+        // Función para ocultar/mostrar Admin (Alt + A)
         function toggleAdmin() {
-            document.getElementById('admin-panel').classList.toggle('open');
+            document.getElementById('admin-panel').classList.toggle('active');
         }
 
-        // Configuración en tiempo real del Hero
-        function updateHero() {
-            const title = document.getElementById('in-hero-title').value;
-            const sub = document.getElementById('in-hero-sub').value;
-            if(title) document.getElementById('hero-title').innerText = title;
-            if(sub) document.getElementById('hero-subtitle').innerText = sub;
+        window.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key === 'a') toggleAdmin();
+        });
+
+        // Actualización en vivo de textos
+        function liveUpdate() {
+            document.getElementById('hero-main-title').innerText = document.getElementById('edit-title').value;
+            document.getElementById('hero-tagline').innerText = document.getElementById('edit-tag').value;
         }
 
-        function renderAll() {
-            const grid = document.getElementById('main-grid');
-            const inv = document.getElementById('admin-inventory');
+        // Renderizado del Catálogo e Inventario
+        function refresh() {
+            const grid = document.getElementById('product-grid');
+            const list = document.getElementById('inventory-list');
             grid.innerHTML = '';
-            inv.innerHTML = '<h3>Inventario Actual</h3>';
+            list.innerHTML = '<h3>Lista de productos</h3>';
 
-            products.forEach((p, i) => {
-                // Render en tienda
+            db.products.forEach((p, i) => {
+                // Tienda
                 grid.innerHTML += `
-                    <div class="product-card">
+                    <div class="product">
                         <img src="${p.img}">
-                        <div class="product-name">${p.name}</div>
-                        <div class="product-price">${p.price}</div>
+                        <div class="p-name">${p.name}</div>
+                        <div class="p-price">${p.price}</div>
                     </div>
                 `;
-                // Render en admin para borrar
-                inv.innerHTML += `
-                    <div style="font-size:12px; margin-bottom:10px; display:flex; justify-content:space-between;">
-                        ${p.name} <span class="delete-p" onclick="removeProduct(${i})">Eliminar</span>
+                // Admin
+                list.innerHTML += `
+                    <div class="item-row">
+                        ${p.name} <span class="del-btn" onclick="removeProduct(${i})">Eliminar</span>
                     </div>
                 `;
             });
         }
 
         function addProduct() {
-            const name = document.getElementById('p-name').value;
-            const price = document.getElementById('p-price').value;
-            const img = document.getElementById('p-img').value || "https://unsplash.com";
+            const name = document.getElementById('new-p-name').value;
+            const price = document.getElementById('new-p-price').value;
+            const img = document.getElementById('new-p-img').value || "https://unsplash.com";
             
             if(name && price) {
-                products.push({ name, price, img });
-                renderAll();
-                document.getElementById('p-name').value = '';
-                document.getElementById('p-price').value = '';
+                db.products.push({ name, price, img });
+                refresh();
+                document.getElementById('new-p-name').value = '';
+                document.getElementById('new-p-price').value = '';
             }
         }
 
         function removeProduct(i) {
-            products.splice(i, 1);
-            renderAll();
+            db.products.splice(i, 1);
+            refresh();
         }
 
-        renderAll();
+        // Carga inicial
+        refresh();
     </script>
 </body>
 </html>
