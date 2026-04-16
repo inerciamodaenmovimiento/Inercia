@@ -3,233 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Moda en Movimiento</title>
+    <title>Inercia | Moda Editorial</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        /* --- RESET Y ESTILO EDITORIAL --- */
+        :root { --negro: #121212; --gris-claro: #f8f8f8; --serif: 'Cormorant Garamond', serif; --sans: 'Montserrat', sans-serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --negro: #1a1a1a; --gris: #f4f4f4; --serif: 'Playfair Display', serif; --sans: 'Montserrat', sans-serif; }
         body { font-family: var(--sans); color: var(--negro); background: #fff; overflow-x: hidden; }
 
-        /* --- NAVEGACIÓN --- */
-        nav { padding: 40px 0; text-align: center; border-bottom: 1px solid #eee; position: relative; background: #fff; z-index: 1000; }
-        .logo { font-family: var(--serif); font-size: 2.8rem; letter-spacing: 12px; text-transform: uppercase; font-weight: 700; margin: 0; }
-        .menu { margin-top: 15px; }
-        .menu a { text-decoration: none; color: var(--negro); margin: 0 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; }
-        .cart-trigger { position: absolute; right: 5%; top: 45px; cursor: pointer; font-size: 1.4rem; }
+        /* --- NAVEGACIÓN ESTILO PHOTO --- */
+        nav { padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; background: #fff; border-bottom: 1px solid #f0f0f0; }
+        .nav-left { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; }
+        .logo { font-family: var(--serif); font-size: 1.8rem; letter-spacing: 8px; text-transform: uppercase; font-weight: 300; }
+        .cart-trigger { cursor: pointer; font-size: 1.2rem; position: relative; }
 
-        /* --- SECCIONES (SIN ESPACIOS BLANCOS) --- */
-        .hero { height: 85vh; width: 100%; background: url('https://unsplash.com') center/cover; }
-        .section-title { text-align: center; font-family: var(--serif); font-size: 2.2rem; padding: 60px 0 40px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
-        
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 5% 80px; background: #fff; }
-        .card { text-align: center; position: relative; }
-        .card img { width: 100%; height: 420px; object-fit: cover; margin-bottom: 15px; display: block; }
-        .dcto-badge { position: absolute; top: 10px; left: 10px; background: #000; color: #fff; padding: 5px 10px; font-size: 0.6rem; letter-spacing: 1px; }
-        .card h3 { font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; }
-        .price-old { text-decoration: line-through; color: #999; font-size: 0.7rem; margin-right: 5px; }
-        .btn-add { background: black; color: white; border: none; padding: 12px; width: 100%; cursor: pointer; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
+        /* --- HERO SPLIT (COMO LA IMAGEN) --- */
+        .hero-split { display: flex; height: 90vh; width: 100%; background: #000; }
+        .hero-img { flex: 1; background-size: cover; background-position: center; filter: grayscale(100%); transition: 0.8s; }
+        .hero-img:hover { filter: grayscale(0%); }
+        .hero-text-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; text-align: center; z-index: 10; pointer-events: none; }
+        .hero-text-center h1 { font-family: var(--serif); font-size: 4rem; letter-spacing: 15px; font-weight: 300; text-transform: uppercase; }
 
-        /* Banner Colección (Como la imagen) */
-        .collection-banner { height: 600px; background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://unsplash.com') center/cover; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; transition: background 0.5s; }
-        .collection-banner h2 { font-family: var(--serif); font-size: 5rem; letter-spacing: 20px; font-weight: 700; margin: 0; text-transform: uppercase; }
-        .view-btn { border: 2px solid #fff; color: #fff; padding: 12px 60px; text-decoration: none; font-size: 0.85rem; margin-top: 30px; letter-spacing: 5px; text-transform: uppercase; }
+        /* --- SECCIÓN ABOUT / MOSAICO --- */
+        .about-section { padding: 100px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .mosaic { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .mosaic img { width: 100%; height: 300px; object-fit: cover; filter: grayscale(100%); }
+        .about-content h2 { font-family: var(--serif); font-size: 3rem; margin-bottom: 20px; font-weight: 300; font-style: italic; }
+        .about-content p { font-weight: 200; line-height: 2; font-size: 0.9rem; color: #666; }
 
-        /* Twice as Cozy (Como la imagen) */
-        .story-section { display: flex; padding: 80px 5%; gap: 60px; align-items: center; background: #fff; }
-        .story-images { flex: 1.2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .story-images img { width: 100%; height: 480px; object-fit: cover; }
-        .story-text { flex: 1; max-width: 450px; }
-        .story-text h2 { font-family: var(--serif); font-size: 2.5rem; margin-bottom: 25px; }
+        /* --- PORTFOLIO DE PRODUCTOS --- */
+        .portfolio-title { padding: 50px 10% 20px; font-family: var(--serif); font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; font-weight: 300; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 0 10% 100px; }
+        .card { position: relative; text-align: left; }
+        .card img { width: 100%; height: 500px; object-fit: cover; filter: grayscale(100%); transition: 0.5s; }
+        .card:hover img { filter: grayscale(0%); }
+        .card-info { margin-top: 20px; border-left: 1px solid #ddd; padding-left: 15px; }
+        .card h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 300; text-transform: uppercase; }
+        .card p { font-size: 0.8rem; margin-top: 5px; color: #888; }
+        .btn-add { margin-top: 15px; background: none; border: 1px solid #000; padding: 10px 20px; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .btn-add:hover { background: #000; color: #fff; }
 
-        /* --- CARRITO --- */
-        #cart-panel { position: fixed; right: -420px; top: 0; width: 400px; height: 100%; background: white; z-index: 5000; transition: 0.4s ease; padding: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); overflow-y: auto; }
+        /* --- CARRITO ESTILO MINIMAL --- */
+        #cart-panel { position: fixed; right: -450px; top: 0; width: 400px; height: 100vh; background: #fff; z-index: 5000; transition: 0.5s; padding: 50px; box-shadow: -10px 0 30px rgba(0,0,0,0.05); overflow-y: auto; }
         #cart-panel.active { right: 0; }
-        .cart-close { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #999; }
-        .form-input { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #ddd; font-family: var(--sans); }
+        .form-input { width: 100%; padding: 15px 0; border: none; border-bottom: 1px solid #ddd; margin-bottom: 20px; font-family: var(--sans); outline: none; }
 
-        /* --- ADMIN MAESTRO --- */
-        #admin-panel { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; padding: 50px; box-sizing: border-box; overflow-y: auto; }
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .admin-box { background: #f9f9f9; padding: 25px; border: 1px solid #eee; margin-bottom: 20px; }
-        .order-row { background: #fff; padding: 15px; border: 1px solid #ddd; margin-bottom: 10px; font-size: 0.75rem; }
-
-        /* --- FOOTER --- */
-        footer { padding: 80px 5%; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.85rem; color: #666; line-height: 2; position: relative; background: #fff; }
-        .admin-trigger { position: absolute; bottom: 5px; right: 5px; width: 30px; height: 30px; cursor: pointer; color: transparent; }
+        /* --- ADMIN Y FOOTER --- */
+        footer { padding: 80px 10%; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); font-size: 0.75rem; letter-spacing: 1px; color: #999; }
+        .admin-trigger { position: fixed; bottom: 10px; right: 10px; width: 30px; height: 30px; cursor: pointer; opacity: 0.1; }
+        #admin-panel { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; padding: 50px; overflow-y: auto; }
+        .admin-box { background: #fafafa; padding: 30px; border: 1px solid #eee; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
     <nav>
+        <div class="nav-left">Página Principal</div>
         <div class="logo" id="disp-logo">INERCIA</div>
-        <div class="menu" id="nav-container">
-            <a href="#">Inicio</a> <a href="#">Novedades</a> <a href="#">Colección</a> <a href="#">Ofertas</a>
-        </div>
         <div class="cart-trigger" onclick="toggleCart()">🛍️ <span id="cart-count">0</span></div>
     </nav>
 
-    <div class="hero" id="disp-hero"></div>
-
-    <h2 class="section-title" id="disp-title-arrivals">Nuevos Ingresos</h2>
-    <div class="grid" id="store-grid"></div>
-
-    <div class="collection-banner" id="disp-banner-coll">
-        <h2 id="disp-text-coll">COLECCIÓN</h2>
-        <a href="#" class="view-btn">VER MÁS</a>
+    <!-- HERO SPLIT -->
+    <div class="hero-split">
+        <div class="hero-img" style="background-image: url('https://unsplash.com')"></div>
+        <div class="hero-img" style="background-image: url('https://unsplash.com')"></div>
+        <div class="hero-text-center">
+            <h1 id="disp-hero-txt">Moda & Arte</h1>
+        </div>
     </div>
 
-    <section class="story-section">
-        <div class="story-images">
+    <!-- SECCIÓN ABOUT MOSAICO -->
+    <section class="about-section">
+        <div class="mosaic">
             <img src="https://unsplash.com">
+            <img src="https://unsplash.com" style="margin-top: 40px;">
+            <img src="https://unsplash.com" style="margin-top: -40px;">
             <img src="https://unsplash.com">
         </div>
-        <div class="story-text">
-            <h2 id="disp-st-title">Doble Confort</h2>
-            <p id="disp-st-text">Diseño exclusivo y calidad premium en cada costura para mujeres que buscan elegancia en movimiento.</p>
+        <div class="about-content">
+            <h2 id="disp-about-title">Sobre Nosotros</h2>
+            <p id="disp-about-text">Nuestra meta es capturar tu esencia, tu carácter y tu historia a través de piezas diseñadas con la precisión de la alta costura y el alma del arte contemporáneo.</p>
         </div>
     </section>
 
-    <!-- CARRITO -->
-    <div id="cart-panel">
-        <div class="cart-close" onclick="toggleCart()">✕</div>
-        <h2 style="font-family: var(--serif); border-bottom: 2px solid #000; padding-bottom: 10px; margin-top: 0;">Tu Bolsa</h2>
-        <div id="cart-list" style="margin: 20px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;"></div>
-        
-        <input type="text" class="form-input" id="o-name" placeholder="Nombre Completo">
-        <input type="text" class="form-input" id="o-addr" placeholder="Dirección">
-        <div style="display: flex; gap: 10px;">
-            <input type="text" class="form-input" id="o-city" placeholder="Ciudad">
-            <input type="text" class="form-input" id="o-cp" placeholder="C.P.">
-        </div>
-
-        <label style="font-size: 0.7rem; display:block; margin-top:15px; font-weight: bold;">MÉTODO DE ENVÍO</label>
-        <select class="form-input" id="o-ship-dynamic"></select>
-
-        <label style="font-size: 0.7rem; display:block; margin-top:15px; font-weight: bold;">MÉTODO DE PAGO</label>
-        <select class="form-input" id="o-pay-dynamic" onchange="toggleBank()"></select>
-
-        <div id="bank-box" style="display:none; padding:15px; background:#f9f9f9; border-left:3px solid #000; margin-top:15px; font-size:0.8rem;">
-            <span id="bank-txt-disp">CBU: 00000123456789 | Alias: INERCIA.MODA</span>
-        </div>
-        <button onclick="finalizar()" style="background:black; color:white; border:none; padding:20px; width:100%; margin-top:30px; cursor:pointer; font-weight:bold; letter-spacing: 2px; text-transform: uppercase;">Finalizar Pedido</button>
+    <!-- PORTFOLIO / TIENDA -->
+    <h2 class="portfolio-title">Portfolio</h2>
+    <div class="grid" id="store-grid">
+        <!-- Productos aquí -->
     </div>
 
-    <footer id="main-footer">
-        <div id="ft-1"><strong>Nosotros</strong><br>Elegancia en movimiento constante.</div>
-        <div id="ft-2"><strong>Contacto</strong><br>WhatsApp: 02-1234-5678<br>Instagram: @inercia.moda</div>
-        <div id="ft-3"><strong>Atención</strong><br>Lunes a Viernes de 9 a 18hs.</div>
+    <!-- CARRITO -->
+    <div id="cart-panel">
+        <h2 style="font-family: var(--serif); font-size: 2.5rem; margin-bottom: 30px;">Tu Bolsa</h2>
+        <div id="cart-list" style="margin-bottom: 30px;"></div>
+        <input type="text" class="form-input" id="o-name" placeholder="NOMBRE COMPLETO">
+        <input type="text" class="form-input" id="o-addr" placeholder="DIRECCIÓN Y CIUDAD">
+        <select class="form-input" id="o-ship">
+            <option>Correo Argentino ($1.500)</option>
+            <option>Envío Express ($2.800)</option>
+        </select>
+        <select class="form-input" id="o-pay" onchange="toggleBank()">
+            <option value="card">TARJETA</option>
+            <option value="transfer">TRANSFERENCIA</option>
+        </select>
+        <div id="bank-box" style="display:none; font-size: 0.7rem; padding: 15px; background: #f9f9f9; margin-bottom: 20px;">
+            <span id="bank-txt">CBU: 00000123456789 | Alias: INERCIA.MODA</span>
+        </div>
+        <button onclick="finalizar()" style="width: 100%; background: #000; color: #fff; border: none; padding: 20px; cursor: pointer; letter-spacing: 3px;">FINALIZAR PEDIDO</button>
+        <p onclick="toggleCart()" style="text-align: center; margin-top: 20px; font-size: 0.6rem; cursor: pointer; letter-spacing: 2px;">CERRAR</p>
+    </div>
+
+    <footer>
+        <div id="ft-1">© 2026 INERCIA<br>Moda en Movimiento</div>
+        <div id="ft-2">INSTAGRAM: @inercia.moda<br>WHATSAPP: 02-1234-5678</div>
+        <div id="ft-3">LUN A VIE 9-18HS<br>Buenos Aires, Argentina</div>
         <div class="admin-trigger" onclick="abrirAdmin()">.</div>
     </footer>
 
     <!-- ADMIN -->
     <div id="admin-panel">
-        <h2 style="font-family: var(--serif); border-bottom: 3px solid #000; padding-bottom: 10px; margin-top: 0;">Panel Maestro - INERCIA</h2>
-        <div class="admin-grid">
+        <h2 style="font-family: var(--serif); font-size: 2.5rem; border-bottom: 1px solid #000; padding-bottom: 20px;">Admin Maestro</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
             <div class="admin-box">
-                <h3>Configuración de Tienda</h3>
-                <label>Categorías (comas)</label><input type="text" id="in-cats" class="form-input" value="Inicio, Novedades, Colección, Ofertas">
-                <label>Envíos (comas)</label><input type="text" id="in-envios" class="form-input" value="Correo Argentino ($1500), Retiro Local (Gratis)">
-                <label>Pagos (comas)</label><input type="text" id="in-pagos" class="form-input" value="Tarjeta, Transferencia, Mercado Pago">
-                <label>Link Foto Banner Principal</label><input type="text" id="in-hero-url" class="form-input" placeholder="Pega el link de la foto aquí">
-                <label>Datos Bancarios</label><input type="text" id="in-bank" class="form-input" value="CBU: 00000123456789 | Alias: INERCIA.MODA">
-                <label>Footer (Bloque 2 Contacto)</label><textarea id="in-ft-2" class="form-input"><strong>Contacto</strong><br>WhatsApp: 02-1234-5678<br>Instagram: @inercia.moda</textarea>
+                <h3>Textos Principales</h3>
+                <input type="text" id="in-logo" class="form-input" placeholder="LOGO" value="INERCIA">
+                <input type="text" id="in-hero" class="form-input" placeholder="TEXTO HERO" value="Moda & Arte">
+                <input type="text" id="in-about-t" class="form-input" placeholder="TÍTULO SOBRE NOSOTROS" value="Sobre Nosotros">
+                <textarea id="in-about-txt" class="form-input" placeholder="TEXTO SOBRE NOSOTROS">Nuestra meta es capturar tu esencia...</textarea>
             </div>
             <div class="admin-box">
-                <h3>Gestión de Inventario</h3>
-                <input type="file" id="p-file" accept="image/*" style="margin-bottom: 10px;">
+                <h3>Productos</h3>
+                <input type="file" id="p-file" accept="image/*" class="form-input">
                 <input type="text" id="p-name" class="form-input" placeholder="Nombre">
                 <input type="number" id="p-price" class="form-input" placeholder="Precio">
-                <input type="number" id="p-stock" class="form-input" placeholder="Stock">
-                <input type="number" id="p-dcto" class="form-input" placeholder="Descuento %" value="0">
-                <button onclick="subir()" style="background:black; color:white; width:100%; padding:15px; margin-top:10px; cursor:pointer;">SUBIR PRODUCTO</button>
-                <div id="admin-inv" style="margin-top:20px; max-height: 150px; overflow-y: auto;"></div>
-                <hr style="margin: 20px 0;">
-                <h3>Historial de Pedidos</h3>
-                <div id="admin-orders" style="max-height: 150px; overflow-y: auto; background:#fff; padding:10px; border:1px solid #ddd; font-size:0.7rem;"></div>
+                <button onclick="subir()" style="background:#000; color:#fff; width:100%; padding:15px; cursor:pointer;">PUBLICAR</button>
+                <div id="admin-inv" style="margin-top: 20px;"></div>
             </div>
         </div>
-        <button onclick="guardarTodo()" style="background:black; color:white; width:100%; padding:20px; font-weight:bold; cursor:pointer; margin-top:20px; text-transform: uppercase; letter-spacing: 2px;">Guardar Cambios del Sitio</button>
-        <button onclick="cerrarAdmin()" style="margin-top:10px; border:none; background:none; cursor:pointer; width:100%; color: #999;">Cerrar sin guardar</button>
+        <button onclick="guardarAdmin()" style="width:100%; background:#000; color:#fff; padding:20px; margin-top:20px; cursor:pointer;">GUARDAR CAMBIOS</button>
+        <button onclick="cerrarAdmin()" style="background:none; border:none; margin-top:10px; cursor:pointer; color: #999;">Cerrar</button>
     </div>
 
     <script>
-        let productos = [{ id: 1, name: "Blusa Marrón", price: 12900, stock: 10, dcto: 0, img: "https://unsplash.com" }];
-        let cart = []; let orders = [];
+        let productos = [{ id: 1, name: "Vestido Editorial", price: 25000, img: "https://unsplash.com" }];
+        let cart = [];
 
         function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
-        function toggleBank() { 
-            const pay = document.getElementById('o-pay-dynamic').value.toLowerCase();
-            document.getElementById('bank-box').style.display = pay.includes('trans') ? 'block' : 'none'; 
-        }
-        function abrirAdmin() { if(prompt("Código Maestro:") === "0110") { document.getElementById('admin-panel').style.display='block'; renderAdmin(); } }
+        function toggleBank() { document.getElementById('bank-box').style.display = (document.getElementById('o-pay').value === 'transfer') ? 'block' : 'none'; }
+        function abrirAdmin() { if(prompt("Código:") === "0110") { document.getElementById('admin-panel').style.display='block'; renderAdmin(); } }
         function cerrarAdmin() { document.getElementById('admin-panel').style.display='none'; }
 
         function renderStore() {
-            document.getElementById('store-grid').innerHTML = productos.map(p => {
-                let finalP = p.dcto > 0 ? p.price * (1 - p.dcto/100) : p.price;
-                return `<div class="card">
-                    ${p.dcto > 0 ? `<div class="dcto-badge">-${p.dcto}%</div>` : ''}
-                    <img src="${p.img}"><h3>${p.name}</h3><p>$${finalP.toFixed(0)}</p>
-                    <button class="btn-add" onclick="add(${p.id})" ${p.stock <= 0 ? 'disabled' : ''}>${p.stock <= 0 ? 'SIN STOCK' : 'AÑADIR'}</button>
-                </div>`;
-            }).join('');
-        }
-
-        function guardarTodo() {
-            const cats = document.getElementById('in-cats').value.split(',');
-            document.getElementById('nav-container').innerHTML = cats.map(c => `<a href="#">${c.trim()}</a>`).join('');
-            
-            const envios = document.getElementById('in-envios').value.split(',');
-            document.getElementById('o-ship-dynamic').innerHTML = envios.map(e => `<option>${e.trim()}</option>`).join('');
-            
-            const pagos = document.getElementById('in-pagos').value.split(',');
-            document.getElementById('o-pay-dynamic').innerHTML = pagos.map(p => `<option>${p.trim()}</option>`).join('');
-
-            const heroUrl = document.getElementById('in-hero-url').value;
-            if(heroUrl) document.getElementById('disp-hero').style.backgroundImage = `url('${heroUrl}')`;
-
-            document.getElementById('bank-txt-disp').innerText = document.getElementById('in-bank').value;
-            document.getElementById('ft-2').innerHTML = document.getElementById('in-ft-2').value;
-
-            alert("Sitio actualizado correctamente."); cerrarAdmin();
+            document.getElementById('store-grid').innerHTML = productos.map(p => `
+                <div class="card">
+                    <img src="${p.img}">
+                    <div class="card-info">
+                        <h3>${p.name}</h3>
+                        <p>$${p.price}</p>
+                        <button class="btn-add" onclick="add(${p.id})">Añadir a la bolsa</button>
+                    </div>
+                </div>`).join('');
         }
 
         function subir() {
             const reader = new FileReader();
             reader.onload = (e) => {
-                productos.push({ id: Date.now(), name: document.getElementById('p-name').value, price: Number(document.getElementById('p-price').value), stock: Number(document.getElementById('p-stock').value), dcto: Number(document.getElementById('p-dcto').value), img: e.target.result });
-                renderStore(); renderAdmin(); alert("Producto subido!");
+                productos.push({ id: Date.now(), name: document.getElementById('p-name').value, price: Number(document.getElementById('p-price').value), img: e.target.result });
+                renderStore(); renderAdmin(); alert("Subido!");
             };
             reader.readAsDataURL(document.getElementById('p-file').files);
         }
 
+        function guardarAdmin() {
+            document.getElementById('disp-logo').innerText = document.getElementById('in-logo').value;
+            document.getElementById('disp-hero-txt').innerText = document.getElementById('in-hero').value;
+            document.getElementById('disp-about-title').innerText = document.getElementById('in-about-t').value;
+            document.getElementById('disp-about-text').innerText = document.getElementById('in-about-txt').value;
+            alert("Cambios guardados!"); cerrarAdmin();
+        }
+
         function renderAdmin() {
-            document.getElementById('admin-inv').innerHTML = productos.map(p => `<div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #eee;"><span>${p.name} (S: ${p.stock})</span><button onclick="borrar(${p.id})" style="background:red; color:white; border:none; cursor:pointer; padding:2px 5px;">X</button></div>`).join('');
+            document.getElementById('admin-inv').innerHTML = productos.map(p => `<div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #eee;"><span>${p.name}</span><button onclick="borrar(${p.id})" style="background:red; color:white; border:none; padding:2px 5px; cursor:pointer;">X</button></div>`).join('');
         }
 
         function borrar(id) { productos = productos.filter(p => p.id !== id); renderStore(); renderAdmin(); }
-
-        function add(id) { 
-            const p = productos.find(x => x.id === id);
-            if(p.stock > 0) {
-                cart.push(p); p.stock--;
-                document.getElementById('cart-count').innerText = cart.length;
-                document.getElementById('cart-list').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.8rem;"><span>${i.name}</span><span>$${(i.price * (1-i.dcto/100)).toFixed(0)}</span></div>`).join('');
-                renderStore();
-                if(!document.getElementById('cart-panel').classList.contains('active')) toggleCart();
-            }
-        }
-
-        function finalizar() { 
-            if(!document.getElementById('o-addr').value || !document.getElementById('o-name').value) return alert("Completa los datos de envío.");
-            orders.unshift({ cliente: document.getElementById('o-name').value, fecha: new Date().toLocaleTimeString(), pago: document.getElementById('o-pay-dynamic').value });
-            document.getElementById('admin-orders').innerHTML = orders.map(o => `<div class="order-row"><strong>${o.fecha}</strong> - ${o.cliente} (Pago: ${o.pago})</div>`).join('');
-            alert("Pedido recibido exitosamente."); cart = []; document.getElementById('cart-count').innerText = "0"; toggleCart(); 
-        }
+        function add(id) { cart.push(productos.find(x => x.id === id)); document.getElementById('cart-count').innerText = cart.length; 
+            document.getElementById('cart-list').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>${i.name}</span><span>$${i.price}</span></div>`).join('');
+            toggleCart(); }
+        function finalizar() { alert("Pedido enviado exitosamente."); cart = []; document.getElementById('cart-count').innerText = "0"; toggleCart(); }
         
         renderStore();
-        window.onload = () => { guardarTodo(); cerrarAdmin(); };
     </script>
 </body>
 </html>
