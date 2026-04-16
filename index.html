@@ -268,4 +268,64 @@
     function renderOrders() { document.getElementById('order-list').innerHTML = db.orders.map(o => `<div class="order-card"><strong>${o.date} - ${o.name}</strong> (${o.phone})<br>${o.items}<br>${o.info}<br>${o.total}</div>`).reverse().join(''); }
 </script>
 </body>
-</html>
+</html><!-- Sección de Catálogo -->
+<section id="productos" style="padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    <!-- Producto Ejemplo -->
+    <div class="producto-card" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; width: 250px; text-align: center;">
+        <img src="URL_DE_TU_IMAGEN" alt="Producto" style="width: 100%; border-radius: 5px;">
+        <h3>Remera Inercia</h3>
+        <p>$15.000</p>
+        <button onclick="agregarAlCarrito('Remera Inercia', 15000)" style="background: #000; color: #fff; padding: 10px; border: none; cursor: pointer; width: 100%;">Agregar al Carrito</button>
+    </div>
+</section>
+
+<!-- Botón Flotante del Carrito -->
+<div id="carrito-flotante" style="position: fixed; bottom: 20px; right: 20px; background: #fff; border: 2px solid #000; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none; z-index: 1000;">
+    <h4>Tu Carrito</h4>
+    <ul id="lista-carrito" style="list-style: none; padding: 0;"></ul>
+    <hr>
+    <p><strong>Total: $<span id="total-precio">0</span></strong></p>
+    <button onclick="enviarWhatsApp()" style="background: #25D366; color: white; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer;">Finalizar Compra por WhatsApp</button>
+    <button onclick="cerrarCarrito()" style="background: #eee; border: none; padding: 5px; width: 100%; margin-top: 5px; cursor: pointer;">Cerrar</button>
+</div>
+
+<script>
+let carrito = [];
+let total = 0;
+
+function agregarAlCarrito(nombre, precio) {
+    carrito.push({nombre, precio});
+    total += precio;
+    actualizarInterfaz();
+    document.getElementById('carrito-flotante').style.display = 'block';
+}
+
+function actualizarInterfaz() {
+    const lista = document.getElementById('lista-carrito');
+    lista.innerHTML = "";
+    carrito.forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.nombre} - $${item.precio}`;
+        lista.appendChild(li);
+    });
+    document.getElementById('total-precio').textContent = total;
+}
+
+function cerrarCarrito() {
+    document.getElementById('carrito-flotante').style.display = 'none';
+}
+
+function enviarWhatsApp() {
+    const numero = "54911XXXXXXXX"; // PONE TU NUMERO ACA (Código de país + área + número)
+    let mensaje = "¡Hola Inercia! Quiero realizar el siguiente pedido:\n\n";
+    
+    carrito.forEach(item => {
+        mensaje += `- ${item.nombre} ($${item.precio})\n`;
+    });
+    
+    mensaje += `\n*Total a pagar: $${total}*`;
+    const url = `https://wa.me{numero}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+}
+</script>
+
