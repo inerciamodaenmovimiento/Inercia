@@ -243,7 +243,7 @@
         document.getElementById('cart-count').innerText = cart.length;
     }
 
-    function () {
+    function confirmOrder() {
         const n = document.getElementById('c-name').value;
         if(!cart.length || !n) return alert("Faltan datos");
         const o = {
