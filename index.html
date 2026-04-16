@@ -7,58 +7,68 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root { --negro: #1a1a1a; --serif: 'Playfair Display', serif; --sans: 'Montserrat', sans-serif; }
-        body { margin: 0; font-family: var(--sans); color: var(--negro); background: #fff; }
+        body { margin: 0; padding: 0; font-family: var(--sans); color: var(--negro); background: #fff; overflow-x: hidden; }
 
         /* --- HEADER --- */
-        nav { padding: 40px 0; text-align: center; border-bottom: 1px solid #eee; position: relative; }
-        .logo { font-family: var(--serif); font-size: 2.5rem; letter-spacing: 12px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700; }
+        nav { padding: 30px 0; text-align: center; border-bottom: 1px solid #eee; position: relative; }
+        .logo { font-family: var(--serif); font-size: 2.5rem; letter-spacing: 12px; text-transform: uppercase; margin: 0 0 15px 0; font-weight: 700; }
         .menu a { text-decoration: none; color: var(--negro); margin: 0 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
-        .cart-btn { position: absolute; right: 5%; top: 40px; cursor: pointer; font-size: 1.2rem; }
+        .cart-trigger { position: absolute; right: 5%; top: 35px; cursor: pointer; font-size: 1.3rem; }
 
-        /* --- DISEÑO EDITORIAL --- */
-        .hero { height: 85vh; background: url('https://unsplash.com') center/cover; }
-        .section-title { text-align: center; font-family: var(--serif); font-size: 2.2rem; margin: 80px 0 50px; font-weight: 700; }
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 5%; margin-bottom: 100px; }
-        .card { text-align: center; }
-        .card img { width: 100%; height: 400px; object-fit: cover; margin-bottom: 15px; }
-        .btn-buy { background: black; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; font-size: 0.65rem; letter-spacing: 2px; }
+        /* --- SECCIONES (AJUSTE DE ESPACIOS) --- */
+        .hero { height: 85vh; width: 100%; background: url('https://unsplash.com') center/cover; margin: 0; }
+        
+        .section-title { text-align: center; font-family: var(--serif); font-size: 2rem; margin: 50px 0 30px 0; font-weight: 700; }
+        
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 5%; margin-bottom: 50px; }
+        .card { text-align: center; position: relative; }
+        .card img { width: 100%; height: 400px; object-fit: cover; margin-bottom: 10px; }
+        .dcto-badge { position: absolute; top: 10px; left: 10px; background: #000; color: #fff; padding: 5px 10px; font-size: 0.6rem; letter-spacing: 1px; }
+        .card h3 { font-size: 0.8rem; margin: 5px 0; text-transform: uppercase; }
+        .price-old { text-decoration: line-through; color: #999; font-size: 0.7rem; margin-right: 5px; }
+        .btn-add { background: black; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; font-size: 0.65rem; margin-top: 5px; }
 
-        .collection-banner { height: 600px; background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url('https://unsplash.com') center/cover; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; margin-bottom: 100px; }
-        .collection-banner h2 { font-family: var(--serif); font-size: 5rem; letter-spacing: 20px; margin: 0; font-weight: 700; }
-        .view-btn { border: 2px solid #fff; color: #fff; padding: 12px 60px; text-decoration: none; font-size: 0.85rem; margin-top: 30px; letter-spacing: 5px; text-transform: uppercase; }
+        /* BANNER COLECCIÓN - SIN MÁRGENES EXTRAS */
+        .collection-banner { height: 600px; background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://unsplash.com') center/cover; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; margin: 0; }
+        .collection-banner h2 { font-family: var(--serif); font-size: 4.5rem; letter-spacing: 15px; margin: 0; font-weight: 700; }
+        .view-btn { border: 2px solid #fff; color: #fff; padding: 12px 50px; text-decoration: none; font-size: 0.8rem; margin-top: 30px; letter-spacing: 4px; text-transform: uppercase; }
 
-        .story-section { display: flex; padding: 80px 5%; gap: 60px; align-items: center; }
-        .story-images { flex: 1.3; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .story-images img { width: 100%; height: 480px; object-fit: cover; }
+        /* TWICE AS COZY - UNIDO AL BANNER */
+        .story-section { display: flex; padding: 60px 5%; gap: 60px; align-items: center; background: #fff; }
+        .story-images { flex: 1.2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .story-images img { width: 100%; height: 450px; object-fit: cover; }
+        .story-text { flex: 1; max-width: 450px; }
+        .story-text h2 { font-family: var(--serif); font-size: 2.2rem; margin-bottom: 20px; }
 
-        /* --- CARRITO CON INFO DE ENVÍO --- */
+        /* --- CARRITO --- */
         #cart-panel { position: fixed; right: -420px; top: 0; width: 400px; height: 100%; background: white; z-index: 5000; transition: 0.4s; padding: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); box-sizing: border-box; overflow-y: auto; }
         #cart-panel.active { right: 0; }
-        .form-label { display: block; font-size: 0.65rem; font-weight: bold; margin-top: 12px; text-transform: uppercase; color: #888; }
-        .form-input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; font-family: var(--sans); }
+        .form-label { display: block; font-size: 0.65rem; font-weight: bold; margin-top: 15px; text-transform: uppercase; color: #888; }
+        .form-input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; font-family: var(--sans); box-sizing: border-box; }
 
         /* --- ADMIN Y FOOTER --- */
-        footer { padding: 80px 5%; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.8rem; line-height: 2.2; position: relative; }
-        .admin-trigger { position: fixed; bottom: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer; color: transparent; z-index: 6000; }
+        footer { padding: 60px 5%; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.85rem; color: #666; line-height: 2; position: relative; }
+        .admin-trigger { position: absolute; bottom: 5px; right: 5px; width: 20px; height: 20px; cursor: pointer; color: transparent; }
         #admin-panel { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; padding: 50px; box-sizing: border-box; overflow-y: auto; }
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .admin-box { background: #f8f8f8; padding: 25px; border-radius: 5px; border: 1px solid #eee; margin-bottom: 25px; }
+        .admin-box { background: #f9f9f9; padding: 25px; border: 1px solid #eee; }
+        .inv-item { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 10px; border: 1px solid #eee; margin-bottom: 5px; font-size: 0.7rem; }
     </style>
 </head>
 <body>
 
     <nav>
         <div class="logo">INERCIA</div>
-        <div class="menu" id="nav-links">
+        <div class="menu" id="nav-container">
             <a href="#">Inicio</a> <a href="#">Novedades</a> <a href="#">Prendas</a> <a href="#">Ofertas</a>
         </div>
-        <div class="cart-btn" onclick="toggleCart()">🛍️ <span id="cart-count" style="font-size: 0.7rem; vertical-align: top;">0</span></div>
+        <div class="cart-trigger" onclick="toggleCart()">🛍️ <span id="cart-count" style="font-size: 0.8rem; vertical-align: top;">0</span></div>
     </nav>
 
     <div class="hero"></div>
 
     <h2 class="section-title">Nuevos Ingresos</h2>
-    <div class="grid" id="main-grid"></div>
+    <div class="grid" id="store-grid"></div>
 
     <div class="collection-banner">
         <h2>COLECCIÓN</h2>
@@ -71,85 +81,82 @@
             <img src="https://unsplash.com">
         </div>
         <div class="story-text">
-            <h2 style="font-family: var(--serif); font-size: 2.2rem;">Doble Confort</h2>
-            <p>Diseño exclusivo y calidad premium en cada costura.</p>
+            <h2 id="st-title-disp">Doble Confort</h2>
+            <p id="st-text-disp">Diseño exclusivo y calidad premium en cada costura para mujeres que buscan elegancia en movimiento.</p>
         </div>
     </section>
 
-    <!-- CARRITO -->
+    <!-- CARRITO DETALLADO -->
     <div id="cart-panel">
-        <h2 style="font-family: var(--serif); border-bottom: 2px solid #000; padding-bottom: 10px;">Tu Pedido</h2>
+        <h2 style="font-family: var(--serif); border-bottom: 2px solid #000; padding-bottom: 10px; margin-top: 0;">Tu Bolsa</h2>
         <div id="cart-list" style="margin: 20px 0; border-bottom: 1px solid #eee; padding-bottom: 15px;"></div>
         
         <div class="checkout-form">
             <label class="form-label">Nombre Completo</label>
-            <input type="text" class="form-input" id="order-name">
+            <input type="text" class="form-input" id="o-name">
             
             <label class="form-label">Dirección de Entrega</label>
-            <input type="text" class="form-input" id="order-addr" placeholder="Calle y número">
+            <input type="text" class="form-input" id="o-addr" placeholder="Calle y número">
             
             <div style="display: flex; gap: 10px;">
-                <div style="flex: 1;"><label class="form-label">Ciudad</label><input type="text" class="form-input" id="order-city"></div>
-                <div style="flex: 1;"><label class="form-label">Cód. Postal</label><input type="text" class="form-input" id="order-cp"></div>
+                <div style="flex: 1;"><label class="form-label">Ciudad</label><input type="text" class="form-input" id="o-city"></div>
+                <div style="flex: 1;"><label class="form-label">Cód. Postal</label><input type="text" class="form-input" id="o-cp"></div>
             </div>
 
             <label class="form-label">Método de Envío</label>
-            <select class="form-input" id="order-ship">
+            <select class="form-input" id="o-ship">
                 <option>Correo Argentino a Domicilio ($1.500)</option>
                 <option>Envío Express CABA ($2.800)</option>
                 <option>Retiro en Local (Gratis)</option>
             </select>
 
             <label class="form-label">Método de Pago</label>
-            <select class="form-input" id="order-pay" onchange="toggleBank()">
+            <select class="form-input" id="o-pay" onchange="toggleBank()">
                 <option value="card">Tarjeta de Crédito / Débito</option>
                 <option value="transfer">Transferencia Bancaria</option>
             </select>
 
             <div id="bank-box" style="display:none; padding:15px; background:#f9f9f9; border-left:3px solid #000; margin-top:15px; font-size:0.8rem;">
-                <strong>CBU/Alias:</strong><br><span id="bank-display">00000123456789 | INERCIA.MODA</span>
+                <strong>CBU/Alias:</strong><br><span id="bank-txt">00000123456789 | INERCIA.MODA</span>
             </div>
 
-            <button onclick="finalizar()" style="background:black; color:white; border:none; padding:20px; width:100%; margin-top:30px; cursor:pointer; font-weight:bold; letter-spacing: 2px;">FINALIZAR</button>
-            <p onclick="toggleCart()" style="text-align:center; cursor:pointer; margin-top:15px; color:grey; font-size:0.7rem;">CERRAR</p>
+            <button onclick="finalizar()" style="background:black; color:white; border:none; padding:20px; width:100%; margin-top:30px; cursor:pointer; font-weight:bold; letter-spacing: 2px;">CONFIRMAR COMPRA</button>
+            <p onclick="toggleCart()" style="text-align:center; cursor:pointer; margin-top:20px; color:grey; font-size:0.7rem; text-transform:uppercase;">Cerrar Bolsa</p>
         </div>
     </div>
 
     <footer>
-        <div>
-            <strong>Nosotros</strong><br>
-            <span id="ft-nosotros">Nuestra Historia<br>Nuestra Esencia</span>
-        </div>
-        <div>
-            <strong>Contacto</strong><br>
-            WhatsApp: <span id="ft-wa">02-1234-5678</span><br>
-            Instagram: <span id="ft-ig">@inercia.moda</span>
-        </div>
-        <div>
-            <strong>Atención</strong><br>
-            Horario: <span id="ft-horario">Lun a Vie 9-18hs</span>
-        </div>
+        <div><strong>Nosotros</strong><br><span id="ft-nos">Elegancia en movimiento constante.</span></div>
+        <div><strong>Contacto</strong><br>WhatsApp: <span id="ft-wa">02-1234-5678</span><br>Instagram: <span id="ft-ig">@inercia.moda</span></div>
+        <div><strong>Atención</strong><br><span id="ft-at">Lunes a Viernes de 9 a 18hs.</span></div>
         <div class="admin-trigger" onclick="abrirAdmin()">.</div>
     </footer>
 
-    <!-- PANEL ADMIN -->
+    <!-- ADMIN COMPLETO -->
     <div id="admin-panel">
-        <h2 style="font-family: var(--serif); border-bottom: 3px solid #000; padding-bottom: 10px;">Panel Maestro</h2>
+        <h2 style="font-family: var(--serif); border-bottom: 3px solid #000; padding-bottom: 10px; margin-top: 0;">Panel Maestro - Gestión Total</h2>
         <div class="admin-grid">
             <div class="admin-box">
                 <h3>Subir Producto</h3>
                 <label class="form-label">Nombre</label><input type="text" class="form-input" id="p-name">
                 <label class="form-label">Precio</label><input type="number" class="form-input" id="p-price">
-                <label class="form-label">Imagen</label><input type="file" id="p-file" accept="image/*">
+                <label class="form-label">Stock</label><input type="number" class="form-input" id="p-stock">
+                <label class="form-label">Descuento (%)</label><input type="number" class="form-input" id="p-dcto" value="0">
+                <label class="form-label">Descripción</label><input type="text" class="form-input" id="p-desc">
+                <label class="form-label">Imagen (desde PC)</label><input type="file" id="p-file" accept="image/*">
                 <button onclick="subir()" style="background:black; color:white; width:100%; padding:15px; margin-top:15px; cursor:pointer;">PUBLICAR</button>
-            </div>
-            <div class="admin-box">
-                <h3>Configurar Contactos y Footer</h3>
+                <hr style="margin: 30px 0;">
+                <h3>Configurar Footer y Datos</h3>
                 <label class="form-label">WhatsApp</label><input type="text" class="form-input" id="in-wa" value="02-1234-5678">
                 <label class="form-label">Instagram</label><input type="text" class="form-input" id="in-ig" value="@inercia.moda">
-                <label class="form-label">Horario</label><input type="text" class="form-input" id="in-horario" value="Lun a Vie 9-18hs">
-                <label class="form-label">Datos de Transferencia (CBU/Alias)</label><input type="text" class="form-input" id="in-bank" value="00000123456789 | INERCIA.MODA">
-                <button onclick="guardarConfig()" style="background:black; color:white; width:100%; padding:15px; margin-top:15px; cursor:pointer;">GUARDAR CAMBIOS</button>
+                <label class="form-label">CBU / Alias</label><input type="text" class="form-input" id="in-bank" value="00000123456789 | INERCIA.MODA">
+                <button onclick="guardarAdmin()" style="background:black; color:white; width:100%; padding:15px; margin-top:10px; cursor:pointer;">GUARDAR CAMBIOS</button>
+            </div>
+            <div class="admin-box">
+                <h3>Inventario Actual (Borrar)</h3>
+                <div id="admin-inv" style="max-height: 250px; overflow-y: auto; background:#fff; padding:10px; border:1px solid #ddd; margin-bottom:30px;"></div>
+                <h3>Historial de Pedidos</h3>
+                <div id="admin-orders" style="height: 200px; overflow-y: auto; background:#fff; padding:10px; border:1px solid #ddd; font-size:0.7rem;"></div>
             </div>
         </div>
         <button onclick="cerrarAdmin()" style="margin-top:20px; border:none; background:none; cursor:pointer; color:grey;">Cerrar Panel</button>
@@ -157,55 +164,71 @@
 
     <script>
         let productos = [
-            { id: 1, name: "Blusa Marrón", price: 12900, img: "https://unsplash.com" }
+            { id: 1, name: "Blusa Marrón", price: 12900, stock: 10, dcto: 0, desc: "Seda premium", img: "https://unsplash.com" }
         ];
-        let cart = [];
+        let cart = []; let orders = [];
 
         function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
-        function toggleBank() { document.getElementById('bank-box').style.display = (document.getElementById('order-pay').value === 'transfer') ? 'block' : 'none'; }
-        function abrirAdmin() { if(prompt("Código Maestro:") === "0110") document.getElementById('admin-panel').style.display='block'; }
+        function toggleBank() { document.getElementById('bank-box').style.display = (document.getElementById('o-pay').value === 'transfer') ? 'block' : 'none'; }
+        function abrirAdmin() { if(prompt("Código:") === "0110") { document.getElementById('admin-panel').style.display='block'; renderAdmin(); } }
         function cerrarAdmin() { document.getElementById('admin-panel').style.display='none'; }
 
         function renderStore() {
-            document.getElementById('main-grid').innerHTML = productos.map(p => `
-                <div class="card">
-                    <img src="${p.img}">
-                    <h3>${p.name}</h3>
-                    <p>$${p.price}</p>
-                    <button class="btn-buy" onclick="add(${p.id})">AÑADIR</button>
-                </div>
-            `).join('');
-        }
-
-        function add(id) {
-            const p = productos.find(x => x.id === id);
-            cart.push(p);
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('cart-list').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.8rem;"><span>${i.name}</span><span>$${i.price}</span></div>`).join('');
-            if(!document.getElementById('cart-panel').classList.contains('active')) toggleCart();
+            document.getElementById('store-grid').innerHTML = productos.map(p => {
+                let finalP = p.dcto > 0 ? p.price * (1 - p.dcto/100) : p.price;
+                return `
+                    <div class="card">
+                        ${p.dcto > 0 ? `<div class="dcto-badge">-${p.dcto}%</div>` : ''}
+                        <img src="${p.img}">
+                        <h3>${p.name}</h3>
+                        <p>${p.dcto > 0 ? `<span class="price-old">$${p.price}</span>` : ''} $${finalP.toFixed(0)}</p>
+                        <p style="font-size:0.6rem; color:grey;">Stock: ${p.stock}</p>
+                        <button class="btn-add" onclick="add(${p.id})" ${p.stock <= 0 ? 'disabled' : ''}>${p.stock <= 0 ? 'SIN STOCK' : 'AÑADIR'}</button>
+                    </div>
+                `;
+            }).join('');
         }
 
         function subir() {
             const reader = new FileReader();
             reader.onload = function(e) {
-                productos.push({ id: Date.now(), name: document.getElementById('p-name').value, price: Number(document.getElementById('p-price').value), img: e.target.result });
-                renderStore(); alert("¡Subido!");
+                productos.push({ id: Date.now(), name: document.getElementById('p-name').value, price: Number(document.getElementById('p-price').value), stock: Number(document.getElementById('p-stock').value), dcto: Number(document.getElementById('p-dcto').value), desc: document.getElementById('p-desc').value, img: e.target.result });
+                renderStore(); renderAdmin(); alert("¡Subido!");
             };
             reader.readAsDataURL(document.getElementById('p-file').files);
         }
 
-        function guardarConfig() {
+        function renderAdmin() {
+            document.getElementById('admin-inv').innerHTML = productos.map(p => `
+                <div class="inv-item"><span>${p.name}</span><button onclick="borrar(${p.id})" style="background:red; color:white; border:none; padding:5px; cursor:pointer;">BORRAR</button></div>
+            `).join('');
+        }
+
+        function borrar(id) { productos = productos.filter(p => p.id !== id); renderStore(); renderAdmin(); }
+
+        function add(id) {
+            const p = productos.find(x => x.id === id);
+            if(p.stock > 0) {
+                cart.push(p); p.stock--;
+                document.getElementById('cart-count').innerText = cart.length;
+                document.getElementById('cart-list').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.8rem;"><span>${i.name}</span><span>$${(i.price * (1-i.dcto/100)).toFixed(0)}</span></div>`).join('');
+                renderStore();
+                if(!document.getElementById('cart-panel').classList.contains('active')) toggleCart();
+            }
+        }
+
+        function guardarAdmin() {
             document.getElementById('ft-wa').innerText = document.getElementById('in-wa').value;
             document.getElementById('ft-ig').innerText = document.getElementById('in-ig').value;
-            document.getElementById('ft-horario').innerText = document.getElementById('in-horario').value;
-            document.getElementById('bank-display').innerText = document.getElementById('in-bank').value;
-            alert("Configuración guardada.");
-            cerrarAdmin();
+            document.getElementById('bank-txt').innerText = document.getElementById('in-bank').value;
+            alert("Cambios guardados."); cerrarAdmin();
         }
 
         function finalizar() {
-            if(!document.getElementById('order-addr').value || !document.getElementById('order-name').value) return alert("Completa los datos de envío.");
-            alert("Pedido recibido con éxito."); cart = []; document.getElementById('cart-count').innerText = "0"; toggleCart();
+            if(!document.getElementById('o-addr').value || !document.getElementById('o-name').value) return alert("Completa los datos de envío.");
+            orders.unshift({ cliente: document.getElementById('o-name').value, fecha: new Date().toLocaleTimeString(), pago: document.getElementById('o-pay').value });
+            document.getElementById('admin-orders').innerHTML = orders.map(o => `<div>${o.fecha} - ${o.cliente} (Pago: ${o.pago})</div>`).join('');
+            alert("Pedido confirmado."); cart = []; document.getElementById('cart-count').innerText = "0"; toggleCart();
         }
 
         renderStore();
