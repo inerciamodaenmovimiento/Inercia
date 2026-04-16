@@ -3,209 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Boutique Lifestyle</title>
-    <link href="https://googleapis.com" rel="stylesheet">
+    <title>Admin Dashboard Pro</title>
+    <!-- Iconos: FontAwesome (Uso gratuito) -->
+    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        :root { --verde-sage: #94a684; --verde-claro: #dbe4d3; --crema: #f7f6f2; --marron: #7a6a53; --negro: #333; --serif: 'Cormorant Garamond', serif; --sans: 'Montserrat', sans-serif; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--sans); color: var(--negro); background: var(--crema); overflow-x: hidden; }
+        :root {
+            --bg-color: #f0f2f5;
+            --side-bg: #ffffff;
+            --primary: #4e73df;
+            --text-dark: #333;
+            --text-light: #858796;
+            --white: #ffffff;
+            --shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
 
-        /* --- NAVEGACIÓN --- */
-        nav { padding: 20px 5%; text-align: center; background: #fff; border-bottom: 1px solid #eee; }
-        .logo { font-family: var(--serif); font-size: 2.5rem; color: var(--marron); letter-spacing: 3px; font-weight: 300; }
-        .menu { margin-top: 15px; border-top: 1px solid #f9f9f9; padding-top: 10px; }
-        .menu a { text-decoration: none; color: var(--negro); margin: 0 15px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
-        .cart-trigger { position: absolute; right: 5%; top: 30px; cursor: pointer; font-size: 1.3rem; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); display: flex; min-height: 100vh; }
 
-        /* --- HERO ORGÁNICO --- */
-        .hero { display: flex; align-items: center; justify-content: center; padding: 60px 10%; background: var(--verde-claro); margin: 20px 5%; border-radius: 40px; min-height: 500px; }
-        .hero-img-box { flex: 1; position: relative; }
-        .hero-img-box img { width: 90%; border-radius: 150px 150px 20px 20px; border: 15px solid #fff; }
-        .hero-text { flex: 1; padding-left: 50px; }
-        .hero-text h1 { font-family: var(--serif); font-size: 4rem; color: var(--marron); line-height: 0.9; margin-bottom: 20px; font-weight: 300; }
-        .btn-shop { background: var(--marron); color: white; padding: 12px 30px; border: none; border-radius: 50px; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; }
+        /* Sidebar */
+        .sidebar { width: 250px; background: var(--side-bg); border-right: 1px solid #e3e6f0; transition: 0.3s; }
+        .brand { padding: 20px; font-weight: bold; font-size: 1.2rem; color: var(--primary); text-align: center; border-bottom: 1px solid #eee; }
+        .nav-link { padding: 15px 25px; display: block; color: var(--text-dark); text-decoration: none; transition: 0.2s; }
+        .nav-link:hover { background: #f8f9fc; color: var(--primary); padding-left: 30px; }
+        .nav-link i { margin-right: 10px; width: 20px; }
 
-        /* --- CATEGORÍAS EN BLOQUES --- */
-        .cats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 40px 10%; }
-        .cat-box { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; border-radius: 10px; transition: 0.3s; cursor: pointer; }
-        .cat-1 { background: #606c5a; } .cat-2 { background: #94a684; } .cat-3 { background: #aab6a2; } .cat-4 { background: #7a8674; }
+        /* Main Content */
+        .content { flex: 1; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        
+        /* Stats Cards */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .card { background: var(--white); padding: 20px; border-radius: 10px; box-shadow: var(--shadow); border-left: 4px solid var(--primary); }
+        .card h3 { font-size: 0.8rem; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+        .card .value { font-size: 1.5rem; font-weight: bold; }
 
-        /* --- TIENDA / PRODUCTOS --- */
-        .section-title { text-align: center; font-family: var(--serif); font-size: 2rem; margin: 60px 0 30px; color: var(--marron); font-style: italic; }
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; padding: 0 10% 80px; }
-        .card { text-align: center; }
-        .card img { width: 100%; height: 300px; object-fit: cover; border-radius: 5px; margin-bottom: 15px; background: #fff; }
-        .card h3 { font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; }
-        .card p { font-size: 0.8rem; color: var(--marron); font-weight: 600; }
-        .btn-add { background: none; border: 1px solid var(--marron); color: var(--marron); padding: 8px 15px; border-radius: 50px; margin-top: 10px; cursor: pointer; font-size: 0.6rem; transition: 0.3s; }
-        .btn-add:hover { background: var(--marron); color: white; }
-
-        /* --- CARRITO --- */
-        #cart-panel { position: fixed; right: -420px; top: 0; width: 400px; height: 100%; background: white; z-index: 5000; transition: 0.4s; padding: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); overflow-y: auto; }
-        #cart-panel.active { right: 0; }
-        .form-input { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #ddd; border-radius: 5px; font-family: var(--sans); }
-
-        /* --- ADMIN --- */
-        #admin-panel { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; padding: 50px; overflow-y: auto; }
-        .admin-box { background: var(--verde-claro); padding: 25px; border-radius: 20px; margin-bottom: 20px; }
-        .inv-item { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 10px; border-radius: 10px; margin-bottom: 5px; }
-
-        footer { padding: 60px 10%; background: #fff; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.8rem; line-height: 1.8; position: relative; }
-        .admin-trigger { position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; cursor: pointer; color: transparent; }
+        /* Table */
+        .table-container { background: var(--white); padding: 20px; border-radius: 10px; box-shadow: var(--shadow); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid #eee; color: var(--text-light); }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        
+        /* Buttons */
+        .btn { padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+        .btn-add { background: var(--primary); color: white; margin-bottom: 15px; }
+        .btn-delete { background: #e74a3b; color: white; }
+        .btn-delete:hover { background: #c0392b; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo" id="disp-logo">Olive & Avery</div>
-        <div class="menu" id="nav-container">
-            <a href="#">Inicio</a> <a href="#">Novedades</a> <a href="#">Bebés</a> <a href="#">Lifestyle</a> <a href="#">Contacto</a>
-        </div>
-        <div class="cart-trigger" onclick="toggleCart()">🛍️ <span id="cart-count">0</span></div>
-    </nav>
-
-    <div class="hero">
-        <div class="hero-img-box">
-            <img src="https://unsplash.com">
-        </div>
-        <div class="hero-text">
-            <p style="letter-spacing: 3px; font-size: 0.7rem; text-transform: uppercase;">Nueva Colección</p>
-            <h1 id="disp-hero-txt">Ropa para<br>Bebés & Niños</h1>
-            <button class="btn-shop">Comprar Ahora</button>
-        </div>
+    <div class="sidebar">
+        <div class="brand"><i class="fas fa-shield-alt"></i> ADMIN PANEL</div>
+        <nav>
+            <a href="#" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="#" class="nav-link"><i class="fas fa-users"></i> Usuarios</a>
+            <a href="#" class="nav-link"><i class="fas fa-chart-line"></i> Reportes</a>
+            <a href="#" class="nav-link"><i class="fas fa-cog"></i> Configuración</a>
+        </nav>
     </div>
 
-    <div class="cats-grid">
-        <div class="cat-box cat-1">Novedades</div>
-        <div class="cat-box cat-2">Bebés</div>
-        <div class="cat-box cat-3">Lifestyle</div>
-        <div class="cat-box cat-4">Regalos</div>
-    </div>
-
-    <h2 class="section-title">Nuestros Favoritos</h2>
-    <div class="grid" id="store-grid">
-        <!-- Render dinámico -->
-    </div>
-
-    <!-- CARRITO -->
-    <div id="cart-panel">
-        <h2 style="font-family: var(--serif); border-bottom: 2px solid var(--verde-sage); padding-bottom: 10px; margin-bottom: 20px;">Tu Carrito</h2>
-        <div id="cart-list" style="margin-bottom: 20px;"></div>
-        <input type="text" class="form-input" id="o-name" placeholder="Nombre completo">
-        <input type="text" class="form-input" id="o-addr" placeholder="Dirección, Ciudad y CP">
-        <select class="form-input" id="o-ship">
-            <option>Envío a Domicilio ($1.500)</option>
-            <option>Retiro en Local (Gratis)</option>
-        </select>
-        <select class="form-input" id="o-pay" onchange="toggleBank()">
-            <option value="card">Tarjeta de Crédito</option>
-            <option value="transfer">Transferencia (-10%)</option>
-        </select>
-        <div id="bank-box" style="display:none; padding:15px; background:var(--crema); border-radius:10px; margin-top:15px; font-size:0.8rem;">
-            <span id="bank-txt-disp">CBU: 00000123456789 | Alias: OLIVE.AVERY</span>
+    <div class="content">
+        <div class="header">
+            <h1>Resumen General</h1>
+            <div class="user-profile">Admin <i class="fas fa-user-circle"></i></div>
         </div>
-        <button onclick="finalizar()" style="background:var(--marron); color:white; border:none; padding:20px; width:100%; margin-top:30px; cursor:pointer; font-weight:bold; border-radius: 50px;">REALIZAR PEDIDO</button>
-        <p onclick="toggleCart()" style="text-align:center; cursor:pointer; margin-top:20px; color:grey; font-size:0.7rem;">Cerrar Bolsa</p>
-    </div>
 
-    <footer>
-        <div id="disp-ft-1"><strong>Sobre Nosotros</strong><br>Lifestyle boutique con productos seleccionados para celebrar momentos especiales.</div>
-        <div id="disp-ft-2"><strong>Contacto</strong><br>WhatsApp: 02-1234-5678<br>Instagram: @olive.avery</div>
-        <div id="disp-ft-3"><strong>Horarios</strong><br>Lun a Vie de 9 a 18hs.<br>Sábados de 10 a 14hs.</div>
-        <div class="admin-trigger" onclick="abrirAdmin()">.</div>
-    </footer>
-
-    <!-- ADMIN -->
-    <div id="admin-panel">
-        <h2 style="font-family: var(--serif); border-bottom: 3px solid var(--marron); padding-bottom: 10px;">Panel de Control</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px;">
-            <div class="admin-box">
-                <h3>Subir Producto</h3>
-                <input type="file" id="p-file" accept="image/*" class="form-input">
-                <input type="text" id="p-name" class="form-input" placeholder="Nombre">
-                <input type="number" id="p-price" class="form-input" placeholder="Precio">
-                <input type="number" id="p-stock" class="form-input" placeholder="Stock">
-                <button onclick="subir()" style="background:var(--marron); color:white; width:100%; padding:15px; margin-top:15px; border-radius: 50px; cursor:pointer;">PUBLICAR</button>
-                <hr style="margin: 20px 0; border: none; border-top: 1px solid #ccc;">
-                <h3>Configuración General</h3>
-                <input type="text" id="in-bank" class="form-input" value="CBU: 00000123456789 | Alias: OLIVE.AVERY">
-                <button onclick="guardarTodo()" style="background:var(--verde-sage); color:white; width:100%; padding:10px; margin-top:10px; border:none; border-radius: 50px;">GUARDAR CAMBIOS</button>
+        <div class="cards-grid">
+            <div class="card">
+                <h3>Ventas Mensuales</h3>
+                <div class="value">$40,000</div>
             </div>
-            <div class="admin-box">
-                <h3>Inventario Actual</h3>
-                <div id="admin-inv" style="max-height: 250px; overflow-y: auto;"></div>
-                <h3 style="margin-top: 30px;">Historial de Pedidos</h3>
-                <div id="admin-orders" style="height: 150px; overflow-y: auto; background:#fff; padding:10px; border-radius: 10px; font-size:0.7rem;"></div>
+            <div class="card" style="border-left-color: #1cc88a;">
+                <h3>Usuarios Activos</h3>
+                <div id="user-count" class="value">0</div>
+            </div>
+            <div class="card" style="border-left-color: #f6c23e;">
+                <h3>Tareas Pendientes</h3>
+                <div class="value">18</div>
             </div>
         </div>
-        <button onclick="cerrarAdmin()" style="margin-top:20px; border:none; background:none; cursor:pointer; color:grey;">Cerrar Panel</button>
+
+        <div class="table-container">
+            <button class="btn btn-add" onclick="addUser()">+ Nuevo Usuario</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="user-table-body">
+                    <!-- Datos dinámicos aquí -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-        let productos = [
-            { id: 1, name: "Vestidito Soft", price: 12900, stock: 10, img: "https://unsplash.com" },
-            { id: 2, name: "Cojín Velvet", price: 5500, stock: 8, img: "https://unsplash.com" }
+        // Lógica Funcional del Dashboard
+        let users = [
+            { id: 1, name: 'Juan Pérez', email: 'juan@example.com' },
+            { id: 2, name: 'María García', email: 'maria@example.com' }
         ];
-        let cart = []; let orders = [];
 
-        function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
-        function toggleBank() { document.getElementById('bank-box').style.display = (document.getElementById('o-pay').value === 'transfer') ? 'block' : 'none'; }
-        function abrirAdmin() { if(prompt("Acceso:") === "0110") { document.getElementById('admin-panel').style.display='block'; renderAdmin(); } }
-        function cerrarAdmin() { document.getElementById('admin-panel').style.display='none'; }
-
-        function renderStore() {
-            document.getElementById('store-grid').innerHTML = productos.map(p => `
-                <div class="card">
-                    <img src="${p.img}">
-                    <h3>${p.name}</h3>
-                    <p>$${p.price}</p>
-                    <button class="btn-add" onclick="add(${p.id})" ${p.stock <= 0 ? 'disabled' : ''}>${p.stock <= 0 ? 'SIN STOCK' : 'AÑADIR'}</button>
-                </div>`).join('');
+        function renderUsers() {
+            const tbody = document.getElementById('user-table-body');
+            const countDisplay = document.getElementById('user-count');
+            
+            tbody.innerHTML = '';
+            users.forEach((user, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>#${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>
+                            <button class="btn btn-delete" onclick="deleteUser(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            countDisplay.innerText = users.length;
         }
 
-        function subir() {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                productos.push({ id: Date.now(), name: document.getElementById('p-name').value, price: Number(document.getElementById('p-price').value), stock: Number(document.getElementById('p-stock').value), img: e.target.result });
-                renderStore(); renderAdmin(); alert("Producto subido!");
-            };
-            reader.readAsDataURL(document.getElementById('p-file').files);
-        }
-
-        function renderAdmin() {
-            document.getElementById('admin-inv').innerHTML = productos.map(p => `
-                <div class="inv-item">
-                    <span>${p.name} (S: ${p.stock})</span>
-                    <button onclick="borrar(${p.id})" style="background:#ff6b6b; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">BORRAR</button>
-                </div>`).join('');
-        }
-
-        function borrar(id) { productos = productos.filter(p => p.id !== id); renderStore(); renderAdmin(); }
-
-        function add(id) {
-            const p = productos.find(x => x.id === id);
-            if(p.stock > 0) {
-                cart.push(p); p.stock--;
-                document.getElementById('cart-count').innerText = cart.length;
-                document.getElementById('cart-list').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.8rem;"><span>${i.name}</span><span>$${i.price}</span></div>`).join('');
-                renderStore();
-                if(!document.getElementById('cart-panel').classList.contains('active')) toggleCart();
+        function addUser() {
+            const name = prompt("Nombre del usuario:");
+            if (name) {
+                const id = users.length > 0 ? users[users.length - 1].id + 1 : 1;
+                users.push({ id: id, name: name, email: name.toLowerCase().replace(' ', '') + '@example.com' });
+                renderUsers();
             }
         }
 
-        function guardarTodo() {
-            document.getElementById('bank-txt-disp').innerText = document.getElementById('in-bank').value;
-            alert("Cambios guardados exitosamente."); cerrarAdmin();
+        function deleteUser(index) {
+            if(confirm("¿Seguro que quieres eliminar este usuario?")) {
+                users.splice(index, 1);
+                renderUsers();
+            }
         }
 
-        function finalizar() {
-            if(!document.getElementById('o-addr').value || !document.getElementById('o-name').value) return alert("Completa los datos de envío.");
-            orders.unshift({ cliente: document.getElementById('o-name').value, fecha: new Date().toLocaleTimeString(), pago: document.getElementById('o-pay').value });
-            document.getElementById('admin-orders').innerHTML = orders.map(o => `<div>${o.fecha} - ${o.cliente} (Pago: ${o.pago})</div>`).join('');
-            alert("¡Pedido confirmado!"); cart = []; document.getElementById('cart-count').innerText = "0"; toggleCart();
-        }
-
-        renderStore();
+        // Inicializar tabla
+        renderUsers();
     </script>
 </body>
 </html>
