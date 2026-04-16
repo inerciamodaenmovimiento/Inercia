@@ -51,7 +51,40 @@
     font-size: 28px;
     cursor: pointer;
 }
-</style>
+</style>/* Reducir tamaño de productos en la grilla */
+.producto {
+    width: 200px; /* Tamaño más chico */
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.producto img {
+    width: 100%; /* La imagen se ajusta al contenedor chico */
+    height: auto;
+}
+
+/* Estilo del Modal (Detalle del producto) */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    width: 60%;
+    border-radius: 8px;
+}
+
 
 <head>
     <meta charset="UTF-8">
