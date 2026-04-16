@@ -424,7 +424,65 @@ function borrarProducto(index) {
 
 // Ejecutar al cargar la página
 window.onload = cargarProductosAdmin;
+    <!-- LISTA DETALLADA DE PRODUCTOS -->
+<div id="admin-panel" style="max-width: 800px; margin: 20px auto; font-family: sans-serif; border: 1px solid #000; padding: 20px;">
+    <h2>Administrar Productos Subidos</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #000; color: #fff;">
+                <th style="padding: 10px; text-align: left;">Producto</th>
+                <th style="padding: 10px; text-align: left;">Precio</th>
+                <th style="padding: 10px; text-align: center;">Acción</th>
+            </tr>
+        </thead>
+        <tbody id="lista-admin-cuerpo">
+            <!-- Aquí aparecerán tus productos -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+// 1. FUNCIÓN PARA VER PRODUCTOS
+function renderizarAdmin() {
+    const cuerpoTabla = document.getElementById('lista-admin-cuerpo');
+    // Traemos los productos guardados
+    let productos = JSON.parse(localStorage.getItem('productos_inercia')) || [];
+    
+    cuerpoTabla.innerHTML = ""; // Limpiamos para actualizar
+
+    productos.forEach((p, index) => {
+        cuerpoTabla.innerHTML += `
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 10px;">${p.nombre}</td>
+                <td style="padding: 10px;">$${p.precio}</td>
+                <td style="padding: 10px; text-align: center;">
+                    <button onclick="borrarProducto(${index})" style="background: red; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">
+                        Borrar
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+// 2. FUNCIÓN PARA BORRAR Y GUARDAR
+function borrarProducto(posicion) {
+    let productos = JSON.parse(localStorage.getItem('productos_inercia')) || [];
+    
+    if(confirm(`¿Seguro que querés borrar ${productos[posicion].nombre}?`)) {
+        productos.splice(posicion, 1); // Lo sacamos de la lista
+        localStorage.setItem('productos_inercia', JSON.stringify(productos)); // GUARDAMOS EL CAMBIO
+        renderizarAdmin(); // Actualizamos la vista
+        alert("¡Cambio guardado con éxito!");
+    }
+}
+
+// Ejecutar al abrir la página
+window.onload = renderizarAdmin;
 </script>
+
+</script>
+
 
 </script>
 
