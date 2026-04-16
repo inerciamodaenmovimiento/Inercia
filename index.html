@@ -6,53 +6,42 @@
     <title>Inercia | Moda Editorial</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root {
-            --negro: #1a1a1a;
-            --gris-claro: #f4f4f4;
-            --texto-suave: #666;
-            --serif: 'Playfair Display', serif;
-            --sans: 'Montserrat', sans-serif;
-        }
+        :root { --negro: #1a1a1a; --gris: #f4f4f4; --serif: 'Playfair Display', serif; --sans: 'Montserrat', sans-serif; }
+        body { margin: 0; font-family: var(--sans); color: var(--negro); }
 
-        body { margin: 0; font-family: var(--sans); color: var(--negro); background: #fff; }
-
-        /* --- NAVEGACIÓN --- */
+        /* --- ESTILOS VISUALES --- */
         nav { padding: 30px; text-align: center; border-bottom: 1px solid #eee; }
-        .logo { font-family: var(--serif); font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 15px; }
-        .menu a { text-decoration: none; color: var(--negro); margin: 0 15px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        .logo { font-family: var(--serif); font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; }
+        .menu { margin-top: 15px; }
+        .menu a { text-decoration: none; color: var(--negro); margin: 0 15px; font-size: 0.8rem; text-transform: uppercase; }
 
-        /* --- HERO --- */
-        .hero { 
-            height: 80vh; 
-            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://unsplash.com'); 
-            background-size: cover; background-position: center;
-        }
+        .hero { height: 70vh; background: url('https://unsplash.com') center/cover; }
 
-        /* --- PRODUCTOS --- */
-        .section-title { text-align: center; font-family: var(--serif); font-size: 2rem; margin: 60px 0 40px; font-style: italic; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; padding: 0 5%; }
+        .section-title { text-align: center; font-family: var(--serif); font-size: 2.2rem; margin: 60px 0; font-style: italic; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 0 10%; }
         .card { text-align: center; }
-        .card img { width: 100%; height: 400px; object-fit: cover; }
-        .card h3 { font-size: 0.9rem; margin: 15px 0 5px; font-weight: 400; text-transform: uppercase; }
-        
-        /* --- SECCIÓN HISTORIA --- */
-        .story-section { display: flex; align-items: center; padding: 100px 10%; gap: 50px; }
+        .card img { width: 100%; height: 450px; object-fit: cover; }
+
+        .story-section { display: flex; align-items: center; padding: 80px 10%; gap: 50px; background: #fff; }
         .story-image { flex: 1; height: 500px; background: url('https://unsplash.com') center/cover; }
-        .story-content { flex: 1; max-width: 400px; }
-        .story-content h2 { font-family: var(--serif); font-size: 2.5rem; margin-bottom: 20px; }
+        .story-content { flex: 1; }
 
-        /* --- FOOTER --- */
-        footer { padding: 60px 5%; background: #fff; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); font-size: 0.75rem; color: var(--texto-suave); }
+        footer { padding: 60px 10%; background: #fff; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.8rem; line-height: 1.8; }
 
-        /* --- PANEL ADMIN (ESTILOS) --- */
+        /* --- PANEL ADMIN MEJORADO --- */
         #admin-panel { 
             display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: white; z-index: 2000; padding: 40px; box-sizing: border-box; overflow-y: auto;
+            background: white; z-index: 9999; padding: 40px; box-sizing: border-box; overflow-y: auto;
         }
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 8px; }
-        .admin-box input { width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; }
-        .btn-save { background: black; color: white; border: none; padding: 10px 20px; cursor: pointer; width: 100%; margin-top: 10px; }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .admin-box { background: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .admin-box h3 { border-bottom: 1px solid #000; padding-bottom: 10px; margin-top: 0; }
+        label { display: block; margin-top: 10px; font-weight: bold; font-size: 0.7rem; }
+        input, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; box-sizing: border-box; font-family: sans-serif; }
+        .btn-save { background: black; color: white; border: none; padding: 12px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; }
+        
+        /* El "Botón" Invisible (ahora un área en el footer) */
+        #admin-trigger { position: absolute; bottom: 0; right: 0; width: 50px; height: 50px; cursor: default; }
     </style>
 </head>
 <body>
@@ -60,116 +49,128 @@
     <nav>
         <div class="logo">INERCIA</div>
         <div class="menu">
-            <a href="#">Inicio</a>
-            <a href="#">Novedades</a>
-            <a href="#">Ropa</a>
-            <a href="#">Abrigos</a>
-            <a href="#">Ofertas</a>
+            <a href="#">Inicio</a> <a href="#">Novedades</a> <a href="#">Ropa</a> <a href="#">Ofertas</a>
         </div>
     </nav>
 
     <div class="hero"></div>
 
-    <h2 class="section-title">Nuevos Ingresos</h2>
+    <h2 id="main-title" class="section-title">Nuevos Ingresos</h2>
 
     <div class="grid">
         <div class="card">
             <img src="https://unsplash.com">
-            <h3>Blusa Larga Marrón</h3>
-            <p>$12.900</p>
+            <h3>Blusa Marrón</h3><p>$12.900</p>
         </div>
         <div class="card">
             <img src="https://unsplash.com">
-            <h3>Tapado Gris a Cuadros</h3>
-            <p>$25.500</p>
+            <h3>Tapado Gris</h3><p>$25.500</p>
         </div>
     </div>
 
     <section class="story-section">
         <div class="story-image"></div>
         <div class="story-content">
-            <h2>Doble Confort</h2>
-            <p>Descubre las nuevas tendencias en INERCIA. Desde looks urbanos hasta prendas de oficina impecables con la mejor calidad premium.</p>
-            <a href="#" style="text-decoration:none; color:black; border-bottom: 1px solid black; font-size: 0.8rem;">VER MÁS</a>
+            <h2 id="story-title">Doble Confort</h2>
+            <p id="story-desc">Descubre las nuevas tendencias en INERCIA. Looks urbanos y prendas premium.</p>
         </div>
     </section>
 
-    <footer>
+    <footer style="position: relative;">
         <div>
-            <strong>Nosotros</strong><br>Nuestra Historia<br>Valores<br>Equipo
+            <strong>Sobre Nosotros</strong><br>
+            <span id="txt-nosotros">Nuestra historia se basa en el movimiento y la elegancia constante.</span>
         </div>
         <div>
-            <strong>Atención al Cliente</strong><br>Contacto<br>Envíos<br>Métodos de Pago
+            <strong>Atención</strong><br>
+            <span id="txt-atencion">Envíos a todo el país y cambios sin cargo.</span>
         </div>
-        <div id="contact-info-footer">
-            <strong>Contáctanos</strong><br>
-            Tel: <span id="tel-val">02-1234-5678</span><br>
-            Horario: <span id="time-val">09:00 - 18:00</span><br>
-            Email: <span id="email-val">contacto@inercia.com</span>
+        <div>
+            <strong>Contacto</strong><br>
+            Tel: <span id="val-tel">02-1234-5678</span><br>
+            Email: <span id="val-email">contacto@inercia.com</span><br>
+            Horario: <span id="val-horario">09:00 - 18:00</span>
         </div>
+        <!-- ÁREA SECRETA PARA EL ADMIN -->
+        <div id="admin-trigger" onclick="abrirAdmin()"></div>
     </footer>
 
-    <!-- BOTÓN SECRETO (Esquina inferior derecha) -->
-    <div id="secret-trigger" onclick="entrarAdmin()" style="position:fixed; bottom:0; right:0; width:30px; height:30px; cursor:default; z-index:3000;"></div>
-
-    <!-- PANEL ADMIN -->
+    <!-- PANEL DE ADMINISTRACIÓN -->
     <div id="admin-panel">
-        <button onclick="cerrarAdmin()" style="float:right; cursor:pointer;">Cerrar Panel [X]</button>
-        <h1 style="font-family: var(--serif);">Panel de Administración - Inercia</h1>
+        <button onclick="cerrarAdmin()" style="float:right; padding: 10px; cursor:pointer;">CERRAR PANEL [X]</button>
+        <h2 style="font-family: var(--serif);">Panel Maestro - Inercia</h2>
+        <hr>
         
         <div class="admin-grid">
-            <!-- SUBIR PRODUCTO -->
+            <!-- COLUMNA 1: CONTENIDOS PRINCIPALES -->
             <div class="admin-box">
-                <h3>Subir Nuevo Producto</h3>
-                <label>Nombre del Producto</label>
-                <input type="text" placeholder="Ej: Vestido Verano">
-                <label>Precio</label>
-                <input type="text" placeholder="$0.00">
-                <label>Seleccionar Imagen desde PC</label>
-                <input type="file" accept="image/*">
-                <button class="btn-save">Publicar Producto</button>
+                <h3>Textos de Inicio</h3>
+                <label>Título Principal</label>
+                <input type="text" id="in-main-title" value="Nuevos Ingresos">
+                
+                <label>Título Sección Historia</label>
+                <input type="text" id="in-story-title" value="Doble Confort">
+                
+                <label>Descripción Historia</label>
+                <textarea id="in-story-desc" rows="4">Descubre las nuevas tendencias en INERCIA. Looks urbanos y prendas premium.</textarea>
             </div>
 
-            <!-- CAMBIAR CONTACTOS -->
+            <!-- COLUMNA 2: FOOTER Y NOSOTROS -->
             <div class="admin-box">
-                <h3>Editar Contactos del Footer</h3>
+                <h3>Secciones Informativas</h3>
+                <label>Sobre Nosotros (Footer)</label>
+                <textarea id="in-nosotros" rows="3">Nuestra historia se basa en el movimiento y la elegancia constante.</textarea>
+                
+                <label>Atención al Cliente (Footer)</label>
+                <textarea id="in-atencion" rows="3">Envíos a todo el país y cambios sin cargo.</textarea>
+            </div>
+
+            <!-- COLUMNA 3: CONTACTO Y ARCHIVOS -->
+            <div class="admin-box">
+                <h3>Contacto y Medios</h3>
                 <label>Teléfono</label>
-                <input type="text" id="edit-tel" placeholder="Nuevo teléfono">
-                <label>Horario</label>
-                <input type="text" id="edit-time" placeholder="Ej: 10:00 a 19:00">
+                <input type="text" id="in-tel" value="02-1234-5678">
+                
                 <label>Email</label>
-                <input type="email" id="edit-email" placeholder="nuevo@correo.com">
-                <button class="btn-save" onclick="guardarContactos()">Actualizar Contactos</button>
+                <input type="text" id="in-email" value="contacto@inercia.com">
+                
+                <label>Horario</label>
+                <input type="text" id="in-horario" value="09:00 - 18:00">
+
+                <label style="color: blue; margin-top: 20px;">Subir Nueva Foto de Producto</label>
+                <input type="file" accept="image/*">
             </div>
         </div>
+
+        <button class="btn-save" onclick="aplicarCambios()">GUARDAR Y APLICAR CAMBIOS</button>
     </div>
 
     <script>
-        function entrarAdmin() {
-            let pass = prompt("Código de acceso:");
+        function abrirAdmin() {
+            let pass = prompt("Código Maestro:");
             if (pass === "0110") {
                 document.getElementById('admin-panel').style.display = 'block';
-            } else {
-                alert("Código erróneo.");
-            }
+            } else { alert("Acceso denegado."); }
         }
 
-        function cerrarAdmin() {
-            document.getElementById('admin-panel').style.display = 'none';
-        }
+        function cerrarAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
 
-        function guardarContactos() {
-            const tel = document.getElementById('edit-tel').value;
-            const time = document.getElementById('edit-time').value;
-            const email = document.getElementById('edit-email').value;
+        function aplicarCambios() {
+            // Aplicar Títulos
+            document.getElementById('main-title').innerText = document.getElementById('in-main-title').value;
+            document.getElementById('story-title').innerText = document.getElementById('in-story-title').value;
+            document.getElementById('story-desc').innerText = document.getElementById('in-story-desc').value;
+            
+            // Aplicar Footer
+            document.getElementById('txt-nosotros').innerText = document.getElementById('in-nosotros').value;
+            document.getElementById('txt-atencion').innerText = document.getElementById('in-atencion').value;
+            document.getElementById('val-tel').innerText = document.getElementById('in-tel').value;
+            document.getElementById('val-email').innerText = document.getElementById('in-email').value;
+            document.getElementById('val-horario').innerText = document.getElementById('in-horario').value;
 
-            if(tel) document.getElementById('tel-val').innerText = tel;
-            if(time) document.getElementById('time-val').innerText = time;
-            if(email) document.getElementById('email-val').innerText = email;
-
-            alert("Contactos actualizados en la vista previa.");
+            alert("¡Cambios aplicados con éxito!");
+            cerrarAdmin();
         }
     </script>
-
 </body>
 </html>
