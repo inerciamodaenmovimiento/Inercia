@@ -231,7 +231,129 @@
     }
 
     // Inicializar
-    saveConfig();
+    saveConfig();    // --- DATABASE & STATE ---
+    let db = { products: [], orders: [], cats: ["General"], ships: ["Retiro"], bank: "", ig: "#", wa: "#" };
+    let cart = [];
+
+    // --- UI TOGGLES ---
+    function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
+    function accessAdmin() {
+        if(prompt("Código de Seguridad Inercia:") === "0110") {
+            document.getElementById('admin-panel').style.display = 'block';
+            document.getElementById('new-alert').style.display = 'none';
+        }
+    }
+    function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
+    function showBankDetails() {
+        const display = document.getElementById('bank-data-display');
+        display.style.display = document.getElementById('c-pay').value === "Transferencia" ? "block" : "none";
+    }
+
+    // --- ADMIN ACTIONS ---
+    function uploadProduct() {
+        const file = document.getElementById('p-img').files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function() {
+            const newProd = {
+                id: Date.now(),
+                name: document.getElementById('p-name').value,
+                desc: document.getElementById('p-desc').value,
+                price: document.getElementById('p-price').value,
+                cat: document.getElementById('p-cat-select').value,
+                img: reader.result
+            };
+            db.products.push(newProd);
+            renderShop();
+            alert("Producto publicado con éxito.");
+        }
+        if(file) reader.readAsDataURL(file);
+    }
+
+    function saveConfig() {
+        db.cats = document.getElementById('conf-cats').value.split(',').map(s => s.trim());
+        db.ships = document.getElementById('conf-ships').value.split(',').map(s => s.trim());
+        db.bank = document.getElementById('conf-bank').value;
+        db.ig = document.getElementById('conf-ig').value;
+        db.wa = document.getElementById('conf-wa').value;
+
+        document.getElementById('p-cat-select').innerHTML = db.cats.map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('c-ship').innerHTML = db.ships.map(s => `<option value="${s}">${s}</option>`).join('');
+        document.getElementById('bank-data-display').innerText = db.bank;
+        document.getElementById('link-ig').href = db.ig;
+        document.getElementById('link-wa').href = "https://wa.me" + db.wa;
+        alert("Configuración guardada.");
+    }
+
+    // --- CORE LOGIC ---
+    function renderShop() {
+        const container = document.getElementById('shop-grid');
+        container.innerHTML = db.products.map(p => `
+            <div class="card">
+                <span class="card-cat">${p.cat}</span>
+                <img src="${p.img}">
+                <h3>${p.name}</h3>
+                <p class="card-desc">${p.desc}</p>
+                <p><strong>$${p.price}</strong></p>
+                <button class="btn-buy" onclick="addToCart(${p.id})">Añadir al Carrito</button>
+            </div>
+        `).join('');
+    }
+
+    function addToCart(id) {
+        const prod = db.products.find(p => p.id === id);
+        cart.push(prod);
+        document.getElementById('cart-count').innerText = cart.length;
+        renderCart();
+        if(!document.getElementById('cart-panel').classList.contains('active')) toggleCart();
+    }
+
+    function renderCart() {
+        const cartDiv = document.getElementById('cart-items');
+        cartDiv.innerHTML = cart.map((item, index) => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px">
+                <span>${item.name}</span>
+                <span>$${item.price} <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; cursor:pointer">X</button></span>
+            </div>
+        `).join('');
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        document.getElementById('cart-count').innerText = cart.length;
+        renderCart();
+    }
+
+    function confirmOrder() {
+        if(cart.length === 0) return alert("El carrito está vacío");
+        const order = {
+            customer: document.getElementById('c-name').value,
+            items: [...cart],
+            ship: document.getElementById('c-ship').value,
+            pay: document.getElementById('c-pay').value,
+            total: cart.reduce((acc, item) => acc + parseFloat(item.price), 0)
+        };
+        db.orders.push(order);
+        renderOrders();
+        cart = [];
+        document.getElementById('cart-count').innerText = "0";
+        toggleCart();
+        document.getElementById('new-alert').style.display = 'inline';
+        alert("¡Pedido enviado con éxito!");
+    }
+
+    function renderOrders() {
+        const list = document.getElementById('admin-orders-list');
+        list.innerHTML = db.orders.map(o => `
+            <div class="order-card">
+                <strong>Cliente: ${o.customer}</strong><br>
+                Pedido: ${o.items.map(i => i.name).join(', ')}<br>
+                Total: $${o.total} | Envío: ${o.ship} | Pago: ${o.pay}
+            </div>
+        `).join('');
+    }
+</script>
+
 </script>
 
 </body>
