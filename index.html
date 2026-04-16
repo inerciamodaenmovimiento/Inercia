@@ -86,7 +86,17 @@
     </section>
 
     <!-- CARRITO -->
-    <div id="cart-panel">
+    <div id="cart-panel"><!-- REEMPLAZAR SOLO LOS SELECTORES EN EL CARRITO -->
+<label class="form-label">Elegir Envío</label>
+<select class="form-input" id="o-ship-dynamic">
+    <!-- Se llena solo desde el admin -->
+</select>
+
+<label class="form-label">Elegir Pago</label>
+<select class="form-input" id="o-pay-dynamic" onchange="toggleBank()">
+    <!-- Se llena solo desde el admin -->
+</select>
+
         <div class="cart-close" onclick="toggleCart()">✕</div>
         <h2 style="font-family: var(--serif); border-bottom: 2px solid #000; padding-bottom: 10px; margin-top: 0;">Tu Bolsa</h2>
         <div id="cart-list" style="margin: 20px 0;"></div>
@@ -114,7 +124,16 @@
         <h2 style="font-family: var(--serif); border-bottom: 3px solid #000; padding-bottom: 10px; margin-top: 0;">Panel Maestro</h2>
         <div class="admin-grid">
             <div class="admin-box">
-                <h3>Textos y Categorías</h3>
+                <h3>Textos y Categorías</h3><!-- AGREGAR ESTO AL PANEL ADMIN -->
+<label>Opciones de Envío (separar con comas)</label>
+<input type="text" class="form-input" id="in-envios" value="Correo Argentino ($1500), Envío Express ($2800), Retiro en Local (Gratis)">
+
+<label>Métodos de Pago (separar con comas)</label>
+<input type="text" class="form-input" id="in-pagos" value="Tarjeta de Crédito, Transferencia Bancaria, Mercado Pago">
+
+<label>URL Imagen de Banner Principal</label>
+<input type="text" class="form-input" id="in-banner-url" placeholder="Pega el link de la foto aquí">
+
                 <label>Nombre Marca</label><input type="text" class="form-input" id="in-logo" value="INERCIA">
                 <label>Categorías (separar con comas)</label><input type="text" class="form-input" id="in-cats" value="Inicio, Novedades, Colección, Ofertas">
                 <label>Footer Bloque 1 (Nosotros)</label><textarea id="in-ft-1" class="form-input"><strong>Nosotros</strong><br>Elegancia en movimiento.</textarea>
@@ -194,4 +213,21 @@
         renderStore();
     </script>
 </body>
-</html>
+</html>// AGREGAR ESTO DENTRO DE guardarTodo()
+function actualizarOpciones() {
+    // Actualizar Banner
+    const nuevaUrl = document.getElementById('in-banner-url').value;
+    if(nuevaUrl) {
+        document.querySelector('.slide.active').style.backgroundImage = `url('${nuevaUrl}')`;
+    }
+
+    // Actualizar Envíos en el Carrito
+    const envios = document.getElementById('in-envios').value.split(',');
+    document.getElementById('o-ship-dynamic').innerHTML = envios.map(e => `<option>${e.trim()}</option>`).join('');
+
+    // Actualizar Pagos en el Carrito
+    const pagos = document.getElementById('in-pagos').value.split(',');
+    document.getElementById('o-pay-dynamic').innerHTML = pagos.map(p => `<option>${p.trim()}</option>`).join('');
+}
+
+
