@@ -6,52 +6,50 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { 
-            --azul: #000831; 
-            --fondo: #ffd6d6; /* Rosa Pastel Vibrante */
-            --blanco: #ffffff; 
-        }
-        
+        :root { --azul: #000831; --blanco: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Playfair Display', serif; }
         
-        body { background-color: var(--fondo); color: var(--azul); min-height: 100vh; display: flex; flex-direction: column; }
+        body { background-color: var(--blanco); color: var(--azul); min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* --- NAVEGACIÓN --- */
-        nav { padding: 25px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; z-index: 100; background: rgba(255,214,214,0.8); backdrop-filter: blur(10px); }
-        .cart-icon { cursor: pointer; font-weight: bold; border: 1px solid var(--azul); padding: 5px 15px; border-radius: 20px; }
+        /* Navegación */
+        nav { padding: 30px; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; z-index: 100; background: rgba(255,255,255,0.9); }
+        .cart-trigger { cursor: pointer; font-weight: bold; border-bottom: 1px solid var(--azul); }
 
-        /* --- TIENDA --- */
-        .hero { height: 50vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .brand-name { font-size: clamp(3rem, 10vw, 6rem); font-weight: 700; letter-spacing: -2px; }
-        .tagline { font-style: italic; letter-spacing: 5px; opacity: 0.8; margin-top: -10px; }
+        /* Hero & Tienda */
+        .hero { height: 40vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 80px; }
+        .brand-name { font-size: 4rem; font-weight: 700; }
+        .tagline { font-style: italic; letter-spacing: 5px; opacity: 0.7; }
 
-        .productos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 40px; }
-        .card { background: var(--blanco); padding: 15px; text-align: center; transition: 0.3s; border-radius: 5px; }
-        .card img { width: 100%; height: 350px; object-fit: cover; }
-        .btn-add { background: var(--azul); color: white; border: none; padding: 12px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
+        .productos { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; padding: 40px; }
+        .card { text-align: center; }
+        .card img { width: 100%; height: 350px; object-fit: cover; filter: grayscale(100%); transition: 0.5s; }
+        .card img:hover { filter: grayscale(0%); }
+        .btn-add { background: var(--azul); color: white; border: none; padding: 12px; cursor: pointer; width: 100%; margin-top: 10px; text-transform: uppercase; font-size: 0.7rem; }
 
-        /* --- CONTACTO (INFERIOR) --- */
-        footer { padding: 60px 20px; text-align: center; background: rgba(0,0,0,0.05); margin-top: auto; }
-        .footer-links a { color: var(--azul); text-decoration: none; margin: 0 15px; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; }
+        /* Carrito Lateral */
+        #carrito-panel { position: fixed; right: -100%; top: 0; width: 320px; height: 100%; background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1000; transition: 0.5s; padding: 30px; }
+        #carrito-panel.active { right: 0; }
+        .cart-item { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 
-        /* --- ADMINISTRADOR (MODAL FULLSCREEN) --- */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f0f0; z-index: 2000; overflow-y: auto; color: #333; padding: 20px; }
-        .admin-content { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 15px; }
-        .admin-section { border-bottom: 1px solid #ddd; padding: 20px 0; }
-        .admin-section h3 { margin-bottom: 15px; color: var(--azul); text-transform: uppercase; font-size: 0.9rem; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; font-family: sans-serif; }
+        /* Footer Contacto */
+        footer { padding: 50px; text-align: center; border-top: 1px solid #eee; margin-top: auto; }
+        .footer-links a { color: var(--azul); text-decoration: none; margin: 0 15px; font-size: 0.8rem; letter-spacing: 2px; }
+
+        /* Administrador */
+        #admin-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f9f9f9; z-index: 2000; overflow-y: auto; padding: 40px; color: #333; }
+        .admin-box { max-width: 800px; margin: auto; background: white; padding: 30px; border: 1px solid #eee; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
         
-        .order-card { background: #fff8e1; border-left: 5px solid #ffa000; padding: 15px; margin: 10px 0; font-family: sans-serif; font-size: 0.9rem; }
-
-        /* Gatillo Secreto */
-        #secret-trigger { position: fixed; bottom: 5px; right: 5px; width: 20px; height: 20px; background: transparent; cursor: pointer; z-index: 3000; }
+        /* Gatillo Secreto (Abajo Derecha) */
+        #secret-dot { position: fixed; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(0,0,0,0.02); cursor: pointer; z-index: 3000; border-radius: 50%; }
+        #secret-dot:hover { background: rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
     <nav>
-        <div style="font-weight: bold; letter-spacing: 2px;">INERCIA</div>
-        <div class="cart-icon" onclick="alert('Carrito próximamente')">CARRITO (0)</div>
+        <div style="letter-spacing: 3px; font-weight: bold;">INERCIA</div>
+        <div class="cart-trigger" onclick="toggleCarrito()">CARRITO (<span id="cart-count">0</span>)</div>
     </nav>
 
     <header class="hero">
@@ -62,89 +60,76 @@
     <section class="productos">
         <div class="card">
             <img src="https://unsplash.com" alt="Prenda">
-            <h3>Remera "Inercia" Vol. 1</h3>
-            <p>$18.500</p>
-            <button class="btn-add">AÑADIR AL CARRITO</button>
+            <h3>Remera Art</h3>
+            <p>$18.000</p>
+            <button class="btn-add" onclick="agregarItem('Remera Art', 18000)">Añadir</button>
         </div>
     </section>
 
-    <!-- CONTACTO INFERIOR -->
+    <div id="carrito-panel">
+        <h2 onclick="toggleCarrito()" style="cursor:pointer">← Cerrar</h2>
+        <div id="items-lista" style="margin-top:30px"></div>
+        <button class="btn-add" onclick="alert('Pedido enviado al sistema del Admin')">Confirmar Pedido</button>
+    </div>
+
     <footer>
-        <h3>Contáctanos</h3>
-        <div class="footer-links" style="margin-top: 20px;">
-            <a href="#" id="link-instagram">Instagram</a>
-            <a href="#" id="link-whatsapp">WhatsApp</a>
+        <div class="footer-links">
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+            <a href="https://wa.me" target="_blank">WhatsApp</a>
         </div>
-        <p style="margin-top: 30px; font-size: 0.7rem; opacity: 0.5;">© 2024 INERCIA - MODA EN MOVIMIENTO</p>
     </footer>
 
-    <!-- GATILLO SECRETO PARA ADMIN -->
-    <div id="secret-trigger" onclick="abrirAdmin()"></div>
+    <!-- ACCESO ADMIN SEGURO -->
+    <div id="secret-dot" onclick="loginAdmin()"></div>
 
-    <!-- PANEL ADMIN COMPLETO -->
-    <div id="admin-panel">
-        <div class="admin-content">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2>Panel de Control Inercia</h2>
-                <button onclick="cerrarAdmin()" style="background:red; color:white; border:none; padding:5px 15px; cursor:pointer;">SALIR</button>
+    <div id="admin-view">
+        <div class="admin-box">
+            <div style="display:flex; justify-content:space-between">
+                <h2>Panel Inercia</h2>
+                <button onclick="cerrarAdmin()">Cerrar</button>
+            </div>
+            
+            <hr style="margin:20px 0">
+            
+            <h3>📸 Subir Producto</h3>
+            <input type="file" id="upload-file" accept="image/*">
+            <input type="text" placeholder="Nombre">
+            <input type="number" placeholder="Precio">
+            <button class="btn-add">Subir a la Web</button>
+
+            <h3 style="margin-top:40px">📦 Control de Pedidos</h3>
+            <div id="order-log" style="background:#f0f0f0; padding:15px; margin-top:10px; font-family:sans-serif; font-size:0.8rem">
+                Aún no hay ventas registradas.
             </div>
 
-            <!-- 1. Subir Productos -->
-            <div class="admin-section">
-                <h3>📸 Subir Nuevo Producto</h3>
-                <p style="font-size: 0.8rem; color: #666;">Puedes subir fotos desde tu celular o computadora.</p>
-                <input type="file" id="admin-foto" accept="image/*">
-                <input type="text" placeholder="Nombre de la prenda">
-                <input type="number" placeholder="Precio de venta">
-                <button class="btn-add" style="background: green;">PUBLICAR EN TIENDA</button>
-            </div>
-
-            <!-- 2. Control de Pedidos -->
-            <div class="admin-section">
-                <h3>📦 Control de Pedidos y Ventas</h3>
-                <div class="order-card">
-                    <strong>PEDIDO #1024</strong><br>
-                    Cliente: Ana García (@anita_g)<br>
-                    Compra: 1x Remera Inercia Blanca (Talle S)<br>
-                    Pago: Transferencia Bancaria<br>
-                    Envío: Correo Argentino (Sucursal Central)
-                </div>
-            </div>
-
-            <!-- 3. Configuración de Métodos -->
-            <div class="admin-section">
-                <h3>⚙️ Configuración de Métodos</h3>
-                <label>Método de Pago:</label>
-                <select>
-                    <option>Mercado Pago / Transferencia</option>
-                    <option>Efectivo</option>
-                </select>
-                <label>Método de Envío:</label>
-                <textarea placeholder="Detalla aquí los métodos de envío (Ej: Correo, Moto, Retiro)"></textarea>
-            </div>
-
-            <!-- 4. Asociación de Contactos -->
-            <div class="admin-section">
-                <h3>📱 Redes y Contacto</h3>
-                <input type="text" id="admin-ig" placeholder="Link de Instagram">
-                <input type="text" id="admin-ws" placeholder="Número de WhatsApp (con código de país)">
-            </div>
+            <h3 style="margin-top:40px">⚙️ Configuración</h3>
+            <input type="text" placeholder="Costo de Envío">
+            <select><option>Metodo de Pago: Transferencia</option><option>Metodo de Pago: Efectivo</option></select>
         </div>
     </div>
 
     <script>
-        function abrirAdmin() {
-            let pass = prompt("Acceso Restringido. Ingrese código:");
-            if (pass === "0110") {
-                document.getElementById('admin-panel').style.display = 'block';
-            } else {
-                alert("Código de seguridad incorrecto.");
-            }
+        let items = [];
+        function toggleCarrito() { document.getElementById('carrito-panel').classList.toggle('active'); }
+        
+        function agregarItem(nome, precio) {
+            items.push({nome, precio});
+            document.getElementById('cart-count').innerText = items.length;
+            renderCart();
         }
 
-        function cerrarAdmin() {
-            document.getElementById('admin-panel').style.display = 'none';
+        function renderCart() {
+            const lista = document.getElementById('items-lista');
+            lista.innerHTML = items.map(i => `<div class="cart-item"><strong>${i.nome}</strong><br>$${i.precio}</div>`).join('');
         }
+
+        function loginAdmin() {
+            if(prompt("Seguridad Inercia. Código:") === "0110") {
+                document.getElementById('admin-view').style.display = 'block';
+            } else { alert("Error"); }
+        }
+
+        function cerrarAdmin() { document.getElementById('admin-view').style.display = 'none'; }
     </script>
 </body>
 </html>
