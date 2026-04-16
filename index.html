@@ -126,7 +126,51 @@
         <div>
             <strong>Call Us</strong><br>
             Tel / 02-1234-5678<br>Time / AM 09:00 - PM 18:00
-        </div>
+        </div><style>
+    /* Estilos extra para la sección de historia */
+    .story-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 100px 10%;
+        gap: 50px;
+        background: #fff;
+    }
+    .story-image {
+        flex: 1;
+        height: 500px;
+        background: url('https://unsplash.com') no-repeat center;
+        background-size: cover;
+    }
+    .story-content {
+        flex: 1;
+        max-width: 400px;
+    }
+    .story-content h2 {
+        font-family: var(--serif);
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+    .story-content p {
+        font-size: 0.9rem;
+        line-height: 1.8;
+        color: var(--texto-suave);
+        margin-bottom: 30px;
+    }
+</style>
+
+<!-- Añade este bloque antes del <footer> -->
+<section class="story-section">
+    <div class="story-image"></div>
+    <div class="story-content">
+        <h2>Twice as Cozy</h2>
+        <p>
+            Explora la última colección online en INERCIA y descubre las nuevas tendencias en ropa femenina. Encuentra de todo, desde vestidos informales para el día a día hasta ropa de oficina impecable. Tenemos jeans en todos los estilos, prendas de punto de calidad premium y las últimas tendencias esenciales.
+        </p>
+        <a href="#" class="btn-view">DESCUBRIR MÁS</a>
+    </div>
+</section>
+
     </footer>
 
 </body>
