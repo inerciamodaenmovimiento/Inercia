@@ -3,147 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Admin Dashboard</title>
+    <title>Keyn | Admin Editorial</title>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
+        @import url('https://googleapis.com');
+
         :root {
-            --bg-dark: #0f111a;      /* Fondo ultra oscuro */
-            --card-bg: #1a1d29;     /* Fondo de tarjetas */
-            --accent: #ff6b00;      /* Naranja Pinterest/Moderno */
-            --text-main: #ffffff;
-            --text-muted: #8b8e9f;
-            --sidebar-width: 260px;
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #767676;
+            --accent: #000000;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
 
-        /* Sidebar Minimalista */
-        .sidebar { width: var(--sidebar-width); height: 100vh; background: var(--bg-dark); border-right: 1px solid #2d303e; padding: 30px 20px; position: fixed; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--accent); margin-bottom: 50px; display: flex; align-items: center; gap: 10px; }
-        .nav-item { padding: 12px 15px; border-radius: 12px; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: 0.3s; }
-        .nav-item:hover, .nav-item.active { background: #242736; color: var(--text-main); }
-        .nav-item.active i { color: var(--accent); }
+        /* Navbar Estilo Editorial */
+        nav { display: flex; justify-content: center; align-items: center; padding: 20px 40px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100; }
+        .nav-links { display: flex; gap: 30px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        .logo { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 2rem; margin: 0 50px; letter-spacing: -2px; }
 
-        /* Contenedor Principal */
-        .main { margin-left: var(--sidebar-width); flex: 1; padding: 40px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        .header h1 { font-size: 1.8rem; font-weight: 600; }
+        /* Hero / Banner Admin */
+        .hero { position: relative; height: 60vh; background: #f4f4f4; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 60px; }
+        .hero img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        .hero-text { position: absolute; text-align: center; color: white; }
+        .hero-text h2 { font-family: 'Playfair Display', serif; font-size: 4rem; font-style: italic; }
 
-        /* Grid de Tarjetas */
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 40px; }
-        .card { background: var(--card-bg); padding: 25px; border-radius: 20px; position: relative; overflow: hidden; border: 1px solid #2d303e; }
-        .card h3 { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px; }
-        .card .number { font-size: 2rem; font-weight: 700; }
-        .card .trend { color: var(--accent); font-size: 0.8rem; margin-top: 5px; }
+        /* Sección de Gestión */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-title { font-family: 'Inter', sans-serif; font-size: 3rem; text-align: center; margin-bottom: 50px; font-weight: 400; letter-spacing: -1px; }
 
-        /* Tabla de Usuarios */
-        .table-section { background: var(--card-bg); border-radius: 24px; padding: 30px; border: 1px solid #2d303e; }
-        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; color: var(--text-muted); font-size: 0.85rem; padding-bottom: 15px; border-bottom: 1px solid #2d303e; }
-        td { padding: 15px 0; border-bottom: 1px solid #242736; font-size: 0.95rem; }
+        /* Grid de Productos Functional */
+        .catalog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 80px; }
+        .product-card { position: relative; transition: 0.3s; }
+        .product-img { width: 100%; aspect-ratio: 3/4; background: #f9f9f9; object-fit: cover; margin-bottom: 15px; }
+        .product-info { text-align: center; }
+        .product-name { font-size: 1rem; font-weight: 400; margin-bottom: 5px; }
+        .product-price { color: var(--muted); font-size: 0.9rem; }
 
-        /* Botones Acción */
-        .btn-orange { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .btn-orange:hover { opacity: 0.8; transform: translateY(-2px); }
-        .btn-icon { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
-        .btn-icon:hover { color: var(--accent); }
+        /* Panel de Control Flotante */
+        .admin-controls { background: black; color: white; padding: 20px; border-radius: 50px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; }
+        .btn-admin { background: transparent; border: 1px solid white; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; }
+        .btn-admin:hover { background: white; color: black; }
 
+        /* Botón de Borrar sobre imagen */
+        .delete-overlay { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.8); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; opacity: 0; transition: 0.3s; }
+        .product-card:hover .delete-overlay { opacity: 1; }
+
+        /* Sección de Filosofía (Footer Estilo Imagen) */
+        .philosophy { display: flex; gap: 50px; padding: 100px 0; border-top: 1px solid #eee; }
+        .philosophy-text { flex: 1; }
+        .philosophy-text h3 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 20px; }
+        .philosophy-text p { color: var(--muted); max-width: 400px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="logo"><i class="fas fa-bolt"></i> CORE.</div>
-        <nav>
-            <a href="#" class="nav-item active"><i class="fas fa-chart-pie"></i> Overview</a>
-            <a href="#" class="nav-item"><i class="fas fa-user-friends"></i> Customers</a>
-            <a href="#" class="nav-item"><i class="fas fa-wallet"></i> Payments</a>
-            <a href="#" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
-        </nav>
+    <nav>
+        <div class="nav-links"><span>Catálogo</span> <span>Información</span></div>
+        <div class="logo">keyn</div>
+        <div class="nav-links"><span>Contacto</span> <span><i class="fa-solid fa-magnifying-glass"></i></span></div>
+    </nav>
+
+    <div class="hero">
+        <img src="https://unsplash.com" alt="Banner">
+        <div class="hero-text">
+            <h2>Gestión de Colección</h2>
+        </div>
     </div>
 
-    <div class="main">
-        <div class="header">
-            <h1>Admin Dashboard</h1>
-            <button class="btn-orange" onclick="addUser()">+ Add User</button>
+    <div class="container">
+        <h2 class="section-title">catalog</h2>
+        
+        <div class="catalog-grid" id="catalog-container">
+            <!-- Los productos se cargan aquí -->
         </div>
 
-        <div class="grid">
-            <div class="card">
-                <h3>Total Revenue</h3>
-                <div class="number">$128,430</div>
-                <div class="trend"><i class="fas fa-arrow-up"></i> +12.5%</div>
+        <section class="philosophy">
+            <div class="philosophy-text">
+                <h3>Our philosophy</h3>
+                <p>Nuestra ropa no son solo cosas. Es ropa que da confianza en uno mismo. Es lo que ayuda a amarse y sentir que eres capaz de todo.</p>
             </div>
-            <div class="card">
-                <h3>Active Sessions</h3>
-                <div id="stat-users" class="number">0</div>
-                <div class="trend">Live updates</div>
+            <div style="flex: 1; display: flex; justify-content: flex-end;">
+                <img src="https://unsplash.com" style="width: 250px; height: 350px; object-fit: cover;">
             </div>
-            <div class="card">
-                <h3>System Health</h3>
-                <div class="number">99.9%</div>
-                <div class="trend" style="color: #00ff88;">Stable</div>
-            </div>
-        </div>
+        </section>
+    </div>
 
-        <div class="table-section">
-            <div class="table-header">
-                <h2>User Management</h2>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>NAME</th>
-                        <th>EMAIL</th>
-                        <th>STATUS</th>
-                        <th>ACTIONS</th>
-                    </tr>
-                </thead>
-                <tbody id="user-body">
-                    <!-- Dinámico -->
-                </tbody>
-            </table>
-        </div>
+    <div class="admin-controls">
+        <button class="btn-admin" onclick="addProduct()">+ Agregar Producto</button>
+        <span id="product-count" style="font-size: 0.8rem; align-self: center;">Productos: 3</span>
     </div>
 
     <script>
-        let userData = [
-            { name: "Alex Rivera", email: "alex@core.io", status: "Active" },
-            { name: "Sofia Chen", email: "sofia.c@web.com", status: "Pending" }
+        let products = [
+            { id: 1, name: "Rashguard Negro", price: "12.900 P", img: "https://unsplash.com" },
+            { id: 2, name: "Rashguard Blanco", price: "12.900 P", img: "https://unsplash.com" },
+            { id: 3, name: "Bomber Suede", price: "18.900 P", img: "https://unsplash.com" }
         ];
 
         function render() {
-            const container = document.getElementById('user-body');
-            document.getElementById('stat-users').innerText = userData.length;
-            container.innerHTML = "";
+            const container = document.getElementById('catalog-container');
+            const count = document.getElementById('product-count');
+            container.innerHTML = '';
             
-            userData.forEach((u, i) => {
+            products.forEach((p, index) => {
                 container.innerHTML += `
-                    <tr>
-                        <td><strong>${u.name}</strong></td>
-                        <td>${u.email}</td>
-                        <td style="color: ${u.status === 'Active' ? '#00ff88' : '#ffb800'}">${u.status}</td>
-                        <td>
-                            <button class="btn-icon" onclick="remove(${i})"><i class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
+                    <div class="product-card">
+                        <button class="delete-overlay" onclick="removeProduct(${index})"><i class="fa-solid fa-xmark"></i></button>
+                        <img src="${p.img}" class="product-img">
+                        <div class="product-info">
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-price">${p.price}</div>
+                        </div>
+                    </div>
                 `;
             });
+            count.innerText = `Productos: ${products.length}`;
         }
 
-        function addUser() {
-            const name = prompt("Enter User Name:");
-            if (name) {
-                userData.push({ name, email: `${name.split(' ')[0].toLowerCase()}@system.com`, status: "Active" });
+        function addProduct() {
+            const name = prompt("Nombre de la prenda:");
+            if(name) {
+                products.push({
+                    id: Date.now(),
+                    name: name,
+                    price: "0.000 P",
+                    img: "https://unsplash.com"
+                });
                 render();
             }
         }
 
-        function remove(i) {
-            userData.splice(i, 1);
-            render();
+        function removeProduct(index) {
+            if(confirm("¿Eliminar del catálogo?")) {
+                products.splice(index, 1);
+                render();
+            }
         }
 
         render();
