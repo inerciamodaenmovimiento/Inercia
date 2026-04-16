@@ -6,213 +6,231 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --azul: #000831; --blanco: #ffffff; --gris: #f8f8f8; }
+        :root { --azul: #000831; --blanco: #ffffff; --gris: #f4f4f4; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Playfair Display', serif; }
-        body { background: var(--blanco); color: var(--azul); }
+        body { background: var(--blanco); color: var(--azul); overflow-x: hidden; }
 
         /* --- TIENDA --- */
-        nav { padding: 30px; display: flex; justify-content: space-between; position: fixed; width: 100%; z-index: 100; background: rgba(255,255,255,0.9); backdrop-filter: blur(5px); }
-        .hero { height: 40vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 100px; }
-        .brand-name { font-size: 4rem; letter-spacing: -2px; }
+        nav { padding: 30px; display: flex; justify-content: space-between; position: fixed; width: 100%; z-index: 100; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
+        .hero { height: 45vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 80px; }
+        .brand-name { font-size: 5rem; letter-spacing: -2px; line-height: 1; }
         
-        .productos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 40px; }
-        .card { border: 1px solid #eee; padding: 20px; transition: 0.3s; }
-        .card img { width: 100%; height: 380px; object-fit: cover; margin-bottom: 15px; }
-        .cat-tag { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; }
-        .btn-black { background: var(--azul); color: white; border: none; padding: 12px; width: 100%; cursor: pointer; margin-top: 10px; font-size: 0.7rem; text-transform: uppercase; }
+        .productos-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 40px; }
+        .card { border: 1px solid #f0f0f0; padding: 20px; transition: 0.3s; position: relative; }
+        .card img { width: 100%; height: 400px; object-fit: cover; margin-bottom: 15px; }
+        .card-cat { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; }
+        .card-desc { font-size: 0.85rem; margin: 10px 0; opacity: 0.8; }
+        .btn-buy { background: var(--azul); color: white; border: none; padding: 12px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; }
 
         /* --- CARRITO --- */
-        #cart-panel { position: fixed; right: -100%; top: 0; width: 350px; height: 100%; background: white; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 1000; transition: 0.5s; padding: 30px; overflow-y: auto; }
+        #cart-panel { position: fixed; right: -100%; top: 0; width: 380px; height: 100%; background: white; z-index: 1000; transition: 0.5s; padding: 30px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); overflow-y: auto; }
         #cart-panel.active { right: 0; }
-        .checkout-box { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
-        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; }
+        .input-cart { width: 100%; padding: 10px; margin: 5px 0 15px; border: 1px solid #ddd; font-family: sans-serif; }
 
         /* --- ADMIN --- */
         #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--gris); z-index: 2000; overflow-y: auto; padding: 40px; color: #333; }
-        .admin-card { background: white; padding: 25px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; }
-        .order-card { background: #fffde7; border-left: 5px solid #fbc02d; padding: 15px; margin-bottom: 10px; font-family: sans-serif; font-size: 0.85rem; }
+        .admin-box { background: white; padding: 25px; margin-bottom: 25px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .order-card { background: #fffbe6; border-left: 6px solid #fadb14; padding: 15px; margin-bottom: 10px; font-family: sans-serif; font-size: 0.85rem; }
         #secret-trigger { position: fixed; bottom: 10px; right: 10px; width: 25px; height: 25px; background: transparent; cursor: pointer; z-index: 3000; }
+
+        /* Footer */
+        footer { padding: 60px; text-align: center; border-top: 1px solid #eee; margin-top: 50px; }
+        .footer-links a { color: var(--azul); text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
 <nav>
     <div style="font-weight:bold; letter-spacing:3px">INERCIA</div>
-    <div style="cursor:pointer" onclick="toggleCart()">CARRITO (<span id="cart-count">0</span>)</div>
+    <div style="cursor:pointer; font-weight:bold" onclick="toggleCart()">CARRITO (<span id="cart-count">0</span>)</div>
 </nav>
 
 <header class="hero">
     <h1 class="brand-name">Inercia</h1>
-    <p style="font-style:italic; opacity:0.6">Moda en movimiento</p>
+    <p style="font-style:italic; opacity:0.6; letter-spacing:5px">Moda en movimiento</p>
 </header>
 
-<section class="productos-grid" id="main-shop"></section>
+<section class="productos-container" id="shop-grid"></section>
 
+<!-- CARRITO -->
 <div id="cart-panel">
-    <h2 onclick="toggleCart()" style="cursor:pointer">← Cerrar</h2>
-    <div id="cart-items" style="margin:20px 0"></div>
-    <div class="checkout-box">
-        <h3>Finalizar Compra</h3>
-        <input type="text" id="cust-name" placeholder="Nombre completo">
-        <select id="cust-ship"></select>
-        <select id="cust-pay" onchange="checkPayMethod()">
-            <option value="Efectivo">Efectivo</option>
-            <option value="Transferencia">Transferencia Bancaria</option>
+    <h2 onclick="toggleCart()" style="cursor:pointer">← VOLVER</h2>
+    <div id="cart-items" style="margin:30px 0"></div>
+    <div id="checkout-area">
+        <h3>Datos de Envío y Pago</h3>
+        <input type="text" id="c-name" class="input-cart" placeholder="Nombre completo">
+        <label>Método de Envío:</label>
+        <select id="c-ship" class="input-cart"></select>
+        <label>Método de Pago:</label>
+        <select id="c-pay" class="input-cart" onchange="showBankDetails()">
+            <option value="Efectivo">Efectivo / Acordar</option>
+            <option value="Transferencia">Cuenta Bancaria (Transferencia)</option>
         </select>
-        <div id="bank-info" style="display:none; font-size:0.8rem; background:#f0f0f0; padding:10px; margin-bottom:10px"></div>
-        <button class="btn-black" onclick="placeOrder()">Confirmar Pedido</button>
+        <div id="bank-data-display" style="display:none; background:#f9f9f9; padding:10px; font-size:0.8rem; margin-bottom:15px; border:1px dashed var(--azul)"></div>
+        <button class="btn-buy" onclick="confirmOrder()">Confirmar Pedido</button>
     </div>
 </div>
 
-<!-- FOOTER -->
-<footer style="padding:60px; text-align:center; border-top:1px solid #eee">
-    <a href="#" id="f-ig" style="color:var(--azul); margin:0 15px; text-decoration:none">Instagram</a>
-    <a href="#" id="f-wa" style="color:var(--azul); margin:0 15px; text-decoration:none">WhatsApp</a>
+<footer>
+    <div class="footer-links">
+        <a href="#" id="link-ig">INSTAGRAM</a>
+        <a href="#" id="link-wa">WHATSAPP</a>
+    </div>
 </footer>
 
-<div id="secret-trigger" onclick="openAdmin()"></div>
+<div id="secret-trigger" onclick="accessAdmin()"></div>
 
-<!-- ADMIN PANEL -->
+<!-- PANEL ADMINISTRADOR -->
 <div id="admin-panel">
-    <div style="display:flex; justify-content:space-between; margin-bottom:30px">
-        <h2>Inercia Control Panel</h2>
-        <button onclick="closeAdmin()">Cerrar</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px">
+        <h1>Inercia Admin System</h1>
+        <button onclick="closeAdmin()" style="padding:10px; cursor:pointer; background:red; color:white; border:none">CERRAR SESIÓN</button>
     </div>
 
-    <div class="admin-card">
-        <h3>📸 Subir Producto</h3>
+    <div class="admin-box">
+        <h3>📸 Gestión de Productos</h3>
         <input type="file" id="p-img" accept="image/*">
-        <input type="text" id="p-name" placeholder="Nombre">
-        <textarea id="p-desc" placeholder="Descripción del producto"></textarea>
-        <input type="number" id="p-price" placeholder="Precio">
-        <input type="text" id="p-cat" placeholder="Categoría (ej: Remeras)">
-        <button class="btn-black" onclick="uploadProduct()">Publicar en Tienda</button>
+        <input type="text" id="p-name" placeholder="Nombre de la prenda">
+        <textarea id="p-desc" placeholder="Descripción detallada" style="width:100%; height:80px; margin:10px 0; padding:10px"></textarea>
+        <input type="number" id="p-price" placeholder="Precio ($)">
+        <select id="p-cat-select" class="input-cart" style="margin-top:10px"></select>
+        <button class="btn-buy" onclick="uploadProduct()">PUBLICAR PRODUCTO</button>
     </div>
 
-    <div class="admin-card">
-        <h3>⚙️ Configuración (Pagos/Envío/Redes)</h3>
-        <textarea id="conf-bank" placeholder="Datos bancarios (Alias, CBU, Banco)"></textarea>
-        <input type="text" id="conf-ship" placeholder="Métodos de envío (separados por coma)">
-        <input type="text" id="conf-ig" placeholder="Link Instagram">
-        <input type="text" id="conf-wa" placeholder="WhatsApp">
-        <button class="btn-black" onclick="saveConfig()">Actualizar Configuración</button>
+    <div class="admin-box">
+        <h3>⚙️ Configuración de la Tienda</h3>
+        <label>Categorías (Separadas por coma):</label>
+        <input type="text" id="conf-cats" placeholder="Ej: Remeras, Pantalones, Accesorios">
+        <label>Métodos de Envío (Separados por coma):</label>
+        <input type="text" id="conf-ships" placeholder="Ej: Correo Argentino, Moto Mensajería, Retiro">
+        <label>Datos Bancarios (Para el cliente):</label>
+        <textarea id="conf-bank" placeholder="CBU, Alias, Banco..." style="width:100%; padding:10px"></textarea>
+        <label>Redes Sociales (Links):</label>
+        <input type="text" id="conf-ig" placeholder="Link de Instagram">
+        <input type="text" id="conf-wa" placeholder="Número de WhatsApp">
+        <button class="btn-buy" style="background:#2e7d32" onclick="saveConfig()">GUARDAR CONFIGURACIÓN</button>
     </div>
 
-    <div class="admin-card">
-        <h3>📦 Control de Pedidos</h3>
-        <div id="order-list"></div>
+    <div class="admin-box">
+        <h3>📦 Control de Pedidos (<span id="new-alert" style="color:red; display:none">¡Nueva Venta!</span>)</h3>
+        <div id="admin-orders-list"></div>
     </div>
 </div>
 
 <script>
-    let products = [];
+    let db = { products: [], orders: [], cats: ["General"], ships: ["Retiro"], bank: "", ig: "#", wa: "#" };
     let cart = [];
-    let orders = [];
-    let config = { bank: "", ship: "Retiro en tienda, Envío a domicilio", ig: "#", wa: "#" };
 
     function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
+
+    function accessAdmin() {
+        if(prompt("Código de Seguridad Inercia:") === "0110") {
+            document.getElementById('admin-panel').style.display = 'block';
+            document.getElementById('new-alert').style.display = 'none';
+        }
+    }
+    function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
+
+    function saveConfig() {
+        db.cats = document.getElementById('conf-cats').value.split(',').map(s => s.trim());
+        db.ships = document.getElementById('conf-ships').value.split(',').map(s => s.trim());
+        db.bank = document.getElementById('conf-bank').value;
+        db.ig = document.getElementById('conf-ig').value;
+        db.wa = document.getElementById('conf-wa').value;
+
+        // Actualizar UI
+        document.getElementById('p-cat-select').innerHTML = db.cats.map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('c-ship').innerHTML = db.ships.map(s => `<option value="${s}">${s}</option>`).join('');
+        document.getElementById('bank-data-display').innerText = "Datos Bancarios: " + db.bank;
+        document.getElementById('link-ig').href = db.ig;
+        document.getElementById('link-wa').href = "https://wa.me" + db.wa;
+        alert("Configuración Actualizada");
+    }
 
     function uploadProduct() {
         const file = document.getElementById('p-img').files[0];
         const name = document.getElementById('p-name').value;
         const desc = document.getElementById('p-desc').value;
         const price = document.getElementById('p-price').value;
-        const cat = document.getElementById('p-cat').value;
+        const cat = document.getElementById('p-cat-select').value;
 
-        if(!file || !name || !price) return alert("Completa los campos principales");
+        if(!file || !name || !price) return alert("Faltan datos");
 
         const reader = new FileReader();
         reader.onload = function(e) {
-            products.push({ id: Date.now(), img: e.target.result, name, desc, price, cat });
+            db.products.push({ id: Date.now(), img: e.target.result, name, desc, price, cat });
             renderShop();
-            alert("Producto subido!");
+            alert("Producto en línea");
         }
         reader.readAsDataURL(file);
     }
 
     function renderShop() {
-        const grid = document.getElementById('main-shop');
-        grid.innerHTML = products.map(p => `
+        const grid = document.getElementById('shop-grid');
+        grid.innerHTML = db.products.map(p => `
             <div class="card">
                 <img src="${p.img}">
-                <span class="cat-tag">${p.cat}</span>
+                <span class="card-cat">${p.cat}</span>
                 <h3>${p.name}</h3>
-                <p style="font-size:0.8rem; margin:5px 0">${p.desc}</p>
+                <p class="card-desc">${p.desc}</p>
                 <p><b>$${p.price}</b></p>
-                <button class="btn-black" onclick="addToCart(${p.id})">Añadir</button>
+                <button class="btn-buy" onclick="addToCart(${p.id})">Añadir al carrito</button>
             </div>
         `).join('');
     }
 
     function addToCart(id) {
-        const p = products.find(prod => prod.id === id);
+        const p = db.products.find(x => x.id === id);
         cart.push(p);
         document.getElementById('cart-count').innerText = cart.length;
         renderCart();
     }
 
     function renderCart() {
-        document.getElementById('cart-items').innerHTML = cart.map(i => `<p>${i.name} - $${i.price}</p>`).join('');
+        document.getElementById('cart-items').innerHTML = cart.map(i => `<p style="margin-bottom:10px">${i.name} - <b>$${i.price}</b></p>`).join('');
     }
 
-    function checkPayMethod() {
-        const method = document.getElementById('cust-pay').value;
-        const info = document.getElementById('bank-info');
-        if(method === "Transferencia") {
-            info.style.display = "block";
-            info.innerText = "Datos para transferir: " + config.bank;
-        } else { info.style.display = "none"; }
+    function showBankDetails() {
+        const pay = document.getElementById('c-pay').value;
+        document.getElementById('bank-data-display').style.display = (pay === "Transferencia") ? "block" : "none";
     }
 
-    function saveConfig() {
-        config.bank = document.getElementById('conf-bank').value;
-        config.ship = document.getElementById('conf-ship').value;
-        document.getElementById('f-ig').href = document.getElementById('conf-ig').value;
-        document.getElementById('f-wa').href = "https://wa.me" + document.getElementById('conf-wa').value;
-        
-        // Update shipping dropdown
-        const shipSelect = document.getElementById('cust-ship');
-        shipSelect.innerHTML = config.ship.split(',').map(s => `<option value="${s.trim()}">${s.trim()}</option>`).join('');
-        alert("Configuración guardada");
-    }
-
-    function placeOrder() {
-        const name = document.getElementById('cust-name').value;
-        if(!name || cart.length === 0) return alert("Datos incompletos");
+    function confirmOrder() {
+        const name = document.getElementById('c-name').value;
+        if(!name || cart.length === 0) return alert("Completa los datos");
 
         const order = {
             id: Date.now(),
             client: name,
-            items: cart.map(c => `${c.name} (${c.cat})`).join(', '),
+            items: cart.map(c => c.name).join(', '),
             total: cart.reduce((a, b) => a + parseInt(b.price), 0),
-            ship: document.getElementById('cust-ship').value,
-            pay: document.getElementById('cust-pay').value
+            ship: document.getElementById('c-ship').value,
+            pay: document.getElementById('c-pay').value,
+            date: new Date().toLocaleString()
         };
 
-        orders.push(order);
+        db.orders.unshift(order);
         renderOrders();
         cart = [];
         document.getElementById('cart-count').innerText = "0";
-        alert("¡Venta exitosa! El administrador ha sido notificado.");
+        document.getElementById('new-alert').style.display = 'inline';
+        alert("¡Pedido realizado con éxito!");
         toggleCart();
     }
 
     function renderOrders() {
-        document.getElementById('order-list').innerHTML = orders.map(o => `
+        document.getElementById('admin-orders-list').innerHTML = db.orders.map(o => `
             <div class="order-card">
-                <b>ORDEN #${o.id}</b><br>
-                Cliente: ${o.client}<br>
-                Productos: ${o.items}<br>
-                Pago: ${o.pay} | Envío: ${o.ship}<br>
-                <b>Total: $${o.total}</b>
+                <b>ORDEN #${o.id}</b> - ${o.date}<br>
+                <b>Cliente:</b> ${o.client}<br>
+                <b>Prendas:</b> ${o.items}<br>
+                <b>Pago:</b> ${o.pay} | <b>Envío:</b> ${o.ship}<br>
+                <b>TOTAL: $${o.total}</b>
             </div>
-        `).reverse().join('');
+        `).join('');
     }
 
-    function openAdmin() { if(prompt("Código Inercia:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
-    function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
-    
-    // Init
+    // Inicializar
     saveConfig();
 </script>
 
