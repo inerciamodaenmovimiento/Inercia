@@ -3,164 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Moda Editorial</title>
+    <title>Inercia | Moda Orgánica</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --negro: #121212; --gris-claro: #f8f8f8; --serif: 'Cormorant Garamond', serif; --sans: 'Montserrat', sans-serif; }
+        :root { --crema: #f2e8df; --beige: #e5d5c5; --marron: #8c7a6b; --negro: #2d2a26; --serif: 'Cormorant Garamond', serif; --sans: 'Montserrat', sans-serif; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--sans); color: var(--negro); background: #fff; overflow-x: hidden; }
+        body { font-family: var(--sans); color: var(--negro); background: var(--crema); overflow-x: hidden; }
 
-        /* --- NAVEGACIÓN ESTILO PHOTO --- */
-        nav { padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; background: #fff; border-bottom: 1px solid #f0f0f0; }
-        .nav-left { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; }
-        .logo { font-family: var(--serif); font-size: 1.8rem; letter-spacing: 8px; text-transform: uppercase; font-weight: 300; }
-        .cart-trigger { cursor: pointer; font-size: 1.2rem; position: relative; }
+        /* --- NAVEGACIÓN --- */
+        nav { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; background: transparent; position: absolute; width: 100%; z-index: 1000; }
+        .logo { font-family: var(--serif); font-size: 2.2rem; letter-spacing: 5px; text-transform: uppercase; font-weight: 500; }
+        .menu a { text-decoration: none; color: var(--negro); margin: 0 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        .cart-trigger { cursor: pointer; font-size: 1.3rem; background: var(--marron); color: white; padding: 8px 15px; border-radius: 50px; }
 
-        /* --- HERO SPLIT (COMO LA IMAGEN) --- */
-        .hero-split { display: flex; height: 90vh; width: 100%; background: #000; }
-        .hero-img { flex: 1; background-size: cover; background-position: center; filter: grayscale(100%); transition: 0.8s; }
-        .hero-img:hover { filter: grayscale(0%); }
-        .hero-text-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; text-align: center; z-index: 10; pointer-events: none; }
-        .hero-text-center h1 { font-family: var(--serif); font-size: 4rem; letter-spacing: 15px; font-weight: 300; text-transform: uppercase; }
+        /* --- HERO (ESTILO FLEUR) --- */
+        .hero { height: 90vh; background: var(--beige); display: flex; align-items: center; justify-content: center; position: relative; border-bottom-left-radius: 50% 10%; border-bottom-right-radius: 50% 10%; overflow: hidden; }
+        .hero-img { position: absolute; right: 10%; bottom: 0; width: 40%; height: 80%; background: url('https://unsplash.com') center/cover; border-radius: 300px 300px 0 0; }
+        .hero-text { position: relative; z-index: 10; text-align: center; max-width: 600px; }
+        .hero-text h1 { font-family: var(--serif); font-size: 4.5rem; font-weight: 300; line-height: 1; margin-bottom: 20px; }
 
-        /* --- SECCIÓN ABOUT / MOSAICO --- */
-        .about-section { padding: 100px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-        .mosaic { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .mosaic img { width: 100%; height: 300px; object-fit: cover; filter: grayscale(100%); }
-        .about-content h2 { font-family: var(--serif); font-size: 3rem; margin-bottom: 20px; font-weight: 300; font-style: italic; }
-        .about-content p { font-weight: 200; line-height: 2; font-size: 0.9rem; color: #666; }
+        /* --- SERVICIOS / CATEGORÍAS (ARCOS) --- */
+        .services { padding: 100px 10%; text-align: center; }
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+        .service-card { background: var(--beige); padding: 40px 20px; border-radius: 200px 200px 20px 20px; transition: 0.4s; }
+        .service-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 150px 150px 0 0; margin-bottom: 20px; }
+        .service-card h3 { font-family: var(--serif); font-size: 1.8rem; margin-bottom: 10px; }
 
-        /* --- PORTFOLIO DE PRODUCTOS --- */
-        .portfolio-title { padding: 50px 10% 20px; font-family: var(--serif); font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; font-weight: 300; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 0 10% 100px; }
-        .card { position: relative; text-align: left; }
-        .card img { width: 100%; height: 500px; object-fit: cover; filter: grayscale(100%); transition: 0.5s; }
-        .card:hover img { filter: grayscale(0%); }
-        .card-info { margin-top: 20px; border-left: 1px solid #ddd; padding-left: 15px; }
-        .card h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 300; text-transform: uppercase; }
-        .card p { font-size: 0.8rem; margin-top: 5px; color: #888; }
-        .btn-add { margin-top: 15px; background: none; border: 1px solid #000; padding: 10px 20px; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
-        .btn-add:hover { background: #000; color: #fff; }
+        /* --- TIENDA / PRODUCTOS --- */
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; padding: 50px 10% 100px; }
+        .card { text-align: center; }
+        .card img { width: 100%; height: 350px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; }
+        .card h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; }
+        .btn-add { background: var(--marron); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top: 10px; font-size: 0.7rem; text-transform: uppercase; }
 
-        /* --- CARRITO ESTILO MINIMAL --- */
-        #cart-panel { position: fixed; right: -450px; top: 0; width: 400px; height: 100vh; background: #fff; z-index: 5000; transition: 0.5s; padding: 50px; box-shadow: -10px 0 30px rgba(0,0,0,0.05); overflow-y: auto; }
+        /* --- CARRITO --- */
+        #cart-panel { position: fixed; right: -450px; top: 0; width: 400px; height: 100vh; background: var(--crema); z-index: 5000; transition: 0.5s; padding: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.05); overflow-y: auto; }
         #cart-panel.active { right: 0; }
-        .form-input { width: 100%; padding: 15px 0; border: none; border-bottom: 1px solid #ddd; margin-bottom: 20px; font-family: var(--sans); outline: none; }
+        .form-input { width: 100%; padding: 12px; background: transparent; border: none; border-bottom: 1px solid var(--marron); margin-bottom: 15px; font-family: var(--sans); }
 
         /* --- ADMIN Y FOOTER --- */
-        footer { padding: 80px 10%; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); font-size: 0.75rem; letter-spacing: 1px; color: #999; }
-        .admin-trigger { position: fixed; bottom: 10px; right: 10px; width: 30px; height: 30px; cursor: pointer; opacity: 0.1; }
-        #admin-panel { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; padding: 50px; overflow-y: auto; }
-        .admin-box { background: #fafafa; padding: 30px; border: 1px solid #eee; margin-bottom: 20px; }
+        footer { padding: 80px 10%; background: var(--beige); display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.8rem; border-top-left-radius: 50% 10%; border-top-right-radius: 50% 10%; }
+        .admin-trigger { position: fixed; bottom: 10px; right: 10px; width: 30px; height: 30px; cursor: pointer; opacity: 0.2; }
+        #admin-panel { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--crema); z-index: 9999; padding: 50px; overflow-y: auto; }
+        .admin-box { background: white; padding: 30px; border-radius: 20px; border: 1px solid #ddd; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="nav-left">Página Principal</div>
         <div class="logo" id="disp-logo">INERCIA</div>
+        <div class="menu" id="nav-container">
+            <a href="#">Colecciones</a> <a href="#">Nosotros</a> <a href="#">Contacto</a>
+        </div>
         <div class="cart-trigger" onclick="toggleCart()">🛍️ <span id="cart-count">0</span></div>
     </nav>
 
-    <!-- HERO SPLIT -->
-    <div class="hero-split">
-        <div class="hero-img" style="background-image: url('https://unsplash.com')"></div>
-        <div class="hero-img" style="background-image: url('https://unsplash.com')"></div>
-        <div class="hero-text-center">
-            <h1 id="disp-hero-txt">Moda & Arte</h1>
+    <div class="hero">
+        <div class="hero-text">
+            <h1 id="disp-hero-txt">Elegancia Orgánica & Minimalista</h1>
+            <p style="font-weight: 300; letter-spacing: 2px;">ENVÍO GRATIS EN COMPRAS MAYORES A $15.000</p>
         </div>
+        <div class="hero-img"></div>
     </div>
 
-    <!-- SECCIÓN ABOUT MOSAICO -->
-    <section class="about-section">
-        <div class="mosaic">
-            <img src="https://unsplash.com">
-            <img src="https://unsplash.com" style="margin-top: 40px;">
-            <img src="https://unsplash.com" style="margin-top: -40px;">
-            <img src="https://unsplash.com">
-        </div>
-        <div class="about-content">
-            <h2 id="disp-about-title">Sobre Nosotros</h2>
-            <p id="disp-about-text">Nuestra meta es capturar tu esencia, tu carácter y tu historia a través de piezas diseñadas con la precisión de la alta costura y el alma del arte contemporáneo.</p>
+    <section class="services">
+        <h2 style="font-family: var(--serif); font-size: 2.5rem;">Nuestros Servicios</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <img src="https://unsplash.com">
+                <h3>Diseño a Medida</h3>
+                <p style="font-size: 0.8rem; font-weight: 300;">Prendas exclusivas diseñadas para tu cuerpo.</p>
+            </div>
+            <div class="service-card">
+                <img src="https://unsplash.com">
+                <h3>Alta Costura</h3>
+                <p style="font-size: 0.8rem; font-weight: 300;">La mejor calidad en materiales orgánicos.</p>
+            </div>
+            <div class="service-card">
+                <img src="https://unsplash.com">
+                <h3>Colecciones</h3>
+                <p style="font-size: 0.8rem; font-weight: 300;">Explora nuestras líneas de temporada.</p>
+            </div>
         </div>
     </section>
 
-    <!-- PORTFOLIO / TIENDA -->
-    <h2 class="portfolio-title">Portfolio</h2>
+    <h2 style="text-align: center; font-family: var(--serif); font-size: 2.5rem; margin-top: 50px;">Lo Más Popular</h2>
     <div class="grid" id="store-grid">
-        <!-- Productos aquí -->
+        <!-- Productos dinámicos -->
     </div>
 
     <!-- CARRITO -->
     <div id="cart-panel">
-        <h2 style="font-family: var(--serif); font-size: 2.5rem; margin-bottom: 30px;">Tu Bolsa</h2>
+        <h2 style="font-family: var(--serif); font-size: 2.5rem; margin-bottom: 20px;">Tu Bolsa</h2>
         <div id="cart-list" style="margin-bottom: 30px;"></div>
         <input type="text" class="form-input" id="o-name" placeholder="NOMBRE COMPLETO">
-        <input type="text" class="form-input" id="o-addr" placeholder="DIRECCIÓN Y CIUDAD">
+        <input type="text" class="form-input" id="o-addr" placeholder="DIRECCIÓN DE ENVÍO">
         <select class="form-input" id="o-ship">
             <option>Correo Argentino ($1.500)</option>
             <option>Envío Express ($2.800)</option>
         </select>
         <select class="form-input" id="o-pay" onchange="toggleBank()">
-            <option value="card">TARJETA</option>
+            <option value="card">PAGO CON TARJETA</option>
             <option value="transfer">TRANSFERENCIA</option>
         </select>
-        <div id="bank-box" style="display:none; font-size: 0.7rem; padding: 15px; background: #f9f9f9; margin-bottom: 20px;">
+        <div id="bank-box" style="display:none; font-size: 0.8rem; padding: 15px; background: #fff; border-radius: 10px; margin-bottom: 20px;">
             <span id="bank-txt">CBU: 00000123456789 | Alias: INERCIA.MODA</span>
         </div>
-        <button onclick="finalizar()" style="width: 100%; background: #000; color: #fff; border: none; padding: 20px; cursor: pointer; letter-spacing: 3px;">FINALIZAR PEDIDO</button>
-        <p onclick="toggleCart()" style="text-align: center; margin-top: 20px; font-size: 0.6rem; cursor: pointer; letter-spacing: 2px;">CERRAR</p>
+        <button onclick="finalizar()" style="width: 100%; background: var(--marron); color: white; border: none; padding: 20px; border-radius: 50px; cursor: pointer; letter-spacing: 2px;">FINALIZAR COMPRA</button>
+        <p onclick="toggleCart()" style="text-align: center; margin-top: 20px; font-size: 0.7rem; cursor: pointer;">CERRAR BOLSA</p>
     </div>
 
     <footer>
-        <div id="ft-1">© 2026 INERCIA<br>Moda en Movimiento</div>
-        <div id="ft-2">INSTAGRAM: @inercia.moda<br>WHATSAPP: 02-1234-5678</div>
-        <div id="ft-3">LUN A VIE 9-18HS<br>Buenos Aires, Argentina</div>
+        <div id="ft-1"><strong>INERCIA</strong><br>Moda sostenible y artesanal.<br>© 2026 Todos los derechos reservados.</div>
+        <div id="ft-2"><strong>CONTACTO</strong><br>WhatsApp: 02-1234-5678<br>Instagram: @inercia.moda</div>
+        <div id="ft-3"><strong>AYUDA</strong><br>Envíos y Devoluciones<br>Preguntas Frecuentes</div>
         <div class="admin-trigger" onclick="abrirAdmin()">.</div>
     </footer>
 
     <!-- ADMIN -->
     <div id="admin-panel">
-        <h2 style="font-family: var(--serif); font-size: 2.5rem; border-bottom: 1px solid #000; padding-bottom: 20px;">Admin Maestro</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
+        <h2 style="font-family: var(--serif); font-size: 2.5rem; margin-bottom: 30px;">Panel Maestro Fleur</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
             <div class="admin-box">
-                <h3>Textos Principales</h3>
-                <input type="text" id="in-logo" class="form-input" placeholder="LOGO" value="INERCIA">
-                <input type="text" id="in-hero" class="form-input" placeholder="TEXTO HERO" value="Moda & Arte">
-                <input type="text" id="in-about-t" class="form-input" placeholder="TÍTULO SOBRE NOSOTROS" value="Sobre Nosotros">
-                <textarea id="in-about-txt" class="form-input" placeholder="TEXTO SOBRE NOSOTROS">Nuestra meta es capturar tu esencia...</textarea>
+                <h3>Diseño de Tienda</h3>
+                <input type="text" id="in-logo" class="form-input" placeholder="Nombre Marca" value="INERCIA">
+                <input type="text" id="in-hero" class="form-input" placeholder="Título Hero" value="Elegancia Orgánica">
+                <input type="text" id="in-bank" class="form-input" placeholder="CBU / Alias" value="CBU: 00000123456789 | Alias: INERCIA.MODA">
+                <button onclick="guardarAdmin()" style="background: var(--marron); color: white; width:100%; padding:15px; border-radius: 50px; cursor:pointer;">GUARDAR CAMBIOS</button>
             </div>
             <div class="admin-box">
-                <h3>Productos</h3>
+                <h3>Gestión de Productos</h3>
                 <input type="file" id="p-file" accept="image/*" class="form-input">
-                <input type="text" id="p-name" class="form-input" placeholder="Nombre">
+                <input type="text" id="p-name" class="form-input" placeholder="Nombre de prenda">
                 <input type="number" id="p-price" class="form-input" placeholder="Precio">
-                <button onclick="subir()" style="background:#000; color:#fff; width:100%; padding:15px; cursor:pointer;">PUBLICAR</button>
+                <button onclick="subir()" style="background: var(--marron); color: white; width:100%; padding:15px; border-radius: 50px; cursor:pointer;">PUBLICAR</button>
                 <div id="admin-inv" style="margin-top: 20px;"></div>
             </div>
         </div>
-        <button onclick="guardarAdmin()" style="width:100%; background:#000; color:#fff; padding:20px; margin-top:20px; cursor:pointer;">GUARDAR CAMBIOS</button>
-        <button onclick="cerrarAdmin()" style="background:none; border:none; margin-top:10px; cursor:pointer; color: #999;">Cerrar</button>
+        <button onclick="cerrarAdmin()" style="margin-top: 20px; border: none; background: none; color: grey; cursor: pointer;">Cerrar sin guardar</button>
     </div>
 
     <script>
-        let productos = [{ id: 1, name: "Vestido Editorial", price: 25000, img: "https://unsplash.com" }];
+        let productos = [{ id: 1, name: "Vestido Lino", price: 18900, img: "https://unsplash.com" }];
         let cart = [];
 
         function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
         function toggleBank() { document.getElementById('bank-box').style.display = (document.getElementById('o-pay').value === 'transfer') ? 'block' : 'none'; }
-        function abrirAdmin() { if(prompt("Código:") === "0110") { document.getElementById('admin-panel').style.display='block'; renderAdmin(); } }
+        function abrirAdmin() { if(prompt("Código Maestro:") === "0110") { document.getElementById('admin-panel').style.display='block'; renderAdmin(); } }
         function cerrarAdmin() { document.getElementById('admin-panel').style.display='none'; }
 
         function renderStore() {
             document.getElementById('store-grid').innerHTML = productos.map(p => `
                 <div class="card">
                     <img src="${p.img}">
-                    <div class="card-info">
-                        <h3>${p.name}</h3>
-                        <p>$${p.price}</p>
-                        <button class="btn-add" onclick="add(${p.id})">Añadir a la bolsa</button>
-                    </div>
+                    <h3>${p.name}</h3>
+                    <p>$${p.price}</p>
+                    <button class="btn-add" onclick="add(${p.id})">Añadir a la bolsa</button>
                 </div>`).join('');
         }
 
@@ -168,7 +166,7 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 productos.push({ id: Date.now(), name: document.getElementById('p-name').value, price: Number(document.getElementById('p-price').value), img: e.target.result });
-                renderStore(); renderAdmin(); alert("Subido!");
+                renderStore(); renderAdmin(); alert("Producto subido!");
             };
             reader.readAsDataURL(document.getElementById('p-file').files);
         }
@@ -176,20 +174,19 @@
         function guardarAdmin() {
             document.getElementById('disp-logo').innerText = document.getElementById('in-logo').value;
             document.getElementById('disp-hero-txt').innerText = document.getElementById('in-hero').value;
-            document.getElementById('disp-about-title').innerText = document.getElementById('in-about-t').value;
-            document.getElementById('disp-about-text').innerText = document.getElementById('in-about-txt').value;
-            alert("Cambios guardados!"); cerrarAdmin();
+            document.getElementById('bank-txt').innerText = document.getElementById('in-bank').value;
+            alert("Cambios aplicados correctamente."); cerrarAdmin();
         }
 
         function renderAdmin() {
-            document.getElementById('admin-inv').innerHTML = productos.map(p => `<div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #eee;"><span>${p.name}</span><button onclick="borrar(${p.id})" style="background:red; color:white; border:none; padding:2px 5px; cursor:pointer;">X</button></div>`).join('');
+            document.getElementById('admin-inv').innerHTML = productos.map(p => `<div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #eee;"><span>${p.name}</span><button onclick="borrar(${p.id})" style="background:red; color:white; border:none; padding:2px 5px; border-radius:5px; cursor:pointer;">BORRAR</button></div>`).join('');
         }
 
         function borrar(id) { productos = productos.filter(p => p.id !== id); renderStore(); renderAdmin(); }
         function add(id) { cart.push(productos.find(x => x.id === id)); document.getElementById('cart-count').innerText = cart.length; 
             document.getElementById('cart-list').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>${i.name}</span><span>$${i.price}</span></div>`).join('');
             toggleCart(); }
-        function finalizar() { alert("Pedido enviado exitosamente."); cart = []; document.getElementById('cart-count').innerText = "0"; toggleCart(); }
+        function finalizar() { alert("Pedido recibido. ¡Gracias por elegir Inercia!"); cart = []; document.getElementById('cart-count').innerText = "0"; toggleCart(); }
         
         renderStore();
     </script>
