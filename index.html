@@ -7,40 +7,43 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root { --negro: #1a1a1a; --gris: #f4f4f4; --serif: 'Playfair Display', serif; --sans: 'Montserrat', sans-serif; }
-        body { margin: 0; font-family: var(--sans); color: var(--negro); }
+        body { margin: 0; font-family: var(--sans); color: var(--negro); overflow-x: hidden; }
 
-        /* --- ESTILOS VISUALES --- */
-        nav { padding: 30px; text-align: center; border-bottom: 1px solid #eee; }
+        /* --- NAVEGACIÓN --- */
+        nav { padding: 30px; text-align: center; border-bottom: 1px solid #eee; position: relative; }
         .logo { font-family: var(--serif); font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; }
         .menu { margin-top: 15px; }
-        .menu a { text-decoration: none; color: var(--negro); margin: 0 15px; font-size: 0.8rem; text-transform: uppercase; }
+        .menu a { text-decoration: none; color: var(--negro); margin: 0 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        .cart-icon { position: absolute; right: 5%; top: 40px; cursor: pointer; font-weight: 600; font-size: 0.8rem; }
 
+        /* --- HERO & PRODUCTOS --- */
         .hero { height: 70vh; background: url('https://unsplash.com') center/cover; }
-
         .section-title { text-align: center; font-family: var(--serif); font-size: 2.2rem; margin: 60px 0; font-style: italic; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 0 10%; }
         .card { text-align: center; }
-        .card img { width: 100%; height: 450px; object-fit: cover; }
+        .card img { width: 100%; height: 450px; object-fit: cover; margin-bottom: 15px; }
+        .btn-add { background: black; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; font-size: 0.7rem; letter-spacing: 1px; margin-top: 10px; }
 
+        /* --- SECCIÓN HISTORIA --- */
         .story-section { display: flex; align-items: center; padding: 80px 10%; gap: 50px; background: #fff; }
         .story-image { flex: 1; height: 500px; background: url('https://unsplash.com') center/cover; }
         .story-content { flex: 1; }
 
-        footer { padding: 60px 10%; background: #fff; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.8rem; line-height: 1.8; }
-
-        /* --- PANEL ADMIN MEJORADO --- */
-        #admin-panel { 
-            display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: white; z-index: 9999; padding: 40px; box-sizing: border-box; overflow-y: auto;
+        /* --- CARRITO LATERAL --- */
+        #cart-sidebar { 
+            position: fixed; right: -400px; top: 0; width: 350px; height: 100%; 
+            background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 5000; 
+            transition: 0.4s; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column;
         }
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        #cart-sidebar.active { right: 0; }
+        .cart-items { flex-grow: 1; overflow-y: auto; margin-top: 20px; border-top: 1px solid #eee; }
+        .checkout-form input, .checkout-form select { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; }
+
+        /* --- FOOTER & ADMIN --- */
+        footer { padding: 60px 10%; background: #fff; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.8rem; line-height: 1.8; position: relative;}
+        #admin-panel { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; padding: 40px; box-sizing: border-box; overflow-y: auto; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .admin-box { background: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
-        .admin-box h3 { border-bottom: 1px solid #000; padding-bottom: 10px; margin-top: 0; }
-        label { display: block; margin-top: 10px; font-weight: bold; font-size: 0.7rem; }
-        input, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; box-sizing: border-box; font-family: sans-serif; }
-        .btn-save { background: black; color: white; border: none; padding: 12px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; }
-        
-        /* El "Botón" Invisible (ahora un área en el footer) */
         #admin-trigger { position: absolute; bottom: 0; right: 0; width: 50px; height: 50px; cursor: default; }
     </style>
 </head>
@@ -48,23 +51,54 @@
 
     <nav>
         <div class="logo">INERCIA</div>
-        <div class="menu">
-            <a href="#">Inicio</a> <a href="#">Novedades</a> <a href="#">Ropa</a> <a href="#">Ofertas</a>
+        <div class="menu" id="nav-categories">
+            <a href="#">Inicio</a> <a href="#">Vestidos</a> <a href="#">Accesorios</a> <a href="#">Calzado</a>
         </div>
+        <div class="cart-icon" onclick="toggleCart()">CARRITO (<span id="cart-count">0</span>)</div>
     </nav>
 
     <div class="hero"></div>
 
     <h2 id="main-title" class="section-title">Nuevos Ingresos</h2>
 
-    <div class="grid">
+    <div class="grid" id="product-grid">
         <div class="card">
             <img src="https://unsplash.com">
             <h3>Blusa Marrón</h3><p>$12.900</p>
+            <button class="btn-add" onclick="addToCart('Blusa Marrón', 12900)">AÑADIR AL CARRITO</button>
         </div>
         <div class="card">
             <img src="https://unsplash.com">
             <h3>Tapado Gris</h3><p>$25.500</p>
+            <button class="btn-add" onclick="addToCart('Tapado Gris', 25500)">AÑADIR AL CARRITO</button>
+        </div>
+    </div>
+
+    <!-- CARRITO LATERAL -->
+    <div id="cart-sidebar">
+        <h2 style="font-family: var(--serif);">Tu Pedido</h2>
+        <div class="cart-items" id="cart-items-list">
+            <!-- Items se cargan aquí -->
+        </div>
+        <div class="checkout-form">
+            <hr>
+            <h4>Datos de Envío</h4>
+            <input type="text" placeholder="Nombre completo">
+            <input type="text" placeholder="Dirección de entrega">
+            <select>
+                <option>Método de Envío</option>
+                <option>Envío Estándar (Gratis)</option>
+                <option>Envío Express ($1.500)</option>
+            </select>
+            <h4>Pago</h4>
+            <select>
+                <option>Método de Pago</option>
+                <option>Tarjeta de Crédito / Débito</option>
+                <option>Transferencia Bancaria</option>
+                <option>Mercado Pago</option>
+            </select>
+            <button class="btn-add" style="font-size: 0.9rem; padding: 15px;" onclick="alert('¡Gracias por su compra!')">FINALIZAR COMPRA</button>
+            <button onclick="toggleCart()" style="background:none; border:none; color: grey; cursor:pointer; width:100%; margin-top:10px;">Cerrar</button>
         </div>
     </div>
 
@@ -76,7 +110,7 @@
         </div>
     </section>
 
-    <footer style="position: relative;">
+    <footer>
         <div>
             <strong>Sobre Nosotros</strong><br>
             <span id="txt-nosotros">Nuestra historia se basa en el movimiento y la elegancia constante.</span>
@@ -91,85 +125,65 @@
             Email: <span id="val-email">contacto@inercia.com</span><br>
             Horario: <span id="val-horario">09:00 - 18:00</span>
         </div>
-        <!-- ÁREA SECRETA PARA EL ADMIN -->
         <div id="admin-trigger" onclick="abrirAdmin()"></div>
     </footer>
 
-    <!-- PANEL DE ADMINISTRACIÓN -->
+    <!-- PANEL ADMIN -->
     <div id="admin-panel">
-        <button onclick="cerrarAdmin()" style="float:right; padding: 10px; cursor:pointer;">CERRAR PANEL [X]</button>
-        <h2 style="font-family: var(--serif);">Panel Maestro - Inercia</h2>
-        <hr>
-        
+        <button onclick="cerrarAdmin()" style="float:right;">CERRAR [X]</button>
+        <h2 style="font-family: var(--serif);">Panel Maestro</h2>
         <div class="admin-grid">
-            <!-- COLUMNA 1: CONTENIDOS PRINCIPALES -->
             <div class="admin-box">
-                <h3>Textos de Inicio</h3>
-                <label>Título Principal</label>
+                <h3>Categorías del Menú</h3>
+                <input type="text" id="in-cat" value="Inicio, Vestidos, Accesorios, Calzado">
+                <p><small>Separar por comas</small></p>
+            </div>
+            <div class="admin-box">
+                <h3>Textos e Info</h3>
                 <input type="text" id="in-main-title" value="Nuevos Ingresos">
-                
-                <label>Título Sección Historia</label>
-                <input type="text" id="in-story-title" value="Doble Confort">
-                
-                <label>Descripción Historia</label>
-                <textarea id="in-story-desc" rows="4">Descubre las nuevas tendencias en INERCIA. Looks urbanos y prendas premium.</textarea>
+                <textarea id="in-nosotros" rows="3">Historia de Inercia...</textarea>
             </div>
-
-            <!-- COLUMNA 2: FOOTER Y NOSOTROS -->
             <div class="admin-box">
-                <h3>Secciones Informativas</h3>
-                <label>Sobre Nosotros (Footer)</label>
-                <textarea id="in-nosotros" rows="3">Nuestra historia se basa en el movimiento y la elegancia constante.</textarea>
-                
-                <label>Atención al Cliente (Footer)</label>
-                <textarea id="in-atencion" rows="3">Envíos a todo el país y cambios sin cargo.</textarea>
-            </div>
-
-            <!-- COLUMNA 3: CONTACTO Y ARCHIVOS -->
-            <div class="admin-box">
-                <h3>Contacto y Medios</h3>
-                <label>Teléfono</label>
+                <h3>Contacto</h3>
                 <input type="text" id="in-tel" value="02-1234-5678">
-                
-                <label>Email</label>
                 <input type="text" id="in-email" value="contacto@inercia.com">
-                
-                <label>Horario</label>
-                <input type="text" id="in-horario" value="09:00 - 18:00">
-
-                <label style="color: blue; margin-top: 20px;">Subir Nueva Foto de Producto</label>
-                <input type="file" accept="image/*">
             </div>
         </div>
-
-        <button class="btn-save" onclick="aplicarCambios()">GUARDAR Y APLICAR CAMBIOS</button>
+        <button class="btn-save" style="background:black; color:white; padding:20px; width:100%; cursor:pointer;" onclick="aplicarCambios()">GUARDAR CAMBIOS</button>
     </div>
 
     <script>
-        function abrirAdmin() {
-            let pass = prompt("Código Maestro:");
-            if (pass === "0110") {
-                document.getElementById('admin-panel').style.display = 'block';
-            } else { alert("Acceso denegado."); }
+        let cart = [];
+        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCart();
+            if(!document.getElementById('cart-sidebar').classList.contains('active')) toggleCart();
         }
 
-        function cerrarAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
+        function updateCart() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = cart.map(item => `<div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>${item.name}</span> <span>$${item.price}</span></div>`).join('');
+        }
+
+        function abrirAdmin() { if(prompt("Código Maestro:") === "0110") document.getElementById('admin-panel').style.display='block'; }
+        function cerrarAdmin() { document.getElementById('admin-panel').style.display='none'; }
 
         function aplicarCambios() {
-            // Aplicar Títulos
-            document.getElementById('main-title').innerText = document.getElementById('in-main-title').value;
-            document.getElementById('story-title').innerText = document.getElementById('in-story-title').value;
-            document.getElementById('story-desc').innerText = document.getElementById('in-story-desc').value;
+            // Actualizar Categorías
+            const cats = document.getElementById('in-cat').value.split(',');
+            document.getElementById('nav-categories').innerHTML = cats.map(c => `<a href="#">${c.trim()}</a>`).join('');
             
-            // Aplicar Footer
+            // Actualizar Textos
+            document.getElementById('main-title').innerText = document.getElementById('in-main-title').value;
             document.getElementById('txt-nosotros').innerText = document.getElementById('in-nosotros').value;
-            document.getElementById('txt-atencion').innerText = document.getElementById('in-atencion').value;
             document.getElementById('val-tel').innerText = document.getElementById('in-tel').value;
             document.getElementById('val-email').innerText = document.getElementById('in-email').value;
-            document.getElementById('val-horario').innerText = document.getElementById('in-horario').value;
 
-            alert("¡Cambios aplicados con éxito!");
             cerrarAdmin();
+            alert("Cambios aplicados.");
         }
     </script>
 </body>
