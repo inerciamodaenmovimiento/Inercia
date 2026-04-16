@@ -6,180 +6,172 @@
     <title>Inercia | Moda Editorial</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --negro: #1a1a1a; --gris: #f4f4f4; --serif: 'Playfair Display', serif; --sans: 'Montserrat', sans-serif; }
-        body { margin: 0; font-family: var(--sans); color: var(--negro); overflow-x: hidden; }
+        :root { --negro: #1a1a1a; --serif: 'Playfair Display', serif; --sans: 'Montserrat', sans-serif; }
+        body { margin: 0; font-family: var(--sans); color: var(--negro); background: #fff; }
 
-        /* --- NAVEGACIÓN --- */
-        nav { padding: 30px; text-align: center; border-bottom: 1px solid #eee; position: relative; }
-        .logo { font-family: var(--serif); font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; }
-        .menu { margin-top: 15px; }
+        /* --- 1. DISEÑO EXACTO DE LA IMAGEN (HEADER) --- */
+        nav { padding: 40px 0; text-align: center; border-bottom: 1px solid #eee; position: relative; }
+        .logo { font-family: var(--serif); font-size: 2.5rem; letter-spacing: 10px; text-transform: uppercase; margin-bottom: 20px; }
         .menu a { text-decoration: none; color: var(--negro); margin: 0 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
-        .cart-btn { position: absolute; right: 5%; top: 40px; cursor: pointer; font-size: 0.8rem; border-bottom: 1px solid black; padding-bottom: 2px; }
+        .cart-trigger { position: absolute; right: 5%; top: 45px; cursor: pointer; border-bottom: 1px solid #000; font-size: 0.8rem; }
 
-        /* --- CUERPO DE PÁGINA --- */
-        .hero { height: 70vh; background: url('https://unsplash.com') center/cover; }
-        .section-title { text-align: center; font-family: var(--serif); font-size: 2.2rem; margin: 60px 0; font-style: italic; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 0 10%; }
-        .card { text-align: center; margin-bottom: 40px; }
-        .card img { width: 100%; height: 450px; object-fit: cover; margin-bottom: 15px; }
-        .btn-buy { background: black; color: white; border: none; padding: 12px; width: 100%; cursor: pointer; font-size: 0.7rem; letter-spacing: 2px; }
+        /* --- 2. SECCIONES EDITORIALES --- */
+        .hero { height: 80vh; background: url('https://unsplash.com') center/cover; }
+        
+        .section-title { text-align: center; font-family: var(--serif); font-size: 2rem; margin: 60px 0 40px; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 5%; margin-bottom: 80px; }
+        .card { text-align: center; }
+        .card img { width: 100%; height: 350px; object-fit: cover; margin-bottom: 15px; }
+        .card h3 { font-size: 0.8rem; margin: 5px 0; text-transform: uppercase; }
+        .card p { font-size: 0.75rem; color: #666; margin-bottom: 15px; }
 
-        /* --- CARRITO LATERAL --- */
+        /* Banner Collection */
+        .collection-banner { height: 600px; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://unsplash.com') center/cover; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; text-align: center; }
+        .collection-banner h2 { font-family: var(--serif); font-size: 4rem; letter-spacing: 15px; margin: 0; }
+        .view-btn { border: 2px solid #fff; color: #fff; padding: 10px 40px; text-decoration: none; font-size: 0.8rem; margin-top: 20px; letter-spacing: 3px; }
+
+        /* Twice as Cozy Section */
+        .story-section { display: flex; padding: 80px 5%; gap: 50px; align-items: center; }
+        .story-images { flex: 1.5; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .story-images img { width: 100%; height: 400px; object-fit: cover; }
+        .story-text { flex: 1; max-width: 400px; }
+        .story-text h2 { font-family: var(--serif); font-size: 1.8rem; margin-bottom: 20px; }
+        .story-text p { font-size: 0.85rem; line-height: 1.8; color: #555; }
+
+        /* --- 3. CARRITO LATERAL --- */
         #cart-panel { position: fixed; right: -400px; top: 0; width: 380px; height: 100%; background: white; z-index: 5000; transition: 0.4s; padding: 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); box-sizing: border-box; overflow-y: auto; }
         #cart-panel.active { right: 0; }
         .checkout-form label { display: block; font-size: 0.7rem; font-weight: bold; margin-top: 15px; text-transform: uppercase; }
         .checkout-form input, .checkout-form select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; }
-        #bank-info { display:none; background: #f9f9f9; padding: 10px; font-size: 0.8rem; margin-top: 10px; border-left: 2px solid black; }
+        #bank-info-box { display:none; background: #f9f9f9; padding: 10px; font-size: 0.8rem; margin-top: 10px; border-left: 2px solid black; }
 
-        /* --- FOOTER --- */
-        footer { padding: 60px 10%; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.8rem; position: relative; }
-
-        /* --- ADMIN Y BOTÓN --- */
-        .admin-trigger { position: fixed; bottom: 15px; right: 15px; color: #eee; cursor: pointer; font-size: 10px; z-index: 4000; }
-        #admin-panel { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); z-index: 9999; padding: 50px; box-sizing: border-box; overflow-y: auto; }
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px; }
-        .admin-box { background: #f9f9f9; padding: 25px; border-radius: 5px; }
-        .order-item { background: white; padding: 10px; border: 1px solid #eee; margin-bottom: 5px; font-size: 0.75rem; }
+        /* --- 4. PANEL ADMIN & FOOTER --- */
+        footer { padding: 60px 5%; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; font-size: 0.75rem; color: #666; line-height: 2; position: relative; }
+        .admin-trigger { position: absolute; bottom: 0; right: 0; width: 20px; height: 20px; cursor: pointer; color: #eee; font-size: 8px; text-align: right; padding: 5px; }
+        #admin-panel { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; padding: 50px; box-sizing: border-box; overflow-y: auto; }
+        .admin-box { background: #f9f9f9; padding: 25px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #eee; }
     </style>
 </head>
 <body>
 
     <nav>
         <div class="logo">INERCIA</div>
-        <div class="menu" id="main-nav">
-            <a href="#">Inicio</a> <a href="#">Vestidos</a> <a href="#">Accesorios</a> <a href="#">Ofertas</a>
+        <div class="menu" id="nav-links">
+            <a href="#">Home</a> <a href="#">New Arrival</a> <a href="#">Clothes</a> <a href="#">Jacket</a> <a href="#">Sale</a>
         </div>
-        <div class="cart-btn" onclick="toggleCart()">CARRITO (<span id="cart-count">0</span>)</div>
+        <div class="cart-trigger" onclick="toggleCart()">CART (<span id="cart-count">0</span>)</div>
     </nav>
 
     <div class="hero"></div>
 
-    <h2 id="page-title" class="section-title">Nuevos Ingresos</h2>
-
+    <h2 class="section-title">New Arrivals</h2>
     <div class="grid">
         <div class="card">
             <img src="https://unsplash.com">
-            <h3>Blusa Marrón</h3><p>$12.900</p>
-            <button class="btn-buy" onclick="addToCart('Blusa Marrón', 12900)">AÑADIR AL CARRITO</button>
+            <h3>Brown Long Blouse</h3><p>NT$1299</p>
+            <button onclick="addToCart('Brown Long Blouse', 1299)" style="background:black; color:white; border:none; padding:10px; width:100%; cursor:pointer; font-size:0.7rem;">ADD TO CART</button>
         </div>
         <div class="card">
             <img src="https://unsplash.com">
-            <h3>Tapado Gris</h3><p>$25.500</p>
-            <button class="btn-buy" onclick="addToCart('Tapado Gris', 25500)">AÑADIR AL CARRITO</button>
+            <h3>Grey Check Long Coat</h3><p>NT$1299</p>
+            <button onclick="addToCart('Grey Check Long Coat', 1299)" style="background:black; color:white; border:none; padding:10px; width:100%; cursor:pointer; font-size:0.7rem;">ADD TO CART</button>
         </div>
+        <!-- Repetir para los otros 2 si deseas -->
     </div>
 
-    <!-- CARRITO (INFO DE PRODUCTOS ARRIBA) -->
-    <div id="cart-panel">
-        <h2 style="font-family: var(--serif); border-bottom: 2px solid black;">Mi Carrito</h2>
-        
-        <!-- Aquí aparece la info del carrito -->
-        <div id="cart-items-list" style="margin: 20px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-            <p style="color: grey; font-size: 0.8rem;">Tu carrito está vacío.</p>
+    <div class="collection-banner">
+        <h2>COLLECTION</h2>
+        <a href="#" class="view-btn">VIEW</a>
+    </div>
+
+    <section class="story-section">
+        <div class="story-images">
+            <img src="https://unsplash.com">
+            <img src="https://unsplash.com">
         </div>
+        <div class="story-text">
+            <h2>Twice as Cozy</h2>
+            <p id="story-desc">Shop the latest fashion online at INERCIA and discover new favorites in women's clothing. Find everything from casual day dresses to sharp office wear.</p>
+        </div>
+    </section>
 
+    <!-- CARRITO -->
+    <div id="cart-panel">
+        <h2 style="font-family: var(--serif); border-bottom: 2px solid #000;">My Cart</h2>
+        <div id="cart-items-display" style="margin: 20px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;"></div>
         <div class="checkout-form">
-            <label>Nombre Completo</label>
-            <input type="text" id="cust-name">
-            <label>Dirección</label>
-            <input type="text" id="cust-address">
-            <label>Método de Envío</label>
-            <select id="cust-ship"><option>Correo Argentino</option><option>Retiro en Local</option></select>
-            <label>Método de Pago</label>
-            <select id="cust-pay" onchange="showBank()">
-                <option value="card">Tarjeta de Crédito</option>
-                <option value="transfer">Transferencia Bancaria</option>
+            <label>Full Name</label><input type="text" id="cust-name">
+            <label>Address</label><input type="text" id="cust-addr">
+            <label>Payment Method</label>
+            <select id="cust-pay" onchange="toggleBank()">
+                <option value="card">Credit Card</option>
+                <option value="transfer">Bank Transfer</option>
             </select>
-            
-            <!-- Datos de transferencia que aparecen solo si se elige esa opción -->
-            <div id="bank-info">
-                <strong>Datos de cuenta:</strong><br>
-                <span id="bank-details-text">CBU: 00000123456789 | Alias: INERCIA.MODA</span>
+            <div id="bank-info-box">
+                <strong>Account Info:</strong><br><span id="bank-details-val">CBU: 00000 | Alias: INERCIA</span>
             </div>
-
-            <button class="btn-buy" style="margin-top: 30px; padding: 20px;" onclick="enviarPedido()">FINALIZAR PEDIDO</button>
-            <p onclick="toggleCart()" style="text-align:center; cursor:pointer; margin-top:20px; font-size:0.7rem; color:grey;">CERRAR</p>
+            <button onclick="checkout()" style="background:black; color:white; border:none; padding:20px; width:100%; margin-top:30px; cursor:pointer;">CHECKOUT</button>
+            <p onclick="toggleCart()" style="text-align:center; cursor:pointer; margin-top:20px; color:grey; font-size:0.7rem;">CLOSE</p>
         </div>
     </div>
 
     <footer>
-        <div><strong>Nosotros</strong><br><span id="footer-us">Elegancia en movimiento.</span></div>
-        <div><strong>Ayuda</strong><br><span id="footer-help">Envíos a todo el país.</span></div>
-        <div><strong>Contacto</strong><br>Tel: <span id="val-tel">02-1234-5678</span></div>
+        <div><strong>About Us</strong><br><span id="ft-about">Our Story<br>Our Spirit</span></div>
+        <div><strong>Customer Service</strong><br>Contact Us<br>Delivery Options</div>
+        <div><strong>Call Us</strong><br>Tel: <span id="ft-tel">02-1234-5678</span></div>
+        <div class="admin-trigger" onclick="abrirAdmin()">🔒</div>
     </footer>
 
-    <!-- Candado sutil -->
-    <div class="admin-trigger" onclick="abrirAdmin()">🔒</div>
-
-    <!-- PANEL ADMIN ESTILO ANTERIOR -->
+    <!-- ADMIN PANEL (DISEÑO ANTERIOR) -->
     <div id="admin-panel">
-        <button onclick="cerrarAdmin()" style="float:right; border:none; background:none; cursor:pointer;">✕ CERRAR</button>
-        <h2 style="font-family: var(--serif);">Panel de Administración</h2>
-        
-        <div class="admin-grid">
+        <h2 style="font-family: var(--serif); border-bottom: 2px solid #000;">Admin Panel</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
             <div class="admin-box">
-                <h3>Configuración General</h3>
-                <label>Categorías</label>
-                <input type="text" id="in-cats" value="Inicio, Vestidos, Accesorios, Ofertas">
-                <label>Info Transferencia (CBU/Alias)</label>
-                <input type="text" id="in-bank" value="CBU: 00000123456789 | Alias: INERCIA.MODA">
-                <label>Sobre Nosotros (Footer)</label>
-                <textarea id="in-us" style="width:100%;">Elegancia en movimiento.</textarea>
+                <h3>Settings</h3>
+                <label>Categories (comma separated)</label>
+                <input type="text" id="in-cats" value="Home, New Arrival, Clothes, Jacket, Sale">
+                <label>Bank Info</label>
+                <input type="text" id="in-bank" value="CBU: 00000 | Alias: INERCIA">
+                <label>About Us Text</label>
+                <textarea id="in-about" style="width:100%; height:60px;">Our Story</textarea>
             </div>
-            
             <div class="admin-box">
-                <h3>Historial de Pedidos</h3>
-                <div id="orders-log" style="max-height: 300px; overflow-y: auto; background: white; padding: 10px;">
-                    <p style="font-size: 0.7rem; color: grey;">No hay pedidos aún.</p>
-                </div>
+                <h3>Order History</h3>
+                <div id="order-log" style="font-size: 0.7rem; background:#fff; padding:10px; height: 200px; overflow-y:auto;"></div>
             </div>
         </div>
-        <button class="btn-buy" style="margin-top:20px;" onclick="guardarAdmin()">GUARDAR CAMBIOS</button>
+        <button onclick="saveAdmin()" style="background:black; color:white; padding:15px; width:100%; margin-top:20px; cursor:pointer;">SAVE CHANGES</button>
+        <button onclick="cerrarAdmin()" style="background:none; border:none; color:grey; width:100%; margin-top:10px; cursor:pointer;">CANCEL</button>
     </div>
 
     <script>
-        let cart = [];
-        let orders = [];
-
+        let cart = []; let orders = [];
         function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
+        function toggleBank() { document.getElementById('bank-info-box').style.display = (document.getElementById('cust-pay').value === 'transfer') ? 'block' : 'none'; }
         
         function addToCart(name, price) {
             cart.push({name, price});
             document.getElementById('cart-count').innerText = cart.length;
-            const list = document.getElementById('cart-items-list');
-            list.innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.8rem;"><span>${i.name}</span><span>$${i.price}</span></div>`).join('');
+            document.getElementById('cart-items-display').innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:10px;"><span>${i.name}</span> <span>$${i.price}</span></div>`).join('');
             if(!document.getElementById('cart-panel').classList.contains('active')) toggleCart();
         }
 
-        function showBank() {
-            document.getElementById('bank-info').style.display = (document.getElementById('cust-pay').value === 'transfer') ? 'block' : 'none';
+        function checkout() {
+            if(!document.getElementById('cust-name').value || cart.length === 0) return alert("Empty cart or missing name.");
+            orders.push({ name: document.getElementById('cust-name').value, date: new Date().toLocaleTimeString(), items: cart.length });
+            document.getElementById('order-log').innerHTML = orders.map(o => `<div>${o.date} - ${o.name} (${o.items} items)</div>`).join('');
+            alert("Order placed!");
+            cart = []; document.getElementById('cart-count').innerText = "0"; toggleCart();
         }
 
-        function enviarPedido() {
-            const name = document.getElementById('cust-name').value;
-            if(!name || cart.length === 0) return alert("Carrito vacío o falta nombre.");
-            
-            orders.push({ cliente: name, items: cart.length, pago: document.getElementById('cust-pay').value, fecha: new Date().toLocaleTimeString() });
-            
-            const log = document.getElementById('orders-log');
-            log.innerHTML = orders.map(o => `<div class="order-item"><strong>${o.fecha}</strong> - ${o.cliente} (${o.items} prod) - Pago: ${o.pago}</div>`).join('');
-            
-            alert("Pedido recibido con éxito.");
-            cart = []; document.getElementById('cart-count').innerText = "0";
-            document.getElementById('cart-items-list').innerHTML = '<p style="color: grey; font-size: 0.8rem;">Tu carrito está vacío.</p>';
-            toggleCart();
-        }
-
-        function abrirAdmin() { if(prompt("Código:") === "0110") document.getElementById('admin-panel').style.display='block'; }
+        function abrirAdmin() { if(prompt("Code:") === "0110") document.getElementById('admin-panel').style.display='block'; }
         function cerrarAdmin() { document.getElementById('admin-panel').style.display='none'; }
-
-        function guardarAdmin() {
+        function saveAdmin() {
             const c = document.getElementById('in-cats').value.split(',');
-            document.getElementById('main-nav').innerHTML = c.map(cat => `<a href="#">${cat.trim()}</a>`).join('');
-            document.getElementById('footer-us').innerText = document.getElementById('in-us').value;
-            document.getElementById('bank-details-text').innerText = document.getElementById('in-bank').value;
-            alert("Actualizado.");
-            cerrarAdmin();
+            document.getElementById('nav-links').innerHTML = c.map(cat => `<a href="#">${cat.trim()}</a>`).join('');
+            document.getElementById('bank-details-val').innerText = document.getElementById('in-bank').value;
+            document.getElementById('ft-about').innerText = document.getElementById('in-about').value;
+            cerrarAdmin(); alert("Updated!");
         }
     </script>
 </body>
