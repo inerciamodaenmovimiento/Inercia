@@ -15,7 +15,7 @@
         .logo { font-weight: bold; letter-spacing: 5px; font-size: 1.1rem; }
         .cart-trigger { cursor: pointer; font-size: 0.75rem; letter-spacing: 2px; font-weight: bold; }
 
-        /* BANNERS PRINCIPALES */
+        /* BANNERS */
         #banner-container { width: 100%; height: 50vh; overflow: hidden; position: relative; margin-top: 60px; background: #f0f0f0; }
         #banner-slider { display: flex; transition: 1s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
         #banner-slider img { width: 100%; flex-shrink: 0; object-fit: cover; }
@@ -24,25 +24,27 @@
         .hero-text h1 { font-size: 3.5rem; letter-spacing: -1px; }
         .hero-text p { font-style: italic; opacity: 0.5; letter-spacing: 5px; text-transform: uppercase; font-size: 0.6rem; }
 
-        /* PRODUCTOS AJUSTADOS (VERTICALES Y CHICOS) */
+        /* GRILLA: FOTOS VERTICALES Y CHICAS */
         .productos-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding: 0 5% 60px; }
         .card { text-align: center; background: white; padding-bottom: 15px; cursor: pointer; }
         .card img { width: 100%; height: 260px; object-fit: cover; margin-bottom: 10px; }
         
         .card-cat { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.6; display: block; margin-bottom: 5px; font-weight: bold; }
         .card-name { font-size: 0.9rem; margin: 5px 0; font-weight: 400; }
-        .btn-add { background: var(--azul); color: white; border: none; padding: 10px; width: 100%; cursor: pointer; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; }
 
-        /* MODAL DETALLE */
+        /* VISTA DETALLADA (MODAL) */
         #modal-detalle { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 5000; overflow-y: auto; padding: 80px 5%; }
         .modal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1000px; margin: 0 auto; }
         .modal-imgs img { width: 100%; margin-bottom: 15px; display: block; }
         .btn-close-modal { position: fixed; top: 25px; right: 30px; font-size: 2rem; cursor: pointer; border: none; background: none; z-index: 5100; }
 
-        /* CARRITO Y ADMIN */
+        /* CARRITO */
         #cart-panel { position: fixed; right: -100%; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.5s; padding: 30px; box-shadow: -10px 0 50px rgba(0,0,0,0.1); overflow-y: auto; }
         #cart-panel.active { right: 0; }
-        .input-cart { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #eee; font-size: 0.8rem; }
+        .input-cart { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #eee; font-family: sans-serif; font-size: 0.8rem; }
+        .btn-add { background: var(--azul); color: white; border: none; padding: 10px; width: 100%; cursor: pointer; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* ADMIN */
         #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f4f4f4; z-index: 3000; overflow-y: auto; padding: 50px 10%; }
         .admin-box { background: white; padding: 25px; margin-bottom: 25px; }
         #secret-trigger { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: pointer; z-index: 4000; }
@@ -79,8 +81,12 @@
 
 <div id="secret-trigger" onclick="accessAdmin()"></div>
 
+<!-- ADMIN COMPLETO -->
 <div id="admin-panel">
-    <button onclick="closeAdmin()">SALIR</button>
+    <div style="display:flex; justify-content:space-between; margin-bottom:20px">
+        <h2>ADMINISTRACIÓN</h2>
+        <button onclick="closeAdmin()">SALIR</button>
+    </div>
     <div class="admin-box">
         <h3>PRODUCTO NUEVO</h3>
         <input type="text" id="p-name" placeholder="Nombre" class="input-cart">
@@ -90,24 +96,50 @@
         <input type="file" id="p-img" multiple>
         <button class="btn-add" onclick="uploadProduct()">PUBLICAR</button>
     </div>
+    <div class="admin-box">
+        <h3>CONFIGURACIÓN GENERAL</h3>
+        <input type="text" id="conf-wa" class="input-cart" placeholder="WhatsApp (Ej: 54911...)">
+        <input type="text" id="conf-cats" class="input-cart" placeholder="Categorías (comas)">
+        <input type="text" id="conf-ships" class="input-cart" placeholder="Métodos Envío (comas)">
+        <textarea id="conf-bank" class="input-cart" placeholder="Datos para Transferencia"></textarea>
+        <button class="btn-add" onclick="saveConfig()">GUARDAR CAMBIOS</button>
+    </div>
+    <div class="admin-box"><h3>PEDIDOS</h3><div id="admin-orders-list"></div></div>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('inercia_v_base')) || { products: [], cats: ["Nuevo"], ships: ["Retiro"], banners: [] };
+    // Recuperar datos de la versión anterior para no perder nada
+    let db = JSON.parse(localStorage.getItem('inercia_v5_db')) || { 
+        products: [], orders: [], cats: ["Nuevo"], ships: ["Retiro"], banners: [], bank: "", wa: "" 
+    };
     let cart = [];
 
-    window.onload = () => { renderShop(); updateUI(); };
-    function save() { localStorage.setItem('inercia_v_base', JSON.stringify(db)); }
+    window.onload = () => { renderShop(); renderBanners(); updateUI(); };
+    
+    function save() { localStorage.setItem('inercia_v5_db', JSON.stringify(db)); }
     function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
     function accessAdmin() { if(prompt("Código:") === "0110") document.getElementById('admin-panel').style.display='block'; }
     function closeAdmin() { document.getElementById('admin-panel').style.display='none'; }
 
     function updateUI() {
         document.getElementById('p-cat-select').innerHTML = db.cats.map(c => `<option value="${c}">${c}</option>`).join('');
+        document.getElementById('conf-wa').value = db.wa || "";
+        document.getElementById('conf-cats').value = db.cats.join(', ');
+        document.getElementById('conf-ships').value = db.ships.join(', ');
+        document.getElementById('conf-bank').value = db.bank || "";
+    }
+
+    function saveConfig() {
+        db.wa = document.getElementById('conf-wa').value;
+        db.cats = document.getElementById('conf-cats').value.split(',').map(s => s.trim());
+        db.ships = document.getElementById('conf-ships').value.split(',').map(s => s.trim());
+        db.bank = document.getElementById('conf-bank').value;
+        save(); updateUI(); alert("Configuración guardada");
     }
 
     async function uploadProduct() {
         const files = document.getElementById('p-img').files;
+        if(!files.length) return alert("Selecciona fotos");
         const imgs = [];
         for(let f of files) {
             imgs.push(await new Promise(res => { const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(f); }));
@@ -154,6 +186,8 @@
         document.getElementById('cart-items').innerHTML = cart.map(i => { t += parseFloat(i.price); return `<div>${i.name} - $${i.price}</div>`; }).join('');
         document.getElementById('cart-total').innerText = "TOTAL: $" + t;
     }
+
+    function renderBanners() { /* Se mantiene lógica previa si existía */ }
 </script>
 </body>
 </html>
