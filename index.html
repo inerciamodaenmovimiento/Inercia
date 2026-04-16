@@ -172,6 +172,46 @@
 </section>
 
     </footer>
+<!-- Botón Secreto (Invisible a simple vista) -->
+<div id="secret-admin-trigger" onclick="pedirCodigo()" style="position: fixed; bottom: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer; z-index: 1000;"></div>
+
+<!-- Panel de Administración (Oculto por defecto) -->
+<div id="admin-panel" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 2000; padding: 50px; box-sizing: border-box; font-family: sans-serif;">
+    <button onclick="cerrarAdmin()" style="float: right; border: none; background: none; font-size: 20px; cursor: pointer;">✕ Cerrar</button>
+    <h2 style="font-family: 'Playfair Display'; border-bottom: 2px solid #000; padding-bottom: 10px;">Panel de Control - INERCIA</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
+        <!-- Sección de Cambios -->
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 5px;">
+            <h3>Gestión de Productos</h3>
+            <p>Nombre del Producto: <input type="text" placeholder="Ej: Abrigo Gris" style="width:100%; margin-bottom:10px;"></p>
+            <p>Precio (NT$): <input type="number" placeholder="1299" style="width:100%; margin-bottom:10px;"></p>
+            <p>URL de Imagen: <input type="text" placeholder="https://..." style="width:100%; margin-bottom:10px;"></p>
+            <button style="background: #000; color: #fff; padding: 10px 20px; border: none; cursor: pointer;">Publicar Cambio</button>
+        </div>
+        
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 5px;">
+            <h3>Configuración de Página</h3>
+            <p><label><input type="checkbox" checked> Activar sección "Sale"</label></p>
+            <p><label><input type="checkbox"> Modo Mantenimiento</label></p>
+            <p>Mensaje Banner: <input type="text" value="New Arrivals" style="width:100%;"></p>
+        </div>
+    </div>
+</div>
+<script>
+function pedirCodigo() {
+    let password = prompt("Ingrese el código de acceso:");
+    if (password === "0110") {
+        document.getElementById('admin-panel').style.display = 'block';
+    } else {
+        alert("Código incorrecto.");
+    }
+}
+
+function cerrarAdmin() {
+    document.getElementById('admin-panel').style.display = 'none';
+}
+</script>
 
 </body>
 </html>
