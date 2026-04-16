@@ -3,69 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Editorial Luxury</title>
+    <title>INERCIA | Luxury Editorial</title>
     <!-- Fuentes de alta gama -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; --accent: #000; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+        /* RESET Y BASES */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #ffffff; --txt: #1a1a1a; --accent: #000; }
+        body { background: var(--bg); color: var(--txt); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* HEADER */
-        header { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; background: white; sticky top: 0; z-index: 10; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; letter-spacing: -1px; }
-        nav a { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; color: var(--text); margin-left: 35px; font-weight: 400; }
+        /* HEADER MINIMALISTA */
+        header { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; background: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f0f0f0; }
+        .logo { font-family: 'Bodoni Moda', serif; font-size: 30px; font-weight: 700; text-transform: lowercase; letter-spacing: -1px; }
+        nav a { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; color: var(--txt); margin-left: 30px; font-weight: 600; }
 
-        /* HERO SECTION - REPLICA EXACTA */
-        .hero { position: relative; height: 90vh; display: flex; align-items: center; padding: 0 8%; background: #f8f8f8; overflow: hidden; }
-        .hero-main-img { position: absolute; right: 0; top: 0; width: 60%; height: 100%; object-fit: cover; }
-        .hero-text { position: relative; z-index: 2; max-width: 500px; }
-        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 85px; line-height: 0.9; margin-bottom: 25px; font-weight: 500; font-style: italic; }
-        .hero-text p { font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 40px; letter-spacing: 0.5px; }
-        .btn-black { padding: 18px 45px; background: black; color: white; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; transition: 0.4s; }
+        /* HERO - DISEÑO SEGÚN IMAGEN */
+        .hero { position: relative; height: 90vh; display: flex; align-items: center; padding: 0 5%; background: #f9f9f9; }
+        .hero-main-img { position: absolute; right: 0; top: 0; width: 65%; height: 100%; object-fit: cover; filter: grayscale(20%); }
+        .hero-text { position: relative; z-index: 5; max-width: 550px; }
+        .hero-text h1 { font-family: 'Bodoni Moda', serif; font-size: clamp(50px, 8vw, 90px); line-height: 0.9; margin-bottom: 20px; font-style: italic; }
+        .hero-text p { font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 40px; max-width: 400px; }
+        .btn-black { padding: 20px 50px; background: #000; color: #fff; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 3px; }
 
-        /* IMAGEN FLOTANTE CON BORDE */
-        .new-badge { position: absolute; right: 45%; bottom: 10%; width: 280px; height: 380px; border: 12px solid white; box-shadow: 0 30px 60px rgba(0,0,0,0.15); z-index: 3; }
-        .new-badge img { width: 100%; height: 100%; object-fit: cover; }
-        .new-tag { position: absolute; top: 20px; right: -40px; transform: rotate(90deg); font-size: 40px; font-family: 'Playfair Display', serif; font-weight: 700; color: rgba(0,0,0,0.1); }
+        /* FOTO FLOTANTE "NEW" CON BORDE BLANCO */
+        .hero-float-img { position: absolute; right: 40%; bottom: 10%; width: 280px; height: 380px; border: 12px solid #fff; box-shadow: 0 30px 60px rgba(0,0,0,0.1); z-index: 10; }
+        .hero-float-img img { width: 100%; height: 100%; object-fit: cover; }
 
         /* MARQUESINA NEGRA */
-        .marquee { background: #000; color: #fff; padding: 20px 0; overflow: hidden; white-space: nowrap; }
-        .marquee-inner { display: inline-block; animation: scroll 25s linear infinite; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; font-weight: 300; }
+        .marquee { background: #000; color: #fff; padding: 18px 0; overflow: hidden; white-space: nowrap; }
+        .marquee-track { display: inline-block; animation: scroll 30s linear infinite; font-size: 10px; letter-spacing: 5px; text-transform: uppercase; }
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* SECCIÓN EDITORIAL (2 COLUMNAS) */
-        .editorial { padding: 120px 8%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-        .ed-left img { width: 100%; border-radius: 2px; }
-        .ed-right { text-align: center; padding: 0 40px; }
-        .ed-right h2 { font-size: 45px; font-weight: 200; text-transform: uppercase; letter-spacing: 8px; margin-bottom: 30px; }
-        .ed-right p { font-size: 15px; color: #666; line-height: 2; margin-bottom: 40px; }
+        /* SECCIÓN EDITORIAL PRODUCTOS */
+        .section-title { text-align: center; margin: 80px 0; }
+        .section-title h2 { font-family: 'Bodoni Moda', serif; font-size: 50px; font-weight: 300; text-transform: lowercase; }
 
-        /* GRID DE PRODUCTOS */
-        .shop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 0 8% 100px; }
+        .catalog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 0 5% 100px; }
         .product-card { cursor: pointer; text-align: left; }
-        .product-card .img-wrap { width: 100%; aspect-ratio: 3/4; overflow: hidden; margin-bottom: 20px; background: #eee; }
-        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
-        .product-card:hover img { transform: scale(1.05); }
-        .product-card h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-        .product-card p { font-size: 13px; color: #888; margin-top: 5px; }
+        .product-card .img-box { width: 100%; aspect-ratio: 3/4; overflow: hidden; background: #eee; margin-bottom: 20px; }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.2, 1, 0.2, 1); }
+        .product-card:hover img { transform: scale(1.05); opacity: 0.9; }
+        .product-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .product-card p { font-size: 12px; color: #777; }
 
-        /* --- ADMIN PANEL (TOTALMENTE OCULTO) --- */
-        #admin-panel { position: fixed; right: -420px; top: 0; width: 400px; height: 100vh; background: white; z-index: 10000; padding: 50px 40px; box-shadow: -20px 0 60px rgba(0,0,0,0.1); transition: 0.6s cubic-bezier(0.2, 1, 0.2, 1); overflow-y: auto; }
+        /* --- ADMINISTRADOR TOTALMENTE OCULTO --- */
+        #admin-panel { position: fixed; right: -400px; top: 0; width: 400px; height: 100vh; background: #000; color: #fff; z-index: 9999; padding: 50px 40px; transition: 0.5s ease; box-shadow: -10px 0 50px rgba(0,0,0,0.5); overflow-y: auto; }
         #admin-panel.active { right: 0; }
-        .admin-title { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-        .field { margin-bottom: 25px; }
-        .field label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
-        .field input { width: 100%; padding: 14px; border: 1px solid #e0e0e0; border-radius: 0; font-size: 13px; outline: none; }
-        .btn-admin { width: 100%; padding: 18px; background: black; color: white; border: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; cursor: pointer; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 20px; }
+        .admin-header h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
         
-        .inventory-list { margin-top: 40px; }
-        .inv-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #f5f5f5; font-size: 12px; }
-        .btn-del { color: #ff4d4d; border: none; background: none; cursor: pointer; font-weight: 600; }
-
-        /* Overlay para cerrar admin */
-        #admin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.2); display: none; z-index: 9999; }
-        #admin-overlay.active { display: block; }
+        .admin-field { margin-bottom: 20px; }
+        .admin-field label { display: block; font-size: 10px; text-transform: uppercase; color: #888; margin-bottom: 8px; }
+        .admin-field input { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; outline: none; }
+        .admin-btn { width: 100%; padding: 15px; background: #fff; color: #000; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 10px; margin-top: 10px; }
+        
+        .admin-inventory { margin-top: 40px; }
+        .inv-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; font-size: 11px; }
+        .btn-del { color: #ff4747; cursor: pointer; border: none; background: none; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -74,121 +68,111 @@
         <div class="logo">inercia.</div>
         <nav>
             <a href="#">Home</a>
-            <a href="#">Colecciones</a>
-            <a href="#">Inercia World</a>
-            <a href="#">Contacto</a>
+            <a href="#">Shop</a>
+            <a href="#">World</a>
+            <a href="#">Contact</a>
         </nav>
     </header>
 
-    <section class="hero">
-        <img src="https://unsplash.com" class="hero-main-img">
-        <div class="hero-text">
-            <h1 id="h-title">Chic.<br>Trendy.<br>Timeless.</h1>
-            <p id="h-desc">Explora la curaduría exclusiva de Inercia. Piezas diseñadas para trascender tendencias y definir tu propio estilo.</p>
-            <a href="#shop" class="btn-black">Ver Catálogo</a>
-        </div>
-        <div class="new-badge">
-            <div class="new-tag">NEW</div>
-            <img src="https://unsplash.com" id="h-sub-img">
-        </div>
-    </section>
+    <main>
+        <section class="hero">
+            <img src="https://unsplash.com" class="hero-main-img" id="hero-img">
+            <div class="hero-text">
+                <h1 id="hero-title-txt">Chic. Trendy.<br>Timeless.</h1>
+                <p>Explora la vanguardia de la moda con Inercia. Diseños que capturan la esencia de lo clásico con un toque de modernidad absoluta.</p>
+                <a href="#shop" class="btn-black">Shop collection</a>
+            </div>
+            <div class="hero-float-img">
+                <img src="https://unsplash.com" id="hero-sub-img">
+            </div>
+        </section>
 
-    <div class="marquee">
-        <div class="marquee-inner">
-            NEW COLLECTION • INERCIA • NEW COLLECTION • INERCIA • NEW COLLECTION • INERCIA • NEW COLLECTION • INERCIA • NEW COLLECTION • INERCIA • 
+        <div class="marquee">
+            <div class="marquee-track">
+                NEW COLLECTION • INERCIA • NEW COLLECTION • INERCIA • NEW COLLECTION • INERCIA • NEW COLLECTION • INERCIA • NEW COLLECTION • INERCIA • 
+            </div>
         </div>
-    </div>
 
-    <section class="editorial">
-        <div class="ed-left">
-            <img src="https://unsplash.com">
-        </div>
-        <div class="ed-right">
-            <h2>New Collection</h2>
-            <p>Siente la inercia del cambio. Nuestra nueva colección otoño/invierno fusiona la elegancia clásica con cortes contemporáneos.</p>
-            <a href="#" style="color:black; font-size:11px; letter-spacing:3px; text-decoration:none; font-weight:700; text-transform:uppercase; border-bottom: 2px solid black; padding-bottom:5px;">Descubrir más</a>
-        </div>
-    </section>
+        <section id="shop">
+            <div class="section-title">
+                <h2>new collection</h2>
+            </div>
+            <div class="catalog-grid" id="main-catalog">
+                <!-- Se llena con JS -->
+            </div>
+        </section>
+    </main>
 
-    <div class="shop-grid" id="shop" id="catalog-display">
-        <!-- Los productos aparecerán aquí -->
-    </div>
-
-    <!-- ADMIN PANEL TOTALMENTE INVISIBLE (Trigger: Escribir "0110") -->
-    <div id="admin-overlay" onclick="toggleAdmin()"></div>
+    <!-- PANEL ADMIN OCULTO (ESCRIBE 0110 PARA VERLO) -->
     <div id="admin-panel">
-        <h2 class="admin-title">Panel de Dueña</h2>
-        
-        <div class="admin-sec">
-            <div class="field">
-                <label>Editar Título Hero</label>
-                <input type="text" id="in-title" placeholder="Chic. Trendy. Timeless." oninput="updateHero()">
-            </div>
-            
-            <div style="margin: 40px 0; border-top: 1px solid #eee; padding-top: 30px;">
-                <label style="font-size:10px; font-weight:700; letter-spacing:1px; margin-bottom:20px; display:block;">SUBIR NUEVO PRODUCTO</label>
-                <div class="field"><input type="text" id="p-name" placeholder="Nombre de prenda"></div>
-                <div class="field"><input type="text" id="p-price" placeholder="Precio (ej: $15.000)"></div>
-                <div class="field"><input type="text" id="p-img" placeholder="Link de la imagen"></div>
-                <button class="btn-admin" onclick="saveProduct()">Publicar en Inercia</button>
-            </div>
+        <div class="admin-header">
+            <h2>Admin Inercia</h2>
+            <span onclick="toggleAdmin()" style="cursor:pointer; font-size:24px;">&times;</span>
         </div>
 
-        <div class="inventory-list">
-            <label style="font-size:10px; font-weight:700; letter-spacing:1px;">GESTIONAR STOCK</label>
-            <div id="inv-items"></div>
+        <div class="admin-field">
+            <label>Título Principal del Banner</label>
+            <input type="text" id="edit-title" oninput="liveUpdate()" placeholder="Ej: Chic. Trendy. Timeless.">
+        </div>
+
+        <div style="border-top: 1px solid #333; padding-top: 30px;">
+            <label style="font-size:10px; color:#fff; font-weight:bold; margin-bottom:20px; display:block;">NUEVO PRODUCTO</label>
+            <div class="admin-field"><input type="text" id="p-name" placeholder="Nombre"></div>
+            <div class="admin-field"><input type="text" id="p-price" placeholder="Precio (ej: $15.000)"></div>
+            <div class="admin-field"><input type="text" id="p-img" placeholder="Link de Foto"></div>
+            <button class="admin-btn" onclick="saveProduct()">Publicar Item</button>
+        </div>
+
+        <div class="admin-inventory" id="admin-list">
+            <!-- Items para borrar -->
         </div>
     </div>
 
     <script>
-        // DATOS INICIALES
+        // BASE DE DATOS LOCAL
         let products = JSON.parse(localStorage.getItem('inercia_db')) || [
             { name: "Suede Bomber Jacket", price: "$22.900", img: "https://unsplash.com" },
             { name: "Minimal Silk Shirt", price: "$14.500", img: "https://unsplash.com" },
-            { name: "Wide Leg Trousers", price: "$18.200", img: "https://unsplash.com" }
+            { name: "Luxury Leg Trousers", price: "$18.200", img: "https://unsplash.com" }
         ];
 
-        // LÓGICA DE CÓDIGO SECRETO "0110"
-        let secretCode = "";
+        // DETECTAR CÓDIGO 0110
+        let keys = "";
         window.addEventListener('keydown', (e) => {
-            secretCode += e.key;
-            if (secretCode.includes("0110")) {
+            keys += e.key;
+            if (keys.includes("0110")) {
                 toggleAdmin();
-                secretCode = "";
+                keys = "";
             }
-            if (secretCode.length > 10) secretCode = ""; // Reset por seguridad
+            if (keys.length > 10) keys = ""; 
         });
 
         function toggleAdmin() {
             document.getElementById('admin-panel').classList.toggle('active');
-            document.getElementById('admin-overlay').classList.toggle('active');
         }
 
-        function updateHero() {
-            const val = document.getElementById('in-title').value;
-            if(val) document.getElementById('h-title').innerHTML = val.replace(/\. /g, '.<br>');
+        function liveUpdate() {
+            const val = document.getElementById('edit-title').value;
+            if(val) document.getElementById('hero-title-txt').innerHTML = val.replace(/\. /g, '.<br>');
         }
 
         function render() {
-            const grid = document.getElementById('shop');
-            const inv = document.getElementById('inv-items');
+            const grid = document.getElementById('main-catalog');
+            const list = document.getElementById('admin-list');
             grid.innerHTML = '';
-            inv.innerHTML = '';
+            list.innerHTML = '<label style="font-size:10px; color:#888; display:block; margin-bottom:15px;">GESTIÓN DE STOCK</label>';
 
             products.forEach((p, i) => {
-                // Tienda
                 grid.innerHTML += `
                     <div class="product-card">
-                        <div class="img-wrap"><img src="${p.img}"></div>
+                        <div class="img-box"><img src="${p.img}"></div>
                         <h3>${p.name}</h3>
                         <p>${p.price}</p>
                     </div>
                 `;
-                // Admin
-                inv.innerHTML += `
-                    <div class="inv-item">
-                        <span>${p.name}</span>
-                        <button class="btn-del" onclick="deleteProduct(${i})">X</button>
+                list.innerHTML += `
+                    <div class="inv-row">
+                        ${p.name} <button class="btn-del" onclick="deleteItem(${i})">ELIMINAR</button>
                     </div>
                 `;
             });
@@ -206,19 +190,14 @@
                 document.getElementById('p-name').value = '';
                 document.getElementById('p-price').value = '';
                 document.getElementById('p-img').value = '';
-            } else {
-                alert("Completa todos los campos para publicar.");
             }
         }
 
-        function deleteProduct(i) {
-            if(confirm("¿Quitar producto del catálogo?")) {
-                products.splice(i, 1);
-                render();
-            }
+        function deleteItem(i) {
+            products.splice(i, 1);
+            render();
         }
 
-        // Carga Inicial
         render();
     </script>
 </body>
