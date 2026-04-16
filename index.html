@@ -4,13 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Fuente elegante similar para el estilo artístico -->
+    
+    <!-- Fuente elegante de Google Fonts -->
     <link href="https://googleapis.com" rel="stylesheet">
+
+    <style>
+        /* --- CONFIGURACIÓN CSS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #000831; /* El azul oscuro de tu logo */
+            font-family: 'Playfair Display', serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navegación Minimalista */
+        nav {
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            width: 100%;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000831;
+            margin: 0 25px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            transition: 0.4s ease;
+            font-weight: 400;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.4;
+            letter-spacing: 5px; /* Efecto de movimiento */
+        }
+
+        /* Sección de Portada (Hero) */
+        .hero {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .brand-name {
+            font-size: clamp(3rem, 10vw, 7rem); /* Se adapta a móvil y PC */
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: -2px;
+        }
+
+        .tagline {
+            font-style: italic;
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            letter-spacing: 5px;
+            opacity: 0.7;
+            text-transform: lowercase;
+        }
+
+        /* Botón Admin Oculto (Casi invisible) */
+        #admin-trigger {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0,0,0,0.01); /* Solo se ve un rastro */
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 100;
+        }
+
+        #admin-trigger:hover {
+            background-color: rgba(0,0,0,0.05); /* Se nota un poco al pasar el mouse */
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Navegación Minimalista -->
+    <!-- Menú -->
     <nav>
         <div class="nav-links">
             <a href="#">Colecciones</a>
@@ -19,7 +108,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section (Portada Artística) -->
+    <!-- Logo Central Artístico -->
     <header class="hero">
         <div class="logo-container">
             <h1 class="brand-name">Inercia</h1>
@@ -27,97 +116,20 @@
         </div>
     </header>
 
-    <!-- Botón de Admin Oculto -->
-    <div id="admin-trigger" onclick="checkAdmin()"></div>
+    <!-- Punto secreto de acceso al panel -->
+    <div id="admin-trigger" title="Acceso Admin" onclick="checkAdmin()"></div>
 
     <script>
         function checkAdmin() {
-            let pass = prompt("Acceso restringido. Ingrese código:");
+            let pass = prompt("Acceso restringido de Inercia. Ingrese su código de seguridad:");
             if (pass === "0110") {
-                alert("Acceso concedido. Redirigiendo al panel...");
-                // Aquí pondrías la URL de tu panel de administración
-                // window.location.href = "admin-panel.html"; 
+                alert("Código correcto. Bienvenido.");
+                // Redirigir al panel de administración (lo crearemos a continuación)
+                window.location.href = "admin.html"; 
             } else {
-                alert("Código incorrecto.");
+                alert("Código inválido. Acceso denegado.");
             }
         }
     </script>
 </body>
 </html>
-/* Configuración General */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #ffffff;
-    color: #000831; /* El tono oscuro de tu logo */
-    font-family: 'Playfair Display', serif;
-    overflow-x: hidden;
-}
-
-/* Navegación */
-nav {
-    padding: 30px;
-    display: flex;
-    justify-content: center;
-    position: fixed;
-    width: 100%;
-    z-index: 10;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #000831;
-    margin: 0 20px;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    transition: 0.3s;
-}
-
-.nav-links a:hover {
-    opacity: 0.5;
-}
-
-/* Sección de Portada (Hero) */
-.hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.brand-name {
-    font-size: 6rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    /* Si tienes el archivo de fuente local, aquí usarías font-family: 'TuFuente'; */
-}
-
-.tagline {
-    font-style: italic;
-    font-size: 1.2rem;
-    letter-spacing: 4px;
-    opacity: 0.8;
-}
-
-/* Botón Admin Oculto (Inferior Derecha) */
-#admin-trigger {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 20px;
-    height: 20px;
-    background-color: rgba(0,0,0,0.02); /* Casi invisible */
-    cursor: pointer;
-    border-radius: 50%;
-    transition: 0.3s;
-}
-
-#admin-trigger:hover {
-    background-color: rgba(0,0,0,0.1); /* Se nota un poco al pasar el mouse */
-}
