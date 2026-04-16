@@ -261,118 +261,69 @@
 
     function renderOrders() {
         document.getElementById('admin-orders-list').innerHTML = db.orders.map(o => `<div style="border-left:3px solid var(--azul); padding:10px; margin-bottom:10px; background:#f9f9f9; font-size:0.75rem"><strong>${o.cliente}</strong> - ${o.productos}<br>${o.envio} | ${o.total}</div>`).reverse().join('');
-    }<script>
-    // 1. DATABASE INITIALIZATION
-    // We use 'inercia_v5_db' to keep it consistent with your original code
+  <script>
+    // 1. BASE DE DATOS Y CONFIGURACIÓN INICIAL
     let db = JSON.parse(localStorage.getItem('inercia_v5_db')) || { 
         products: [], 
         orders: [], 
-        cats: ["Nuevo", "Temporada", "Sale"],
+        cats: ["Nuevo", "Temporada"], 
         banners: [],
-        config: { wa: "", bank: "", ships: [], meets: [] }
+        config: { wa: "", bank: "", ships: ["Retiro", "Envío"], meets: ["Punto A"] }
     };
 
     const saveDB = () => localStorage.setItem('inercia_v5_db', JSON.stringify(db));
     let cart = [];
 
-    // 2. RENDER PRODUCTS ON SCREEN
+    // 2. MOSTRAR PRODUCTOS
     function renderShop() {
         const grid = document.getElementById('shop-grid');
-        if (!grid) return;
-        
-        grid.innerHTML = db.products.map((p, pIdx) => `
+        grid.innerHTML = db.products.map((p, i) => `
             <div class="card">
-                <div class="product-carousel" onclick="openProductDetails(${pIdx})">
-                    <div class="product-slider" id="slider-${pIdx}">
-                        ${p.imgs.map(img => `<img src="${img}">`).join('')}
-                    </div>
+                <div class="product-carousel" onclick="openDetails(${i})">
+                    <img src="${p.imgs[0]}" style="width:100%; height:280px; object-fit:cover; cursor:pointer">
                 </div>
                 <span class="card-cat">${p.cat}</span>
-                <h3 class="card-name" onclick="openProductDetails(${pIdx})" style="cursor:pointer"><u>${p.name}</u></h3>
-                <p style="margin-bottom:10px"><b>$${p.price}</b></p>
-                <button class="btn-add" onclick="addToCart(${pIdx})">AÑADIR A LA BOLSA</button>
+                <h3 class="card-name">${p.name}</h3>
+                <p><b>$${p.price}</b></p>
+                <button class="btn-add" onclick="addToCart(${i})">AGREGAR A LA BOLSA</button>
             </div>
         `).join('');
     }
 
-    // 3. SHOW DESCRIPTION (MODAL)
-    function openProductDetails(index) {
-        const p = db.products[index];
+    // 3. VER DESCRIPCIÓN (MODAL)
+    function openDetails(i) {
+        const p = db.products[i];
         const modal = document.createElement('div');
-        modal.id = "product-modal";
-        modal.style = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:5000; display:flex; justify-content:center; align-items:center; padding:20px;";
+        modal.style = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:5000; display:flex; justify-content:center; align-items:center; color:white; padding:20px";
         modal.innerHTML = `
-            <div style="background:white; padding:30px; max-width:500px; width:100%; position:relative; text-align:center;">
-                <span onclick="this.parentElement.parentElement.remove()" style="position:absolute; right:15px; top:10px; cursor:pointer; font-size:24px;">&times;</span>
-                <img src="${p.imgs[0]}" style="width:100%; max-height:300px; object-fit:cover; margin-bottom:15px;">
-                <h2 style="letter-spacing:2px;">${p.name}</h2>
-                <p style="margin:20px 0; font-family:sans-serif; color:gray; line-height:1.5;">${p.desc}</p>
-                <p style="font-size:1.2rem; margin-bottom:20px;"><b>$${p.price}</b></p>
-                <button class="btn-add" onclick="addToCart(${index}); this.parentElement.parentElement.parentElement.remove();">AGREGAR AL CARRITO</button>
+            <div style="background:white; color:black; padding:30px; max-width:500px; width:100%; position:relative; text-align:center">
+                <span onclick="this.parentElement.parentElement.remove()" style="position:absolute; top:10px; right:20px; font-size:30px; cursor:pointer">&times;</span>
+                <img src="${p.imgs[0]}" style="width:100%; max-height:300px; object-fit:cover">
+                <h2 style="margin-top:15px">${p.name}</h2>
+                <p style="margin:15px 0; font-family:sans-serif">${p.desc}</p>
+                <h3>$${p.price}</h3>
+                <button class="btn-add" onclick="addToCart(${i}); this.parentElement.parentElement.remove()">AGREGAR AL CARRITO</button>
             </div>
         `;
         document.body.appendChild(modal);
     }
 
-    // 4. ADMIN: UPLOAD MULTIPLE PRODUCTS
-    function uploadProduct() {
-        const name = document.getElementById('p-name').value;
-        const price = document.getElementById('p-price').value;
-        const desc = document.getElementById('p-desc').value;
-        const cat = document.getElementById('p-cat-select').value;
-        const files = document.getElementById('p-img').files;
-
-        if(!name || !price || files.length === 0) return alert("Por favor completa los campos y sube una imagen.");
-
-        const readers = Array.from(files).map(file => {
-            return new Promise(resolve => {
-                const reader = new FileReader();
-                reader.onload = (e) => resolve(e.target.result);
-                reader.readAsDataURL(file);
-            });
-        });
-
-        Promise.all(readers).then(imgs => {
-            db.products.push({ name, price, desc, cat, imgs });
-            saveDB();
-            alert("Producto guardado correctamente");
-            renderShop();
-            closeAdmin();
-        });
-    }
-
-    // 5. FINISH PURCHASE (INTERNAL SAVE, NO WHATSAPP)
-    function confirmOrder() {
-        const name = document.getElementById('c-name').value;
-        if(!name || cart.length === 0) return alert("Ingresa tu nombre y asegúrate de tener productos en la bolsa.");
-
-        const newOrder = {
-            id: Date.now(),
-            customer: name,
-            items: [...cart],
-            total: document.getElementById('cart-total').innerText,
-            date: new Date().toLocaleString()
-        };
-
-        db.orders.push(newOrder);
-        saveDB();
-        
-        alert("¡Pedido enviado! Lo procesaremos pronto.");
-        cart = [];
-        updateCartUI();
-        toggleCart();
-    }
-
-    // UI HELPER FUNCTIONS
+    // 4. CARRITO
     function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
-    function addToCart(idx) { cart.push(db.products[idx]); updateCartUI(); }
+    
+    function addToCart(i) {
+        cart.push(db.products[i]);
+        updateCartUI();
+        if(!document.getElementById('cart-panel').classList.contains('active')) toggleCart();
+    }
+
     function updateCartUI() {
-        const itemsCont = document.getElementById('cart-items');
+        const cont = document.getElementById('cart-items');
         document.getElementById('cart-count').innerText = cart.length;
         let total = 0;
-        itemsCont.innerHTML = cart.map((item, i) => {
+        cont.innerHTML = cart.map((item, index) => {
             total += Number(item.price);
-            return `<div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:10px;">
+            return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.8rem">
                 <span>${item.name}</span>
                 <b>$${item.price}</b>
             </div>`;
@@ -380,13 +331,71 @@
         document.getElementById('cart-total').innerText = `TOTAL: $${total}`;
     }
 
-    function accessAdmin() { document.getElementById('admin-panel').style.display = 'block'; }
+    // 5. FINALIZAR COMPRA (GUARDA EN ADMIN)
+    function confirmOrder() {
+        const name = document.getElementById('c-name').value;
+        if(!name || cart.length === 0) return alert("Completa tu nombre y agrega productos.");
+
+        const order = {
+            cliente: name,
+            items: cart.map(item => item.name).join(", "),
+            total: document.getElementById('cart-total').innerText,
+            fecha: new Date().toLocaleString()
+        };
+
+        db.orders.push(order);
+        saveDB();
+        renderOrders(); // Actualiza la lista en el panel admin
+        
+        alert("¡Pedido recibido con éxito!");
+        cart = [];
+        updateCartUI();
+        toggleCart();
+    }
+
+    // 6. ADMIN: SUBIR PRODUCTOS
+    function uploadProduct() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const desc = document.getElementById('p-desc').value;
+        const cat = document.getElementById('p-cat-select').value;
+        const files = document.getElementById('p-img').files;
+
+        if(!name || !price || files.length === 0) return alert("Completa los datos y sube al menos una foto.");
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            db.products.push({ name, price, desc, cat, imgs: [e.target.result] });
+            saveDB();
+            renderShop();
+            alert("Producto subido correctamente.");
+            closeAdmin();
+        };
+        reader.readAsDataURL(files[0]);
+    }
+
+    // 7. ADMIN: VER PEDIDOS
+    function renderOrders() {
+        const list = document.getElementById('admin-orders-list');
+        list.innerHTML = db.orders.map(o => `
+            <div style="border-bottom:1px solid #eee; padding:10px; font-size:0.7rem">
+                <b>${o.cliente}</b> - ${o.fecha}<br>
+                ${o.items}<br>
+                <b>${o.total}</b>
+            </div>
+        `).reverse().join('');
+    }
+
+    // FUNCIONES DE PANEL
+    function accessAdmin() { 
+        document.getElementById('admin-panel').style.display = 'block'; 
+        renderOrders();
+    }
     function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
 
-    // Initialize Page
+    // INICIO
     window.onload = () => {
         renderShop();
-        // Fill category selector in admin
         const catSelect = document.getElementById('p-cat-select');
         db.cats.forEach(c => {
             let opt = document.createElement('option');
@@ -395,7 +404,6 @@
         });
     };
 </script>
-
-</script>
 </body>
 </html>
+
