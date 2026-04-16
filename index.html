@@ -6,252 +6,233 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --azul: #000831; --blanco: #ffffff; --gris: #f4f4f4; }
+        :root { --azul: #000831; --blanco: #ffffff; --gris: #f8f8f8; --dorado: #b5a48b; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Playfair Display', serif; }
         body { background: var(--blanco); color: var(--azul); overflow-x: hidden; }
 
-        /* NAVEGACIÓN */
-        nav { padding: 20px 30px; display: flex; justify-content: space-between; position: fixed; width: 100%; z-index: 1000; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid #eee; }
-        
-        /* BANNER */
-        #banner-container { width: 100%; height: 400px; overflow: hidden; position: relative; margin-top: 65px; background: #eee; }
-        #banner-slider { display: flex; transition: 0.8s ease-in-out; height: 100%; }
+        /* --- NAVEGACIÓN --- */
+        nav { padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; z-index: 1000; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #f0f0f0; }
+        .logo { font-weight: bold; letter-spacing: 5px; font-size: 1.2rem; }
+        .cart-trigger { cursor: pointer; font-size: 0.8rem; letter-spacing: 2px; font-weight: bold; }
+
+        /* --- BANNER & HERO --- */
+        #banner-container { width: 100%; height: 60vh; overflow: hidden; position: relative; margin-top: 70px; background: #f0f0f0; }
+        #banner-slider { display: flex; transition: 1s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
         #banner-slider img { width: 100%; flex-shrink: 0; object-fit: cover; }
 
-        .hero { padding: 40px 20px; text-align: center; }
-        .brand-name { font-size: 4rem; letter-spacing: -2px; }
-        
-        /* TIENDA */
-        .productos-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 40px; }
-        .card { border: 1px solid #f0f0f0; padding: 15px; transition: 0.3s; }
-        .card img { width: 100%; height: 350px; object-fit: cover; margin-bottom: 15px; }
-        .card-cat { font-size: 0.7rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 1px; }
-        .btn-buy { background: var(--azul); color: white; border: none; padding: 12px; width: 100%; cursor: pointer; font-size: 0.7rem; letter-spacing: 1px; margin-top: 10px; }
+        .hero-text { padding: 60px 20px; text-align: center; }
+        .hero-text h1 { font-size: 4.5rem; letter-spacing: -2px; font-weight: 400; }
+        .hero-text p { font-style: italic; opacity: 0.5; letter-spacing: 6px; text-transform: uppercase; font-size: 0.7rem; margin-top: 10px; }
 
-        /* CARRITO PANEL */
-        #cart-panel { position: fixed; right: -100%; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 30px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); overflow-y: auto; }
+        /* --- PRODUCTOS --- */
+        .productos-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; padding: 0 5% 80px; }
+        .card { transition: 0.4s; position: relative; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 450px; object-fit: cover; margin-bottom: 20px; }
+        .card-info { text-align: center; }
+        .card-cat { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.4; display: block; margin-bottom: 8px; }
+        .card-name { font-size: 1.1rem; margin-bottom: 5px; font-weight: 400; }
+        .card-price { font-weight: bold; color: var(--azul); font-size: 0.9rem; }
+        
+        .btn-add { background: var(--azul); color: white; border: none; padding: 15px; width: 100%; cursor: pointer; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; transition: 0.3s; }
+        .btn-add:hover { background: #00125a; }
+
+        /* --- CARRITO (DERECHA) --- */
+        #cart-panel { position: fixed; right: -100%; top: 0; width: 400px; height: 100%; background: white; z-index: 2000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); padding: 40px; box-shadow: -10px 0 50px rgba(0,0,0,0.15); overflow-y: auto; }
         #cart-panel.active { right: 0; }
-        .input-cart { width: 100%; padding: 10px; margin: 5px 0 15px; border: 1px solid #ddd; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 0.9rem; align-items: center; }
+        .remove-btn { color: #ff4d4d; border: none; background: none; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; margin-left: 15px; }
 
-        /* ADMIN PANEL */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--gris); z-index: 3000; overflow-y: auto; padding: 40px; }
-        .admin-box { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        
-        #secret-trigger { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; cursor: pointer; z-index: 4000; }
-        footer { padding: 40px; text-align: center; border-top: 1px solid #eee; }
+        .input-cart { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #eee; background: var(--gris); font-family: sans-serif; font-size: 0.8rem; }
+
+        /* --- ADMIN SYSTEM --- */
+        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f4f4f4; z-index: 3000; overflow-y: auto; padding: 50px 10%; color: #333; }
+        .admin-box { background: white; padding: 30px; border-radius: 2px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        #secret-trigger { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: pointer; z-index: 4000; background: transparent; }
+
+        footer { padding: 80px 20px; text-align: center; border-top: 1px solid #f0f0f0; background: #fafafa; }
+        footer a { color: var(--azul); text-decoration: none; margin: 0 20px; font-size: 0.7rem; letter-spacing: 2px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <nav>
-    <div style="font-weight:bold; letter-spacing:2px">INERCIA</div>
-    <div style="cursor:pointer; font-weight:bold" onclick="toggleCart()">CARRITO (<span id="cart-count">0</span>)</div>
+    <div class="logo">INERCIA</div>
+    <div class="cart-trigger" onclick="toggleCart()">BOLSA (<span id="cart-count">0</span>)</div>
 </nav>
 
 <div id="banner-container">
-    <div id="banner-slider">
-        <!-- Los banners aparecerán aquí -->
-    </div>
+    <div id="banner-slider"></div>
 </div>
 
-<header class="hero">
-    <h1 class="brand-name">Inercia</h1>
-    <p style="font-style:italic; opacity:0.6; letter-spacing:3px">Moda en movimiento</p>
+<header class="hero-text">
+    <h1>Inercia</h1>
+    <p>Moda en movimiento</p>
 </header>
 
 <section class="productos-container" id="shop-grid"></section>
 
-<!-- CARRITO -->
 <div id="cart-panel">
-    <h2 onclick="toggleCart()" style="cursor:pointer; margin-bottom:20px">← CERRAR</h2>
+    <div class="cart-header">
+        <h3>TU BOLSA</h3>
+        <span onclick="toggleCart()" style="cursor:pointer; font-size: 0.7rem; letter-spacing: 1px;">CERRAR ×</span>
+    </div>
     <div id="cart-items"></div>
-    <div id="cart-total" style="font-weight:bold; margin: 20px 0; font-size: 1.2rem;">Total: $0</div>
+    <div id="cart-total" style="font-size: 1.2rem; margin: 30px 0; border-top: 1px solid #eee; padding-top: 20px;">TOTAL: $0</div>
     
-    <div id="checkout-area">
-        <input type="text" id="c-name" class="input-cart" placeholder="Tu Nombre">
-        <label>Envío:</label>
+    <div id="checkout">
+        <input type="text" id="c-name" class="input-cart" placeholder="NOMBRE COMPLETO">
+        <label style="font-size: 0.7rem; margin-top: 10px; display: block;">MÉTODO DE ENVÍO:</label>
         <select id="c-ship" class="input-cart"></select>
-        <label>Pago:</label>
+        <label style="font-size: 0.7rem; margin-top: 10px; display: block;">MÉTODO DE PAGO:</label>
         <select id="c-pay" class="input-cart">
-            <option value="Efectivo">Efectivo / Acordar</option>
-            <option value="Transferencia">Transferencia Bancaria</option>
+            <option value="Efectivo">PAGO A CONVENIR / EFECTIVO</option>
+            <option value="Transferencia">TRANSFERENCIA BANCARIA</option>
         </select>
-        <button class="btn-buy" onclick="confirmOrder()">CONFIRMAR PEDIDO</button>
+        <button class="btn-add" onclick="confirmOrder()">FINALIZAR COMPRA</button>
     </div>
 </div>
 
 <footer>
-    <a href="#" id="link-ig" style="margin-right:20px">INSTAGRAM</a>
+    <a href="#" id="link-ig">INSTAGRAM</a>
     <a href="#" id="link-wa">WHATSAPP</a>
 </footer>
 
 <div id="secret-trigger" onclick="accessAdmin()"></div>
 
-<!-- ADMIN -->
+<!-- PANEL ADMINISTRADOR -->
 <div id="admin-panel">
-    <div style="display:flex; justify-content:space-between; margin-bottom:20px">
-        <h1>Panel Inercia</h1>
-        <button onclick="closeAdmin()" style="background:red; color:white; border:none; padding:10px">SALIR</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px">
+        <h2>INERCIA ADMIN SYSTEM</h2>
+        <button onclick="closeAdmin()" style="padding:10px 20px; cursor:pointer; background:black; color:white; border:none; font-size: 0.7rem;">CERRAR SESIÓN</button>
     </div>
 
     <div class="admin-box">
-        <h3>🖼️ Banners (Carrusel)</h3>
-        <input type="file" id="b-img" accept="image/*">
-        <button onclick="uploadBanner()">Subir Banner</button>
-        <button onclick="clearBanners()" style="color:red; margin-left:10px">Borrar Banners</button>
+        <h3>🖼️ CARRUSEL DE BANNERS</h3>
+        <input type="file" id="b-img" accept="image/*" style="margin-bottom:10px">
+        <button class="btn-add" style="width:auto; padding: 10px 30px" onclick="uploadBanner()">AÑADIR BANNER</button>
+        <button onclick="clearBanners()" style="background:none; border:none; color:red; cursor:pointer; font-size:0.7rem; margin-left:20px">BORRAR TODO</button>
     </div>
 
     <div class="admin-box">
-        <h3>👕 Nuevo Producto</h3>
-        <input type="file" id="p-img" accept="image/*">
-        <input type="text" id="p-name" placeholder="Nombre" class="input-cart">
-        <input type="number" id="p-price" placeholder="Precio" class="input-cart">
+        <h3>👕 CARGAR PRODUCTO</h3>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px">
+            <input type="text" id="p-name" placeholder="Nombre" class="input-cart">
+            <input type="number" id="p-price" placeholder="Precio ($)" class="input-cart">
+        </div>
+        <label style="font-size: 0.7rem;">CATEGORÍA:</label>
         <select id="p-cat-select" class="input-cart"></select>
-        <button class="btn-buy" onclick="uploadProduct()">PUBLICAR</button>
+        <input type="file" id="p-img" accept="image/*">
+        <button class="btn-add" onclick="uploadProduct()">PUBLICAR</button>
     </div>
 
     <div class="admin-box">
-        <h3>⚙️ Configuración</h3>
-        <input type="text" id="conf-cats" placeholder="Categorías (ej: Tops, Jeans)" class="input-cart">
-        <input type="text" id="conf-ships" placeholder="Envíos (ej: Correo, Moto)" class="input-cart">
-        <button class="btn-buy" onclick="saveConfig()">GUARDAR CAMBIOS</button>
+        <h3>⚙️ CONFIGURACIÓN DE LA TIENDA</h3>
+        <label style="font-size:0.7rem">CATEGORÍAS (Separar con coma):</label>
+        <input type="text" id="conf-cats" class="input-cart" placeholder="Ej: Tops, Jeans, Accesorios">
+        <label style="font-size:0.7rem">MÉTODOS DE ENVÍO (Separar con coma):</label>
+        <input type="text" id="conf-ships" class="input-cart" placeholder="Ej: Correo, Moto, Retiro">
+        <button class="btn-add" style="background:#2e7d32" onclick="saveConfig()">ACTUALIZAR CONFIGURACIÓN</button>
     </div>
 
     <div class="admin-box">
-        <h3>📦 Pedidos Recibidos</h3>
+        <h3>📦 PEDIDOS</h3>
         <div id="admin-orders-list"></div>
     </div>
 </div>
 
 <script>
-    // BASE DE DATOS LOCAL
-    let db = JSON.parse(localStorage.getItem('inercia_db')) || { 
-        products: [], orders: [], cats: ["General"], ships: ["Retiro"], banners: [] 
+    let db = JSON.parse(localStorage.getItem('inercia_v2_db')) || { 
+        products: [], orders: [], cats: ["NUEVA COLECCIÓN"], ships: ["RETIRO EN LOCAL"], banners: [] 
     };
     let cart = [];
 
-    // INICIO
-    window.onload = () => {
-        renderShop();
-        renderBanners();
-        updateUI();
-    };
-
-    function save() { localStorage.setItem('inercia_db', JSON.stringify(db)); }
-
+    window.onload = () => { renderShop(); renderBanners(); updateUI(); };
+    function save() { localStorage.setItem('inercia_v2_db', JSON.stringify(db)); }
+    function accessAdmin() { if(prompt("CÓDIGO DE SEGURIDAD:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
+    function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
     function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
-    function accessAdmin() { if(prompt("Código:") === "0110") document.getElementById('admin-panel').style.display='block'; }
-    function closeAdmin() { document.getElementById('admin-panel').style.display='none'; }
-
-    // GESTIÓN DE CONFIG
-    function saveConfig() {
-        db.cats = document.getElementById('conf-cats').value.split(',').map(s => s.trim());
-        db.ships = document.getElementById('conf-ships').value.split(',').map(s => s.trim());
-        save();
-        updateUI();
-        alert("Guardado");
-    }
 
     function updateUI() {
-        document.getElementById('p-cat-select').innerHTML = db.cats.map(c => `<option value="${c}">${c}</option>`).join('');
-        document.getElementById('c-ship').innerHTML = db.ships.map(s => `<option value="${s}">${s}</option>`).join('');
+        document.getElementById('p-cat-select').innerHTML = db.cats.map(c => `<option value="${c}">${c.toUpperCase()}</option>`).join('');
+        document.getElementById('c-ship').innerHTML = db.ships.map(s => `<option value="${s}">${s.toUpperCase()}</option>`).join('');
         document.getElementById('conf-cats').value = db.cats.join(', ');
         document.getElementById('conf-ships').value = db.ships.join(', ');
     }
 
-    // PRODUCTOS
+    function saveConfig() {
+        const c = document.getElementById('conf-cats').value.split(',').map(s => s.trim()).filter(s => s !== "");
+        const s = document.getElementById('conf-ships').value.split(',').map(s => s.trim()).filter(s => s !== "");
+        if(c.length) db.cats = c; if(s.length) db.ships = s;
+        save(); updateUI(); alert("Configuración guardada.");
+    }
+
+    function uploadBanner() {
+        const f = document.getElementById('b-img').files[0];
+        if(!f) return;
+        const r = new FileReader();
+        r.onloadend = () => { db.banners.push(r.result); save(); renderBanners(); };
+        r.readAsDataURL(f);
+    }
+
+    function clearBanners() { if(confirm("¿Borrar?")) { db.banners = []; save(); renderBanners(); } }
+
+    function renderBanners() {
+        const s = document.getElementById('banner-slider');
+        s.innerHTML = db.banners.map(img => `<img src="${img}">`).join('');
+        if(db.banners.length > 1) {
+            let i = 0; if(window.bInt) clearInterval(window.bInt);
+            window.bInt = setInterval(() => { i = (i + 1) % db.banners.length; s.style.transform = `translateX(-${i * 100}%)`; }, 5000);
+        }
+    }
+
     function uploadProduct() {
-        const file = document.getElementById('p-img').files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            db.products.push({
-                id: Date.now(),
-                name: document.getElementById('p-name').value,
-                price: document.getElementById('p-price').value,
-                cat: document.getElementById('p-cat-select').value,
-                img: reader.result
-            });
-            save(); renderShop(); alert("Producto subido");
+        const f = document.getElementById('p-img').files[0];
+        if(!f || !document.getElementById('p-name').value) return alert("Completa los campos");
+        const r = new FileReader();
+        r.onloadend = () => {
+            db.products.push({ id: Date.now(), name: document.getElementById('p-name').value.toUpperCase(), price: document.getElementById('p-price').value, cat: document.getElementById('p-cat-select').value, img: r.result });
+            save(); renderShop(); alert("Publicado.");
         };
-        if(file) reader.readAsDataURL(file);
+        r.readAsDataURL(f);
     }
 
     function renderShop() {
         document.getElementById('shop-grid').innerHTML = db.products.map(p => `
             <div class="card">
                 <img src="${p.img}">
-                <span class="card-cat">${p.cat}</span>
-                <h4>${p.name}</h4>
-                <p><strong>$${p.price}</strong></p>
-                <button class="btn-buy" onclick="addToCart(${p.id})">COMPRAR</button>
-            </div>
-        `).join('');
+                <div class="card-info">
+                    <span class="card-cat">${p.cat.toUpperCase()}</span>
+                    <h3 class="card-name">${p.name}</h3>
+                    <p class="card-price">$${p.price}</p>
+                    <button class="btn-add" onclick="addToCart(${p.id})">AÑADIR A LA BOLSA</button>
+                </div>
+            </div>`).join('');
     }
 
-    // BANNERS
-    function uploadBanner() {
-        const file = document.getElementById('b-img').files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            db.banners.push(reader.result);
-            save(); renderBanners();
-        };
-        if(file) reader.readAsDataURL(file);
-    }
-
-    function clearBanners() { db.banners = []; save(); renderBanners(); }
-
-    function renderBanners() {
-        const slider = document.getElementById('banner-slider');
-        slider.innerHTML = db.banners.map(img => `<img src="${img}">`).join('');
-        if(db.banners.length > 1) {
-            let i = 0;
-            setInterval(() => {
-                i = (i + 1) % db.banners.length;
-                slider.style.transform = `translateX(-${i * 100}%)`;
-            }, 4000);
-        }
-    }
-
-    // CARRITO
     function addToCart(id) {
         const p = db.products.find(x => x.id === id);
         cart.push({...p, cartId: Date.now() + Math.random()});
-        renderCart();
-        toggleCart();
+        updateCartUI(); toggleCart();
     }
 
-    function removeFromCart(cid) {
-        cart = cart.filter(x => x.cartId !== cid);
-        renderCart();
-    }
+    function removeFromCart(cid) { cart = cart.filter(x => x.cartId !== cid); updateCartUI(); }
 
-    function renderCart() {
-        let total = 0;
+    function updateCartUI() {
+        let t = 0;
         document.getElementById('cart-items').innerHTML = cart.map(i => {
-            total += parseFloat(i.price);
-            return `<div style="display:flex; justify-content:space-between; margin-bottom:10px">
-                <span>${i.name}</span>
-                <span>$${i.price} <button onclick="removeFromCart(${i.cartId})" style="color:red; border:none; background:none; cursor:pointer">X</button></span>
-            </div>`;
+            t += parseFloat(i.price);
+            return `<div class="cart-item"><div><strong>${i.name}</strong><br><small>$${i.price}</small></div><button class="remove-btn" onclick="removeFromCart(${i.cartId})">Quitar</button></div>`;
         }).join('');
-        document.getElementById('cart-total').innerText = "Total: $" + total;
+        document.getElementById('cart-total').innerText = "TOTAL: $" + t;
         document.getElementById('cart-count').innerText = cart.length;
     }
 
     function confirmOrder() {
-        if(!cart.length) return;
-        db.orders.push({
-            id: Date.now(),
-            customer: document.getElementById('c-name').value,
-            items: cart.map(i => i.name),
-            total: document.getElementById('cart-total').innerText
-        });
-        save();
-        cart = [];
-        renderCart();
-        toggleCart();
-        alert("¡Pedido enviado!");
+        if(!cart.length || !document.getElementById('c-name').value) return alert("Completa tus datos");
+        db.orders.push({ customer: document.getElementById('c-name').value, items: cart.map(i => i.name).join(', '), total: document.getElementById('cart-total').innerText });
+        save(); alert("Pedido enviado."); cart = []; updateCartUI(); toggleCart();
     }
 </script>
 </body>
