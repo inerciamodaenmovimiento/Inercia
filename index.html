@@ -11,33 +11,30 @@
         body { background: var(--blanco); color: var(--azul); overflow-x: hidden; }
 
         nav { padding: 30px; display: flex; justify-content: space-between; position: fixed; width: 100%; z-index: 100; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
-        .hero { height: 40vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 80px; }
-        .brand-name { font-size: 4rem; letter-spacing: -2px; }
+        .hero { height: 45vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 80px; }
+        .brand-name { font-size: 5rem; letter-spacing: -2px; line-height: 1; }
+        
+        /* PASO 1: GRILLA MÁS CHICA */
+        .productos-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; padding: 40px; }
+        .card { border: 1px solid #f0f0f0; padding: 20px; transition: 0.3s; position: relative; cursor: pointer; }
+        .card img { width: 100%; height: 350px; object-fit: cover; margin-bottom: 15px; }
+        .btn-buy { background: var(--azul); color: white; border: none; padding: 12px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; }
 
-        /* PASO 1: PRODUCTOS MÁS CHICOS */
-        .productos-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; padding: 40px; }
-        .card { border: 1px solid #f0f0f0; padding: 15px; cursor: pointer; transition: 0.3s; text-align: center; }
-        .card img { width: 100%; height: 280px; object-fit: cover; margin-bottom: 10px; }
-        .card h3 { font-size: 1rem; margin-bottom: 5px; }
-
-        /* PASO 2: MODAL VISTA DETALLADA */
-        #modal-detalle { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); z-index: 2000; padding: 100px 5%; overflow-y: auto; }
-        .modal-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1000px; margin: 0 auto; }
-        .modal-content img { width: 100%; max-height: 70vh; object-fit: cover; }
+        /* PASO 2: MODAL DETALLE */
+        #modal-detalle { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; padding: 80px 5%; overflow-y: auto; }
+        .modal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
         .btn-close { position: fixed; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; background: none; border: none; }
 
-        .btn-buy { background: var(--azul); color: white; border: none; padding: 12px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; margin-top: 15px; }
-
         #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--gris); z-index: 3000; padding: 40px; overflow-y: auto; }
-        .admin-box { background: white; padding: 25px; margin-bottom: 25px; max-width: 600px; margin: 0 auto; }
-        #secret-trigger { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: pointer; z-index: 4000; }
+        .admin-box { background: white; padding: 25px; max-width: 500px; margin: 0 auto; }
+        #secret-trigger { position: fixed; bottom: 10px; right: 10px; width: 25px; height: 25px; background: transparent; cursor: pointer; z-index: 4000; }
     </style>
 </head>
 <body>
 
 <nav>
     <div style="font-weight:bold; letter-spacing:3px">INERCIA</div>
-    <div style="cursor:pointer; font-weight:bold" onclick="toggleCart()">CARRITO (<span id="cart-count">0</span>)</div>
+    <div style="cursor:pointer; font-weight:bold">CARRITO (0)</div>
 </nav>
 
 <header class="hero">
@@ -50,32 +47,29 @@
 <!-- MODAL DETALLE -->
 <div id="modal-detalle">
     <button class="btn-close" onclick="closeModal()">×</button>
-    <div id="modal-content" class="modal-content"></div>
+    <div id="modal-content" class="modal-grid"></div>
 </div>
 
 <div id="secret-trigger" onclick="accessAdmin()"></div>
 
-<!-- ADMIN -->
 <div id="admin-panel">
     <div class="admin-box">
-        <h2 style="margin-bottom:20px">Admin Inercia</h2>
+        <h3>Subir Producto</h3>
         <input type="text" id="p-name" placeholder="Nombre" style="width:100%; padding:10px; margin:10px 0">
-        <textarea id="p-desc" placeholder="Descripción detallada" style="width:100%; height:80px; padding:10px; margin:10px 0"></textarea>
+        <textarea id="p-desc" placeholder="Descripción" style="width:100%; height:80px; padding:10px; margin:10px 0"></textarea>
         <input type="number" id="p-price" placeholder="Precio" style="width:100%; padding:10px; margin:10px 0">
         <input type="file" id="p-img" style="margin:10px 0">
-        <button class="btn-buy" onclick="uploadProduct()">PUBLICAR</button>
-        <button onclick="closeAdmin()" style="margin-top:10px; background:none; border:none; cursor:pointer; color:red">Cerrar</button>
+        <button class="btn-buy" onclick="uploadProduct()">Publicar</button>
+        <button onclick="closeAdmin()" style="margin-top:10px; border:none; background:none; color:red; cursor:pointer">Cerrar</button>
     </div>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('inercia_db_step')) || { products: [] };
-
+    let db = JSON.parse(localStorage.getItem('inercia_base')) || { products: [] };
     window.onload = renderShop;
 
-    function save() { localStorage.setItem('inercia_db_step', JSON.stringify(db)); }
-    function accessAdmin() { if(prompt("Código:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
-    function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
+    function accessAdmin() { if(prompt("Código:") === "0110") document.getElementById('admin-panel').style.display='block'; }
+    function closeAdmin() { document.getElementById('admin-panel').style.display='none'; }
 
     function uploadProduct() {
         const file = document.getElementById('p-img').files[0];
@@ -88,7 +82,8 @@
                 price: document.getElementById('p-price').value,
                 img: reader.result
             });
-            save(); renderShop(); closeAdmin();
+            localStorage.setItem('inercia_base', JSON.stringify(db));
+            renderShop(); closeAdmin();
         }
         if(file) reader.readAsDataURL(file);
     }
@@ -106,17 +101,16 @@
     function openModal(id) {
         const p = db.products.find(x => x.id === id);
         document.getElementById('modal-content').innerHTML = `
-            <div><img src="${p.img}"></div>
+            <img src="${p.img}">
             <div>
                 <h1 style="font-size:3rem; margin-bottom:20px">${p.name}</h1>
-                <p style="font-size:1.2rem; line-height:1.6; margin-bottom:20px">${p.desc}</p>
+                <p style="font-size:1.1rem; line-height:1.6; margin-bottom:20px">${p.desc}</p>
                 <p style="font-size:1.5rem"><strong>$${p.price}</strong></p>
                 <button class="btn-buy">Añadir al Carrito</button>
             </div>
         `;
         document.getElementById('modal-detalle').style.display = 'block';
     }
-
     function closeModal() { document.getElementById('modal-detalle').style.display = 'none'; }
 </script>
 
