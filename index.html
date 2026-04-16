@@ -44,3 +44,80 @@
     </script>
 </body>
 </html>
+/* Configuración General */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000831; /* El tono oscuro de tu logo */
+    font-family: 'Playfair Display', serif;
+    overflow-x: hidden;
+}
+
+/* Navegación */
+nav {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #000831;
+    margin: 0 20px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    opacity: 0.5;
+}
+
+/* Sección de Portada (Hero) */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.brand-name {
+    font-size: 6rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    /* Si tienes el archivo de fuente local, aquí usarías font-family: 'TuFuente'; */
+}
+
+.tagline {
+    font-style: italic;
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    opacity: 0.8;
+}
+
+/* Botón Admin Oculto (Inferior Derecha) */
+#admin-trigger {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0,0,0,0.02); /* Casi invisible */
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+#admin-trigger:hover {
+    background-color: rgba(0,0,0,0.1); /* Se nota un poco al pasar el mouse */
+}
