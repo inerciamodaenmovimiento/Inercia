@@ -1,79 +1,44 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INNERCIA | Moda en Movimiento</title>
-    
-    <!-- Fuentes Elegantes -->
-    <link href="https://googleapis.com" rel="stylesheet">
+    <!-- SECCIÓN DE COLECCIÓN (BANNER GRIS) -->
+    <section id="collection" style="background-color: #ebebeb; margin: 80px 0; padding: 100px 0; text-align: center; position: relative;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+            <h2 style="font-size: clamp(3rem, 10vw, 6rem); font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: 20px; color: #fff; text-transform: uppercase; margin: 0;">
+                COLLECTION
+            </h2>
+            <a href="#" style="margin-top: -20px; padding: 10px 30px; border: 1px solid #1a1a1a; text-decoration: none; color: #1a1a1a; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; background: transparent; transition: 0.3s;" onmouseover="this.style.background='#1a1a1a'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='#1a1a1a'">
+                VER MÁS
+            </a>
+        </div>
+    </section>
 
-    <style>
-        :root { --negro: #1a1a1a; --gris-fondo: #f4f4f4; --rojo-detalle: #e63946; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--negro); background: #fff; line-height: 1.6; }
-
-        /* HEADER */
-        header { 
-            padding: 40px 20px; 
-            text-align: center; 
-            background: #fff; 
-            border-bottom: 1px solid #f0f0f0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        .logo { 
-            font-family: 'Playfair Display', serif; 
-            font-size: clamp(2rem, 5vw, 3rem); 
-            letter-spacing: 12px; 
-            text-transform: uppercase; 
-            margin-bottom: 20px; 
-        }
-        nav a { 
-            text-decoration: none; 
-            color: var(--negro); 
-            margin: 0 15px; 
-            font-size: 0.7rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
-        nav a:hover { color: var(--rojo-detalle); }
-
-        /* HERO / BANNER PRINCIPAL */
-        .hero { 
-            width: 100%; 
-            height: 75vh; 
-            background: #eee url('https://unsplash.com') center/cover no-repeat; 
-            margin-bottom: 60px;
-        }
-
-        /* CONTENEDOR GENERAL */
-        .container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding: 0 20px; 
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="logo">INNERCIA</div>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#new">New Arrival</a>
-            <a href="#collection">Collection</a>
-            <a href="#">Sale</a>
-        </nav>
-    </header>
-
-    <section class="hero"></section>
-
-    <div class="container" id="main-content">
-        <!-- Aquí irán los productos que agregaremos en el siguiente paso -->
-    </div>
-
-</body>
-</html>
+    <!-- FOOTER DETALLADO -->
+    <footer style="background: #fff; padding: 80px 10% 40px; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;">
+        <div style="font-size: 0.75rem;">
+            <h4 style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">Sobre Inercia</h4>
+            <ul style="list-style: none; padding: 0; line-height: 2; color: #666;">
+                <li>Nuestra Historia</li>
+                <li>Moda en Movimiento</li>
+                <li>Sustentabilidad</li>
+            </ul>
+        </div>
+        <div style="font-size: 0.75rem;">
+            <h4 style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">Servicio al Cliente</h4>
+            <ul style="list-style: none; padding: 0; line-height: 2; color: #666;">
+                <li>Métodos de Envío</li>
+                <li>Cambios y Devoluciones</li>
+                <li>Guía de Talles</li>
+            </ul>
+        </div>
+        <div style="font-size: 0.75rem;">
+            <h4 style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">Contacto</h4>
+            <ul style="list-style: none; padding: 0; line-height: 2; color: #666;">
+                <li>Email: contacto@inercia.com</li>
+                <li>Tel: +54 11 0000-0000</li>
+                <li>Buenos Aires, Argentina</li>
+            </ul>
+        </div>
+        
+        <!-- COPYRIGHT -->
+        <div style="grid-column: 1 / -1; text-align: center; border-top: 1px solid #eee; padding-top: 40px; margin-top: 40px; font-size: 0.65rem; color: #999; letter-spacing: 1px;">
+            PRIVACY POLICY | TERMS & CONDITIONS | 2024 © INERCIA MODA EN MOVIMIENTO
+        </div>
+    </footer>
