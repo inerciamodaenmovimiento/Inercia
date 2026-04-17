@@ -6,138 +6,112 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; transition: 0.3s; overflow-x: hidden; }
+        :root { --bg: #f9f7f4; --text: #1a1a1a; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         
-        /* Estética de Revista */
-        header { padding: 40px; text-align: center; border-bottom: 1px solid #eee; letter-spacing: 8px; font-weight: 300; font-size: 1.8rem; }
-        .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 80vh; align-items: center; padding: 50px 8%; gap: 40px; }
-        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); line-height: 0.9; margin: 0; }
-        .hero-img { width: 100%; height: 70vh; object-fit: cover; background: #f0f0f0; }
+        /* Estilo Revista: Grid principal */
+        header { padding: 30px; text-align: center; font-family: 'Playfair Display', serif; font-size: 1.5rem; letter-spacing: 5px; }
+        
+        .hero-section { display: grid; grid-template-columns: 1fr 1fr; height: 90vh; background: #ece8e1; overflow: hidden; }
+        .hero-content { padding: 15% 10%; }
+        .hero-content h1 { font-family: 'Playfair Display', serif; font-size: 4.5rem; line-height: 1; margin: 0; }
+        .hero-img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Catálogo */
-        .catalog-title { padding: 50px 8% 20px; font-family: 'Playfair Display'; font-size: 2rem; border-top: 1px solid #eee; }
-        .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; padding: 0 8% 100px; }
-        .product-card { position: relative; transition: 0.3s; }
-        .product-card img { width: 100%; height: 400px; object-fit: cover; margin-bottom: 15px; }
-        .badge { position: absolute; top: 15px; left: 15px; background: #000; color: #fff; padding: 5px 12px; font-size: 10px; font-weight: bold; }
-        .price { font-weight: 600; font-size: 1.1rem; }
-        .old-price { text-decoration: line-through; color: #999; font-size: 0.9rem; margin-right: 10px; }
+        /* Cuadrícula Asimétrica Estilo Imagen */
+        .magazine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 50px 8%; }
+        .grid-item { position: relative; background: #fff; padding: 10px; }
+        .grid-item img { width: 100%; height: 400px; object-fit: cover; }
+        .grid-item.tall { transform: translateY(40px); }
+        .grid-item h3 { font-family: 'Playfair Display'; font-size: 1.2rem; margin: 15px 0 5px; }
+        
+        /* Precios y Descuento */
+        .price-tag { font-weight: bold; font-size: 0.9rem; }
+        .discount-badge { position: absolute; top: 20px; left: 20px; background: #000; color: #fff; padding: 5px 10px; font-size: 10px; }
 
-        /* Footer Info */
-        .info-section { background: #f9f9f9; padding: 60px 8%; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; border-top: 1px solid #eee; }
-        .info-section h3 { font-family: 'Playfair Display'; letter-spacing: 2px; }
+        /* Información de Marca */
+        .footer-info { padding: 80px 8%; text-align: center; border-top: 1px solid #ddd; }
+        .footer-info h2 { font-family: 'Playfair Display'; font-size: 2.5rem; }
 
-        /* PANEL ADMIN (Derecha) */
+        /* PANEL ADMIN (Lateral) */
         #admin-panel { 
             display: none; position: fixed; top: 0; right: 0; width: 380px; height: 100vh; 
-            background: #fff; z-index: 10000; box-shadow: -10px 0 30px rgba(0,0,0,0.1); 
-            padding: 30px; overflow-y: auto; border-left: 1px solid #000;
+            background: white; z-index: 10000; box-shadow: -10px 0 30px rgba(0,0,0,0.2); 
+            padding: 25px; overflow-y: auto; font-size: 12px;
         }
-        .admin-section { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
-        label { display: block; font-weight: 600; font-size: 11px; text-transform: uppercase; margin-top: 15px; }
-        input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; box-sizing: border-box; }
-        .btn-black { background: #000; color: #fff; border: none; padding: 15px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 20px; }
-        
-        /* Acceso Invisible */
-        #secret-access { position: fixed; bottom: 10px; right: 10px; width: 30px; height: 30px; opacity: 0.05; cursor: crosshair; z-index: 9999; }
-        #login-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: #fff; padding: 30px; border: 1px solid #000; z-index: 10001; }
+        .admin-section { margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        input, textarea, select { width: 100%; padding: 8px; margin: 5px 0 15px; border: 1px solid #ccc; box-sizing: border-box; }
+        .btn-add { background: #000; color: #fff; border: none; padding: 12px; width: 100%; cursor: pointer; font-weight: bold; }
+
+        /* Botón de acceso oculto */
+        #secret-btn { position: fixed; bottom: 10px; right: 10px; width: 20px; height: 20px; opacity: 0.05; cursor: pointer; z-index: 9999; }
     </style>
 </head>
 <body>
 
-    <div id="banner-promo" style="background:#000; color:#fff; text-align:center; padding:10px; font-size:10px; letter-spacing:2px;">ENVÍOS BONIFICADOS EN COMPRAS SUPERIORES A $100.000</div>
-    
     <header>INERCIA</header>
 
-    <section class="hero">
-        <div class="hero-text">
-            <h1 id="home-title">MODA EN<br>MOVIMIENTO</h1>
-            <p id="home-subtitle" style="color:#666; letter-spacing:1px; margin-top:20px;">EDICIÓN LIMITADA / 2026</p>
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 id="hero-h1">Trendy colors<br>for the fall</h1>
+            <p id="hero-p" style="color: #666; margin-top: 20px;">Edición Limitada Movimiento 2026</p>
         </div>
-        <img src="https://unsplash.com" id="home-img" class="hero-img">
+        <img id="hero-img-src" src="https://unsplash.com" class="hero-img">
     </section>
 
-    <div class="catalog-title">COLECCIÓN ACTUAL</div>
-    <section class="catalog" id="main-catalog">
-        <!-- Los productos se cargan aquí -->
+    <section class="magazine-grid" id="product-grid">
+        <!-- Los productos aparecerán aquí con el estilo asimétrico -->
     </section>
 
-    <section class="info-section">
-        <div>
-            <h3>LOGÍSTICA / ENVÍOS</h3>
-            <p id="info-envio">Realizamos envíos a todo el país mediante correo privado. Tiempo estimado: 3 a 5 días hábiles.</p>
-        </div>
-        <div>
-            <h3>MÉTODOS DE PAGO</h3>
-            <p id="info-pago">Aceptamos todas las tarjetas de crédito, débito y transferencia bancaria con un 10% de descuento adicional.</p>
+    <section class="footer-info">
+        <h2 id="footer-text">We are very special</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; text-align: left;">
+            <div>
+                <h4>MÉTODOS DE ENVÍO</h4>
+                <p id="envio-txt">Detalles de logística...</p>
+            </div>
+            <div>
+                <h4>MÉTODOS DE PAGO</h4>
+                <p id="pago-txt">Detalles de pago...</p>
+            </div>
         </div>
     </section>
 
-    <!-- ACCESO DISCRETO -->
-    <div id="secret-access" onclick="showLogin()"></div>
+    <!-- ACCESO ADMIN -->
+    <div id="secret-btn" onclick="openLogin()"></div>
 
-    <!-- MODAL LOGIN -->
-    <div id="login-modal">
-        <p style="font-size:12px; font-weight:bold;">ACCESO ADMIN</p>
-        <input type="password" id="pass-code" placeholder="Código">
-        <button class="btn-black" onclick="validateCode()">ENTRAR</button>
-    </div>
-
-    <!-- PANEL DE CONTROL COMPLETO -->
     <div id="admin-panel">
         <h2 style="font-family:'Playfair Display'">Inercia Manager</h2>
         
         <div class="admin-section">
-            <h4>1. TEXTOS Y BANNER</h4>
-            <label>Título Principal:</label>
-            <input type="text" id="in-title" placeholder="Ej: NUEVA TEMPORADA">
-            <label>Subtítulo:</label>
-            <input type="text" id="in-subtitle" placeholder="Ej: FALL WINTER 26">
-            <label>Cambiar Banner (Archivo):</label>
-            <input type="file" id="in-banner-file" accept="image/*">
+            <h4>TEXTOS HOME</h4>
+            <label>Título:</label><input type="text" id="in-title">
+            <label>Descripción:</label><input type="text" id="in-desc">
+            <label>Foto Portada:</label><input type="file" id="in-banner" accept="image/*">
         </div>
 
         <div class="admin-section">
-            <h4>2. AGREGAR PRODUCTO</h4>
-            <label>Imagen del Producto:</label>
-            <input type="file" id="p-file" accept="image/*">
-            <label>Nombre de Prenda:</label>
-            <input type="text" id="p-name">
-            <label>Precio Regular:</label>
-            <input type="number" id="p-price">
-            <label>Descuento (%) :</label>
-            <input type="number" id="p-off" value="0">
-            <label>Stock Disponible:</label>
-            <input type="number" id="p-stock">
-            <label>Descripción:</label>
-            <textarea id="p-desc" rows="3"></textarea>
-            <button class="btn-black" style="background:#27ae60" onclick="addNewProduct()">AÑADIR AL CATÁLOGO</button>
+            <h4>AGREGAR PRENDA</h4>
+            <label>Foto:</label><input type="file" id="p-img" accept="image/*">
+            <label>Nombre:</label><input type="text" id="p-name">
+            <label>Precio:</label><input type="number" id="p-price">
+            <label>Stock:</label><input type="number" id="p-stock">
+            <label>Descuento (%):</label><input type="number" id="p-disc">
+            <button class="btn-add" onclick="addNewProduct()">AGREGAR PRODUCTO</button>
         </div>
 
         <div class="admin-section">
-            <h4>3. ENVÍO Y PAGO</h4>
-            <label>Texto Envíos:</label>
-            <textarea id="in-envio-txt"></textarea>
-            <label>Texto Pagos:</label>
-            <textarea id="in-pago-txt"></textarea>
+            <h4>LOGÍSTICA</h4>
+            <label>Envío:</label><textarea id="in-envio"></textarea>
+            <label>Pago:</label><textarea id="in-pago"></textarea>
         </div>
 
-        <button class="btn-black" onclick="applyAllChanges()">GUARDAR CAMBIOS</button>
-        <button onclick="document.getElementById('admin-panel').style.display='none'" style="width:100%; border:none; background:none; color:red; margin-top:20px; cursor:pointer;">CERRAR PANEL</button>
+        <button class="btn-add" style="background:#27ae60" onclick="applyAll()">APLICAR A LA WEB</button>
+        <button onclick="document.getElementById('admin-panel').style.display='none'" style="width:100%; border:none; background:none; color:red; margin-top:10px; cursor:pointer;">Cerrar</button>
     </div>
 
     <script>
-        function showLogin() { document.getElementById('login-modal').style.display = 'block'; }
-
-        function validateCode() {
-            if(document.getElementById('pass-code').value === "0110") {
-                document.getElementById('login-modal').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-            } else {
-                alert("Incorrecto");
-                document.getElementById('login-modal').style.display = 'none';
-            }
+        function openLogin() {
+            if(prompt("Código Inercia:") === "0110") document.getElementById('admin-panel').style.display='block';
         }
 
         async function toBase64(file) {
@@ -149,51 +123,38 @@
         }
 
         async function addNewProduct() {
-            const file = document.getElementById('p-file').files[0];
+            const file = document.getElementById('p-img').files[0];
             const name = document.getElementById('p-name').value;
             const price = document.getElementById('p-price').value;
-            const off = document.getElementById('p-off').value;
-            const stock = document.getElementById('p-stock').value;
+            const disc = document.getElementById('p-disc').value;
             
-            if(!file || !name || !price) return alert("Completa los datos del producto");
+            if(!file || !name) return alert("Completa los datos");
+            const img = await toBase64(file);
+            
+            // Alternar clase 'tall' para el estilo asimétrico de la revista
+            const isTall = document.querySelectorAll('.grid-item').length % 2 === 1 ? 'tall' : '';
 
-            const imgUrl = await toBase64(file);
-            const finalPrice = off > 0 ? price * (1 - off/100) : price;
-
-            const card = `
-                <div class="product-card">
-                    ${off > 0 ? `<div class="badge">-${off}% OFF</div>` : ''}
-                    <img src="${imgUrl}">
-                    <h4>${name}</h4>
-                    <p class="price">
-                        ${off > 0 ? `<span class="old-price">$${price}</span>` : ''}
-                        $${finalPrice.toLocaleString()}
-                    </p>
-                    <p style="font-size:11px; color:gray;">STOCK: ${stock} U.</p>
+            const html = `
+                <div class="grid-item ${isTall}">
+                    ${disc > 0 ? `<div class="discount-badge">${disc}% SALE</div>` : ''}
+                    <img src="${img}">
+                    <h3>${name}</h3>
+                    <div class="price-tag">$${price}</div>
                 </div>
             `;
-            document.getElementById('main-catalog').insertAdjacentHTML('beforeend', card);
-            alert("Producto subido temporalmente.");
+            document.getElementById('product-grid').insertAdjacentHTML('beforeend', html);
+            alert("Prenda añadida.");
         }
 
-        async function applyAllChanges() {
-            // Actualizar textos
-            const t = document.getElementById('in-title').value;
-            const s = document.getElementById('in-subtitle').value;
-            const e = document.getElementById('in-envio-txt').value;
-            const p = document.getElementById('in-pago-txt').value;
+        async function applyAll() {
+            if(document.getElementById('in-title').value) document.getElementById('hero-h1').innerText = document.getElementById('in-title').value;
+            if(document.getElementById('in-envio').value) document.getElementById('envio-txt').innerText = document.getElementById('in-envio').value;
+            if(document.getElementById('in-pago').value) document.getElementById('pago-txt').innerText = document.getElementById('in-pago').value;
             
-            if(t) document.getElementById('home-title').innerHTML = t.replace(/\n/g, "<br>");
-            if(s) document.getElementById('home-subtitle').innerText = s;
-            if(e) document.getElementById('info-envio').innerText = e;
-            if(p) document.getElementById('info-pago').innerText = p;
-
-            // Actualizar Banner
-            const bannerFile = document.getElementById('in-banner-file').files[0];
-            if(bannerFile) document.getElementById('home-img').src = await toBase64(bannerFile);
-
-            alert("Vista previa actualizada con éxito.");
-            document.getElementById('admin-panel').style.display = 'none';
+            const banner = document.getElementById('in-banner').files[0];
+            if(banner) document.getElementById('hero-img-src').src = await toBase64(banner);
+            
+            alert("Vista actualizada. Recuerda copiar el código fuente para guardar en GitHub.");
         }
     </script>
 </body>
