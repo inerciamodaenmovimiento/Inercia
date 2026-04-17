@@ -3,224 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Management System</title>
+    <title>INERCIA | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #000000; --acc: #f6f6f6; --gray: #8e8e8e; --green: #27ae60; }
-        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        :root {
+            --bg: #0a0a0a;
+            --text: #ffffff;
+            --accent: #0057FF; /* Azul cinético */
+            --gray: #222;
+        }
 
-        /* --- UI ELEMENTS --- */
-        .marquee { background: #000; color: #fff; padding: 12px 0; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; overflow: hidden; white-space: nowrap; }
-        .marquee-inner { display: inline-block; animation: scroll 30s linear infinite; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 1000; }
-        .logo { font-weight: 900; font-size: 22px; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
 
-        /* --- CATALOG --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 2px; background: #eee; }
-        .card { background: #fff; cursor: pointer; padding-bottom: 40px; }
-        .card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
-        .card-info { padding: 20px 30px; display: flex; justify-content: space-between; }
+        /* Navegación Minimalista */
+        nav {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
 
-        /* --- MODAL PRODUCTO --- */
-        #p-modal { display: none; position: fixed; inset: 0; background: #fff; z-index: 2000; overflow-y: auto; }
-        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
-        .modal-details { padding: 80px 10%; display: flex; flex-direction: column; justify-content: center; }
-        .m-title { font-size: 4rem; font-weight: 900; line-height: 0.9; margin: 0; }
-        .log-item { border-top: 1px solid #eee; padding: 20px 0; margin-top: 20px; }
-        .log-item b { display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+        .logo {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
 
-        /* --- CART & CHECKOUT --- */
-        #cart-panel { position: fixed; top: 0; right: -100%; width: 480px; height: 100vh; background: #fff; z-index: 3000; box-shadow: -20px 0 60px rgba(0,0,0,0.1); transition: 0.5s; padding: 40px; overflow-y: auto; }
-        .cart-open { right: 0 !important; }
-        .input-group { margin-top: 20px; padding-top: 20px; border-top: 2px solid #000; }
+        /* Hero - Gran Impacto Visual */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+        }
 
-        /* --- ADMIN DASHBOARD PRO --- */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 550px; height: 100vh; background: #fff; z-index: 4000; border-right: 3px solid #000; padding: 40px; overflow-y: auto; }
-        .admin-nav { display: flex; gap: 20px; border-bottom: 1px solid #eee; margin-bottom: 30px; }
-        .admin-nav span { cursor: pointer; padding-bottom: 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; opacity: 0.4; }
-        .admin-nav span.active { opacity: 1; border-bottom: 2px solid #000; }
-        .tab { display: none; } .tab.active { display: block; }
+        .hero h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 14vw;
+            line-height: 0.8;
+            text-transform: uppercase;
+            margin-left: -1vw;
+        }
 
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; font-family: inherit; font-size: 14px; }
-        .btn-black { background: #000; color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+        .hero .subtitle {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
 
-        .inv-row { display: flex; align-items: center; gap: 15px; background: #f9f9f9; padding: 10px; margin-bottom: 10px; border: 1px solid #eee; font-size: 12px; }
-        .inv-row img { width: 40px; height: 50px; object-fit: cover; }
-        .order-card { background: #fff; border: 1px solid #000; padding: 15px; margin-bottom: 15px; font-size: 12px; }
+        /* Marquee (Texto en movimiento constante) */
+        .marquee {
+            border-top: 1px solid var(--gray);
+            border-bottom: 1px solid var(--gray);
+            padding: 1.5rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
 
-        #secret-door { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: pointer; opacity: 0; z-index: 5000; }
+        .marquee span {
+            display: inline-block;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 4rem;
+            animation: scroll 20s linear infinite;
+            -webkit-text-stroke: 1px white;
+            color: transparent;
+            padding-right: 2rem;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* Grilla Editorial (Estilo Coral) */
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            padding: 10rem 2rem;
+        }
+
+        .img-container {
+            background: var(--gray);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .img-container:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .item-1 { grid-column: 1 / 8; height: 80vh; }
+        .item-2 { grid-column: 9 / 13; height: 50vh; align-self: end; }
+        .item-3 { grid-column: 4 / 10; height: 70vh; margin-top: -5rem; z-index: 2; }
+
+        .label {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 20vw; }
+            .editorial-grid div { grid-column: 1 / 13 !important; height: 60vh; margin: 0 !important; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="marquee">
-        <div class="marquee-inner" id="txt-marquee">ENVÍOS GRATIS — 3 CUOTAS SIN INTERÉS — INERCIA MODA —&nbsp;</div>
-        <div class="marquee-inner" id="txt-marquee-dup">ENVÍOS GRATIS — 3 CUOTAS SIN INTERÉS — INERCIA MODA —&nbsp;</div>
-    </div>
-
     <nav>
-        <div class="logo">INERCIA</div>
-        <div style="font-size: 12px; font-weight: 700; cursor: pointer;" onclick="toggleCart(true)">CARRITO (<span id="cart-count">0</span>)</div>
+        <div class="logo">Inercia</div>
+        <div style="font-size: 0.8rem;">SHOP [0]</div>
     </nav>
 
-    <div class="grid" id="main-catalog"></div>
+    <section class="hero">
+        <p class="subtitle">Moda en Movimiento</p>
+        <h1>INE<br>RCIA</h1>
+    </section>
 
-    <!-- PRODUCT DETAIL -->
-    <div id="p-modal">
-        <div class="modal-grid">
-            <img id="m-img" style="width:100%; height:100vh; object-fit:cover;">
-            <div class="modal-details">
-                <span onclick="closeModal()" style="cursor:pointer; font-weight:900; font-size:11px; margin-bottom:40px;">← VOLVER</span>
-                <h2 id="m-title" class="m-title">Producto</h2>
-                <div id="m-price" style="font-size:24px; margin:20px 0; font-weight:300;">$0</div>
-                <p id="m-desc" style="color:var(--gray); line-height:2;"></p>
-                <div class="log-item"><b>PAGOS</b><p id="val-pago">Transferencia (-15%) o Mercado Pago.</p></div>
-                <div class="log-item"><b>ENVÍOS</b><p id="val-envio">Andreani a todo el país o Retiro en Local.</p></div>
-                <button class="btn-black" onclick="addToCart()">Añadir al carrito</button>
-            </div>
-        </div>
+    <div class="marquee">
+        <span>KINETIC • INERCIA • MOTION • KINETIC • INERCIA • MOTION • </span>
+        <span>KINETIC • INERCIA • MOTION • KINETIC • INERCIA • MOTION • </span>
     </div>
 
-    <!-- CART & CHECKOUT FORM -->
-    <div id="cart-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="font-weight:900; margin:0;">TU BOLSA</h2>
-            <span onclick="toggleCart(false)" style="cursor:pointer; font-size:24px;">&times;</span>
+    <main class="editorial-grid">
+        <div class="img-container item-1">
+            <img src="https://unsplash.com" alt="Fashion 1">
+            <div class="label">EDICIÓN 001 / VOLUMEN</div>
         </div>
-        <div id="cart-items" style="margin-top:30px; min-height: 200px;">Vacía.</div>
-        
-        <div class="input-group">
-            <h4 style="margin:0 0 15px 0;">DATOS PARA EL ENVÍO</h4>
-            <input type="text" id="c-name" placeholder="Nombre Completo">
-            <input type="text" id="c-whatsapp" placeholder="WhatsApp / Celular">
-            <input type="text" id="c-address" placeholder="Dirección y Localidad">
-            <div style="display:flex; justify-content:space-between; font-weight:900; font-size:20px; margin-top:20px;">
-                <span>TOTAL</span> <span id="cart-total">$0</span>
-            </div>
-            <button class="btn-black" style="margin-top:20px;" onclick="processOrder()">FINALIZAR COMPRA</button>
+        <div class="img-container item-2">
+            <img src="https://unsplash.com" alt="Fashion 2">
+            <div class="label">ESTÉTICA / LINEAL</div>
         </div>
-    </div>
-
-    <!-- ADMIN COMMAND CENTER -->
-    <div id="secret-door" onclick="login()"></div>
-    <div id="admin-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h2 style="font-weight:900; margin:0;">DASHBOARD</h2>
-            <span onclick="document.getElementById('admin-panel').style.display='none'" style="cursor:pointer; font-weight:900;">&times;</span>
+        <div class="img-container item-3">
+            <img src="https://unsplash.com" alt="Fashion 3">
+            <div class="label">ESTRUCTURA / CINÉTICA</div>
         </div>
-        <div class="admin-nav">
-            <span class="active" onclick="switchTab(0)">Inventario</span>
-            <span onclick="switchTab(1)">Pedidos Recibidos</span>
-            <span onclick="switchTab(2)">Configuración Web</span>
-        </div>
+    </main>
 
-        <!-- TAB: Inventario -->
-        <div class="tab active">
-            <label>Foto:</label><input type="file" id="a-file" accept="image/*">
-            <label>Nombre:</label><input type="text" id="a-name">
-            <label>Precio:</label><input type="number" id="a-price">
-            <label>Descripción Completa:</label><textarea id="a-desc" rows="4"></textarea>
-            <button class="btn-black" onclick="publish()">Publicar</button>
-            <h4 style="margin-top:40px;">CHECKLIST DE PRODUCTOS</h4>
-            <div id="a-inv-list"></div>
-        </div>
-
-        <!-- TAB: Pedidos -->
-        <div id="tab-orders" class="tab">
-            <div id="a-orders-list">Sin pedidos registrados.</div>
-        </div>
-
-        <!-- TAB: Web -->
-        <div class="tab">
-            <label>Texto Marquee:</label><input type="text" id="in-marquee">
-            <label>Texto Pagos:</label><textarea id="in-pago"></textarea>
-            <label>Texto Envíos:</label><textarea id="in-envio"></textarea>
-            <button class="btn-black" onclick="saveConfig()">Actualizar Textos</button>
-        </div>
-    </div>
-
-    <script>
-        let cart = [];
-        let currentP = null;
-
-        function login() { if(prompt("Access:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
-        function switchTab(n) {
-            document.querySelectorAll('.admin-nav span').forEach((s,i) => s.className = i===n ? 'active' : '');
-            document.querySelectorAll('.tab').forEach((t,i) => t.className = i===n ? 'tab active' : 'tab');
-        }
-
-        async function toB64(f) { return new Promise(r => { const reader = new FileReader(); reader.onload = () => r(reader.result); reader.readAsDataURL(f); }); }
-
-        async function publish() {
-            const f = document.getElementById('a-file').files;
-            const name = document.getElementById('a-name').value;
-            const price = document.getElementById('a-price').value;
-            const desc = document.getElementById('a-desc').value;
-            if(!f[0] || !name) return alert("Faltan datos");
-            const img = await toB64(f[0]);
-            const id = "p-" + Date.now();
-            
-            const html = `<div class="card" id="${id}" onclick="openModal('${name}', '${price}', '${img}', '${desc}')"><img src="${img}"><div class="card-info"><b>${name.toUpperCase()}</b><span>$${price}</span></div></div>`;
-            document.getElementById('main-catalog').insertAdjacentHTML('beforeend', html);
-            
-            const check = `<div class="inv-row" id="inv-${id}"><img src="${img}"><div><b>${name}</b><br>$${price}</div><span onclick="baja('${id}')" style="color:red; cursor:pointer; margin-left:auto;">ELIMINAR</span></div>`;
-            document.getElementById('a-inv-list').insertAdjacentHTML('beforeend', check);
-        }
-
-        function baja(id) { document.getElementById(id).remove(); document.getElementById('inv-'+id).remove(); }
-        function openModal(n,p,i,d) { currentP={n,p,i,d}; document.getElementById('m-title').innerText=n; document.getElementById('m-price').innerText="$"+p; document.getElementById('m-img').src=i; document.getElementById('m-desc').innerText=d; document.getElementById('p-modal').style.display='block'; }
-        function closeModal() { document.getElementById('p-modal').style.display='none'; }
-        function toggleCart(s) { document.getElementById('cart-panel').classList.toggle('cart-open', s); }
-
-        function addToCart() { cart.push(currentP); updateCart(); closeModal(); toggleCart(true); }
-
-        function updateCart() {
-            const list = document.getElementById('cart-items');
-            list.innerHTML = ""; let t = 0;
-            cart.forEach((x, i) => {
-                t += parseInt(x.p);
-                list.innerHTML += `<div style="display:flex; gap:15px; margin-bottom:15px;"><img src="${x.i}" width="50"><div><b>${x.n}</b><br>$${x.p}</div></div>`;
-            });
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('cart-total').innerText = "$" + t;
-        }
-
-        function processOrder() {
-            const user = document.getElementById('c-name').value;
-            const wa = document.getElementById('c-whatsapp').value;
-            const addr = document.getElementById('c-address').value;
-            if(!user || !wa || cart.length === 0) return alert("Completa los datos de envío.");
-
-            const orderId = Date.now();
-            const orderList = document.getElementById('a-orders-list');
-            if(orderList.innerText === "Sin pedidos registrados.") orderList.innerHTML = "";
-            
-            const orderHtml = `
-                <div class="order-card">
-                    <b>PEDIDO #${orderId}</b><br>
-                    PRODUCTOS: ${cart.map(x => x.n).join(', ')}<br>
-                    TOTAL: $${document.getElementById('cart-total').innerText}<br>
-                    <hr>
-                    <b>CLIENTE:</b> ${user}<br>
-                    <b>WHATSAPP:</b> ${wa}<br>
-                    <b>DIRECCIÓN:</b> ${addr}
-                </div>`;
-            orderList.insertAdjacentHTML('afterbegin', orderHtml);
-            
-            alert("¡Compra exitosa! El administrador procesará tu pedido.");
-            cart = []; updateCart(); toggleCart(false);
-        }
-
-        function saveConfig() {
-            const m = document.getElementById('in-marquee').value;
-            if(m) { document.getElementById('txt-marquee').innerText = m + " — "; document.getElementById('txt-marquee-dup').innerText = m + " — "; }
-            if(document.getElementById('in-pago').value) document.getElementById('val-pago').innerText = document.getElementById('in-pago').value;
-            if(document.getElementById('in-envio').value) document.getElementById('val-envio').innerText = document.getElementById('in-envio').value;
-            alert("Web actualizada.");
-        }
-    </script>
 </body>
 </html>
