@@ -3,231 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Moda en Movimiento</title>
+    <title>Inercia | Brand Identity</title>
+    <!-- Tipografía de Lujo: Playfair Display y Montserrat -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #f0f0e8; --text: #2c2c2c; --line: rgba(0,0,0,0.1); --accent: #27ae60; --gold: #c5a059; }
-        * { box-sizing: border-box; scroll-behavior: smooth; }
-        body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
+        :root { --bg: #f4f3f0; --text: #1a1a1a; --line: rgba(0,0,0,0.08); }
+        * { box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+
+        /* --- NAV BEHANCE STYLE --- */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 40px 8%; border-bottom: 1px solid var(--line); }
+        .logo { font-family: 'Playfair Display', serif; font-size: 28px; letter-spacing: 6px; text-transform: uppercase; font-weight: 700; }
+        .nav-links { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; display: flex; gap: 40px; }
+        .cart-count { border-bottom: 1px solid #000; cursor: pointer; }
+
+        /* --- HERO (SUPERPOSICIONES) --- */
+        .hero { display: grid; grid-template-columns: 1fr 1.2fr; height: 90vh; align-items: center; padding: 0 8%; gap: 50px; position: relative; }
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 6rem; line-height: 0.9; margin: 0; }
+        .hero-text p { font-size: 12px; line-height: 2; color: #666; max-width: 300px; margin-top: 40px; }
+        .hero-img-box { position: relative; height: 80%; }
+        .hero-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
+        .floating-label { position: absolute; bottom: -20px; left: -40px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 4rem; color: var(--bg); -webkit-text-stroke: 1px #000; opacity: 0.3; }
+
+        /* --- GRILLA DE PRODUCTOS (LIMPIEZA TOTAL) --- */
+        .catalog { display: grid; grid-template-columns: repeat(2, 1fr); gap: 100px; padding: 150px 15%; }
+        .product-card { cursor: pointer; position: relative; }
+        .product-card img { width: 100%; height: 650px; object-fit: cover; filter: grayscale(1); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
+        .product-card:hover img { filter: grayscale(0); }
+        .p-info { margin-top: 30px; text-align: center; }
+        .p-name { font-family: 'Playfair Display', serif; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
+        .p-price { font-size: 12px; margin-top: 10px; color: #888; letter-spacing: 1px; }
+
+        /* --- CARRITO & MODAL --- */
+        #cart-panel { position: fixed; top: 0; right: -100%; width: 450px; height: 100vh; background: #fff; z-index: 2000; box-shadow: -20px 0 60px rgba(0,0,0,0.05); transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1); padding: 60px; }
+        #p-modal { display: none; position: fixed; inset: 0; background: rgba(244,243,240,0.98); z-index: 1500; align-items: center; justify-content: center; padding: 40px; }
+        .modal-inner { display: grid; grid-template-columns: 1fr 1fr; max-width: 1100px; background: #fff; }
+
+        /* --- ADMIN PRO SIDEBAR --- */
+        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 450px; height: 100vh; background: #fff; z-index: 3000; border-right: 1px solid #000; padding: 40px; overflow-y: auto; font-size: 11px; }
+        .admin-sec { margin-bottom: 40px; }
+        input, textarea, select { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #eee; font-family: 'Montserrat'; background: #fafafa; }
+        .btn-black { background: #000; color: #fff; border: none; padding: 18px; width: 100%; cursor: pointer; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-top: 20px; }
         
-        /* --- ESTÉTICA EDITORIAL --- */
-        nav { display: flex; justify-content: space-around; align-items: center; padding: 30px 5%; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 100; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 35px; letter-spacing: 8px; cursor: pointer; }
-        .cart-trigger { cursor: pointer; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid #000; }
-
-        .magazine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 80px 10%; }
-        .product-card { cursor: pointer; text-align: left; position: relative; animation: fadeIn 1s ease; }
-        .product-card img { width: 100%; height: 450px; object-fit: cover; filter: grayscale(0.5); border: 1px solid var(--line); transition: 0.6s; }
-        .product-card:hover img { filter: grayscale(0); transform: scale(1.02); }
-        .p-cat { font-size: 10px; color: var(--gold); text-transform: uppercase; margin-top: 15px; letter-spacing: 2px; }
-        .p-name { font-family: 'Playfair Display', serif; font-size: 16px; margin: 5px 0; }
-
-        /* --- CARRITO DE COMPRAS --- */
-        #cart-panel { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: #fff; z-index: 2000; box-shadow: -10px 0 50px rgba(0,0,0,0.1); transition: 0.5s; padding: 40px; overflow-y: auto; }
-        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .cart-item img { width: 60px; height: 80px; object-fit: cover; }
-        .cart-total { border-top: 2px solid #000; padding-top: 20px; margin-top: 30px; font-weight: 600; }
-
-        /* --- PANEL ADMIN AVANZADO --- */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 450px; height: 100vh; background: #fff; z-index: 3000; padding: 30px; overflow-y: auto; border-right: 2px solid #000; font-size: 12px; }
-        .admin-sec { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        .checklist-item { display: flex; justify-content: space-between; padding: 8px; background: #f9f9f9; margin-bottom: 5px; border-radius: 4px; }
-        input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; font-family: 'Montserrat'; }
-        .btn-admin { background: #000; color: #fff; border: none; padding: 12px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .status-badge { padding: 2px 8px; border-radius: 10px; font-size: 9px; color: #fff; }
-
-        /* --- VISTA PRODUCTO --- */
-        #product-modal { display: none; position: fixed; inset: 0; background: rgba(240,240,232,0.98); z-index: 1500; align-items: center; justify-content: center; padding: 40px; }
-        .modal-body { display: grid; grid-template-columns: 1fr 1fr; max-width: 1000px; background: #fff; border: 1px solid var(--line); }
-
         #secret-door { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; cursor: pointer; opacity: 0; z-index: 4000; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo" onclick="location.reload()">INERCIA</div>
-        <div class="cart-trigger" onclick="toggleCart(true)">Carrito (<span id="cart-count">0</span>)</div>
+        <div class="nav-links"><span>Collection</span><span>About</span></div>
+        <div class="logo">INERCIA</div>
+        <div class="nav-links"><span class="cart-count" onclick="toggleCart(true)">Cart (<span id="c-qty">0</span>)</span></div>
     </nav>
 
-    <div class="magazine-grid" id="main-catalog">
-        <!-- Productos se cargan aquí -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1 id="h-title">Essence<br>Motion</h1>
+            <p id="h-desc">Una exploración visual de la inercia a través de cortes arquitectónicos y textiles de origen ético.</p>
+        </div>
+        <div class="hero-img-box">
+            <img id="h-img" src="https://unsplash.com" class="hero-img">
+            <div class="floating-label">Inercia</div>
+        </div>
+    </section>
+
+    <div class="catalog" id="main-grid">
+        <!-- Los productos aparecerán con el espaciado de Behance -->
     </div>
 
-    <!-- CARRITO PANEL -->
+    <!-- PANEL CARRITO -->
     <div id="cart-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="font-family:'Playfair Display'">Tu Carrito</h2>
-            <span onclick="toggleCart(false)" style="cursor:pointer; font-size:24px;">&times;</span>
+        <h2 style="font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:50px;">Shopping Bag</h2>
+        <div id="cart-list" style="margin-bottom:50px;">El carrito está vacío.</div>
+        <div style="border-top:1px solid #eee; padding-top:30px;">
+            <div style="display:flex; justify-content:space-between; font-weight:400; font-size:20px;">
+                <span>Total</span> <span id="cart-total">$0</span>
+            </div>
+            <button class="btn-black" onclick="alert('Checkout funcional registrado en Admin')">Complete Purchase</button>
+            <p onclick="toggleCart(false)" style="text-align:center; font-size:10px; cursor:pointer; margin-top:30px; letter-spacing:2px;">Back to Shop</p>
         </div>
-        <div id="cart-items" style="margin-top:40px;">No hay prendas en el carrito.</div>
-        <div class="cart-total">
-            Total: $<span id="cart-total-val">0</span>
-        </div>
-        <div style="margin-top:20px; font-size:11px; color:#666;">
-            <strong>Envío:</strong> <span id="display-envio">Selecciona al finalizar</span><br>
-            <strong>Pago:</strong> <span id="display-pago">Transferencia / Tarjeta</span>
-        </div>
-        <button class="btn-admin" style="margin-top:30px;" onclick="checkout()">Finalizar Compra</button>
     </div>
 
-    <!-- VISTA PRODUCTO -->
-    <div id="product-modal">
-        <div class="modal-body">
-            <img id="m-img" style="width:100%; height:600px; object-fit:cover;">
-            <div style="padding:60px;">
-                <span onclick="closeModal()" style="float:right; cursor:pointer;">Cerrar</span>
-                <h2 id="m-title" style="font-family:'Playfair Display'; font-size:3rem; margin:0;"></h2>
-                <div id="m-price" style="font-size:20px; margin:20px 0;"></div>
-                <p id="m-desc" style="font-size:13px; line-height:1.8; color:#666;"></p>
-                <button class="btn-admin" onclick="addToCart()">Añadir al Carrito</button>
+    <!-- MODAL PRODUCTO -->
+    <div id="p-modal">
+        <div class="modal-inner">
+            <img id="m-img" style="width:100%; height:750px; object-fit:cover;">
+            <div style="padding:80px; display:flex; flex-direction:column; justify-content:center; position:relative;">
+                <span onclick="closeModal()" style="position:absolute; top:40px; right:40px; cursor:pointer; font-size:20px;">&times;</span>
+                <h2 id="m-name" style="font-family:'Playfair Display'; font-size:3rem; margin:0;"></h2>
+                <div id="m-price" style="font-size:18px; margin:30px 0; font-weight:300; color:#888;"></div>
+                <p id="m-desc" style="font-size:13px; line-height:2.2; color:#666; margin-bottom:50px;"></p>
+                <button class="btn-black" onclick="addToCart()">Add to Bag</button>
             </div>
         </div>
     </div>
 
+    <!-- ADMIN PRO (0110) -->
     <div id="secret-door" onclick="login()"></div>
-
-    <!-- ADMIN PRO PANEL -->
     <div id="admin-panel">
-        <h2 style="font-family:'Playfair Display'; border-bottom:2px solid #000;">Inercia Admin Pro</h2>
+        <h2 style="font-family:'Playfair Display'; font-size:2rem; border-bottom:1px solid #000; padding-bottom:20px;">Inercia Control</h2>
         
         <div class="admin-sec">
-            <h4>📦 GESTIÓN DE PRODUCTOS (SUBIDA/BAJA)</h4>
-            <label>Imagen:</label><input type="file" id="p-img" accept="image/*">
-            <label>Categoría:</label>
-            <select id="p-cat">
-                <option value="Miracle Collection">Miracle Collection</option>
-                <option value="Bestsellers">Bestsellers</option>
-                <option value="Accesorios">Accesorios</option>
-            </select>
-            <label>Nombre:</label><input type="text" id="p-name">
-            <label>Precio ($):</label><input type="number" id="p-price">
-            <label>Descripción:</label><textarea id="p-desc"></textarea>
-            <button class="btn-admin" onclick="uploadProduct()" style="background:var(--accent)">Publicar Producto</button>
+            <h4>Inventory Management</h4>
+            <label>Product Image:</label><input type="file" id="a-file" accept="image/*">
+            <label>Product Name:</label><input type="text" id="a-name">
+            <label>Price:</label><input type="number" id="a-price">
+            <label>Description:</label><textarea id="a-desc" rows="4"></textarea>
+            <button class="btn-black" onclick="publish()" style="background:#1a1a1a">Publish to Shop</button>
             
-            <label style="margin-top:20px;">CHECKLIST DE PRODUCTOS:</label>
-            <div id="admin-checklist" style="max-height:150px; overflow:auto;"></div>
+            <h5 style="margin-top:30px;">Active Checklist (Baja)</h5>
+            <div id="a-checklist" style="background:#f9f9f9; padding:15px;"></div>
         </div>
 
         <div class="admin-sec">
-            <h4>📋 HISTORIAL DE PEDIDOS</h4>
-            <div id="admin-orders" style="background:#f0f0f0; padding:10px; font-size:10px;">Sin pedidos aún.</div>
+            <h4>Order History</h4>
+            <div id="a-orders" style="background:#f4f4f4; padding:15px; font-family:monospace;">No orders yet.</div>
         </div>
 
-        <div class="admin-sec">
-            <h4>⚙️ CONFIGURACIÓN DE TIENDA</h4>
-            <label>Método de Envío:</label><input type="text" id="in-envio" placeholder="Ej: Correo Argentino a todo el país">
-            <label>Método de Pago:</label><input type="text" id="in-pago" placeholder="Ej: 10% OFF Transferencia">
-            <button class="btn-admin" onclick="updateStoreInfo()">Guardar Datos de Tienda</button>
-        </div>
-
-        <button class="btn-admin" onclick="exportHTML()" style="background:#c5a059">DESCARGAR INDEX.HTML ACTUALIZADO</button>
-        <button onclick="location.reload()" style="width:100%; border:none; background:none; color:red; margin-top:20px; cursor:pointer;">Cerrar Panel</button>
+        <button class="btn-black" onclick="exportHTML()" style="background:#8b7355">Export index.html</button>
+        <button onclick="location.reload()" style="width:100%; border:none; background:none; color:red; margin-top:40px; cursor:pointer; font-size:9px; letter-spacing:2px;">Close Session</button>
     </div>
 
     <script>
         let cart = [];
-        let currentProduct = null;
+        let tempProd = null;
 
-        function login() { if(prompt("Root Access:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
+        function login() { if(prompt("Access:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
 
-        async function uploadProduct() {
-            const file = document.getElementById('p-img').files;
-            const cat = document.getElementById('p-cat').value;
-            const name = document.getElementById('p-name').value;
-            const price = document.getElementById('p-price').value;
-            const desc = document.getElementById('p-desc').value;
+        async function publish() {
+            const f = document.getElementById('a-file').files;
+            const n = document.getElementById('a-name').value;
+            const p = document.getElementById('a-price').value;
+            const d = document.getElementById('a-desc').value;
 
-            if(!file || !name) return alert("Faltan datos");
+            if(!f[0] || !n) return alert("Missing data");
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const id = "p-" + Date.now();
+                const id = "p" + Date.now();
                 const img = e.target.result;
                 const html = `
-                    <div class="product-card" id="${id}" onclick="openProduct('${name}', ${price}, '${img}', '${desc}')">
+                    <div class="product-card" id="${id}" onclick="openModal('${n}', ${p}, '${img}', '${d}')">
                         <img src="${img}">
-                        <div class="p-cat">${cat}</div>
-                        <div class="p-name">${name}</div>
-                        <div style="font-size:12px;">$${price}</div>
-                    </div>
-                `;
-                document.getElementById('main-catalog').insertAdjacentHTML('beforeend', html);
-                updateChecklist(id, name);
+                        <div class="p-info"><div class="p-name">${n}</div><div class="p-price">$${p}</div></div>
+                    </div>`;
+                document.getElementById('main-grid').insertAdjacentHTML('beforeend', html);
+                
+                // Baja Checklist
+                const check = `<div id="log-${id}" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>${n}</span> <span onclick="baja('${id}')" style="color:red; cursor:pointer;">[X]</span></div>`;
+                document.getElementById('a-checklist').insertAdjacentHTML('beforeend', check);
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(f[0]);
         }
 
-        function updateChecklist(id, name) {
-            const item = `<div class="checklist-item" id="check-${id}">${name} <button onclick="deleteProduct('${id}')" style="color:red; background:none; border:none; cursor:pointer;">BAJA</button></div>`;
-            document.getElementById('admin-checklist').insertAdjacentHTML('beforeend', item);
+        function baja(id) {
+            document.getElementById(id).remove();
+            document.getElementById('log-' + id).remove();
         }
 
-        function deleteProduct(id) {
-            if(confirm("¿Dar de baja este producto?")) {
-                document.getElementById(id).remove();
-                document.getElementById('check-' + id).remove();
-            }
-        }
-
-        function openProduct(n, p, i, d) {
-            currentProduct = { n, p, i, d };
-            document.getElementById('m-title').innerText = n;
+        function openModal(n, p, i, d) {
+            if(document.getElementById('admin-panel').style.display === 'block') return;
+            tempProd = { n, p, i, d };
+            document.getElementById('m-name').innerText = n;
             document.getElementById('m-price').innerText = "$" + p;
             document.getElementById('m-img').src = i;
             document.getElementById('m-desc').innerText = d;
-            document.getElementById('product-modal').style.display = 'flex';
+            document.getElementById('p-modal').style.display = 'flex';
         }
 
-        function closeModal() { document.getElementById('product-modal').style.display = 'none'; }
-
-        function toggleCart(show) { document.getElementById('cart-panel').style.left = show ? 'calc(100% - 400px)' : '-100%'; }
+        function closeModal() { document.getElementById('p-modal').style.display = 'none'; }
+        function toggleCart(s) { document.getElementById('cart-panel').style.right = s ? '0' : '-100%'; }
 
         function addToCart() {
-            cart.push(currentProduct);
-            updateCartUI();
+            cart.push(tempProd);
+            updateCart();
             closeModal();
             toggleCart(true);
         }
 
-        function updateCartUI() {
-            const container = document.getElementById('cart-items');
-            container.innerHTML = "";
-            let total = 0;
-            cart.forEach((item, index) => {
-                total += parseInt(item.p);
-                container.innerHTML += `
-                    <div class="cart-item">
-                        <img src="${item.i}">
-                        <div>
-                            <div style="font-weight:600">${item.n}</div>
-                            <div>$${item.p}</div>
-                            <span onclick="removeFromCart(${index})" style="font-size:10px; color:red; cursor:pointer;">Quitar</span>
-                        </div>
-                    </div>`;
+        function updateCart() {
+            const list = document.getElementById('cart-list');
+            list.innerHTML = "";
+            let t = 0;
+            cart.forEach((x, i) => {
+                t += parseInt(x.p);
+                list.innerHTML += `<div style="display:flex; gap:20px; margin-bottom:20px;"><img src="${x.i}" width="50"><div style="font-size:11px;"><b>${x.n}</b><br>$${x.p}</div></div>`;
             });
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('cart-total-val').innerText = total;
-            if(cart.length === 0) container.innerHTML = "No hay prendas.";
-        }
-
-        function removeFromCart(i) { cart.splice(i, 1); updateCartUI(); }
-
-        function checkout() {
-            if(cart.length === 0) return alert("Carrito vacío");
-            const pedido = { id: Date.now(), total: document.getElementById('cart-total-val').innerText, items: cart.map(i => i.n) };
-            const history = document.getElementById('admin-orders');
-            if(history.innerText === "Sin pedidos aún.") history.innerHTML = "";
-            history.innerHTML += `<div style="border-bottom:1px solid #ccc; padding:5px">Pedido #${pedido.id}: ${pedido.items.join(', ')} ($${pedido.total})</div>`;
-            alert("¡Pedido realizado! Se ha registrado en el historial del Admin.");
-            cart = []; updateCartUI(); toggleCart(false);
-        }
-
-        function updateStoreInfo() {
-            document.getElementById('display-envio').innerText = document.getElementById('in-envio').value;
-            document.getElementById('display-pago').innerText = document.getElementById('in-pago').value;
-            alert("Datos de logística actualizados.");
+            document.getElementById('c-qty').innerText = cart.length;
+            document.getElementById('cart-total').innerText = "$" + t;
         }
 
         function exportHTML() {
@@ -237,7 +200,6 @@
             a.href = URL.createObjectURL(blob);
             a.download = 'index.html';
             a.click();
-            alert("Archivo listo para subir a GitHub.");
         }
     </script>
 </body>
