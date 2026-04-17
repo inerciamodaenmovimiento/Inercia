@@ -3,221 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA</title>
-    <style>
-        :root { --bg-base: #f4f3f0; --text-dark: #1a1a1a; --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-main); background: var(--bg-base); color: var(--text-dark); line-height: 1.5; }
-        .header { padding: 30px 6%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-base); z-index: 1000; }
-        .logo { font-weight: 600; font-size: 1.3rem; letter-spacing: 6px; text-transform: uppercase; }
-        .nav-right { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
-        .hero { padding: 40px 6% 80px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; }
-        .hero-text h1 { font-size: 4rem; font-weight: 300; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
-        .hero-img { width: 100%; aspect-ratio: 16/9; background: url('https://unsplash.com') center/cover; }
-        .container { padding: 0 6% 100px; }
-        .section-header { margin-bottom: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; }
-        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .product-card { cursor: pointer; transition: opacity 0.3s; position: relative; }
-        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #e2e1de; margin-bottom: 15px; }
-        .product-info h3 { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-        .product-info p { font-size: 0.8rem; color: #666; margin-top: 5px; }
-        .cart-aside { position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: #fff; z-index: 2000; padding: 40px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77,0,0.175,1); display: flex; flex-direction: column; }
-        .cart-aside.active { transform: translateX(0); }
-        .cart-item { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 15px; border-bottom: 1px solid #f5f5f5; padding-bottom: 10px; }
-        .btn-black { width: 100%; padding: 15px; background: #000; color: #fff; border: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 20px; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(244,243,240,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 6%; }
-        .modal-content { max-width: 1000px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-        #admin-screen { display: none; position: fixed; inset: 0; background: #fff; z-index: 9999; font-family: sans-serif; overflow-y: auto; }
-        .admin-nav { background: #000; color: #fff; padding: 20px; display: flex; gap: 20px; font-size: 12px; letter-spacing: 1px; position: sticky; top: 0; }
-        .admin-nav span { cursor: pointer; opacity: 0.6; }
-        .admin-nav span.active { opacity: 1; text-decoration: underline; }
-        .admin-tab { display: none; padding: 40px; }
-        .admin-tab.active { display: block; }
-        .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 20px; }
-        .admin-table th, .admin-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
-        .admin-input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; font-family: inherit; }
-        .del-btn { color: red; cursor: pointer; border: none; background: none; font-size: 0.7rem; }
-    </style>
+    <title>Minimal Store | Tienda de Ropa</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="header">
-        <div class="logo">INERCIA</div>
-        <div class="nav-right" onclick="toggleCart()">BOLSA (<span id="cart-count">0</span>)</div>
+    <header>
+        <nav>
+            <div class="logo">MINIMAL<b>STUDIO</b></div>
+            <div class="cart-icon" onclick="toggleCart()">
+                Carrito (<span id="cart-count">0</span>)
+            </div>
+        </nav>
     </header>
-    <section class="hero">
-        <div class="hero-text"><h1>INERCIA</h1><p>MOVIMIENTO Y ESTILO EN CADA PRENDA.</p></div>
-        <div class="hero-img"></div>
-    </section>
-    <main class="container">
-        <div class="section-header"><span>Colecciones Propias</span><span>2026</span></div>
-        <div class="product-grid" id="grid"></div>
+
+    <main>
+        <section class="hero">
+            <h1>Colección Editorial</h1>
+            <p>Diseño local con proyección internacional.</p>
+        </section>
+
+        <section id="catalog" class="product-grid">
+            <!-- Los productos se cargan con JS -->
+        </section>
     </main>
-    <aside class="cart-aside" id="cart-aside">
-        <h2 style="font-size:0.8rem; letter-spacing:2px; margin-bottom:30px;">TU BOLSA</h2>
-        <div id="cart-list" style="flex:1; overflow-y:auto;"></div>
-        <div style="margin-top:auto; padding-top:20px; border-top:1px solid #eee;">
-            <div style="display:flex; justify-content:space-between; font-weight:600;"><span>TOTAL</span><span id="cart-total">$0</span></div>
-            <button class="btn-black" onclick="checkout()">Finalizar Compra</button>
-            <p onclick="toggleCart()" style="text-align:center; font-size:0.6rem; margin-top:15px; cursor:pointer; letter-spacing:1px;">CERRAR</p>
-        </div>
-    </aside>
-    <div id="admin-screen">
-        <div class="admin-nav">
-            <span onclick="tab(0)" class="t-btn active">PEDIDOS</span>
-            <span onclick="tab(1)" class="t-btn">CONTENIDO/INV</span>
-            <span onclick="tab(2)" class="t-btn">COBROS</span>
-            <span onclick="tab(3)" class="t-btn">HISTORIAL</span>
-            <span onclick="document.getElementById('admin-screen').style.display='none'" style="margin-left:auto;color:red">CERRAR</span>
-        </div>
-        <div id="tab0" class="admin-tab active">
-            <h3>Pedidos Activos</h3>
-            <table class="admin-table">
-                <thead><tr><th>ID</th><th>Comprador/Datos</th><th>Items</th><th>Pago/Envío</th><th>Total</th></tr></thead>
-                <tbody id="list-orders"></tbody>
-            </table>
-        </div>
-        <div id="tab1" class="admin-tab">
-            <h3>Inventario</h3>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-                <div>
-                    <h4>Nuevo Producto</h4>
-                    <input id="new-n" class="admin-input" placeholder="Nombre">
-                    <input id="new-p" class="admin-input" type="number" placeholder="Precio">
-                    <input id="new-cat" class="admin-input" placeholder="Categoría">
-                    <label>Subir fotos (PC):</label><input id="new-i-file" class="admin-input" type="file" multiple accept="image/*">
-                    <button onclick="addP()" class="btn-black">Publicar</button>
-                </div>
-                <div>
-                    <h4>Lista de Artículos</h4>
-                    <table class="admin-table">
-                        <thead><tr><th>Nombre</th><th>Acción</th></tr></thead>
-                        <tbody id="list-inventory"></tbody>
-                    </table>
-                </div>
-            </div>
-            <hr style="margin:30px 0; border-top:1px solid #eee">
-            <h3>Editor de Textos</h3>
-            <label>H1 Hero:</label><input id="edit-h1" class="admin-input" onchange="saveTexts()">
-            <label>Texto Hero:</label><input id="edit-sub" class="admin-input" onchange="saveTexts()">
-        </div>
-        <div id="tab2" class="admin-tab">
-            <h3>Configuración de Pagos</h3>
-            <label>Métodos de Pago:</label><input id="set-pay" class="admin-input" onchange="saveConfig()">
-            <label>Datos Bancarios (CVU/Alias):</label><textarea id="set-bank" class="admin-input" rows="3" onchange="saveConfig()"></textarea>
-            <label>Métodos de Envío:</label><input id="set-ship" class="admin-input" onchange="saveConfig()">
-        </div>
-        <div id="tab3" class="admin-tab">
-            <h3>Historial</h3>
-            <table class="admin-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th></tr></thead><tbody id="list-hist"></tbody></table>
-        </div>
-    </div>
-    <div class="modal" id="modal">
+
+    <!-- Modal del Carrito -->
+    <div id="cart-modal" class="modal">
         <div class="modal-content">
-            <img id="m-img" src="" style="width:100%; aspect-ratio:3/4; object-fit:cover;">
-            <div style="display:flex; flex-direction:column; justify-content:center;">
-                <h2 id="m-title" style="font-size:2.5rem; font-weight:300; margin-bottom:10px;"></h2>
-                <p id="m-price" style="font-size:1.2rem; margin-bottom:30px; color:#666;"></p>
-                <button id="m-add-btn" class="btn-black">Añadir a la bolsa</button>
-                <p onclick="closeModal()" style="margin-top:20px; cursor:pointer; font-size:0.7rem; letter-spacing:2px;">VOLVER</p>
-            </div>
+            <span class="close" onclick="toggleCart()">&times;</span>
+            <h2>Tu Carrito</h2>
+            <div id="cart-items"></div>
+            <div class="cart-total">Total: $<span id="total-price">0</span></div>
+            
+            <hr>
+            
+            <h3>Datos de Envío</h3>
+            <form id="checkout-form">
+                <input type="text" placeholder="Nombre completo" required>
+                <input type="text" placeholder="Dirección de envío" required>
+                <button type="submit" class="btn-checkout">Finalizar Compra</button>
+            </form>
         </div>
     </div>
-    <script>
-        let bag = [], code = "";
-        let products = JSON.parse(localStorage.getItem('in_prods')) || [];
-        let ordersData = JSON.parse(localStorage.getItem('in_orders')) || [];
-        let config = JSON.parse(localStorage.getItem('in_config')) || { pay: "Transferencia", ship: "Envío", bank: "" };
-        let texts = JSON.parse(localStorage.getItem('in_texts')) || {h1: "INERCIA", sub: "MOVIMIENTO Y ESTILO EN CADA PRENDA."};
 
-        function applyTexts() {
-            document.querySelector('.hero-text h1').innerText = texts.h1;
-            document.querySelector('.hero-text p').innerText = texts.sub;
-            document.getElementById('edit-h1').value = texts.h1;
-            document.getElementById('edit-sub').value = texts.sub;
-        }
-
-        function saveTexts() {
-            texts.h1 = document.getElementById('edit-h1').value;
-            texts.sub = document.getElementById('edit-sub').value;
-            localStorage.setItem('in_texts', JSON.stringify(texts));
-            applyTexts();
-        }
-
-        function saveConfig() {
-            config.pay = document.getElementById('set-pay').value;
-            config.ship = document.getElementById('set-ship').value;
-            config.bank = document.getElementById('set-bank').value;
-            localStorage.setItem('in_config', JSON.stringify(config));
-        }
-
-        function init() {
-            const grid = document.getElementById('grid'); grid.innerHTML = '';
-            products.forEach((p, index) => {
-                const card = document.createElement('div'); card.className = 'product-card';
-                card.onclick = () => openModal(p.name, p.price, Array.isArray(p.img) ? p.img[0] : p.img);
-                card.innerHTML = `<img src="${Array.isArray(p.img) ? p.img[0] : p.img}"><div class="product-info"><h3>${p.name}</h3><p style="font-size:0.6rem; color:#999; text-transform:uppercase; letter-spacing:1px;">${p.category || ''}</p><p>$${p.price.toLocaleString()}</p></div>`;
-                grid.appendChild(card);
-            });
-            renderInventory(); applyTexts(); renderAdmin();
-        }
-
-        function addP() {
-            let n = document.getElementById('new-n').value, p = parseInt(document.getElementById('new-p').value), cat = document.getElementById('new-cat').value;
-            let files = document.getElementById('new-i-file').files, images = [];
-            if(n && p && files.length > 0) {
-                Array.from(files).forEach(file => {
-                    let reader = new FileReader();
-                    reader.onload = (e) => {
-                        images.push(e.target.result);
-                        if(images.length === files.length) {
-                            products.push({id: Date.now(), name: n, price: p, img: images, category: cat});
-                            localStorage.setItem('in_prods', JSON.stringify(products));
-                            init();
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-        }
-
-        function deleteP(id) {
-            products = products.filter(p => p.id !== id);
-            localStorage.setItem('in_prods', JSON.stringify(products));
-            init();
-        }
-
-        function renderInventory() {
-            const list = document.getElementById('list-inventory');
-            list.innerHTML = products.map(p => `<tr><td>${p.name}</td><td><button class="del-btn" onclick="deleteP(${p.id})">Eliminar</button></td></tr>`).join('');
-        }
-
-        function checkout() {
-            if(bag.length === 0) return;
-            let c = prompt("Nombre y Apellido:"), d = prompt("Dirección de envío:"), t = prompt("Teléfono:"), m = prompt("Pago ("+config.pay+"):"), e = prompt("Envío ("+config.ship+"):");
-            if(c && m && e) {
-                if(m.toLowerCase().includes('trans')) alert("DATOS DE PAGO:\n" + config.bank);
-                let order = { id: '#'+Date.now().toString().slice(-4), c, d, t, m, e, items: bag.map(i=>i.n).join(', '), total: document.getElementById('cart-total').innerText, date: new Date().toLocaleString() };
-                ordersData.push(order);
-                localStorage.setItem('in_orders', JSON.stringify(ordersData));
-                bag = []; updateCart(); toggleCart(); renderAdmin();
-            }
-        }
-
-        function renderAdmin() {
-            document.getElementById('list-orders').innerHTML = ordersData.map(o => `<tr><td>${o.id}</td><td><b>${o.c}</b><br>${o.d}<br>${o.t}</td><td>${o.items}</td><td>${o.m}<br>${o.e}</td><td>${o.total}</td></tr>`).join('');
-            document.getElementById('list-hist').innerHTML = ordersData.map(o => `<tr><td>${o.date}</td><td>${o.c}</td><td>${o.total}</td></tr>`).join('');
-            document.getElementById('set-pay').value = config.pay;
-            document.getElementById('set-ship').value = config.ship;
-            document.getElementById('set-bank').value = config.bank || "";
-        }
-
-        function openModal(n, p, i) { document.getElementById('m-img').src = i; document.getElementById('m-title').innerText = n; document.getElementById('m-price').innerText = `$${p.toLocaleString()}`; document.getElementById('m-add-btn').onclick = () => { bag.push({n, p}); updateCart(); closeModal(); toggleCart(); }; document.getElementById('modal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('modal').style.display = 'none'; }
-        function toggleCart() { document.getElementById('cart-aside').classList.toggle('active'); }
-        function updateCart() { const list = document.getElementById('cart-list'); list.innerHTML = ''; let t = 0; bag.forEach(item => { list.innerHTML += `<div class="cart-item"><span>${item.n}</span><span>$${item.p.toLocaleString()}</span></div>`; t += item.p; }); document.getElementById('cart-count').innerText = bag.length; document.getElementById('cart-total').innerText = `$${t.toLocaleString()}`; }
-        function tab(i) { document.querySelectorAll('.admin-tab').forEach((t, idx) => t.classList.toggle('active', i === idx)); document.querySelectorAll('.t-btn').forEach((b, idx) => b.classList.toggle('active', i === idx)); }
-        window.onkeydown = e => { code += e.key; if(code.includes("0110")) { document.getElementById('admin-screen').style.display='block'; renderAdmin(); code=""; } };
-        init();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
