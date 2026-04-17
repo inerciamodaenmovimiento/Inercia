@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inercia | Admin</title>
+  <title>Inercia | Panel de Control</title>
+  <!-- Widget para iniciar sesión -->
   </script>
 </head>
 <body>
+  <!-- Carga la interfaz visual del administrador -->
   <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
