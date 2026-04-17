@@ -3,154 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Official Store</title>
-    <!-- Fuentes de Lujo: Serif para títulos y Sans para UI -->
+    <title>inercia</title>
+    <!-- Fuentes de Lujo -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #000000; --muted: #888888; }
+        :root { --bg: #ffffff; --text: #000000; --muted: #8c8c8c; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
         /* HEADER */
-        header { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; background: white; sticky top: 0; z-index: 100; border-bottom: 1px solid #f0f0f0; }
-        .nav-links { display: flex; gap: 30px; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; }
-        .logo { font-family: 'Bodoni Moda', serif; font-size: 32px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+        header { padding: 35px 5%; display: flex; justify-content: space-between; align-items: center; background: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f2f2f2; }
+        .nav-link { font-size: 10px; text-transform: uppercase; letter-spacing: 2.5px; text-decoration: none; color: var(--text); font-weight: 600; }
+        .logo { font-family: 'Bodoni Moda', serif; font-size: 34px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
 
-        /* HERO SECTION */
-        .hero { position: relative; height: 90vh; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 5%; }
-        .hero-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.95); }
-        .hero-title { position: absolute; font-family: 'Bodoni Moda', serif; font-size: 120px; color: white; text-transform: uppercase; letter-spacing: 15px; font-weight: 400; text-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        /* HERO - ESTÉTICA LIME */
+        .hero { position: relative; height: 95vh; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .hero-img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay { position: absolute; font-family: 'Bodoni Moda', serif; font-size: clamp(60px, 12vw, 130px); color: #fff; text-transform: uppercase; letter-spacing: 20px; font-weight: 400; pointer-events: none; }
 
         /* SECCIÓN NEW IN */
-        .section-label { text-align: center; margin: 80px 0 40px; font-family: 'Bodoni Moda', serif; font-size: 24px; text-transform: uppercase; letter-spacing: 4px; }
-        .product-slider { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 5%; margin-bottom: 100px; }
-        .product-card { text-align: center; cursor: pointer; }
-        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 15px; transition: opacity 0.3s; }
-        .product-card:hover img { opacity: 0.8; }
-        .product-card p { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+        .section-label { text-align: center; margin: 100px 0 50px; font-family: 'Bodoni Moda', serif; font-size: 26px; text-transform: uppercase; letter-spacing: 5px; font-style: italic; }
+        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; padding: 0 5%; margin-bottom: 120px; }
+        .product-card { text-align: center; transition: 0.4s ease; }
+        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 20px; border-radius: 2px; }
+        .product-card p { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
 
-        /* MOSAICO CATEGORÍAS */
-        .categories { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 5% 100px; }
-        .cat-box { position: relative; overflow: hidden; background: #eee; cursor: pointer; }
-        .cat-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s; }
-        .cat-box:hover img { transform: scale(1.05); }
-        .cat-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: white; font-family: 'Bodoni Moda', serif; font-size: 32px; text-transform: uppercase; letter-spacing: 8px; background: rgba(0,0,0,0.1); }
+        /* MOSAICO DE CATEGORÍAS */
+        .mosaic { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 5% 120px; }
+        .mosaic-item { position: relative; height: 600px; overflow: hidden; background: #eee; }
+        .mosaic-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(0.2, 1, 0.2, 1); }
+        .mosaic-item:hover img { transform: scale(1.05); }
+        .mosaic-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Bodoni Moda', serif; font-size: 30px; text-transform: uppercase; letter-spacing: 10px; background: rgba(0,0,0,0.05); }
 
         /* FOOTER */
-        footer { padding: 80px 5%; border-top: 1px solid #f0f0f0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; font-size: 11px; color: var(--muted); }
-        footer h4 { color: black; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
-        .newsletter input { width: 100%; padding: 10px 0; border: none; border-bottom: 1px solid #ddd; outline: none; margin-bottom: 15px; }
-        .btn-sub { width: 100%; padding: 12px; background: none; border: 1px solid black; text-transform: uppercase; font-size: 10px; cursor: pointer; }
+        footer { padding: 100px 5%; border-top: 1px solid #f2f2f2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 50px; font-size: 10px; color: var(--muted); text-transform: uppercase; }
+        footer h4 { color: #000; margin-bottom: 25px; font-size: 11px; letter-spacing: 2px; }
+        .newsletter input { width: 100%; padding: 12px 0; border: none; border-bottom: 1px solid #ddd; outline: none; margin-bottom: 20px; }
+        .btn-sub { width: 100%; padding: 14px; background: #000; color: #fff; border: none; font-size: 9px; cursor: pointer; letter-spacing: 2px; }
 
-        /* --- ADMIN PANEL (INVISIBLE) --- */
-        .admin-trigger { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; background: transparent; z-index: 1000; cursor: default; }
-        #admin-panel { position: fixed; right: -420px; top: 0; width: 400px; height: 100vh; background: white; z-index: 10000; padding: 60px 40px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -20px 0 50px rgba(0,0,0,0.05); overflow-y: auto; }
+        /* --- PANEL ADMINISTRADOR (OCULTO AL 100%) --- */
+        #admin-panel { 
+            position: fixed; right: -420px; top: 0; width: 400px; height: 100vh; 
+            background: #000; color: #fff; z-index: 10000; padding: 60px 40px; 
+            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -20px 0 50px rgba(0,0,0,0.5); 
+            overflow-y: auto; 
+        }
         #admin-panel.active { right: 0; }
-        .admin-field { margin-bottom: 30px; }
-        .admin-field label { display: block; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; color: var(--muted); }
-        .admin-field input { width: 100%; padding: 12px 0; border: none; border-bottom: 1px solid #eee; outline: none; font-size: 14px; }
-        .btn-admin { width: 100%; padding: 18px; background: black; color: white; border: none; text-transform: uppercase; font-size: 11px; letter-spacing: 2px; cursor: pointer; font-weight: bold; }
-        .stock-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #f9f9f9; font-size: 12px; }
+        .admin-title { font-family: 'Bodoni Moda', serif; font-size: 24px; font-style: italic; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .admin-field { margin-bottom: 25px; }
+        .admin-field label { display: block; font-size: 9px; text-transform: uppercase; color: #888; margin-bottom: 8px; font-weight: bold; }
+        .admin-field input { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; outline: none; border-radius: 4px; }
+        .btn-admin { width: 100%; padding: 18px; background: #fff; color: #000; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 10px; margin-top: 10px; letter-spacing: 2px; }
+        
+        .stock-manager { margin-top: 40px; border-top: 1px solid #222; padding-top: 30px; }
+        .stock-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #111; font-size: 11px; }
+        .btn-del { color: #ff4d4d; border: none; background: none; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="nav-links"><span>Shop</span> <span>Colecciones</span></div>
+        <div style="display: flex; gap: 40px;"><a href="#" class="nav-link">Catálogo</a><a href="#" class="nav-link">Colecciones</a></div>
         <div class="logo">inercia</div>
-        <div class="nav-links"><span>Estudio</span> <span>Carrito (0)</span></div>
+        <div style="display: flex; gap: 40px;"><a href="#" class="nav-link">Estudio</a><a href="#" class="nav-link">Cuenta</a></div>
     </header>
 
     <main>
         <section class="hero">
             <img src="https://unsplash.com" class="hero-img">
-            <h1 class="hero-title" id="display-title">Inercia</h1>
+            <div class="hero-overlay" id="hero-display">inercia</div>
         </section>
 
-        <h2 class="section-label">New In</h2>
-        <div class="product-slider" id="product-grid">
-            <!-- Los productos se cargan aquí -->
+        <h2 class="section-label">new in</h2>
+        <div class="product-grid" id="main-grid">
+            <!-- Dinámico -->
         </div>
 
-        <section class="categories">
-            <div class="cat-box" style="grid-row: span 2;">
+        <section class="mosaic">
+            <div class="mosaic-item" style="grid-row: span 2; height: auto;">
                 <img src="https://unsplash.com">
-                <div class="cat-label">Clothing</div>
+                <div class="mosaic-label">ropa</div>
             </div>
-            <div class="cat-box">
+            <div class="mosaic-item" style="height: 400px;">
                 <img src="https://unsplash.com">
-                <div class="cat-label">Bags</div>
+                <div class="mosaic-label">bolsos</div>
             </div>
-            <div class="cat-box">
+            <div class="mosaic-item" style="height: 400px;">
                 <img src="https://unsplash.com">
-                <div class="cat-label">Accessories</div>
+                <div class="mosaic-label">accesorios</div>
             </div>
         </section>
     </main>
 
     <footer>
-        <div><h4>Shop</h4><p>New arrivals</p><p>Collections</p></div>
-        <div><h4>Explore</h4><p>About the brand</p><p>Lookbooks</p></div>
-        <div><h4>More</h4><p>Size guide</p><p>Contacts</p></div>
+        <div><h4>inercia</h4><p>Novedades</p><p>Colecciones</p></div>
+        <div><h4>Explorar</h4><p>Sobre la marca</p><p>Lookbooks</p></div>
+        <div><h4>Ayuda</h4><p>Guía de talles</p><p>Contacto</p></div>
         <div class="newsletter">
             <h4>Newsletter</h4>
-            <input type="text" placeholder="Enter your email">
-            <button class="btn-sub">Subscribe</button>
+            <input type="email" placeholder="Tu email aquí">
+            <button class="btn-sub">Suscribirse</button>
         </div>
     </footer>
 
-    <!-- ACCESO DUEÑA -->
-    <div class="admin-trigger" onclick="toggleAdmin()"></div>
-
+    <!-- PANEL ADMIN (SÓLO ACCESIBLE CON EL CÓDIGO 0110) -->
     <div id="admin-panel">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-            <h3 style="text-transform:uppercase; letter-spacing:2px; font-size:16px;">Configuración</h3>
+            <h3 class="admin-title">Panel de Dueña</h3>
             <span onclick="toggleAdmin()" style="cursor:pointer; font-size:24px;">&times;</span>
         </div>
 
         <div class="admin-field">
-            <label>Título del Hero</label>
-            <input type="text" id="edit-title" oninput="updateHero()" placeholder="Inercia">
+            <label>Editar Título Principal</label>
+            <input type="text" id="in-hero-title" oninput="updateHero()" placeholder="inercia">
         </div>
 
-        <div style="margin-top: 50px; border-top: 1px solid #eee; padding-top: 30px;">
-            <label>Subir Producto</label>
+        <div style="margin-top: 40px;">
+            <label style="font-size:10px; color:#fff; display:block; margin-bottom:20px;">AÑADIR PRODUCTO</label>
             <div class="admin-field"><input type="text" id="p-name" placeholder="Nombre de prenda"></div>
             <div class="admin-field"><input type="text" id="p-price" placeholder="Precio (ej: $15.000)"></div>
-            <div class="admin-field"><input type="text" id="p-img" placeholder="Link de Foto"></div>
-            <button class="btn-admin" onclick="addProduct()">Publicar en Inercia</button>
+            <div class="admin-field"><input type="text" id="p-img" placeholder="URL de la Foto"></div>
+            <button class="btn-admin" onclick="addP()">Publicar en la tienda</button>
         </div>
 
-        <div id="admin-stock" style="margin-top: 40px;"></div>
+        <div class="stock-manager" id="admin-list">
+            <!-- Gestión de stock -->
+        </div>
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('inercia_lime_v1')) || [
-            { name: "Black Silk Dress", price: "$28.000", img: "https://unsplash.com" },
-            { name: "Suede Accessories", price: "$12.500", img: "https://unsplash.com" },
-            { name: "Minimal Lingerie", price: "$8.200", img: "https://unsplash.com" }
+        // Memoria de la tienda
+        let db = JSON.parse(localStorage.getItem('inercia_v6')) || [
+            { name: "Silk Dress Black", price: "$28.000", img: "https://unsplash.com" },
+            { name: "Leather Tote", price: "$35.000", img: "https://unsplash.com" },
+            { name: "Minimal Set", price: "$8.500", img: "https://unsplash.com" }
         ];
 
-        // Código 0110
-        let keys = "";
+        // DETECCIÓN DEL CÓDIGO SECRETO 0110
+        let secretKey = "";
         window.onkeydown = (e) => {
-            keys += e.key;
-            if(keys.includes("0110")) toggleAdmin();
-            if(keys.length > 5) keys = "";
+            secretKey += e.key;
+            if(secretKey.includes("0110")) {
+                toggleAdmin();
+                secretKey = "";
+            }
+            if(secretKey.length > 8) secretKey = "";
         }
 
         function toggleAdmin() { document.getElementById('admin-panel').classList.toggle('active'); }
 
         function updateHero() {
-            const val = document.getElementById('edit-title').value;
-            if(val) document.getElementById('display-title').innerText = val;
+            const v = document.getElementById('in-hero-title').value;
+            if(v) document.getElementById('hero-display').innerText = v;
         }
 
         function render() {
-            const grid = document.getElementById('product-grid');
-            const stock = document.getElementById('admin-stock');
+            const grid = document.getElementById('main-grid');
+            const list = document.getElementById('admin-list');
             grid.innerHTML = '';
-            stock.innerHTML = '<label>Gestión de Stock</label>';
+            list.innerHTML = '<label style="color:#666; font-size:10px; margin-bottom:15px; display:block;">GESTIÓN DE STOCK</label>';
 
             db.forEach((p, i) => {
                 grid.innerHTML += `
@@ -159,22 +170,22 @@
                         <p>${p.name} — ${p.price}</p>
                     </div>
                 `;
-                stock.innerHTML += `
+                list.innerHTML += `
                     <div class="stock-item">
                         <span>${p.name}</span>
-                        <span onclick="deleteItem(${i})" style="color:red; cursor:pointer">X</span>
+                        <button class="btn-del" onclick="del(${i})">ELIMINAR</button>
                     </div>
                 `;
             });
-            localStorage.setItem('inercia_lime_v1', JSON.stringify(db));
+            localStorage.setItem('inercia_v6', JSON.stringify(db));
         }
 
-        function addProduct() {
-            const name = document.getElementById('p-name').value;
-            const price = document.getElementById('p-price').value;
-            const img = document.getElementById('p-img').value;
-            if(name && price && img) {
-                db.push({name, price, img});
+        function addP() {
+            const n = document.getElementById('p-name').value, 
+                  p = document.getElementById('p-price').value, 
+                  i = document.getElementById('p-img').value;
+            if(n && p && i) {
+                db.push({name: n, price: p, img: i});
                 render();
                 document.getElementById('p-name').value = '';
                 document.getElementById('p-price').value = '';
@@ -182,7 +193,13 @@
             }
         }
 
-        function deleteItem(i) { db.splice(i, 1); render(); }
+        function del(i) {
+            if(confirm("¿Estás segura de borrar este producto de inercia?")) {
+                db.splice(i, 1);
+                render();
+            }
+        }
+
         render();
     </script>
 </body>
