@@ -3,182 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Moda en Movimiento</title>
-    <!-- Tailwind de Respaldo -->
-    <script src="https://tailwindcss.com"></script>
-    <style>
-        @import url('https://googleapis.com');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #fff; color: #1a1a1a; }
-        .serif { font-family: 'Playfair Display', serif; }
-        
-        /* NAVBAR */
-        header { position: fixed; width: 100%; top: 0; background: rgba(255,255,255,0.98); border-bottom: 1px solid #f0f0f0; z-index: 100; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 22px; letter-spacing: 5px; text-transform: uppercase; font-weight: bold; cursor: pointer; }
-        
-        /* BANNER */
-        .hero { height: 75vh; background: #eee; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-top: 60px; }
-        #main-banner { position: absolute; width: 100%; height: 100%; object-fit: cover; }
-        .hero-text { position: relative; z-index: 10; text-align: center; color: white; }
-        .hero-text h1 { font-size: 80px; font-style: italic; text-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-
-        /* GRILLA */
-        .container { max-width: 1200px; margin: 0 auto; padding: 50px 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 30px; }
-        .card { text-align: center; border: 1px solid #f9f9f9; padding-bottom: 15px; }
-        .card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; margin-bottom: 10px; }
-        
-        /* ADMIN */
-        #view-admin { display: none; padding-top: 120px; max-width: 900px; margin: 0 auto; }
-        .box { background: #fdfdfd; border: 1px solid #eee; padding: 30px; margin-bottom: 20px; }
-        input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 2px; }
-        .btn { background: #000; color: #fff; padding: 12px 20px; border: none; cursor: pointer; text-transform: uppercase; font-size: 11px; width: 100%; }
-        
-        /* CARRITO */
-        #cart { position: fixed; top: 0; right: 0; height: 100%; width: 350px; background: #fff; z-index: 200; box-shadow: -10px 0 30px rgba(0,0,0,0.1); transform: translateX(100%); transition: 0.4s; padding: 30px; }
-        .open { transform: translateX(0) !important; }
-    </style>
+    <title>Ultra Fashion | Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fuente elegante similar a la imagen -->
+    <link href="https://googleapis.com" rel="stylesheet">
 </head>
 <body>
 
+    <!-- Header / Nav -->
     <header>
-        <div class="logo serif" onclick="nav('home')">INERCIA</div>
-        <button onclick="toggleCart()" style="background:none; border:none; cursor:pointer; font-size: 20px;">🛒 <span id="cart-count">0</span></button>
+        <div class="logo">ULTRA</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">New Arrival</a>
+            <a href="#">Clothes</a>
+            <a href="#">Jacket</a>
+            <a href="#">Sale</a>
+        </nav>
     </header>
 
-    <!-- TIENDA -->
-    <main id="view-home">
-        <section class="hero">
-            <img id="display-h" src="">
-            <div class="hero-text"><h1 id="txt-l" class="serif">Inercia</h1></div>
-        </section>
-        <div class="container">
-            <h2 class="serif italic" style="text-align:center; font-size: 30px; margin-bottom: 40px;">New Arrivals</h2>
-            <div id="grid" class="grid"></div>
-        </div>
-    </main>
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Aquí iría tu imagen de fondo principal -->
+    </section>
 
-    <!-- ADMIN (Código 0110) -->
-    <main id="view-admin">
-        <div class="box">
-            <h2 class="serif">Panel Inercia</h2>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                <div>
-                    <p style="font-size: 10px; font-weight: bold; margin-bottom: 10px;">1. PRODUCTO</p>
-                    <input id="n" type="text" placeholder="Nombre">
-                    <input id="p" type="number" placeholder="Precio">
-                    <input id="s" type="number" placeholder="Stock">
-                    <input id="c" type="text" placeholder="Categoría">
-                    <input id="f" type="file">
-                    <button class="btn" onclick="addP()">Publicar</button>
-                </div>
-                <div>
-                    <p style="font-size: 10px; font-weight: bold; margin-bottom: 10px;">2. AJUSTES</p>
-                    <input id="al" type="text" placeholder="Nombre Marca">
-                    <textarea id="ap" placeholder="Métodos de Pago"></textarea>
-                    <textarea id="ae" placeholder="Métodos de Envío"></textarea>
-                    <p style="font-size: 9px;">Banner Principal:</p>
-                    <input id="fh" type="file">
-                    <button class="btn" onclick="upd()" style="background:#666">Guardar Cambios</button>
-                </div>
+    <!-- New Arrivals Grid -->
+    <section class="container">
+        <h2 class="section-title">New Arrivals</h2>
+        <div class="product-grid">
+            <!-- Producto 1 -->
+            <div class="product-card">
+                <img src="https://placeholder.com" alt="Producto">
+                <h3>Brown Long Blouse</h3>
+                <p>NT$1299</p>
             </div>
-            <div id="hist" style="margin-top: 30px; font-size: 10px; background: #fff; padding: 10px; border: 1px solid #eee;"></div>
-            <button onclick="nav('home')" style="margin-top:20px; cursor:pointer; background:none; border:none; text-decoration:underline; font-size:10px;">Salir</button>
+            <!-- Repetir para otros productos -->
         </div>
-    </main>
+    </section>
 
-    <!-- CARRITO -->
-    <div id="cart">
-        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:10px;">
-            <span class="serif" style="font-size:20px;">Bolsa</span>
-            <button onclick="toggleCart()" style="border:none; background:none; font-size:25px; cursor:pointer;">&times;</button>
-        </div>
-        <div id="cart-list" style="padding: 20px 0; font-size: 13px;"></div>
-        <div id="info-c" style="font-size: 10px; color: #888; margin-bottom: 20px;"></div>
-        <div style="border-top:1px solid #eee; padding-top:20px;">
-            <p style="font-weight:bold; font-size:20px;">Total: <span id="total">$0</span></p>
-            <button class="btn" onclick="buy()" style="margin-top:20px;">Finalizar WhatsApp</button>
-        </div>
-    </div>
-
-    <button onclick="pAdmin()" style="position:fixed; bottom:10px; right:10px; opacity:0.1; font-size:8px; cursor:pointer;">ADM</button>
-
-    <script>
-        let db = JSON.parse(localStorage.getItem('ine_db')) || { prods: [], sales: [], h: '', l: 'INERCIA', p: '', e: '' };
-        let cart = [];
-
-        function pAdmin() { if (prompt("Código:") === "0110") nav('admin'); }
-        function nav(v) {
-            document.getElementById('view-home').style.display = v === 'home' ? 'block' : 'none';
-            document.getElementById('view-admin').style.display = v === 'admin' ? 'block' : 'none';
-        }
-        function toggleCart() { document.getElementById('cart').classList.toggle('open'); }
-
-        const getImg = (id) => new Promise(res => {
-            const f = document.getElementById(id).files[0];
-            if(!f) return res(null);
-            const r = new FileReader();
-            r.onload = e => res(e.target.result);
-            r.readAsDataURL(f);
-        });
-
-        async function addP() {
-            const img = await getImg('f');
-            if(img) {
-                db.prods.push({ id: Date.now(), n: document.getElementById('n').value, p: document.getElementById('p').value, s: document.getElementById('s').value, c: document.getElementById('c').value, img });
-                save(); render(); nav('home');
-            }
-        }
-
-        async function upd() {
-            const h = await getImg('fh');
-            if(h) db.h = h;
-            db.l = document.getElementById('al').value || db.l;
-            db.p = document.getElementById('ap').value || db.p;
-            db.e = document.getElementById('ae').value || db.e;
-            save(); render();
-        }
-
-        function render() {
-            document.getElementById('display-h').src = db.h;
-            document.getElementById('txt-l').innerText = db.l;
-            document.getElementById('info-c').innerHTML = `Pago: ${db.p}<br>Envío: ${db.e}`;
-            
-            document.getElementById('grid').innerHTML = db.prods.map(p => `
-                <div class="card">
-                    <img src="${p.img}">
-                    <p style="font-size:9px; color:#aaa;">${p.c}</p>
-                    <h3 class="serif">${p.n}</h3>
-                    <p>$${p.p}</p>
-                    <button class="btn" style="width:auto; padding:5px 15px; margin-top:5px;" onclick="addCart(${p.id})">Comprar</button>
-                    <button onclick="delP(${p.id})" style="color:red; font-size:8px; border:none; background:none; cursor:pointer; display:block; margin:5px auto;">Eliminar</button>
-                </div>
-            `).join('');
-
-            document.getElementById('hist').innerHTML = db.sales.map(s => `<div>${s.d} - $${s.t}</div>`).join('');
-        }
-
-        function delP(id) { db.prods = db.prods.filter(x => x.id !== id); save(); render(); }
-        function addCart(id) { const p = db.prods.find(x => x.id === id); cart.push(p); updCart(); toggleCart(); }
-        
-        function updCart() {
-            document.getElementById('cart-list').innerHTML = cart.map(i => `<div>${i.n} - $${i.p}</div>`).join('');
-            const t = cart.reduce((a, b) => a + parseInt(b.p), 0);
-            document.getElementById('total').innerText = '$' + t;
-            document.getElementById('cart-count').innerText = cart.length;
-        }
-
-        function buy() {
-            const t = cart.reduce((a, b) => a + parseInt(b.p), 0);
-            db.sales.push({ d: new Date().toLocaleString(), t });
-            save();
-            window.open(`https://wa.me{encodeURIComponent("Pedido Inercia: " + cart.map(p => p.n).join(", "))}`);
-            cart = []; updCart(); render(); toggleCart();
-        }
-
-        function save() { localStorage.setItem('ine_db', JSON.stringify(db)); }
-        render();
-    </script>
 </body>
-</html>
+</html>:root {
+    --black: #1a1a1a;
+    --gray: #f4f4f4;
+    --text-light: #666;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--black);
+}
+
+/* Header */
+header {
+    padding: 2rem;
+    text-align: center;
+}
+
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    letter-spacing: 5px;
+    margin-bottom: 1rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--black);
+    margin: 0 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* Hero Section */
+.hero {
+    height: 80vh;
+    background: url('tu-imagen-principal.jpg') center/cover no-repeat;
+    background-color: #ddd; /* Placeholder */
+}
+
+/* Grid de Productos */
+.container {
+    padding: 4rem 10%;
+    text-align: center;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+
+.product-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.product-card {
+    flex: 1;
+    min-width: 200px;
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+    filter: grayscale(20%); /* Efecto sutil de la imagen */
+}
+
+.product-card h3 {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-top: 15px;
+}
+
+.product-card p {
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+
