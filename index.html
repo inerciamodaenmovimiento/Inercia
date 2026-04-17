@@ -32,62 +32,7 @@
         }
         input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
         .btn-admin { background: black; color: white; border: none; padding: 10px 20px; cursor: pointer; width: 100%; margin-top: 10px; }
-    </style><!-- REEMPLAZA TU SECCIÓN DE ADMIN POR ESTA NUEVA -->
-<div id="admin-panel">
-    <h3 style="font-family: 'Playfair Display'; margin-bottom: 5px;">Editor Inercia</h3>
-    <p style="font-size: 10px; color: gray; margin-bottom: 15px;">ADMIN MODE | 0110</p>
-    
-    <label>Anuncio Superior (Banner):</label>
-    <input type="text" id="edit-banner" placeholder="Ej: Envío gratis a todo el país">
-
-    <label>Título Principal:</label>
-    <input type="text" id="edit-title" placeholder="Ej: MODA EN MOVIMIENTO">
-
-    <label>Frase Secundaria:</label>
-    <input type="text" id="edit-subtitle" placeholder="Ej: Edición Limitada 2026">
-    
-    <label>URL de Imagen Hero:</label>
-    <input type="text" id="edit-img" placeholder="Pega el link de la foto aquí">
-
-    <label>Color de Fondo:</label>
-    <select id="edit-bg" style="width: 100%; padding: 10px; margin: 10px 0;">
-        <option value="#ffffff">Blanco Minimal</option>
-        <option value="#f5f2ed">Crema Editorial (Nude)</option>
-        <option value="#e5e5e5">Gris Suave</option>
-    </select>
-    
-    <button class="btn-admin" onclick="applyChanges()">Actualizar Vista</button>
-    <button onclick="closeAdmin()" style="background:none; border:none; color:red; margin-top:10px; cursor:pointer; width:100%; font-size: 12px;">CERRAR PANEL</button>
-</div>
-
-<!-- ACTUALIZA TU SCRIPT CON ESTO -->
-<script>
-    // ... mantiene la función checkCode y closeAdmin igual ...
-
-    function applyChanges() {
-        let nBanner = document.getElementById('edit-banner').value;
-        let nTitle = document.getElementById('edit-title').value;
-        let nSubtitle = document.getElementById('edit-subtitle').value;
-        let nImg = document.getElementById('edit-img').value;
-        let nBg = document.getElementById('edit-bg').value;
-
-        // Aplicar los cambios a la web
-        if(nBanner) {
-            document.getElementById('top-banner').innerText = nBanner;
-            document.getElementById('top-banner').style.display = 'block';
-        }
-        if(nTitle) document.getElementById('main-title').innerText = nTitle;
-        if(nSubtitle) document.getElementById('main-subtitle').innerText = nSubtitle;
-        if(nImg) document.getElementById('main-img').src = nImg;
-        
-        // Cambiar el color de fondo de toda la página
-        document.body.style.backgroundColor = nBg;
-
-        alert("Vista previa actualizada.");
-        closeAdmin();
-    }
-</script>
-
+    </style>
 </head>
 <body>
 
