@@ -1,86 +1,26 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>INERCIA — Identity System</title>
-    <link href="https://googleapis.com" rel="stylesheet">
-    <style>
-        :root { --black: #111; --white: #fff; --grey: #f4f4f4; --accent: #0057FF; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--white); color: var(--black); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
-        
-        /* Header Minimalista */
-        nav { padding: 40px; display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9); }
-        .brand { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: -2px; font-size: 24px; }
-        
-        /* Layout Coral: La grilla rota */
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
-        
-        .section-intro { padding: 150px 0; border-bottom: 1px solid #eee; }
-        .tag { font-family: 'Syncopate'; font-size: 10px; color: var(--accent); margin-bottom: 20px; display: block; }
-        h1 { font-family: 'Syncopate'; font-size: 8vw; line-height: 0.9; text-transform: uppercase; letter-spacing: -5px; }
-        .italic-subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2rem; color: #666; margin-left: 20%; }
+<!-- Reemplaza tu sección .project-grid con este contenedor vacío -->
+<main class="project-grid" id="gallery-container">
+    <!-- El Admin inyectará las fotos aquí -->
+</main>
 
-        /* Módulos de Imagen Asimétricos */
-        .project-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; padding: 100px 0; }
-        
-        .image-box { background: var(--grey); position: relative; overflow: hidden; }
-        .image-box img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; filter: grayscale(1); transition: 0.5s; }
-        .image-box:hover img { filter: grayscale(0); }
-        
-        /* Posicionamiento Coral (Broken Grid) */
-        .item-lg { grid-column: 1 / 9; height: 90vh; } /* Imagen dominante */
-        .item-sm { grid-column: 8 / 13; height: 60vh; margin-top: -20vh; border-left: 10px solid var(--white); } /* Superpuesta */
-        .item-mid { grid-column: 3 / 7; height: 70vh; margin-top: 100px; }
-
-        .meta-data { grid-column: 10 / 13; font-size: 11px; padding-top: 100px; text-transform: uppercase; line-height: 2; border-top: 1px solid var(--black); height: fit-content; }
-
-        /* Footer Estilo Brand Identity */
-        footer { padding: 100px 40px; background: var(--black); color: var(--white); text-align: center; }
-        footer h2 { font-family: 'Syncopate'; font-size: 5vw; }
-    </style>
-</head>
-<body>
-
-<nav>
-    <div class="brand">INERCIA.</div>
-    <div style="font-size: 12px; letter-spacing: 2px;">2024 © IDENTITY SYSTEM</div>
-</nav>
-
-<div class="container">
-    <section class="section-intro">
-        <span class="tag">CONCEPT DEVELOPMENT</span>
-        <h1>MODA EN<br>MOVIMIENTO</h1>
-        <p class="italic-subtitle">— La estética de lo cinético.</p>
-    </section>
-
-    <main class="project-grid">
-        <div class="image-box item-lg">
-            <img src="https://unsplash.com" alt="Inercia View">
-            <span style="position:absolute; bottom:20px; left:20px; font-size:10px;">FIGURE 01 — FLOW STATE</span>
-        </div>
-        
-        <aside class="meta-data">
-            <strong>Client:</strong> Inercia Studio<br>
-            <strong>Service:</strong> Brand Identity<br>
-            <strong>Year:</strong> 2024<br>
-            <strong>Typography:</strong> Syncopate / Inter
-        </aside>
-
-        <div class="image-box item-sm">
-            <img src="https://unsplash.com" alt="Inercia Detail">
-        </div>
-
-        <div class="image-box item-mid">
-            <img src="https://unsplash.com" alt="Texture">
-        </div>
-    </main>
-</div>
-
-<footer>
-    <h2>INERCIA</h2>
-    <p style="margin-top: 20px; font-size: 12px; opacity: 0.5;">GITHUB REPO / FRONT-END ONLY</p>
-</footer>
-
-</body>
-</html>
+<script>
+    // Conexión con tu "Admin" (data.json)
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('gallery-container');
+            
+            data.editorial_images.forEach(img => {
+                const html = `
+                    <div class="image-box ${img.class}">
+                        <img src="${img.url}" alt="${img.title}">
+                        <span style="position:absolute; bottom:20px; left:20px; font-size:10px;">
+                            FIGURE ${img.id} — ${img.title}
+                        </span>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        })
+        .catch(err => console.error("Error cargando el Admin:", err));
+</script>
