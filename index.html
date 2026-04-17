@@ -6,194 +6,238 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #f0f0e8; --text: #2c2c2c; --line: rgba(0,0,0,0.1); --accent: #27ae60; }
-        * { box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        :root { --bg: #f0f0e8; --text: #2c2c2c; --line: rgba(0,0,0,0.1); --accent: #27ae60; --gold: #c5a059; }
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
         
-        /* Grano de Película */
-        body::before { content: ""; position: fixed; inset: 0; background: url(https://vercel.app); opacity: 0.04; pointer-events: none; z-index: 1000; }
+        /* --- ESTÉTICA EDITORIAL --- */
+        nav { display: flex; justify-content: space-around; align-items: center; padding: 30px 5%; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 100; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 35px; letter-spacing: 8px; cursor: pointer; }
+        .cart-trigger { cursor: pointer; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid #000; }
 
-        /* --- DISEÑO EDITORIAL --- */
-        nav { display: flex; justify-content: space-around; align-items: center; padding: 40px 5%; text-transform: uppercase; font-size: 10px; letter-spacing: 3px; border-bottom: 1px solid var(--line); }
-        .logo { font-family: 'Playfair Display', serif; font-size: 45px; letter-spacing: 8px; font-weight: 400; }
+        .magazine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 80px 10%; }
+        .product-card { cursor: pointer; text-align: left; position: relative; animation: fadeIn 1s ease; }
+        .product-card img { width: 100%; height: 450px; object-fit: cover; filter: grayscale(0.5); border: 1px solid var(--line); transition: 0.6s; }
+        .product-card:hover img { filter: grayscale(0); transform: scale(1.02); }
+        .p-cat { font-size: 10px; color: var(--gold); text-transform: uppercase; margin-top: 15px; letter-spacing: 2px; }
+        .p-name { font-family: 'Playfair Display', serif; font-size: 16px; margin: 5px 0; }
 
-        .hero { position: relative; width: 90%; margin: 30px auto; height: 85vh; overflow: hidden; background: #000; }
-        .hero img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); opacity: 0.8; }
-        .hero-text { position: absolute; bottom: 8%; left: 5%; color: white; text-transform: uppercase; }
-        .hero-text h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0; }
+        /* --- CARRITO DE COMPRAS --- */
+        #cart-panel { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: #fff; z-index: 2000; box-shadow: -10px 0 50px rgba(0,0,0,0.1); transition: 0.5s; padding: 40px; overflow-y: auto; }
+        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .cart-item img { width: 60px; height: 80px; object-fit: cover; }
+        .cart-total { border-top: 2px solid #000; padding-top: 20px; margin-top: 30px; font-weight: 600; }
 
-        .magazine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 100px 10%; }
-        .product-card { cursor: pointer; text-align: center; position: relative; }
-        .product-card img { width: 100%; height: 450px; object-fit: cover; filter: grayscale(0.7); border: 1px solid var(--line); transition: 0.5s; }
-        .product-card:hover img { filter: grayscale(0); }
-        .product-card h3 { font-family: 'Playfair Display', serif; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-top: 15px; border-bottom: 1px solid var(--text); display: inline-block; }
-
-        .quote-block { position: relative; height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; background: #e0ded4; margin-top: 50px; }
-        .quote-block img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; filter: grayscale(0.5); }
-        .quote-content { z-index: 10; color: white; }
-        .quote-content h2 { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 400; margin: 0; }
-        .quote-content i { font-family: 'Cormorant+Garamond', serif; font-style: italic; font-size: 5rem; text-transform: none; }
-
-        /* --- VISTA DETALLADA (MODAL) --- */
-        #view-modal { display: none; position: fixed; inset: 0; background: rgba(240, 240, 232, 0.98); z-index: 2000; align-items: center; justify-content: center; padding: 40px; }
-        .modal-body { display: grid; grid-template-columns: 1fr 1fr; max-width: 1100px; background: white; border: 1px solid var(--line); position: relative; }
-        .modal-img { width: 100%; height: 70vh; object-fit: cover; }
-        .modal-info { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
-        .modal-info h2 { font-family: 'Playfair Display', serif; font-size: 3rem; margin: 0; }
-        .modal-info .price { font-size: 1.5rem; margin: 20px 0; font-weight: 200; }
-        .modal-info .desc { font-size: 0.9rem; line-height: 1.8; color: #666; margin-bottom: 30px; }
-        .btn-buy { background: black; color: white; border: none; padding: 15px; cursor: pointer; letter-spacing: 3px; font-size: 11px; }
-
-        /* --- PANEL ADMIN (SIDEBAR) --- */
-        #admin-panel { display: none; position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: white; z-index: 3000; padding: 30px; overflow-y: auto; box-shadow: -10px 0 50px rgba(0,0,0,0.1); font-size: 12px; }
+        /* --- PANEL ADMIN AVANZADO --- */
+        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 450px; height: 100vh; background: #fff; z-index: 3000; padding: 30px; overflow-y: auto; border-right: 2px solid #000; font-size: 12px; }
         .admin-sec { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        label { display: block; font-weight: 600; text-transform: uppercase; font-size: 10px; margin-top: 15px; color: #888; }
-        input, textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; font-family: 'Montserrat'; }
-        .btn-admin { background: black; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .btn-del { background: red; color: white; border: none; padding: 5px 10px; cursor: pointer; margin-top: 10px; font-size: 9px; }
-        #secret-door { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: pointer; opacity: 0; z-index: 4000; }
+        .checklist-item { display: flex; justify-content: space-between; padding: 8px; background: #f9f9f9; margin-bottom: 5px; border-radius: 4px; }
+        input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; font-family: 'Montserrat'; }
+        .btn-admin { background: #000; color: #fff; border: none; padding: 12px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .status-badge { padding: 2px 8px; border-radius: 10px; font-size: 9px; color: #fff; }
+
+        /* --- VISTA PRODUCTO --- */
+        #product-modal { display: none; position: fixed; inset: 0; background: rgba(240,240,232,0.98); z-index: 1500; align-items: center; justify-content: center; padding: 40px; }
+        .modal-body { display: grid; grid-template-columns: 1fr 1fr; max-width: 1000px; background: #fff; border: 1px solid var(--line); }
+
+        #secret-door { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; cursor: pointer; opacity: 0; z-index: 4000; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <nav>
-        <span id="nav-1">Colecciones</span>
-        <div class="logo">INERCIA</div>
-        <span id="nav-2">Shop Info</span>
+        <div class="logo" onclick="location.reload()">INERCIA</div>
+        <div class="cart-trigger" onclick="toggleCart(true)">Carrito (<span id="cart-count">0</span>)</div>
     </nav>
 
-    <section class="hero">
-        <img id="h-img" src="https://unsplash.com">
-        <div class="hero-text">
-            <h2 id="h-title">Miracle Collection</h2>
-            <p id="h-sub">Explore Now</p>
-        </div>
-    </section>
-
     <div class="magazine-grid" id="main-catalog">
-        <!-- Los productos aparecerán aquí -->
+        <!-- Productos se cargan aquí -->
     </div>
 
-    <section class="quote-block">
-        <img id="q-img" src="https://unsplash.com">
-        <div class="quote-content">
-            <h2 id="q-text">Donde hay <i>Movimiento</i>,<br>hay magia</h2>
+    <!-- CARRITO PANEL -->
+    <div id="cart-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="font-family:'Playfair Display'">Tu Carrito</h2>
+            <span onclick="toggleCart(false)" style="cursor:pointer; font-size:24px;">&times;</span>
         </div>
-    </section>
-
-    <footer style="padding: 100px 10%; text-align: center; border-top: 1px solid var(--line);">
-        <div id="footer-envio" style="font-size: 11px; letter-spacing: 2px;">ENVÍOS: Correo Argentino / Andreani</div>
-        <div id="footer-pago" style="font-size: 11px; letter-spacing: 2px; margin-top: 10px;">PAGOS: Transferencia bancaria y Tarjetas</div>
-    </footer>
+        <div id="cart-items" style="margin-top:40px;">No hay prendas en el carrito.</div>
+        <div class="cart-total">
+            Total: $<span id="cart-total-val">0</span>
+        </div>
+        <div style="margin-top:20px; font-size:11px; color:#666;">
+            <strong>Envío:</strong> <span id="display-envio">Selecciona al finalizar</span><br>
+            <strong>Pago:</strong> <span id="display-pago">Transferencia / Tarjeta</span>
+        </div>
+        <button class="btn-admin" style="margin-top:30px;" onclick="checkout()">Finalizar Compra</button>
+    </div>
 
     <!-- VISTA PRODUCTO -->
-    <div id="view-modal">
+    <div id="product-modal">
         <div class="modal-body">
-            <span onclick="this.parentElement.parentElement.style.display='none'" style="position:absolute; top:20px; right:20px; cursor:pointer; font-size:24px;">&times;</span>
-            <img id="m-img" class="modal-img">
-            <div class="modal-info">
-                <h2 id="m-title">Producto</h2>
-                <div class="price" id="m-price">$0</div>
-                <p class="desc" id="m-desc">Descripción detallada...</p>
-                <p id="m-stock" style="font-size: 10px; color: gray; margin-bottom: 20px;">STOCK: 0</p>
-                <button class="btn-buy" onclick="addOrder()">COMPRAR AHORA</button>
+            <img id="m-img" style="width:100%; height:600px; object-fit:cover;">
+            <div style="padding:60px;">
+                <span onclick="closeModal()" style="float:right; cursor:pointer;">Cerrar</span>
+                <h2 id="m-title" style="font-family:'Playfair Display'; font-size:3rem; margin:0;"></h2>
+                <div id="m-price" style="font-size:20px; margin:20px 0;"></div>
+                <p id="m-desc" style="font-size:13px; line-height:1.8; color:#666;"></p>
+                <button class="btn-admin" onclick="addToCart()">Añadir al Carrito</button>
             </div>
         </div>
     </div>
 
-    <!-- PANEL ADMIN -->
     <div id="secret-door" onclick="login()"></div>
+
+    <!-- ADMIN PRO PANEL -->
     <div id="admin-panel">
-        <h2 style="font-family:'Playfair Display'">Inercia Admin</h2>
+        <h2 style="font-family:'Playfair Display'; border-bottom:2px solid #000;">Inercia Admin Pro</h2>
         
         <div class="admin-sec">
-            <h4>TEXTOS HOME</h4>
-            <label>Título Hero:</label><input type="text" id="in-h-title" oninput="document.getElementById('h-title').innerText=this.value">
-            <label>Subtítulo Hero:</label><input type="text" id="in-h-sub" oninput="document.getElementById('h-sub').innerText=this.value">
-            <label>Frase Mágica:</label><input type="text" id="in-q-text" oninput="document.getElementById('q-text').innerHTML=this.value">
-        </div>
-
-        <div class="admin-sec">
-            <h4>NUEVO PRODUCTO</h4>
+            <h4>📦 GESTIÓN DE PRODUCTOS (SUBIDA/BAJA)</h4>
             <label>Imagen:</label><input type="file" id="p-img" accept="image/*">
+            <label>Categoría:</label>
+            <select id="p-cat">
+                <option value="Miracle Collection">Miracle Collection</option>
+                <option value="Bestsellers">Bestsellers</option>
+                <option value="Accesorios">Accesorios</option>
+            </select>
             <label>Nombre:</label><input type="text" id="p-name">
-            <label>Precio:</label><input type="number" id="p-price">
-            <label>Stock:</label><input type="number" id="p-stock">
+            <label>Precio ($):</label><input type="number" id="p-price">
             <label>Descripción:</label><textarea id="p-desc"></textarea>
-            <button class="btn-admin" style="background:var(--accent)" onclick="uploadProduct()">SUBIR PRODUCTO</button>
+            <button class="btn-admin" onclick="uploadProduct()" style="background:var(--accent)">Publicar Producto</button>
+            
+            <label style="margin-top:20px;">CHECKLIST DE PRODUCTOS:</label>
+            <div id="admin-checklist" style="max-height:150px; overflow:auto;"></div>
         </div>
 
         <div class="admin-sec">
-            <h4>MÉTODOS Y LOGÍSTICA</h4>
-            <label>Info Envío:</label><input type="text" oninput="document.getElementById('footer-envio').innerText=this.value">
-            <label>Info Pago:</label><input type="text" oninput="document.getElementById('footer-pago').innerText=this.value">
+            <h4>📋 HISTORIAL DE PEDIDOS</h4>
+            <div id="admin-orders" style="background:#f0f0f0; padding:10px; font-size:10px;">Sin pedidos aún.</div>
         </div>
 
         <div class="admin-sec">
-            <h4>HISTORIAL DE PEDIDOS</h4>
-            <div id="order-list" style="max-height: 150px; overflow: auto; background: #f9f9f9; padding: 10px;">Sin pedidos.</div>
+            <h4>⚙️ CONFIGURACIÓN DE TIENDA</h4>
+            <label>Método de Envío:</label><input type="text" id="in-envio" placeholder="Ej: Correo Argentino a todo el país">
+            <label>Método de Pago:</label><input type="text" id="in-pago" placeholder="Ej: 10% OFF Transferencia">
+            <button class="btn-admin" onclick="updateStoreInfo()">Guardar Datos de Tienda</button>
         </div>
 
-        <button class="btn-admin" onclick="exportHTML()">DESCARGAR INDEX.HTML ACTUALIZADO</button>
-        <button onclick="document.getElementById('admin-panel').style.display='none'" style="width:100%; border:none; background:none; color:red; margin-top:20px; cursor:pointer;">CERRAR PANEL</button>
+        <button class="btn-admin" onclick="exportHTML()" style="background:#c5a059">DESCARGAR INDEX.HTML ACTUALIZADO</button>
+        <button onclick="location.reload()" style="width:100%; border:none; background:none; color:red; margin-top:20px; cursor:pointer;">Cerrar Panel</button>
     </div>
 
     <script>
-        function login() { if(prompt("Acceso Inercia:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
+        let cart = [];
+        let currentProduct = null;
+
+        function login() { if(prompt("Root Access:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
 
         async function uploadProduct() {
-            const file = document.getElementById('p-img').files[0];
+            const file = document.getElementById('p-img').files;
+            const cat = document.getElementById('p-cat').value;
             const name = document.getElementById('p-name').value;
             const price = document.getElementById('p-price').value;
-            const stock = document.getElementById('p-stock').value;
             const desc = document.getElementById('p-desc').value;
 
             if(!file || !name) return alert("Faltan datos");
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const id = Date.now();
+                const id = "p-" + Date.now();
                 const img = e.target.result;
                 const html = `
-                    <div class="product-card" id="pc-${id}" onclick="openProduct('${name}', '${price}', '${img}', '${desc}', '${stock}')">
+                    <div class="product-card" id="${id}" onclick="openProduct('${name}', ${price}, '${img}', '${desc}')">
                         <img src="${img}">
-                        <h3>${name}</h3>
-                        <button class="btn-del" onclick="event.stopPropagation(); document.getElementById('pc-${id}').remove()">Eliminar</button>
+                        <div class="p-cat">${cat}</div>
+                        <div class="p-name">${name}</div>
+                        <div style="font-size:12px;">$${price}</div>
                     </div>
                 `;
                 document.getElementById('main-catalog').insertAdjacentHTML('beforeend', html);
+                updateChecklist(id, name);
             };
             reader.readAsDataURL(file);
         }
 
-        function openProduct(n, p, i, d, s) {
-            if(document.getElementById('admin-panel').style.display === 'block') return;
+        function updateChecklist(id, name) {
+            const item = `<div class="checklist-item" id="check-${id}">${name} <button onclick="deleteProduct('${id}')" style="color:red; background:none; border:none; cursor:pointer;">BAJA</button></div>`;
+            document.getElementById('admin-checklist').insertAdjacentHTML('beforeend', item);
+        }
+
+        function deleteProduct(id) {
+            if(confirm("¿Dar de baja este producto?")) {
+                document.getElementById(id).remove();
+                document.getElementById('check-' + id).remove();
+            }
+        }
+
+        function openProduct(n, p, i, d) {
+            currentProduct = { n, p, i, d };
             document.getElementById('m-title').innerText = n;
             document.getElementById('m-price').innerText = "$" + p;
             document.getElementById('m-img').src = i;
             document.getElementById('m-desc').innerText = d;
-            document.getElementById('m-stock').innerText = "STOCK: " + s;
-            document.getElementById('view-modal').style.display = 'flex';
+            document.getElementById('product-modal').style.display = 'flex';
         }
 
-        function addOrder() {
-            const prod = document.getElementById('m-title').innerText;
-            const list = document.getElementById('order-list');
-            if(list.innerText === "Sin pedidos.") list.innerHTML = "";
-            list.innerHTML += `<div style="border-bottom:1px solid #ddd; padding:5px">Pedido: ${prod} - ${new Date().toLocaleDateString()}</div>`;
-            alert("Pedido registrado en el historial.");
-            document.getElementById('view-modal').style.display = 'none';
+        function closeModal() { document.getElementById('product-modal').style.display = 'none'; }
+
+        function toggleCart(show) { document.getElementById('cart-panel').style.left = show ? 'calc(100% - 400px)' : '-100%'; }
+
+        function addToCart() {
+            cart.push(currentProduct);
+            updateCartUI();
+            closeModal();
+            toggleCart(true);
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            container.innerHTML = "";
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += parseInt(item.p);
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.i}">
+                        <div>
+                            <div style="font-weight:600">${item.n}</div>
+                            <div>$${item.p}</div>
+                            <span onclick="removeFromCart(${index})" style="font-size:10px; color:red; cursor:pointer;">Quitar</span>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-total-val').innerText = total;
+            if(cart.length === 0) container.innerHTML = "No hay prendas.";
+        }
+
+        function removeFromCart(i) { cart.splice(i, 1); updateCartUI(); }
+
+        function checkout() {
+            if(cart.length === 0) return alert("Carrito vacío");
+            const pedido = { id: Date.now(), total: document.getElementById('cart-total-val').innerText, items: cart.map(i => i.n) };
+            const history = document.getElementById('admin-orders');
+            if(history.innerText === "Sin pedidos aún.") history.innerHTML = "";
+            history.innerHTML += `<div style="border-bottom:1px solid #ccc; padding:5px">Pedido #${pedido.id}: ${pedido.items.join(', ')} ($${pedido.total})</div>`;
+            alert("¡Pedido realizado! Se ha registrado en el historial del Admin.");
+            cart = []; updateCartUI(); toggleCart(false);
+        }
+
+        function updateStoreInfo() {
+            document.getElementById('display-envio').innerText = document.getElementById('in-envio').value;
+            document.getElementById('display-pago').innerText = document.getElementById('in-pago').value;
+            alert("Datos de logística actualizados.");
         }
 
         function exportHTML() {
-            document.querySelectorAll('.btn-del').forEach(b => b.style.display = 'none');
             const html = document.documentElement.outerHTML;
             const blob = new Blob([html], {type: 'text/html'});
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = 'index.html';
             a.click();
-            alert("Sube el archivo descargado a tu GitHub.");
+            alert("Archivo listo para subir a GitHub.");
         }
     </script>
 </body>
