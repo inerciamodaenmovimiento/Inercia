@@ -4,276 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
-    <!-- Librerías de Diseño -->
+    <!-- Librerías de emergencia (Carga garantizada) -->
     <script src="https://tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         @import url('https://googleapis.com');
-        
-        :root { --main-bg: #ffffff; --accent: #1a1a1a; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--main-bg); color: var(--accent); margin: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #000; margin: 0; }
         .serif { font-family: 'Playfair Display', serif; }
-        
-        /* Animaciones */
-        .fade-in { animation: fadeIn 0.8s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        /* Panel Admin Oculto */
-        .admin-hidden { display: none; }
-        .cart-open { transform: translateX(0); }
+        .admin-view { display: none; }
+        .nav-link { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; color: #999; transition: 0.3s; }
+        .nav-link:hover { color: #000; }
     </style>
 </head>
 <body>
 
-    <!-- NAVEGACIÓN ESTILO ULTRA -->
-    <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-50">
-        <nav class="container mx-auto px-8 py-6 flex justify-between items-center">
-            <div class="text-3xl font-bold tracking-[0.4em] serif uppercase cursor-pointer" onclick="navigate('home')">Inercia</div>
-            
-            <ul class="hidden lg:flex space-x-12 text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">
-                <li><a href="javascript:void(0)" onclick="navigate('home')" class="hover:text-black transition">Inicio</a></li>
-                <li><a href="javascript:void(0)" onclick="scrollToId('new-arrivals')" class="hover:text-black transition">Colección</a></li>
-                <li><a href="javascript:void(0)" onclick="navigate('admin')" class="text-red-400 hover:text-red-600 tracking-tighter">Administrador</a></li>
-            </ul>
-
-            <div class="flex items-center space-x-6">
-                <button onclick="toggleCart()" class="relative hover:opacity-50 transition">
-                    <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold">0</span>
-                </button>
+    <!-- NAVBAR TIPO ULTRA -->
+    <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 py-6">
+        <div class="container mx-auto px-8 flex justify-between items-center">
+            <div class="serif text-3xl font-bold tracking-[0.3em] uppercase cursor-pointer" onclick="navigate('home')">INERCIA</div>
+            <div class="hidden lg:flex space-x-12">
+                <a href="javascript:void(0)" onclick="navigate('home')" class="nav-link">Inicio</a>
+                <a href="javascript:void(0)" onclick="scrollToNew()" class="nav-link">Colección</a>
+                <a href="javascript:void(0)" onclick="navigate('admin')" class="nav-link text-red-400">Admin</a>
             </div>
-        </nav>
+            <button onclick="toggleCart()" class="text-xl relative">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
+            </button>
+        </div>
     </header>
 
-    <!-- VISTA CLIENTE (HOME) -->
-    <main id="view-home" class="fade-in">
-        <!-- BANNER PRINCIPAL DINÁMICO -->
-        <section id="hero" class="relative h-screen flex items-center justify-center overflow-hidden bg-stone-100">
-            <img id="banner-img" src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black/5"></div>
-            <div class="relative z-10 text-center text-white">
-                <h1 class="text-7xl md:text-[110px] serif italic mb-4 drop-shadow-xl">Inercia</h1>
-                <p class="text-xs md:text-sm tracking-[0.8em] uppercase font-light">Moda en Movimiento</p>
+    <!-- VISTA TIENDA -->
+    <main id="view-home">
+        <!-- BANNER GIGANTE -->
+        <section class="h-screen bg-stone-100 flex items-center justify-center relative overflow-hidden">
+            <img id="main-banner" src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover opacity-80">
+            <div class="relative z-10 text-center">
+                <h1 class="serif text-8xl md:text-[120px] italic text-white drop-shadow-2xl">Inercia</h1>
+                <p class="text-white text-xs tracking-[1em] uppercase mt-4">Moda en Movimiento</p>
             </div>
         </section>
 
-        <!-- SECCIÓN DE PRODUCTOS -->
+        <!-- GRILLA DE PRODUCTOS -->
         <section id="new-arrivals" class="container mx-auto px-8 py-32">
             <div class="text-center mb-20">
-                <h2 class="text-4xl serif mb-4 italic">Nuevos Ingresos</h2>
-                <div id="home-categories" class="flex justify-center gap-6 mt-6 text-[9px] uppercase tracking-widest text-gray-400 font-bold">
-                    <!-- Categorías se cargan solas -->
-                </div>
+                <h2 class="serif text-4xl italic">New Arrivals</h2>
+                <div class="h-px w-20 bg-black mx-auto mt-4"></div>
             </div>
-            
-            <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-20">
-                <!-- Productos dinámicos -->
+            <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- Se llenan con JS abajo -->
             </div>
         </section>
     </main>
 
-    <!-- PANEL ADMINISTRADOR (Funciones Pedidas) -->
-    <main id="view-admin" class="admin-hidden pt-40 container mx-auto px-8 pb-32">
-        <h2 class="serif text-4xl mb-12 border-b pb-6 italic">Panel de Gestión</h2>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
-            <!-- 1. CARGA DE PRODUCTOS -->
-            <div class="lg:col-span-2 bg-gray-50 p-10 rounded-sm border">
-                <h3 class="text-[10px] font-bold uppercase tracking-[0.2em] mb-8 text-gray-400">Nuevo Producto</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <input id="in-nombre" type="text" placeholder="Nombre de Prenda" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
-                    <input id="in-precio" type="number" placeholder="Precio ($)" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
-                    <input id="in-stock" type="number" placeholder="Stock Inicial" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
-                    <input id="in-cat" type="text" placeholder="Categoría Personalizada" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
-                </div>
-                <div class="p-10 border-2 border-dashed border-gray-200 text-center mb-8 bg-white">
-                    <p class="text-[10px] uppercase font-bold text-gray-400 mb-4">Fotos desde tu PC</p>
-                    <input id="in-file" type="file" multiple class="block w-full text-xs text-gray-500">
-                </div>
-                <button onclick="saveProduct()" class="w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-zinc-800 transition">Publicar en Inercia</button>
+    <!-- VISTA ADMIN -->
+    <main id="view-admin" class="admin-view pt-40 container mx-auto px-8 pb-32">
+        <div class="max-w-3xl mx-auto bg-gray-50 p-10 border">
+            <h2 class="serif text-3xl mb-8 italic">Panel Administrador</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <input id="adm-nombre" type="text" placeholder="Producto" class="p-3 border-b bg-transparent outline-none">
+                <input id="adm-precio" type="number" placeholder="Precio ($)" class="p-3 border-b bg-transparent outline-none">
+                <input id="adm-stock" type="number" placeholder="Stock" class="p-3 border-b bg-transparent outline-none">
+                <input id="adm-cat" type="text" placeholder="Categoría" class="p-3 border-b bg-transparent outline-none">
             </div>
-
-            <!-- 2. CONTROL DE BANNERS E HISTORIAL -->
-            <div class="space-y-10">
-                <div class="bg-white border p-8">
-                    <h3 class="text-[10px] font-bold uppercase mb-4">Modificar Banner Principal</h3>
-                    <input id="in-banner-url" type="text" placeholder="URL de nueva imagen" class="w-full border-b py-2 text-xs mb-4 outline-none">
-                    <button onclick="updateBanner()" class="w-full bg-stone-100 py-3 text-[9px] font-bold uppercase hover:bg-black hover:text-white transition">Cambiar Banner</button>
-                </div>
-                <div class="bg-white border p-8">
-                    <h3 class="text-[10px] font-bold uppercase mb-4">Historial de Ventas</h3>
-                    <div id="sales-history" class="text-[10px] space-y-4 max-h-60 overflow-y-auto">
-                        <!-- Ventas registradas -->
-                    </div>
-                </div>
+            <div class="mb-8 p-10 border-2 border-dashed border-gray-200 text-center">
+                <p class="text-[10px] font-bold uppercase text-gray-400 mb-4">Elegir foto de tu PC</p>
+                <input id="adm-file" type="file" class="text-xs">
             </div>
+            <button onclick="saveProduct()" class="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-widest">Publicar Producto</button>
+            <button onclick="navigate('home')" class="w-full mt-6 text-[10px] uppercase underline">Volver a la tienda</button>
         </div>
     </main>
 
-    <!-- CARRITO DE COMPRAS -->
-    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-white z-[100] shadow-2xl translate-x-full transition-transform duration-500 flex flex-col">
-        <div class="p-10 flex justify-between items-center border-b">
-            <span class="serif text-3xl italic">Tu Bolsa</span>
-            <button onclick="toggleCart()" class="text-4xl font-light">&times;</button>
+    <!-- CARRITO -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-80 md:w-96 bg-white z-[100] shadow-2xl translate-x-full transition-transform duration-500 flex flex-col p-10">
+        <div class="flex justify-between items-center border-b pb-6 mb-6 uppercase tracking-widest text-xs font-bold">
+            <span>Bolsa de Compras</span>
+            <button onclick="toggleCart()" class="text-2xl">&times;</button>
         </div>
-        <div id="cart-items" class="flex-grow p-10 overflow-y-auto space-y-8">
-            <!-- Productos en carrito -->
-        </div>
-        <div class="p-10 border-t bg-stone-50 space-y-6">
-            <div class="flex justify-between font-bold text-2xl tracking-tighter"><span>Subtotal</span><span id="cart-total">$0</span></div>
-            <button onclick="checkout()" class="w-full bg-black text-white py-6 text-[11px] font-bold uppercase tracking-[0.4em]">Finalizar Pedido</button>
-            <button onclick="alert('Arrepentimiento legal registrado')" class="w-full text-gray-400 text-[10px] uppercase underline tracking-widest">Botón de Arrepentimiento</button>
+        <div id="cart-items" class="flex-grow overflow-y-auto space-y-4"></div>
+        <div class="border-t pt-6">
+            <div class="flex justify-between font-bold text-xl mb-6"><span>Total</span><span id="cart-total">$0</span></div>
+            <button onclick="checkout()" class="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-widest">Finalizar Pedido</button>
         </div>
     </div>
 
-    <!-- CONTACTOS -->
-    <div class="fixed bottom-10 right-10 flex flex-col space-y-4 z-50">
-        <a href="https://wa.me" id="wapp-link" target="_blank" class="w-14 h-14 bg-white text-black border border-gray-100 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
-        <a href="https://instagram.com" target="_blank" class="w-14 h-14 bg-white text-black border border-gray-100 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition"><i class="fa-brands fa-instagram text-2xl"></i></a>
-    </div>
+    <!-- BOTONES WHATSAPP -->
+    <a href="https://wa.me" target="_blank" class="fixed bottom-10 right-10 w-14 h-14 bg-white border border-gray-100 rounded-full flex items-center justify-center shadow-xl z-50">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+    </a>
 
     <script>
-        // BASE DE DATOS LOCAL
-        let productos = JSON.parse(localStorage.getItem('in_db')) || [
-            { id: 1, nombre: 'Blusa Larga Inercia', precio: 12500, stock: 5, cat: 'Nuevos', img: 'https://unsplash.com' }
+        // DATOS INICIALES
+        let prods = JSON.parse(localStorage.getItem('in_db_v2')) || [
+            { id: 1, nombre: 'Blusa Brown Ultra', precio: 12500, stock: 5, cat: 'Clothes', img: 'https://unsplash.com' },
+            { id: 2, nombre: 'Grey Coat Inercia', precio: 22900, stock: 3, cat: 'Jacket', img: 'https://unsplash.com' }
         ];
-        let ventas = JSON.parse(localStorage.getItem('in_sales')) || [];
-        let carrito = [];
+        let cart = [];
 
-        // NAVEGACIÓN SIN # EN URL
-        function navigate(view) {
-            document.getElementById('view-home').style.display = view === 'home' ? 'block' : 'none';
-            document.getElementById('view-admin').className = view === 'admin' ? 'pt-40 container mx-auto px-8 pb-32' : 'admin-hidden';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function navigate(v) {
+            document.getElementById('view-home').style.display = v === 'home' ? 'block' : 'none';
+            document.getElementById('view-admin').style.display = v === 'admin' ? 'block' : 'none';
             window.history.pushState("", document.title, window.location.pathname);
         }
 
-        function scrollToId(id) {
+        function scrollToNew() {
             navigate('home');
-            setTimeout(() => {
-                const el = document.getElementById(id);
-                window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' });
-            }, 100);
+            setTimeout(() => { document.getElementById('new-arrivals').scrollIntoView({behavior: 'smooth'}); }, 100);
         }
 
-        // GESTIÓN DEL CARRITO
         function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('translate-x-full'); }
 
+        function render() {
+            const grid = document.getElementById('grid-productos');
+            grid.innerHTML = prods.map(p => `
+                <div class="text-center group">
+                    <div class="aspect-[2/3] bg-gray-100 overflow-hidden mb-6 relative">
+                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 w-full bg-black text-white py-4 text-[10px] font-bold uppercase opacity-0 group-hover:opacity-100 transition-all">Añadir</button>
+                    </div>
+                    <p class="text-[9px] text-gray-400 uppercase tracking-widest mb-1">${p.cat}</p>
+                    <h3 class="serif text-lg mb-1">${p.nombre}</h3>
+                    <p class="text-sm font-light">$${p.precio.toLocaleString()}</p>
+                </div>
+            `).join('');
+        }
+
+        function saveProduct() {
+            const n = document.getElementById('adm-nombre').value;
+            const p = document.getElementById('adm-precio').value;
+            const f = document.getElementById('adm-file').files[0];
+            if (f) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    prods.unshift({ id: Date.now(), nombre: n, precio: parseInt(p), stock: 10, cat: 'Nuevos', img: e.target.result });
+                    localStorage.setItem('in_db_v2', JSON.stringify(prods));
+                    render();
+                    navigate('home');
+                };
+                reader.readAsDataURL(f);
+            }
+        }
+
         function addToCart(id) {
-            const p = productos.find(x => x.id === id);
-            if(p.stock <= 0) return alert("Sin stock disponible");
-            carrito.push(p);
-            updateCartUI();
+            cart.push(prods.find(x => x.id === id));
+            updateCart();
             toggleCart();
         }
 
-        function updateCartUI() {
-            const container = document.getElementById('cart-items');
-            container.innerHTML = carrito.map((item, i) => `
-                <div class="flex items-center gap-6 pb-6 border-b border-stone-100">
-                    <img src="${item.img}" class="w-20 h-24 object-cover">
-                    <div class="flex-grow">
-                        <h4 class="serif text-lg italic">${item.nombre}</h4>
-                        <p class="text-sm text-gray-500">$${item.precio}</p>
-                    </div>
-                    <button onclick="removeFromCart(${i})" class="text-stone-300 hover:text-black">&times;</button>
-                </div>
-            `).join('');
-            const total = carrito.reduce((acc, p) => acc + p.precio, 0);
-            document.getElementById('cart-total').innerText = '$' + total.toLocaleString();
-            document.getElementById('cart-count').innerText = carrito.length;
-        }
-
-        function removeFromCart(i) { carrito.splice(i, 1); updateCartUI(); }
-
-        // ADMINISTRADOR: FUNCIONES
-        function saveProduct() {
-            const n = document.getElementById('in-nombre').value;
-            const p = document.getElementById('in-precio').value;
-            const s = document.getElementById('in-stock').value;
-            const c = document.getElementById('in-cat').value;
-            const file = document.getElementById('in-file').files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    productos.push({ id: Date.now(), nombre: n, precio: parseInt(p), stock: parseInt(s), cat: c, img: e.target.result });
-                    localStorage.setItem('in_db', JSON.stringify(productos));
-                    renderAll();
-                    navigate('home');
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function deleteProd(id) {
-            productos = productos.filter(x => x.id !== id);
-            localStorage.setItem('in_db', JSON.stringify(productos));
-            renderAll();
-        }
-
-        function updateBanner() {
-            const url = document.getElementById('in-banner-url').value;
-            if(url) {
-                document.getElementById('banner-img').src = url;
-                localStorage.setItem('in_banner_saved', url);
-            }
-        }
-
-        // RENDERIZADO GENERAL
-        function renderAll() {
-            const grid = document.getElementById('grid-productos');
-            const catNav = document.getElementById('home-categories');
-            const history = document.getElementById('sales-history');
-
-            // Productos
-            grid.innerHTML = productos.map(p => `
-                <div class="group text-center">
-                    <div class="aspect-[2/3] bg-stone-50 overflow-hidden mb-6 relative">
-                        <img src="${p.img}" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
-                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">Añadir a la Bolsa</button>
-                        <button onclick="deleteProd(${p.id})" class="absolute top-4 right-4 bg-white/90 text-red-500 w-8 h-8 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                    </div>
-                    <h3 class="serif text-xl italic mb-1">${p.nombre}</h3>
-                    <p class="text-[9px] text-gray-400 uppercase tracking-widest mb-2">${p.cat}</p>
-                    <p class="text-sm font-light">$${p.precio.toLocaleString()}</p>
-                    <p class="text-[9px] text-stone-200 mt-2 uppercase tracking-tighter">Stock: ${p.stock}</p>
-                </div>
-            `).join('');
-
-            // Categorías dinámicas
-            const uniqueCats = [...new Set(productos.map(p => p.cat))];
-            catNav.innerHTML = uniqueCats.map(c => `<button class="hover:text-black transition">${c}</button>`).join(' <span class="text-stone-200">|</span> ');
-
-            // Historial Ventas
-            history.innerHTML = ventas.map(v => `<div class="border-b pb-2"><b>${v.fecha}</b><br>${v.resumen} - $${v.total}</div>`).reverse().join('');
+        function updateCart() {
+            const c = document.getElementById('cart-items');
+            c.innerHTML = cart.map(i => `<div class="flex justify-between text-xs border-b pb-2"><span>${i.nombre}</span><span>$${i.precio}</span></div>`).join('');
+            document.getElementById('cart-total').innerText = '$' + cart.reduce((acc, p) => acc + p.precio, 0).toLocaleString();
+            document.getElementById('cart-count').innerText = cart.length;
         }
 
         function checkout() {
-            if(carrito.length === 0) return;
-            const total = carrito.reduce((acc, p) => acc + p.precio, 0);
-            const msg = `PEDIDO INERCIA:\n${carrito.map(p => "- " + p.nombre).join("\n")}\nTOTAL: $${total}`;
-            
-            // Registrar Venta
-            ventas.push({ fecha: new Date().toLocaleString(), resumen: carrito.length + " prendas", total: total });
-            localStorage.setItem('in_sales', JSON.stringify(ventas));
-            
-            // Bajar Stock
-            carrito.forEach(item => {
-                const p = productos.find(x => x.id === item.id);
-                if(p) p.stock--;
-            });
-            localStorage.setItem('in_db', JSON.stringify(productos));
-
-            window.open(`https://wa.me{encodeURIComponent(msg)}`);
-            carrito = []; updateCartUI(); renderAll(); toggleCart();
+            const msg = `Pedido Inercia: ${cart.map(p => p.nombre).join(', ')}. Total: $${document.getElementById('cart-total').innerText}`;
+            window.open(`https://wa.me?text=${encodeURIComponent(msg)}`);
         }
 
-        // Cargar Banner Guardado
-        const saved = localStorage.getItem('in_banner_saved');
-        if(saved) document.getElementById('banner-img').src = saved;
-
-        renderAll();
+        render();
     </script>
 </body>
 </html>
