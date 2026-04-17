@@ -7,54 +7,47 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        :root { 
-            --bg-page: #E2E0DD; /* Fondo beige de la imagen */
-            --white: #ffffff; 
-            --txt: #1a1a1a; 
-            --muted: #8e8e8e;
-        }
+        :root { --bg-page: #E2E0DD; --white: #ffffff; --txt: #1a1a1a; --muted: #8e8e8e; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg-page); color: var(--txt); }
+        
+        /* FIX DE SCROLL: Permitimos que el cuerpo sea scrolleable */
+        html, body { height: auto; min-height: 100%; overflow-x: hidden; background: var(--bg-page); }
 
-        /* --- VISTA TIENDA (HOME BONITO) --- */
         #shop-view { max-width: 1200px; margin: 40px auto; background: var(--white); min-height: 100vh; position: relative; box-shadow: 0 50px 100px rgba(0,0,0,0.05); }
         
         header { padding: 30px 60px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; position: sticky; top: 0; background: #fff; z-index: 100; }
-        .logo { font-family: 'Bodoni Moda', serif; font-size: 26px; font-weight: 700; font-style: italic; letter-spacing: -1px; text-transform: lowercase; }
-        nav a { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; color: var(--txt); margin-right: 30px; font-weight: 600; }
+        .logo { font-family: 'Bodoni Moda', serif; font-size: 26px; font-weight: 700; font-style: italic; text-transform: lowercase; }
         .cart-btn { cursor: pointer; font-size: 11px; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
 
-        /* HERO EDITORIAL (HOME) */
+        /* SECCIONES DEL HOME */
         .hero-home { padding: 60px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center; }
-        .hero-info h1 { font-family: 'Bodoni Moda', serif; font-size: clamp(50px, 8vw, 100px); line-height: 0.85; font-style: italic; margin-bottom: 30px; }
-        .hero-info p { font-size: 14px; line-height: 1.8; color: #666; max-width: 350px; margin-bottom: 40px; }
-        .hero-img-wrap { position: relative; width: 100%; height: 75vh; overflow: hidden; }
-        .hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-        .btn-explorer { padding: 20px 50px; border: 1px solid #000; background: transparent; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; font-weight: 700; }
+        .hero-info h1 { font-family: 'Bodoni Moda', serif; font-size: clamp(40px, 8vw, 80px); line-height: 0.9; font-style: italic; margin-bottom: 25px; }
+        .hero-img-wrap img { width: 100%; height: 70vh; object-fit: cover; }
 
-        /* MARQUESINA */
-        .marquee { background: #000; color: #fff; padding: 15px 0; overflow: hidden; white-space: nowrap; }
-        .marquee-txt { display: inline-block; animation: scroll 20s linear infinite; font-size: 10px; letter-spacing: 5px; text-transform: uppercase; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .section-box { padding: 80px 60px; border-top: 1px solid #f2f2f2; }
+        .section-title { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
 
-        /* CATÁLOGO ESTILO SOEASY */
-        .catalog-section { padding: 80px 60px; }
-        .catalog-section h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 50px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        /* GRID DE PRODUCTOS */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; }
         .product { cursor: pointer; text-align: left; }
-        .product img { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 20px; transition: 0.5s; }
+        .product img { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 20px; transition: 0.4s; }
         .product:hover img { opacity: 0.8; }
-        .product h3 { font-size: 12px; font-weight: 400; text-transform: uppercase; margin-bottom: 5px; }
-        .product p { font-size: 13px; font-weight: 700; }
 
-        /* --- ADMIN (PANTALLA COMPLETA PROFESIONAL) --- */
-        #admin-view { display: none; background: #f4f4f4; min-height: 100vh; position: fixed; inset: 0; z-index: 9999; color: #333; }
+        /* INFO ESPECÍFICA (ENVÍOS Y PAGOS) */
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .info-card h3 { font-size: 12px; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        .info-card p { font-size: 13px; line-height: 1.8; color: #666; white-space: pre-line; }
+
+        /* --- ADMIN PANEL (ESTILO CECILE - PANTALLA COMPLETA) --- */
+        #admin-view { display: none; background: #f4f4f4; min-height: 100vh; position: fixed; inset: 0; z-index: 9999; color: #333; overflow-y: auto; }
         .admin-nav { background: #fff; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; }
         .admin-container { display: grid; grid-template-columns: 250px 1fr; min-height: calc(100vh - 80px); }
         .admin-sidebar { background: #fff; border-right: 1px solid #ddd; padding: 40px 20px; }
         .admin-menu-btn { width: 100%; padding: 15px; text-align: left; background: none; border: none; cursor: pointer; font-weight: 600; border-radius: 8px; margin-bottom: 10px; }
         .admin-menu-btn.active { background: #000; color: #fff; }
-        .admin-content { padding: 60px; max-width: 1000px; overflow-y: auto; }
+        .admin-content { padding: 60px; max-width: 1000px; }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
         .card { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 30px; }
         .field { margin-bottom: 20px; }
         label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: #666; }
@@ -64,102 +57,99 @@
         /* CARRITO */
         #cart-modal { position: fixed; right: -100%; top: 0; width: 450px; height: 100vh; background: #fff; z-index: 2000; padding: 40px; transition: 0.5s; box-shadow: -10px 0 50px rgba(0,0,0,0.1); overflow-y: auto; }
         #cart-modal.open { right: 0; }
-        .close-cart { float: right; font-size: 24px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- VISTA TIENDA (HOME BONITO) -->
+    <!-- VISTA TIENDA -->
     <div id="shop-view">
         <header>
-            <nav><a href="#catalogo">Colección</a><a href="#">Nosotros</a></nav>
             <div class="logo">inercia.</div>
-            <div class="cart-btn" onclick="toggleCart()">
-                BOLSA (<span id="cart-count">0</span>)
-            </div>
+            <div class="cart-btn" onclick="toggleCart()">BOLSA (<span id="cart-count">0</span>)</div>
         </header>
 
         <section class="hero-home">
             <div class="hero-info">
                 <h1 id="h-title">Moda en Movimiento.</h1>
-                <p id="h-desc">Una curaduría de piezas esenciales diseñadas para elevar el guardarropa contemporáneo con elegancia y simplicidad.</p>
-                <button class="btn-explorer" onclick="window.location.href='#catalogo'">Explorar Colección</button>
+                <p id="h-desc">Una curaduría de piezas esenciales diseñadas para elevar el guardarropa contemporáneo.</p>
             </div>
-            <div class="hero-img-wrap">
-                <img src="https://unsplash.com" id="hero-img-web">
-            </div>
+            <div class="hero-img-wrap"><img src="" id="hero-img-web"></div>
         </section>
 
-        <div class="marquee">
-            <div class="marquee-txt">NUEVA COLECCIÓN • INERCIA • ENVÍOS A TODO EL PAÍS • CALIDAD PREMIUM • </div>
-        </div>
-
-        <section class="catalog-section" id="catalogo">
-            <h2>Catálogo Selecto</h2>
+        <!-- CATÁLOGO -->
+        <section class="section-box" id="catalogo">
+            <h2 class="section-title">Colección</h2>
             <div class="grid" id="shop-grid"></div>
         </section>
 
-        <footer style="padding: 60px; border-top: 1px solid #f0f0f0; text-align: center; font-size: 10px; color: #999; letter-spacing: 2px;">
-            INERCIA STUDIO — BUENOS AIRES — 2026
+        <!-- MÉTODOS DE ENVÍO Y PAGO -->
+        <section class="section-box">
+            <h2 class="section-title">Información de Compra</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Métodos de Envío</h3>
+                    <p id="info-ship">Cargando información...</p>
+                </div>
+                <div class="info-card">
+                    <h3>Métodos de Pago</h3>
+                    <p id="info-pay">Cargando información...</p>
+                </div>
+            </div>
+        </section>
+
+        <footer style="padding: 60px; text-align: center; font-size: 10px; color: #999; letter-spacing: 2px;">
+            INERCIA STUDIO — <span id="footer-year">2026</span>
         </footer>
     </div>
 
-    <!-- PANEL ADMIN (CECILÉ STYLE - TOTALMENTE EN ESPAÑOL) -->
+    <!-- PANEL ADMIN (0110) -->
     <div id="admin-view">
         <div class="admin-nav">
             <h2>Panel de Gestión — inercia</h2>
-            <button class="btn-save" onclick="toggleView()" style="background:#ff4b4b;">Salir al Sitio</button>
+            <button class="btn-save" onclick="toggleView()" style="background:#ff4b4b;">Ver Tienda</button>
         </div>
         <div class="admin-container">
             <aside class="admin-sidebar">
                 <button class="admin-menu-btn active" onclick="showSection('general')">General</button>
                 <button class="admin-menu-btn" onclick="showSection('productos')">Productos</button>
-                <button class="admin-menu-btn" onclick="showSection('ventas')">Historial de Ventas</button>
-                <button class="admin-menu-btn" onclick="showSection('pagos')">Pagos y Envío</button>
+                <button class="admin-menu-btn" onclick="showSection('compra')">Envío y Pagos</button>
+                <button class="admin-menu-btn" onclick="showSection('ventas')">Ventas</button>
             </aside>
             <main class="admin-content">
                 
-                <!-- SECCIÓN GENERAL -->
                 <div id="sec-general" class="admin-section active">
                     <h3>Ajustes de Portada</h3><br>
                     <div class="card">
-                        <div class="field"><label>Título de Bienvenida</label><input type="text" id="adm-title"></div>
-                        <div class="field"><label>Foto de Portada</label><input type="file" id="adm-hero-file" accept="image/*"></div>
-                        <button class="btn-save" onclick="saveGeneral()">Guardar Cambios</button>
+                        <div class="field"><label>Título Banner</label><input type="text" id="adm-title"></div>
+                        <div class="field"><label>Imagen Hero</label><input type="file" id="adm-hero-file"></div>
+                        <button class="btn-save" onclick="saveGeneral()">Guardar Portada</button>
                     </div>
                 </div>
 
-                <!-- SECCIÓN PRODUCTOS -->
                 <div id="sec-productos" class="admin-section">
-                    <h3>Gestión de Inventario</h3><br>
+                    <h3>Gestión de Stock</h3><br>
                     <div class="card">
-                        <div class="field"><label>Nombre del Artículo</label><input type="text" id="p-name"></div>
-                        <div class="field"><label>Precio (Solo números)</label><input type="number" id="p-price"></div>
-                        <div class="field"><label>Foto del Producto</label><input type="file" id="p-file" accept="image/*"></div>
-                        <button class="btn-save" onclick="addProduct()">Cargar a la Tienda</button>
+                        <div class="field"><label>Nombre</label><input type="text" id="p-name"></div>
+                        <div class="field"><label>Precio</label><input type="number" id="p-price"></div>
+                        <div class="field"><label>Imagen</label><input type="file" id="p-file"></div>
+                        <button class="btn-save" onclick="addProduct()">Añadir Producto</button>
                     </div>
                     <div id="admin-p-list"></div>
                 </div>
 
-                <!-- SECCIÓN VENTAS -->
-                <div id="sec-ventas" class="admin-section">
-                    <h3>Pedidos Recibidos</h3><br>
-                    <div class="card" style="padding:0; overflow:hidden;">
-                        <table style="width:100%; border-collapse: collapse; font-size: 13px;">
-                            <thead style="background:#f9f9f9;"><tr><th style="padding:15px; text-align:left;">Cliente</th><th style="padding:15px; text-align:left;">Detalle</th><th style="padding:15px; text-align:left;">Total</th></tr></thead>
-                            <tbody id="history-table"></tbody>
-                        </table>
+                <div id="sec-compra" class="admin-section">
+                    <h3>Configuración de Envío y Pago</h3><br>
+                    <div class="card">
+                        <div class="field"><label>Detalles de Envío</label><textarea id="adm-ship-info" rows="4" placeholder="Ej: Envíos a todo el país vía Correo Argentino..."></textarea></div>
+                        <div class="field"><label>Detalles de Pago y CBU</label><textarea id="adm-pay-info" rows="4" placeholder="Ej: Aceptamos Transferencia (Alias: inercia.moda)"></textarea></div>
+                        <div class="field"><label>WhatsApp de Ventas (549...)</label><input type="text" id="adm-wsp"></div>
+                        <button class="btn-save" onclick="savePurchaseInfo()">Guardar Información</button>
                     </div>
                 </div>
 
-                <!-- SECCIÓN PAGOS -->
-                <div id="sec-pagos" class="admin-section">
-                    <h3>Datos de Cobro</h3><br>
-                    <div class="card">
-                        <div class="field"><label>WhatsApp para Pedidos (549...)</label><input type="text" id="adm-wsp"></div>
-                        <div class="field"><label>Datos Bancarios (CBU / Alias)</label><textarea id="adm-bank" rows="4"></textarea></div>
-                        <button class="btn-save" onclick="saveLogistics()">Actualizar Datos</button>
-                    </div>
+                <div id="sec-ventas" class="admin-section">
+                    <h3>Historial de Pedidos</h3><br>
+                    <div class="card" id="history-table"></div>
                 </div>
 
             </main>
@@ -168,36 +158,32 @@
 
     <!-- MODAL CARRITO -->
     <div id="cart-modal">
-        <span class="close-cart" onclick="toggleCart()">&times;</span>
         <h2 style="margin-bottom:30px; font-family: 'Bodoni Moda'">Tu Bolsa</h2>
         <div id="cart-items"></div>
-        <div id="cart-total" style="font-weight:700; margin-top:20px; font-size:18px; border-top: 1px solid #eee; padding-top: 20px;">Total: $0</div>
-        
+        <div id="cart-total" style="font-weight:700; margin-top:20px; font-size:18px;">Total: $0</div>
         <div style="margin-top:30px;">
             <div class="field"><input type="text" id="c-name" placeholder="Nombre completo"></div>
             <div class="field"><input type="text" id="c-address" placeholder="Dirección de envío"></div>
-            <div class="field">
-                <label>Método de Pago</label>
-                <select id="c-pay"><option value="Transferencia">Transferencia</option><option value="Efectivo">Efectivo al recibir</option></select>
-            </div>
-            <button class="btn-explorer" onclick="finalizeOrder()" style="width:100%; background:#000; color:#fff;">Finalizar Pedido por WhatsApp</button>
+            <button class="btn-save" onclick="finalizeOrder()" style="width:100%">Finalizar por WhatsApp</button>
+            <br><br>
+            <button onclick="toggleCart()" style="border:none; background:none; text-decoration:underline; cursor:pointer; width:100%; font-size:11px;">Seguir comprando</button>
         </div>
     </div>
 
     <script>
-        // Estado inicial y memoria
-        let state = JSON.parse(localStorage.getItem('in_st_v5')) || {
+        let state = JSON.parse(localStorage.getItem('in_st_final')) || {
             title: "Moda en Movimiento.",
-            hero: "https://unsplash.com",
+            hero: "",
+            shipInfo: "Envíos personalizados en CABA y Correo Argentino al resto del país.",
+            payInfo: "Transferencia bancaria (10% OFF) y Mercado Pago.",
             wsp: "",
-            bank: "",
             products: [],
             sales: []
         };
 
         let cart = [];
 
-        // Iniciar Admin con "0110"
+        // ACTIVAR ADMIN CON 0110
         let keys = "";
         window.onkeydown = (e) => {
             keys += e.key;
@@ -222,8 +208,7 @@
             event.target.classList.add('active');
         }
 
-        // Fotos a Base64
-        function toBase64(file) {
+        async function toBase64(file) {
             return new Promise((res) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -238,6 +223,13 @@
             save();
         }
 
+        function savePurchaseInfo() {
+            state.shipInfo = document.getElementById('adm-ship-info').value;
+            state.payInfo = document.getElementById('adm-pay-info').value;
+            state.wsp = document.getElementById('adm-wsp').value;
+            save();
+        }
+
         async function addProduct() {
             const n = document.getElementById('p-name').value;
             const p = document.getElementById('p-price').value;
@@ -246,62 +238,47 @@
                 const img = await toBase64(f);
                 state.products.push({ id: Date.now(), name: n, price: parseInt(p), img });
                 save();
-                document.getElementById('p-name').value = '';
-                document.getElementById('p-price').value = '';
             }
         }
 
-        function saveLogistics() {
-            state.wsp = document.getElementById('adm-wsp').value;
-            state.bank = document.getElementById('adm-bank').value;
-            save();
-        }
-
         function save() {
-            localStorage.setItem('in_st_v5', JSON.stringify(state));
+            localStorage.setItem('in_st_final', JSON.stringify(state));
             render();
-            alert("Información actualizada.");
+            alert("¡Cambios guardados con éxito!");
         }
 
         function render() {
             document.getElementById('h-title').innerText = state.title;
             document.getElementById('hero-img-web').src = state.hero;
+            document.getElementById('info-ship').innerText = state.shipInfo;
+            document.getElementById('info-pay').innerText = state.payInfo;
             
             const grid = document.getElementById('shop-grid');
             grid.innerHTML = '';
             state.products.forEach(p => {
-                grid.innerHTML += `
-                    <div class="product" onclick="addToCart(${p.id})">
-                        <img src="${p.img}">
-                        <h3>${p.name}</h3>
-                        <p>$${p.price.toLocaleString()}</p>
-                    </div>
-                `;
+                grid.innerHTML += `<div class="product" onclick="addToCart(${p.id})"><img src="${p.img}"><h3>${p.name}</h3><p>$${p.price.toLocaleString()}</p></div>`;
             });
 
             document.getElementById('admin-p-list').innerHTML = state.products.map(p => `
                 <div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:15px; margin-bottom:10px;">
-                    <span>${p.name}</span>
-                    <button onclick="delProduct(${p.id})" style="color:red; background:none; border:none; cursor:pointer; font-size:11px;">Eliminar</button>
+                    <span>${p.name}</span><button onclick="delProduct(${p.id})" style="color:red; background:none; border:none; cursor:pointer;">Eliminar</button>
                 </div>
             `).join('');
 
             document.getElementById('history-table').innerHTML = state.sales.map(s => `
-                <tr><td style="padding:15px; border-bottom:1px solid #eee;">${s.name}</td><td style="padding:15px; border-bottom:1px solid #eee;">${s.items}</td><td style="padding:15px; border-bottom:1px solid #eee;">$${s.total}</td></tr>
+                <div style="border-bottom:1px solid #eee; padding:10px 0;"><strong>${s.name}</strong>: ${s.items} ($${s.total})</div>
             `).reverse().join('');
         }
 
         function addToCart(id) {
-            const p = state.products.find(x => x.id === id);
-            cart.push(p);
+            cart.push(state.products.find(x => x.id === id));
             updateCart();
             toggleCart();
         }
 
         function updateCart() {
             document.getElementById('cart-count').innerText = cart.length;
-            const items = document.getElementById('cart-items');
-            items.innerHTML = cart.map(i => `<p style="font-size:13px; margin-bottom:8px;">${i.name} — $${i.price.toLocaleString()}</p>`).join('');
+            document.getElementById('cart-items').innerHTML = cart.map(i => `<p style="font-size:12px; margin-bottom:8px;">${i.name} — $${i.price.toLocaleString()}</p>`).join('');
             const total = cart.reduce((a, b) => a + b.price, 0);
             document.getElementById('cart-total').innerText = "Total: $" + total.toLocaleString();
         }
@@ -311,31 +288,23 @@
         function finalizeOrder() {
             const n = document.getElementById('c-name').value;
             const a = document.getElementById('c-address').value;
-            const p = document.getElementById('c-pay').value;
             if(!n || !a || cart.length === 0) return alert("Completa tus datos.");
-
             const total = cart.reduce((a, b) => a + b.price, 0);
-            const itemsName = cart.map(i => i.name).join(', ');
-
-            state.sales.push({ name: n, items: itemsName, total: total.toLocaleString() });
+            const items = cart.map(i => i.name).join(', ');
+            state.sales.push({ name: n, items, total: total.toLocaleString() });
             save();
-
-            let msg = `*PEDIDO INERCIA*%0A*Cliente:* ${n}%0A*Dirección:* ${a}%0A*Pago:* ${p}%0A*Items:* ${itemsName}%0A*TOTAL:* $${total.toLocaleString()}`;
-            if(p === "Transferencia") msg += `%0A%0A*DATOS BANCARIOS:*%0A${state.bank}`;
-
+            let msg = `*PEDIDO INERCIA*%0A*Cliente:* ${n}%0A*Dirección:* ${a}%0A*Items:* ${items}%0A*TOTAL:* $${total.toLocaleString()}`;
             window.open(`https://wa.me{state.wsp}?text=${msg}`);
             cart = []; updateCart(); toggleCart();
         }
 
-        function delProduct(id) {
-            state.products = state.products.filter(p => p.id !== id);
-            save();
-        }
+        function delProduct(id) { state.products = state.products.filter(p => p.id !== id); save(); }
 
         function loadAdminFields() {
             document.getElementById('adm-title').value = state.title;
+            document.getElementById('adm-ship-info').value = state.shipInfo;
+            document.getElementById('adm-pay-info').value = state.payInfo;
             document.getElementById('adm-wsp').value = state.wsp;
-            document.getElementById('adm-bank').value = state.bank;
         }
 
         render();
