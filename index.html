@@ -2,70 +2,103 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>INERCIA — Identity & Motion</title>
-    <link href="https://googleapis.com" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Store | Tienda Online</title>
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        :root { --bg: #fff; --text: #111; --line: #eeeeee; --accent: #0057FF; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
-
-        /* The Editorial Frame */
-        .frame { position: fixed; border: 1px solid var(--line); z-index: 1000; pointer-events: none; }
-        .v-line { width: 1px; height: 100vh; left: 40px; top: 0; }
-        .v-line-r { width: 1px; height: 100vh; right: 40px; top: 0; }
-
-        header { height: 100vh; padding: 100px 80px; display: flex; flex-direction: column; justify-content: space-between; }
-        .brand h1 { font-family: 'Syncopate', sans-serif; font-size: 12vw; line-height: 0.8; letter-spacing: -0.05em; text-transform: uppercase; }
-        .brand p { font-size: 10px; letter-spacing: 5px; color: var(--accent); text-transform: uppercase; margin-top: 20px; }
-        
-        .manifesto { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2.2rem; align-self: flex-end; max-width: 500px; text-align: right; line-height: 1.1; }
-
-        /* Broken Grid Gallery */
-        .editorial-grid { display: grid; grid-template-columns: repeat(12, 1fr); padding: 0 80px 200px 80px; gap: 20px; }
-        .img-container { background: #f7f7f7; overflow: hidden; position: relative; filter: grayscale(1); transition: 1s ease-in-out; }
-        .img-container:hover { filter: grayscale(0); }
-        .img-container img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Asymmetrical Placement */
-        .pos-1 { grid-column: 1 / 9; height: 90vh; } 
-        .pos-2 { grid-column: 8 / 13; height: 50vh; margin-top: -20vh; border: 20px solid white; z-index: 2; }
-        .pos-3 { grid-column: 2 / 7; height: 75vh; margin-top: 100px; }
-        
-        .label { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; display: block; }
-
-        footer { border-top: 1px solid var(--line); padding: 100px 80px; text-align: center; }
-        footer h2 { font-family: 'Syncopate', sans-serif; font-size: 15vw; opacity: 0.05; }
+        @import url('https://googleapis.com');
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
-    <div class="frame v-line"></div>
-    <div class="frame v-line-r"></div>
+<body class="bg-gray-50 text-gray-900">
 
-    <header>
-        <div class="brand">
-            <p>2024 Identity System</p>
-            <h1>INE<br>RCIA.</h1>
+    <!-- Barra de Navegación -->
+    <nav class="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="#" class="text-xl font-bold tracking-tighter uppercase">Minimal<span class="text-blue-600">Store</span></a>
+            
+            <div class="flex items-center gap-6">
+                <ul class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
+                    <li><a href="#" class="hover:text-black">Hombres</a></li>
+                    <li><a href="#" class="hover:text-black">Mujeres</a></li>
+                    <li><a href="#" class="hover:text-black">Accesorios</a></li>
+                </ul>
+                
+                <!-- Icono Carrito -->
+                <button class="relative p-2 hover:bg-gray-100 rounded-full transition-colors" id="cart-btn">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cart-count" class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">0</span>
+                </button>
+            </div>
         </div>
-        <div class="manifesto">
-            "Explorando la tensión entre la forma estática y el tejido en movimiento."
+    </nav>
+
+    <!-- Héroe / Banner -->
+    <header class="bg-white py-12 border-b border-gray-100">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Nueva Colección</h1>
+            <p class="text-gray-500 max-w-xl mx-auto">Diseños esenciales para el día a día con la mejor calidad textil.</p>
         </div>
     </header>
 
-    <main class="editorial-grid">
-        <div class="img-container pos-1">
-            <img src="https://unsplash.com" alt="Inercia 01">
-            <span class="label">FIG 01 // KINETIC FLOW</span>
-        </div>
-        <div class="img-container pos-2">
-            <img src="https://unsplash.com" alt="Inercia 02">
-            <span class="label">FIG 02 // DETAIL TENSION</span>
-        </div>
-        <div class="img-container pos-3">
-            <img src="https://unsplash.com" alt="Inercia 03">
-            <span class="label">FIG 03 // STRUCTURAL MOTION</span>
+    <!-- Grilla de Productos -->
+    <main class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="product-grid">
+            <!-- Los productos se cargan dinámicamente con JS -->
         </div>
     </main>
 
-    <footer><h2>INERCIA</h2></footer>
+    <!-- Footer Simple -->
+    <footer class="bg-white border-t border-gray-200 py-8">
+        <div class="text-center text-gray-400 text-sm">
+            &copy; 2024 Minimal Store. Inspirado en Tienda Nube.
+        </div>
+    </footer>
+
+    <script>
+        // Datos de ejemplo
+        const products = [
+            { id: 1, name: "Remera Oversize Blanca", price: 15900, img: "https://unsplash.com" },
+            { id: 2, name: "Jean Slim Fit Azul", price: 42000, img: "https://unsplash.com" },
+            { id: 3, name: "Campera Denim Classic", price: 58500, img: "https://unsplash.com" },
+            { id: 4, name: "Gorra Urbana Negra", price: 8900, img: "https://unsplash.com" },
+        ];
+
+        let cartCount = 0;
+        const grid = document.getElementById('product-grid');
+        const countBadge = document.getElementById('cart-count');
+
+        // Renderizar Productos
+        function renderProducts() {
+            grid.innerHTML = products.map(p => `
+                <div class="group bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-transparent hover:border-gray-100">
+                    <div class="relative overflow-hidden aspect-[3/4]">
+                        <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <button onclick="addToCart()" class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm text-black py-3 rounded-md font-semibold opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 shadow-lg hover:bg-black hover:text-white">
+                            Agregar al carrito
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-sm text-gray-600 uppercase tracking-widest mb-1">Esenciales</h3>
+                        <p class="font-bold text-lg mb-2">${p.name}</p>
+                        <p class="text-blue-600 font-bold text-xl">$${p.price.toLocaleString('es-AR')}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Lógica de Carrito Simple
+        function addToCart() {
+            cartCount++;
+            countBadge.innerText = cartCount;
+            
+            // Animación pequeña al badge
+            countBadge.classList.add('scale-125');
+            setTimeout(() => countBadge.classList.remove('scale-125'), 200);
+        }
+
+        renderProducts();
+    </script>
 </body>
 </html>
