@@ -6,131 +6,170 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; --soft-grey: #f8f8f8; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-        
-        /* HEADER EDITORIAL */
-        nav { padding: 40px 6%; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; font-size: 10px; letter-spacing: 3px; }
-        .brand { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; letter-spacing: 5px; }
+        :root { --primary: #e67e22; --dark: #2c3e50; --light: #ecf0f1; }
+        body { font-family: 'Poppins', sans-serif; margin: 0; color: var(--dark); background: #fff; }
 
-        /* SECCIÓN HERO (Basada en tu imagen) */
-        .hero { display: grid; grid-template-columns: 1fr 1fr; height: 100vh; background: var(--soft-grey); align-items: center; padding: 0 6%; position: relative; overflow: hidden; }
-        .hero-text { z-index: 10; max-width: 500px; }
-        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 5.5rem; line-height: 0.9; margin: 0; }
-        .hero-text p { font-size: 13px; color: #666; margin-top: 30px; line-height: 1.8; max-width: 300px; }
-        
-        .hero-img-box { position: relative; width: 100%; height: 80%; }
-        .main-img { width: 100%; height: 100%; object-fit: contain; }
-        .floating-leaf { position: absolute; bottom: 0; right: -50px; width: 300px; z-index: 11; filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.1)); }
+        /* HEADER & NAV */
+        header { background: #fff; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
+        .logo { font-weight: 800; font-size: 24px; color: #000; letter-spacing: -1px; }
+        nav { background: #f39c12; color: white; padding: 10px 5%; text-align: center; font-size: 13px; font-weight: 600; text-transform: uppercase; }
 
-        /* GRILLA ASIMÉTRICA */
-        .magazine-section { padding: 100px 6%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .mag-item { position: relative; }
-        .mag-item img { width: 100%; height: 450px; object-fit: cover; }
-        .mag-item.offset { margin-top: 80px; }
-        .mag-info { margin-top: 20px; text-align: center; }
-        .mag-info h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin: 0; font-weight: 400; }
-        .mag-info span { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        /* HERO SECTION (Estilo Naranja) */
+        .hero { display: flex; height: 80vh; background: #fdf2e9; align-items: center; padding: 0 10%; position: relative; overflow: hidden; }
+        .hero-text { flex: 1; z-index: 2; }
+        .hero-text h1 { font-size: 4rem; line-height: 1.1; margin: 0; color: #1a1a1a; }
+        .hero-text p { font-size: 18px; color: #555; margin: 20px 0; max-width: 500px; }
+        .btn-hero { background: var(--dark); color: white; padding: 15px 40px; border: none; font-weight: 600; cursor: pointer; border-radius: 5px; }
+        .hero-img-box { flex: 1; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+        .hero-img-box img { max-height: 90%; object-fit: contain; }
 
-        /* FOOTER DE DATOS */
-        .details-grid { padding: 80px 6%; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .detail-card { text-align: center; }
-        .detail-card img { width: 100%; height: 250px; object-fit: cover; margin-bottom: 15px; }
-        .detail-card h4 { font-size: 12px; margin: 5px 0; }
+        /* CATEGORÍAS ICONOS */
+        .icons-bar { display: flex; justify-content: space-around; padding: 50px 10%; background: #fff; text-align: center; font-size: 12px; border-bottom: 1px solid #eee; }
+        .icon-item i { display: block; font-size: 24px; margin-bottom: 10px; color: var(--primary); }
 
-        /* PANEL ADMIN (Invisible - Acceso 0110) */
-        #admin-panel { display: none; position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: #fff; z-index: 1000; padding: 40px; box-shadow: -10px 0 50px rgba(0,0,0,0.1); border-left: 1px solid #eee; overflow-y: auto; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #eee; font-family: 'Inter'; }
-        .btn-update { background: #000; color: #fff; border: none; width: 100%; padding: 15px; cursor: pointer; text-transform: uppercase; font-size: 10px; letter-spacing: 2px; }
-        
-        #secret-trigger { position: fixed; bottom: 10px; right: 10px; width: 20px; height: 20px; opacity: 0; cursor: pointer; z-index: 9999; }
+        /* PRODUCTOS DESTACADOS (GRILLA 3) */
+        .featured { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 50px 10%; }
+        .feat-card { position: relative; height: 400px; overflow: hidden; border-radius: 10px; color: white; }
+        .feat-card img { width: 100%; height: 100%; object-fit: cover; }
+        .feat-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); }
+
+        /* CATÁLOGO (CON ESTRELLAS) */
+        .catalog-section { padding: 50px 10%; background: #f9f9f9; text-align: center; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px; margin-top: 40px; }
+        .p-card { background: #fff; padding: 15px; border-radius: 10px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; }
+        .p-card img { width: 100%; height: 280px; object-fit: cover; border-radius: 5px; }
+        .p-card h4 { margin: 10px 0 5px; font-size: 14px; }
+        .p-price { color: var(--primary); font-weight: 700; font-size: 18px; }
+        .stars { color: #f1c40f; font-size: 12px; margin-top: 5px; }
+
+        /* ADMIN PANEL SECRETO */
+        #admin-panel { display: none; position: fixed; right: 0; top: 0; width: 380px; height: 100vh; background: #fff; z-index: 10000; box-shadow: -10px 0 40px rgba(0,0,0,0.2); padding: 30px; overflow-y: auto; }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        .btn-update { background: var(--primary); color: white; border: none; width: 100%; padding: 15px; cursor: pointer; font-weight: bold; border-radius: 5px; }
+        #secret-btn { position: fixed; bottom: 10px; right: 10px; width: 20px; height: 20px; opacity: 0; cursor: pointer; z-index: 10001; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div>Colecciones</div>
-        <div class="brand">INERCIA</div>
-        <div>Shop / Info</div>
-    </nav>
+    <header>
+        <div class="logo">INERCIA</div>
+        <div style="font-size: 20px;">🛒 🔍</div>
+    </header>
+    <nav>Home — Productos — Movimiento — Contacto</nav>
 
     <section class="hero">
         <div class="hero-text">
-            <h1 id="h-title">Trendy colors<br>for the fall</h1>
-            <p id="h-desc">Inercia: Explorando el movimiento orgánico a través de textiles premium y cortes asimétricos.</p>
+            <h1 id="h-title">Descubre /<br>TU MOVIMIENTO</h1>
+            <p id="h-desc">Moda diseñada para fluir contigo. Calidad premium y cortes modernos para el día a día.</p>
+            <button class="btn-hero">Ver Catálogo</button>
         </div>
         <div class="hero-img-box">
-            <img id="h-img" src="https://unsplash.com" class="main-img">
-            <!-- Elemento decorativo tipo hoja para dar el estilo de tu imagen -->
-            <img src="https://pngimg.com" class="floating-leaf">
+            <img id="h-img" src="https://unsplash.com">
         </div>
     </section>
 
-    <section class="magazine-section" id="catalog">
-        <div class="mag-item">
+    <div class="icons-bar">
+        <div class="icon-item">📦 Envíos Gratis</div>
+        <div class="icon-item">💳 6 Cuotas</div>
+        <div class="icon-item">🔄 Cambios</div>
+        <div class="icon-item">✨ Premium</div>
+    </div>
+
+    <section class="featured">
+        <div class="feat-card">
             <img src="https://unsplash.com">
-            <div class="mag-info"><span>20% Sale</span><h3>Silk Motion</h3></div>
+            <div class="feat-info"><h3>COLECCIÓN BLOOM</h3><small>Novedades 2026</small></div>
         </div>
-        <div class="mag-item offset">
+        <div class="feat-card">
             <img src="https://unsplash.com">
-            <div class="mag-info"><span>Nueva Colección</span><h3>Urban Flow</h3></div>
+            <div class="feat-info"><h3>URBAN RIVE</h3><small>Cortes Slim</small></div>
         </div>
-        <div class="mag-item">
+        <div class="feat-card">
             <img src="https://unsplash.com">
-            <div class="mag-info"><span>Limited</span><h3>Inertia Coat</h3></div>
+            <div class="feat-info"><h3>SALE -30%</h3><small>Últimas unidades</small></div>
         </div>
     </section>
 
-    <!-- ACCESO INVISIBLE -->
-    <div id="secret-trigger" onclick="checkCode()"></div>
+    <section class="catalog-section">
+        <h2>PRODUCTOS DESTACADOS</h2>
+        <div class="product-grid" id="main-catalog">
+            <!-- Productos cargados desde Admin -->
+            <div class="p-card">
+                <img src="https://unsplash.com">
+                <h4>Remera Oversize Black</h4>
+                <div class="p-price">$25.000</div>
+                <div class="stars">★★★★★</div>
+            </div>
+        </div>
+    </section>
 
-    <!-- ADMIN PANEL -->
+    <!-- ACCESO INVISIBLE ADMIN (Esquina derecha) -->
+    <div id="secret-btn" onclick="openAdmin()"></div>
+
     <div id="admin-panel">
-        <h2 style="font-family:'Playfair Display'">Panel Inercia</h2>
-        <label style="font-size:10px; color:gray;">TEXTOS PORTADA</label>
-        <input type="text" id="edit-title" placeholder="Título...">
-        <textarea id="edit-desc" placeholder="Descripción..."></textarea>
+        <h2 style="color:var(--primary)">Inercia Admin v3</h2>
+        <hr>
+        <label>Banner Principal (PC):</label>
+        <input type="file" id="in-h-img" accept="image/*">
+        <label>Título Home:</label>
+        <input type="text" id="in-h-title">
         
-        <label style="font-size:10px; color:gray; margin-top:20px; display:block;">SUBIR PRODUCTO</label>
-        <input type="file" id="p-file" accept="image/*">
+        <hr>
+        <h4>NUEVO PRODUCTO</h4>
+        <input type="file" id="p-img" accept="image/*">
         <input type="text" id="p-name" placeholder="Nombre de Prenda">
-        <input type="text" id="p-price" placeholder="Precio / Etiqueta">
-        
-        <button class="btn-update" onclick="applyChanges()">Actualizar Vista</button>
-        <p style="font-size:9px; color:red; margin-top:20px; text-align:center; cursor:pointer;" onclick="location.reload()">CERRAR SIN GUARDAR</p>
+        <input type="number" id="p-price" placeholder="Precio ($)">
+        <input type="number" id="p-stars" placeholder="Estrellas (1-5)" min="1" max="5">
+        <input type="number" id="p-stock" placeholder="Stock">
+        <button class="btn-update" style="background: #27ae60" onclick="addProduct()">Agregar Producto</button>
+
+        <hr>
+        <button class="btn-update" onclick="saveHome()">Actualizar Portada</button>
+        <button onclick="document.getElementById('admin-panel').style.display='none'" style="width:100%; border:none; background:none; color:red; margin-top:20px; cursor:pointer;">Cerrar Panel</button>
     </div>
 
     <script>
-        function checkCode() {
-            if(prompt("Acceso Inercia:") === "0110") document.getElementById('admin-panel').style.display = 'block';
+        function openAdmin() {
+            if(prompt("Código Inercia:") === "0110") document.getElementById('admin-panel').style.display='block';
         }
 
-        async function applyChanges() {
-            const title = document.getElementById('edit-title').value;
-            const desc = document.getElementById('edit-desc').value;
-            const pFile = document.getElementById('p-file').files[0];
-            const pName = document.getElementById('p-name').value;
-            const pPrice = document.getElementById('p-price').value;
-
-            if(title) document.getElementById('h-title').innerText = title;
-            if(desc) document.getElementById('h-desc').innerText = desc;
-            
-            if(pFile && pName) {
+        async function toBase64(file) {
+            return new Promise((res) => {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    const html = `
-                        <div class="mag-item">
-                            <img src="${e.target.result}">
-                            <div class="mag-info"><span>${pPrice}</span><h3>${pName}</h3></div>
-                        </div>
-                    `;
-                    document.getElementById('catalog').insertAdjacentHTML('beforeend', html);
-                };
-                reader.readAsDataURL(pFile);
-            }
+                reader.onload = () => res(reader.result);
+                reader.readAsDataURL(file);
+            });
+        }
 
-            alert("Cambios aplicados. No olvides copiar el código fuente para guardar permanentemente en GitHub.");
-            document.getElementById('admin-panel').style.display = 'none';
+        async function addProduct() {
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const stars = document.getElementById('p-stars').value;
+            const file = document.getElementById('p-img').files;
+            
+            if(!file[0] || !name) return alert("Faltan datos");
+            const img = await toBase64(file[0]);
+            const starText = "★".repeat(stars) + "☆".repeat(5 - stars);
+
+            const card = `
+                <div class="p-card">
+                    <img src="${img}">
+                    <h4>${name}</h4>
+                    <div class="p-price">$${price}</div>
+                    <div class="stars">${starText}</div>
+                </div>
+            `;
+            document.getElementById('main-catalog').insertAdjacentHTML('afterbegin', card);
+            alert("Producto añadido.");
+        }
+
+        async function saveHome() {
+            const title = document.getElementById('in-h-title').value;
+            const file = document.getElementById('in-h-img').files;
+            if(title) document.getElementById('h-title').innerText = title;
+            if(file[0]) document.getElementById('h-img').src = await toBase64(file[0]);
+            alert("Portada actualizada.");
+            document.getElementById('admin-panel').style.display='none';
         }
     </script>
 </body>
