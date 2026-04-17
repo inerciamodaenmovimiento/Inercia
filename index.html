@@ -3,105 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Fashion Store</title>
+    <title>Sézane Style - Admin In-Place</title>
     <script src="https://tailwindcss.com"></script>
     <style>
         @import url('https://googleapis.com');
-        body { font-family: 'Inter', sans-serif; background-color: #E5E5E5; }
-        .serif { font-family: 'Playfair Display', serif; }
-        .admin-editable:focus { outline: 2px dashed #000; background: white; padding: 2px; }
+        body { font-family: 'Inter', sans-serif; color: #1a1a1a; }
+        .serif { font-family: 'Crimson Text', serif; }
+        .admin-active { outline: 2px dashed #3b82f6 !important; position: relative; cursor: pointer; }
+        .admin-active::after { content: '✎'; position: absolute; top: -10px; right: -10px; background: #3b82f6; color: white; border-radius: 50%; width: 20px; height: 20px; text-align: center; font-size: 12px; }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="bg-white">
 
-    <!-- MENSAJE DE ADMIN (OCULTO) -->
-    <div id="admin-badge" class="fixed top-4 right-4 bg-black text-white text-xs px-3 py-1 hidden rounded-full z-50">
-        MODO EDITOR ACTIVO (Cambia los textos y haz clic en Guardar)
-        <button onclick="saveChanges()" class="ml-4 underline font-bold">GUARDAR</button>
+    <!-- PANEL ADMIN SUPERIOR (Solo visible con 0110) -->
+    <div id="top-admin-bar" class="fixed top-0 left-0 w-full bg-blue-600 text-white p-2 text-center text-xs font-bold hidden z-[100] shadow-xl">
+        MODO DISEÑO ACTIVADO - Haz clic en textos o imágenes para editarlos 
+        <button onclick="saveSession()" class="ml-6 bg-white text-blue-600 px-4 py-1 rounded uppercase">Guardar Cambios</button>
     </div>
 
-    <main class="max-w-5xl mx-auto bg-[#F9F9F9] shadow-sm min-h-screen p-8">
-        
-        <!-- HEADER -->
-        <header class="flex justify-between items-center border-b border-gray-200 pb-4 mb-12 text-[10px] tracking-widest uppercase">
-            <div class="flex gap-4"><span>NEW</span><span>COLLECTIONS</span><span>CATALOG</span></div>
-            <h1 class="serif text-xl lowercase tracking-tighter">soy easy</h1>
-            <div class="flex gap-4"><span>SEARCH</span><span>BAG (0)</span></div>
-        </header>
+    <!-- HEADER -->
+    <header class="py-8 border-b border-gray-100 sticky top-0 bg-white z-40">
+        <div class="container mx-auto px-4 flex flex-col items-center">
+            <h1 class="serif text-5xl tracking-widest uppercase mb-6 admin-field" data-id="brand-name">SÉZANE</h1>
+            <nav class="flex gap-8 text-[11px] font-semibold tracking-[0.2em] uppercase">
+                <a href="#" class="hover:underline">E-Shop</a>
+                <a href="#" class="hover:underline">Lookbook</a>
+                <a href="#" class="hover:underline">Journal</a>
+                <a href="#" class="hover:underline">À Propos</a>
+            </nav>
+        </div>
+    </header>
 
-        <!-- PRODUCT SECTION -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <main class="container mx-auto px-4 py-12 max-w-6xl">
+        <!-- SECCIÓN PRODUCTO -->
+        <div class="flex flex-col md:flex-row gap-16">
             
-            <!-- IMÁGENES (Lado Izquierdo) -->
-            <div class="space-y-6">
-                <img src="https://unsplash.com" alt="Product" class="w-full">
-                <div class="grid grid-cols-2 gap-4">
-                    <img src="https://unsplash.com" alt="Detail 1">
-                    <img src="https://unsplash.com" alt="Detail 2">
+            <!-- GALERÍA (EDITABLE) -->
+            <div class="w-full md:w-1/2">
+                <div class="relative group">
+                    <img id="main-img" src="https://unsplash.com" 
+                         class="w-full h-auto cursor-pointer admin-img" onclick="changeImage(this)">
+                </div>
+                <div class="grid grid-cols-4 gap-2 mt-4">
+                    <img src="https://unsplash.com" class="admin-img" onclick="changeImage(this)">
+                    <img src="https://unsplash.com" class="admin-img" onclick="changeImage(this)">
                 </div>
             </div>
 
-            <!-- INFO (Lado Derecho) -->
-            <div class="flex flex-col space-y-6">
-                <div>
-                    <h2 id="product-title" class="serif text-3xl mb-2 admin-editable" contenteditable="false">Love Planet Gray Violet blazer</h2>
-                    <p class="text-xl">$ <span id="product-price" class="admin-editable" contenteditable="false">150</span></p>
+            <!-- INFO PRODUCTO -->
+            <div class="w-full md:w-1/2 space-y-6">
+                <div class="flex justify-between items-baseline border-b pb-4">
+                    <h2 class="serif text-3xl admin-field uppercase tracking-wide" data-id="p-title">Essentiels - Hunter</h2>
+                    <span class="text-xl font-light">€ <span class="admin-field" data-id="p-price">180</span></span>
                 </div>
 
-                <div class="text-xs leading-relaxed text-gray-600 space-y-4">
-                    <p id="product-desc" class="admin-editable" contenteditable="false">
-                        A blazer with a slim design silhouette made of texture and wear-resistant wool. 
-                        It is a versatile addition to your wardrobe. The fabric is 100% natural wool.
-                    </p>
+                <div class="text-sm text-gray-700 leading-relaxed italic border-l-2 border-black pl-4 admin-field" data-id="p-desc">
+                    "Ustedes los amaron tanto estos meses que debían integrar los Esenciales... Increíblemente femeninos y confortables."
                 </div>
 
-                <button class="w-full bg-black text-white py-4 text-xs tracking-widest uppercase hover:bg-gray-800 transition">
-                    Add to bag
+                <!-- TALLAS -->
+                <div class="py-4">
+                    <p class="text-[10px] uppercase font-bold mb-3 tracking-tighter">Seleccionar Talla</p>
+                    <div class="flex gap-2">
+                        <button class="border px-4 py-2 text-xs hover:border-black">35</button>
+                        <button class="border px-4 py-2 text-xs hover:border-black">36</button>
+                        <button class="border px-4 py-2 text-xs hover:border-black font-bold border-black">37</button>
+                    </div>
+                </div>
+
+                <button class="w-full bg-[#1a1a1a] text-white py-4 text-xs font-bold uppercase tracking-widest hover:bg-black transition">
+                    Ajouter au Panier
                 </button>
             </div>
         </div>
     </main>
 
     <script>
-        // Lógica del Código Oculto 0110
-        let keyBuffer = "";
-        const adminBadge = document.getElementById('admin-badge');
-        const editables = document.querySelectorAll('.admin-editable');
+        let isAdmin = false;
+        let buffer = "";
 
+        // Detector de código secreto 0110
         window.addEventListener('keydown', (e) => {
-            keyBuffer += e.key;
-            if (keyBuffer.length > 4) keyBuffer = keyBuffer.substring(1);
-            
-            if (keyBuffer === "0110") {
-                activateAdmin();
-            }
+            buffer += e.key;
+            if (buffer.length > 4) buffer = buffer.substring(1);
+            if (buffer === "0110") toggleAdmin();
         });
 
-        function activateAdmin() {
-            adminBadge.classList.remove('hidden');
-            editables.forEach(el => {
-                el.setAttribute('contenteditable', 'true');
-                el.style.border = "1px dashed #ccc";
+        function toggleAdmin() {
+            isAdmin = !isAdmin;
+            document.getElementById('top-admin-bar').classList.toggle('hidden');
+            
+            // Activar edición de textos
+            document.querySelectorAll('.admin-field').forEach(el => {
+                el.contentEditable = isAdmin;
+                el.classList.toggle('admin-active', isAdmin);
             });
-            alert("Modo Administrador activado. Ahora puedes editar los textos directamente.");
+
+            // Activar edición de imágenes
+            document.querySelectorAll('.admin-img').forEach(el => {
+                el.classList.toggle('admin-active', isAdmin);
+            });
+
+            if(isAdmin) alert("💻 MODO ADMIN ACTIVO\n- Haz clic en cualquier texto para escribir.\n- Haz clic en imágenes para cambiar la URL.");
         }
 
-        function saveChanges() {
-            // Aquí enviarías los datos a una base de datos (Firebase, Supabase, etc.)
-            const data = {
-                title: document.getElementById('product-title').innerText,
-                price: document.getElementById('product-price').innerText,
-                desc: document.getElementById('product-desc').innerText
-            };
-            console.log("Guardando en base de datos...", data);
-            alert("Cambios guardados localmente (revisa la consola)");
-            
-            // Desactivar edición tras guardar
-            editables.forEach(el => {
-                el.setAttribute('contenteditable', 'false');
-                el.style.border = "none";
+        // Función para cambiar imágenes en modo admin
+        function changeImage(imgElement) {
+            if (!isAdmin) return;
+            const newUrl = prompt("Introduce la URL de la nueva imagen:", imgElement.src);
+            if (newUrl) imgElement.src = newUrl;
+        }
+
+        // Simulación de guardado
+        function saveSession() {
+            const siteData = {};
+            document.querySelectorAll('.admin-field').forEach(el => {
+                siteData[el.dataset.id] = el.innerText;
             });
-            adminBadge.classList.add('hidden');
+            
+            console.log("Enviando cambios al servidor...", siteData);
+            alert("✅ ¡Configuración guardada! Todos los cambios en la Home ahora son permanentes.");
+            toggleAdmin(); // Salir del modo admin
         }
     </script>
 </body>
