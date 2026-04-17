@@ -8,225 +8,249 @@
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         @import url('https://googleapis.com');
-        body { font-family: 'Inter', sans-serif; background-color: #fff; }
+        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #1a1a1a; }
         .serif { font-family: 'Playfair Display', serif; }
-        .admin-section { display: none; }
-        .bg-overlay { background: rgba(0,0,0,0.3); }
+        .admin-view { display: none; }
+        .transition-main { transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        input[type="file"]::file-selector-button {
+            background: #000; color: #fff; padding: 10px 20px; border: none; cursor: pointer; text-transform: uppercase; font-size: 10px; letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
 
     <!-- NAVBAR ESTILO ULTRA -->
-    <header class="fixed w-full z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
-        <nav class="container mx-auto px-6 py-5 flex justify-between items-center">
-            <div class="text-2xl font-bold tracking-[0.4em] serif uppercase cursor-pointer" onclick="showView('home')">Inercia</div>
-            <ul class="hidden md:flex space-x-10 text-[10px] uppercase tracking-[0.2em] font-bold">
-                <li><a href="#" onclick="showView('home')" class="hover:text-gray-400 transition">Colecciones</a></li>
-                <li><button onclick="showView('admin')" class="text-red-500 hover:text-red-800">Administrador</button></li>
+    <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-50">
+        <nav class="container mx-auto px-8 py-6 flex justify-between items-center">
+            <div class="text-3xl font-bold tracking-[0.4em] serif uppercase cursor-pointer" onclick="showView('home')">Inercia</div>
+            <ul class="hidden lg:flex space-x-12 text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">
+                <li><a href="#" onclick="showView('home')" class="hover:text-black transition">Home</a></li>
+                <li><a href="#new-arrivals" class="hover:text-black transition">New Arrivals</a></li>
+                <li><a href="#" onclick="showView('admin')" class="text-red-400 hover:text-red-600">Admin</a></li>
             </ul>
-            <button onclick="toggleCart()" class="relative">
-                <i class="fa-solid fa-bag-shopping text-xl"></i>
-                <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
-            </button>
+            <div class="flex items-center space-x-8">
+                <button onclick="toggleCart()" class="relative hover:opacity-50 transition">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
+                </button>
+            </div>
         </nav>
     </header>
 
     <!-- VISTA CLIENTE -->
     <main id="view-home">
-        <!-- Banner Dinámico (Modificable desde Admin) -->
-        <section class="relative h-[80vh] flex items-center justify-center bg-gray-100 overflow-hidden">
+        <!-- HERO BANNER (Basado en la imagen) -->
+        <section class="relative h-screen flex items-center justify-center overflow-hidden">
             <img id="main-banner" src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover">
-            <div class="absolute inset-0 bg-overlay"></div>
+            <div class="absolute inset-0 bg-black/10"></div>
             <div class="relative z-10 text-center text-white">
-                <h1 class="text-6xl md:text-8xl serif mb-4">Inercia</h1>
-                <p class="text-xs tracking-[0.6em] uppercase opacity-90">Moda en Movimiento</p>
+                <h1 class="text-7xl md:text-[120px] serif italic mb-4 drop-shadow-2xl">Inercia</h1>
+                <p class="text-xs md:text-sm tracking-[0.8em] uppercase font-light">Moda en Movimiento</p>
             </div>
         </section>
 
-        <!-- Categorías Personalizadas -->
-        <div id="home-categories" class="container mx-auto px-6 py-12 flex justify-center gap-8 text-[10px] uppercase tracking-widest font-bold"></div>
+        <!-- SECCIÓN NEW ARRIVALS -->
+        <section id="new-arrivals" class="container mx-auto px-8 py-32">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl serif mb-4">New Arrivals</h2>
+                <div class="h-[1px] w-20 bg-black mx-auto"></div>
+            </div>
 
-        <!-- Grilla de Productos -->
-        <section class="container mx-auto px-6 py-16">
-            <h2 class="text-3xl serif text-center mb-16 underline underline-offset-8 decoration-1">New Arrivals</h2>
-            <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
-                <!-- Se llenan por JS -->
+            <!-- Categorías Dinámicas (Aparecen aquí) -->
+            <div id="home-categories" class="flex justify-center gap-10 mb-16 text-[10px] uppercase tracking-widest font-bold text-gray-400"></div>
+
+            <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-20">
+                <!-- Se cargan por JavaScript -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN COLLECTION (Imagen Secundaria) -->
+        <section class="relative h-[80vh] bg-stone-100 flex items-center">
+            <div class="container mx-auto px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+                <div class="relative h-[60vh]">
+                    <img src="https://unsplash.com" class="w-full h-full object-cover grayscale">
+                </div>
+                <div class="text-center md:text-left">
+                    <h2 class="text-6xl md:text-8xl serif uppercase mb-6 tracking-tighter">Collection</h2>
+                    <button class="border border-black px-12 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-black hover:text-white transition">View</button>
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- VISTA ADMINISTRADOR (Panel Completo) -->
-    <main id="view-admin" class="admin-section pt-32 container mx-auto px-6 pb-20">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <!-- 1. Alta de Productos -->
-            <div class="lg:col-span-2 bg-gray-50 p-10 rounded-2xl border">
-                <h3 class="serif text-2xl mb-8 border-b pb-4">Gestión de Stock</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <input id="adm-nombre" type="text" placeholder="Nombre" class="p-3 border rounded text-sm">
-                    <input id="adm-precio" type="number" placeholder="Precio ($)" class="p-3 border rounded text-sm">
-                    <input id="adm-stock" type="number" placeholder="Stock Inicial" class="p-3 border rounded text-sm">
-                    <input id="adm-cat" type="text" placeholder="Categoría" class="p-3 border rounded text-sm">
+    <!-- VISTA ADMINISTRADOR -->
+    <main id="view-admin" class="admin-view pt-40 container mx-auto px-8 pb-32">
+        <h2 class="serif text-4xl mb-12 border-b pb-6">Panel de Control</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+            <!-- Formulario de carga -->
+            <div class="lg:col-span-2 space-y-10">
+                <div class="bg-gray-50 p-10 rounded-sm border">
+                    <h3 class="text-xs font-bold uppercase tracking-widest mb-8 text-gray-400">Subida de Productos</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input id="in-nombre" type="text" placeholder="Nombre de prenda" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
+                        <input id="in-precio" type="number" placeholder="Precio ($)" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
+                        <input id="in-stock" type="number" placeholder="Stock" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
+                        <input id="in-cat" type="text" placeholder="Categoría (Ej: Jacket)" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
+                    </div>
+                    <div class="mt-10 p-12 border-2 border-dashed border-gray-200 text-center">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl mb-4 text-gray-300"></i>
+                        <p class="text-[10px] uppercase font-bold text-gray-400 mb-4">Fotos desde tu PC (Carrusel)</p>
+                        <input id="in-files" type="file" multiple class="block w-full text-xs text-gray-500">
+                    </div>
+                    <button onclick="saveProduct()" class="mt-10 w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-zinc-800 transition">Publicar en Inercia</button>
                 </div>
-                <div class="mb-6">
-                    <label class="block text-[10px] font-bold uppercase text-gray-400 mb-2">Imagen desde tu PC</label>
-                    <input id="adm-file" type="file" class="w-full bg-white p-4 border-2 border-dashed rounded text-xs">
-                </div>
-                <button onclick="guardarProducto()" class="w-full bg-black text-white py-4 font-bold text-[10px] uppercase tracking-widest">Publicar en la Tienda</button>
             </div>
 
-            <!-- 2. Banners e Historial -->
-            <div class="space-y-6">
-                <div class="bg-white p-6 border rounded-2xl shadow-sm">
-                    <h4 class="text-[10px] font-bold uppercase mb-4 tracking-widest">Modificar Banner Principal</h4>
-                    <input id="adm-banner" type="text" placeholder="URL de nueva imagen" class="w-full p-2 border rounded text-xs mb-3">
-                    <button onclick="cambiarBanner()" class="w-full bg-gray-100 py-2 text-[9px] font-bold uppercase hover:bg-black hover:text-white transition">Actualizar Banner</button>
+            <!-- Banners y Ventas -->
+            <div class="space-y-12">
+                <div class="bg-white border p-8">
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-6">Modificar Banner Home</h3>
+                    <input id="in-banner" type="text" placeholder="URL de nueva imagen" class="w-full border-b py-2 text-xs mb-4 outline-none">
+                    <button onclick="updateBanner()" class="w-full bg-stone-100 py-3 text-[9px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition">Actualizar</button>
                 </div>
-                <div class="bg-white p-6 border rounded-2xl shadow-sm h-80 overflow-y-auto">
-                    <h4 class="text-[10px] font-bold uppercase mb-4 tracking-widest">Historial de Pedidos</h4>
-                    <div id="adm-historial" class="text-[10px] space-y-3"></div>
+                <div class="bg-white border p-8">
+                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-6">Historial de Ventas</h3>
+                    <div id="sales-log" class="text-[10px] space-y-4 max-h-60 overflow-y-auto"></div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- CARRITO LATERAL -->
-    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-white z-[100] shadow-2xl translate-x-full transition-transform duration-500 flex flex-col">
-        <div class="p-8 flex justify-between items-center border-b">
-            <span class="serif text-2xl">Bolsa</span>
-            <button onclick="toggleCart()" class="text-4xl font-light">&times;</button>
+    <!-- CARRITO (SIDEBAR) -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white z-[60] shadow-2xl translate-x-full transition-main flex flex-col">
+        <div class="p-10 flex justify-between items-center border-b">
+            <span class="serif text-3xl italic">Tu Bolsa</span>
+            <button onclick="toggleCart()" class="text-4xl font-light hover:rotate-90 transition">&times;</button>
         </div>
-        <div id="cart-content" class="flex-grow p-8 overflow-y-auto space-y-6"></div>
-        <div class="p-8 border-t space-y-4 bg-gray-50">
-            <div class="flex justify-between font-bold text-xl px-2"><span>Total</span><span id="cart-total">$0</span></div>
-            <button onclick="checkout()" class="w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-[0.3em]">Finalizar Pedido (WhatsApp)</button>
-            <button onclick="alert('Botón de arrepentimiento según Ley 24.240. Registrado.')" class="w-full text-gray-400 text-[9px] uppercase underline tracking-widest">Botón de Arrepentimiento</button>
+        <div id="cart-content" class="flex-grow p-10 overflow-y-auto space-y-8"></div>
+        <div class="p-10 border-t bg-stone-50 space-y-6">
+            <div class="flex justify-between font-bold text-2xl tracking-tighter px-2"><span>Total</span><span id="cart-total">$0</span></div>
+            <button onclick="checkout()" class="w-full bg-black text-white py-6 text-[11px] font-bold uppercase tracking-[0.4em] hover:bg-zinc-800 transition">Finalizar Pedido</button>
+            <button onclick="alert('Arrepentimiento legal registrado')" class="w-full text-gray-400 text-[10px] uppercase underline tracking-widest">Botón de Arrepentimiento</button>
         </div>
     </div>
 
-    <!-- BOTONES DE CONTACTO -->
-    <div class="fixed bottom-8 right-8 flex flex-col space-y-4 z-50">
-        <a href="https://wa.me" target="_blank" class="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition"><i class="fa-brands fa-whatsapp text-3xl"></i></a>
-        <a href="https://instagram.com" target="_blank" class="w-14 h-14 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition"><i class="fa-brands fa-instagram text-3xl"></i></a>
+    <!-- CONTACTOS -->
+    <div class="fixed bottom-12 right-12 flex flex-col space-y-4 z-50">
+        <a href="https://wa.me" target="_blank" class="w-16 h-16 bg-white text-black border border-gray-100 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
+        <a href="https://instagram.com" target="_blank" class="w-16 h-16 bg-white text-black border border-gray-100 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition"><i class="fa-brands fa-instagram text-2xl"></i></a>
     </div>
 
     <script>
-        // MEMORIA LOCAL (Para que no se borren tus productos)
-        let productos = JSON.parse(localStorage.getItem('inercia_db')) || [
-            { id: 1, nombre: 'Blusa Larga Brown', precio: 12500, stock: 10, cat: 'Summer', img: 'https://unsplash.com' },
-            { id: 2, nombre: 'Grey Check Coat', precio: 22900, stock: 5, cat: 'Winter', img: 'https://unsplash.com' }
+        // BASE DE DATOS LOCAL
+        let prods = JSON.parse(localStorage.getItem('in_prods')) || [
+            { id: 1, nombre: 'Brown Long Blouse', precio: 12500, stock: 5, cat: 'Clothes', img: 'https://unsplash.com' },
+            { id: 2, nombre: 'Grey Check Coat', precio: 22900, stock: 3, cat: 'Jacket', img: 'https://unsplash.com' },
+            { id: 3, nombre: 'White Casual Suit', precio: 21000, stock: 4, cat: 'Clothes', img: 'https://unsplash.com' },
+            { id: 4, nombre: 'Beige Sweater', precio: 14500, stock: 8, cat: 'Clothes', img: 'https://unsplash.com' }
         ];
-        let historial = JSON.parse(localStorage.getItem('inercia_ventas')) || [];
-        let bannerActual = localStorage.getItem('inercia_banner_img') || "https://unsplash.com";
-        let carrito = [];
-
-        window.onload = () => { refreshUI(); document.getElementById('main-banner').src = bannerActual; }
+        let sales = JSON.parse(localStorage.getItem('in_sales')) || [];
+        let cart = [];
 
         function showView(v) {
             document.getElementById('view-home').style.display = v === 'home' ? 'block' : 'none';
             document.getElementById('view-admin').style.display = v === 'admin' ? 'block' : 'none';
+            window.scrollTo(0,0);
         }
 
         function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('translate-x-full'); }
 
-        // ADMINISTRADOR: GUARDAR PRODUCTOS
-        function guardarProducto() {
-            const n = document.getElementById('adm-nombre').value;
-            const p = document.getElementById('adm-precio').value;
-            const s = document.getElementById('adm-stock').value;
-            const c = document.getElementById('adm-cat').value;
-            const file = document.getElementById('adm-file').files[0];
+        // ADMIN: GUARDAR
+        function saveProduct() {
+            const n = document.getElementById('in-nombre').value;
+            const p = document.getElementById('in-precio').value;
+            const s = document.getElementById('in-stock').value;
+            const c = document.getElementById('in-cat').value;
+            const files = document.getElementById('in-files').files;
 
-            if (file) {
+            if (files[0]) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    productos.push({ id: Date.now(), nombre: n, precio: parseInt(p), stock: parseInt(s), cat: c, img: e.target.result });
-                    localStorage.setItem('inercia_db', JSON.stringify(productos));
-                    refreshUI();
-                    alert("Producto guardado!");
+                    prods.push({ id: Date.now(), nombre: n, precio: parseInt(p), stock: parseInt(s), cat: c, img: e.target.result });
+                    localStorage.setItem('in_prods', JSON.stringify(prods));
+                    render();
+                    showView('home');
                 };
-                reader.readAsDataURL(file);
-            } else { alert("Selecciona una foto"); }
-        }
-
-        function eliminarProd(id) {
-            productos = productos.filter(x => x.id !== id);
-            localStorage.setItem('inercia_db', JSON.stringify(productos));
-            refreshUI();
-        }
-
-        function cambiarBanner() {
-            const url = document.getElementById('adm-banner').value;
-            if(url) {
-                bannerActual = url;
-                localStorage.setItem('inercia_banner_img', url);
-                document.getElementById('main-banner').src = url;
+                reader.readAsDataURL(files[0]);
             }
         }
 
-        // TIENDA: DIBUJAR TODO
-        function refreshUI() {
+        function deleteProd(id) {
+            prods = prods.filter(x => x.id !== id);
+            localStorage.setItem('in_prods', JSON.stringify(prods));
+            render();
+        }
+
+        function updateBanner() {
+            const url = document.getElementById('in-banner').value;
+            if(url) { document.getElementById('main-banner').src = url; localStorage.setItem('in_banner_url', url); }
+        }
+
+        // RENDER TIENDA
+        function render() {
             const grid = document.getElementById('grid-productos');
             const cats = document.getElementById('home-categories');
-            const log = document.getElementById('adm-historial');
+            const log = document.getElementById('sales-log');
 
-            // Render Grilla
-            grid.innerHTML = productos.map(p => `
-                <div class="group relative">
-                    <div class="aspect-[3/4] bg-gray-100 overflow-hidden mb-5 relative">
-                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">Añadir a la bolsa</button>
-                        <button onclick="eliminarProd(${p.id})" class="absolute top-2 right-2 bg-white text-red-500 w-8 h-8 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-trash-can"></i></button>
+            grid.innerHTML = prods.map(p => `
+                <div class="group text-center">
+                    <div class="aspect-[2/3] bg-stone-100 overflow-hidden mb-6 relative">
+                        <img src="${p.img}" class="w-full h-full object-cover transition-main group-hover:scale-110">
+                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">Add to Bag</button>
+                        <button onclick="deleteProd(${p.id})" class="absolute top-4 right-4 bg-white/90 text-red-500 w-8 h-8 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
-                    <p class="text-[9px] text-gray-400 uppercase tracking-widest mb-1">${p.cat}</p>
-                    <h3 class="text-xs font-bold uppercase tracking-tighter">${p.nombre}</h3>
-                    <div class="flex justify-between mt-1"><span class="text-sm font-light">$${p.precio.toLocaleString()}</span><span class="text-[9px] text-gray-300">Stock: ${p.stock}</span></div>
+                    <h3 class="serif text-lg mb-1">${p.nombre}</h3>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2">${p.cat}</p>
+                    <p class="text-sm font-light">$${p.precio.toLocaleString()}</p>
+                    <p class="text-[9px] text-stone-300 mt-2">STOCK: ${p.stock}</p>
                 </div>
             `).join('');
 
-            // Categorías Home
-            const uniqueCats = [...new Set(productos.map(p => p.cat))];
-            cats.innerHTML = uniqueCats.map(c => `<button class="hover:underline transition">${c}</button>`).join('');
-
-            // Historial Admin
-            log.innerHTML = historial.map(v => `<div class="border-b pb-2"><b>${v.fecha}</b><br>${v.resumen} - $${v.total}</div>`).reverse().join('');
+            const uniqueCats = [...new Set(prods.map(p => p.cat))];
+            cats.innerHTML = uniqueCats.map(c => `<button class="hover:text-black transition">${c}</button>`).join('');
+            
+            log.innerHTML = sales.map(s => `<div class="border-b pb-2"><b>${s.date}</b><br>${s.items} prendas - $${s.total}</div>`).reverse().join('');
         }
 
-        // CARRITO Y WHATSAPP
         function addToCart(id) {
-            const p = productos.find(x => x.id === id);
-            if(p.stock > 0) { carrito.push(p); updateCartUI(); toggleCart(); }
+            const p = prods.find(x => x.id === id);
+            if(p.stock > 0) { cart.push(p); updateCart(); toggleCart(); }
             else alert("Sin stock");
         }
 
-        function updateCartUI() {
-            const c = document.getElementById('cart-content');
-            c.innerHTML = carrito.map((item, i) => `
-                <div class="flex items-center gap-4 pb-4 border-b border-gray-50">
-                    <img src="${item.img}" class="w-16 h-20 object-cover">
-                    <div class="flex-grow"><h4 class="text-[10px] font-bold uppercase">${item.nombre}</h4><p class="text-xs">$${item.precio}</p></div>
-                    <button onclick="carrito.splice(${i},1); updateCartUI();" class="text-gray-300">&times;</button>
+        function updateCart() {
+            const cont = document.getElementById('cart-content');
+            cont.innerHTML = cart.map((item, i) => `
+                <div class="flex items-center gap-6 pb-6 border-b border-stone-100">
+                    <img src="${item.img}" class="w-20 h-24 object-cover">
+                    <div class="flex-grow"><h4 class="serif text-lg">${item.nombre}</h4><p class="text-sm text-gray-500">$${item.precio}</p></div>
+                    <button onclick="cart.splice(${i},1); updateCart();" class="text-stone-300 hover:text-black transition">&times;</button>
                 </div>
             `).join('');
-            const total = carrito.reduce((acc, p) => acc + p.precio, 0);
+            const total = cart.reduce((acc, p) => acc + p.precio, 0);
             document.getElementById('cart-total').innerText = '$' + total.toLocaleString();
-            document.getElementById('cart-count').innerText = carrito.length;
+            document.getElementById('cart-count').innerText = cart.length;
         }
 
         function checkout() {
-            if(carrito.length === 0) return;
-            const total = carrito.reduce((acc, p) => acc + p.precio, 0);
-            const msg = `PEDIDO INERCIA:\n${carrito.map(p => "- " + p.nombre).join("\n")}\nTOTAL: $${total}`;
+            if(cart.length === 0) return;
+            const t = cart.reduce((acc, p) => acc + p.precio, 0);
+            const msg = `PEDIDO INERCIA:\n${cart.map(p => "- " + p.nombre).join("\n")}\nTOTAL: $${t}`;
             
-            // Bajar stock y registrar
-            historial.push({ fecha: new Date().toLocaleDateString(), resumen: carrito.length + " prendas", total: total });
-            localStorage.setItem('inercia_ventas', JSON.stringify(historial));
+            sales.push({ date: new Date().toLocaleDateString(), total: t, items: cart.length });
+            localStorage.setItem('in_sales', JSON.stringify(sales));
             
-            carrito.forEach(item => { const p = productos.find(x => x.id === item.id); if(p) p.stock--; });
-            localStorage.setItem('inercia_db', JSON.stringify(productos));
+            cart.forEach(item => { const p = prods.find(x => x.id === item.id); if(p) p.stock--; });
+            localStorage.setItem('in_prods', JSON.stringify(prods));
 
             window.open(`https://wa.me?text=${encodeURIComponent(msg)}`);
-            carrito = []; updateCartUI(); refreshUI(); toggleCart();
+            cart = []; updateCart(); render(); toggleCart();
         }
+
+        render();
+        const savedBanner = localStorage.getItem('in_banner_url');
+        if(savedBanner) document.getElementById('main-banner').src = savedBanner;
     </script>
 </body>
 </html>
