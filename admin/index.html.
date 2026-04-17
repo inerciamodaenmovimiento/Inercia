@@ -4,9 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inercia | Admin</title>
+  <!-- Este script es el que hace aparecer el botón de Login -->
   </script>
 </head>
 <body>
+  <!-- Este script carga el panel de administración -->
   <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
