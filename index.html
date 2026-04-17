@@ -3,27 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Store | Tienda de Ropa</title>
+    <title>UKRAINIAN BRANDS | Marketplace</title>
+    <!-- Fuente elegante similar a la de la imagen -->
+    <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo">MINIMAL<b>STUDIO</b></div>
-            <div class="cart-icon" onclick="toggleCart()">
-                Carrito (<span id="cart-count">0</span>)
-            </div>
+            <div class="logo">DESKTOP</div>
+            <ul class="nav-links">
+                <li>Menú</li>
+                <li>Marcas</li>
+                <li onclick="toggleCart()" style="cursor:pointer">Carrito (<span id="cart-count">0</span>)</li>
+            </ul>
         </nav>
     </header>
 
     <main>
         <section class="hero">
-            <h1>Colección Editorial</h1>
-            <p>Diseño local con proyección internacional.</p>
+            <div class="hero-content">
+                <h1>UKRAINIAN <br> BRANDS:</h1>
+                <p class="subtitle">Diseñadores locales presentan piezas de calidad en un solo lugar.</p>
+            </div>
+            <div class="hero-image">
+                <img src="https://unsplash.com" alt="Featured">
+            </div>
         </section>
 
+        <h2 class="section-title">COLECCIONES</h2>
         <section id="catalog" class="product-grid">
-            <!-- Los productos se cargan con JS -->
+            <!-- JS cargará los productos aquí -->
         </section>
     </main>
 
@@ -31,17 +41,13 @@
     <div id="cart-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="toggleCart()">&times;</span>
-            <h2>Tu Carrito</h2>
+            <h2>TU SELECCIÓN</h2>
             <div id="cart-items"></div>
             <div class="cart-total">Total: $<span id="total-price">0</span></div>
-            
-            <hr>
-            
-            <h3>Datos de Envío</h3>
             <form id="checkout-form">
-                <input type="text" placeholder="Nombre completo" required>
-                <input type="text" placeholder="Dirección de envío" required>
-                <button type="submit" class="btn-checkout">Finalizar Compra</button>
+                <input type="text" placeholder="NOMBRE" required>
+                <input type="text" placeholder="DIRECCIÓN" required>
+                <button type="submit" class="btn-checkout">FINALIZAR COMPRA</button>
             </form>
         </div>
     </div>
