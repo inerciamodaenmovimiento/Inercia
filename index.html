@@ -3,65 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UKRAINIAN BRANDS | Marketplace</title>
+    <title>Cloth Marketplace | Concept</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <div class="top-nav">DESKTOP</div>
+        <div class="logo">DESKTOP</div>
         <nav>
-            <div class="menu-icon"><span></span><span></span></div>
-            <div class="nav-links">
-                <span>Marcas</span>
-                <span>Colecciones</span>
-                <span onclick="toggleCart()">Carrito (<span id="cart-count">0</span>)</span>
-            </div>
+            <div class="nav-left">Menu</div>
+            <div class="nav-right" onclick="toggleCart()">Cart (<span id="cart-count">0</span>)</div>
         </nav>
     </header>
 
     <main>
+        <!-- Hero Section Asimétrico -->
         <section class="hero">
             <div class="hero-text">
                 <h1>UKRAINÏS'KI <br> <i>BRENDY:</i></h1>
-                <p class="hero-sub">LOKAL'NI DYZAÏNERY PREZENTUYUT'</p>
+                <p>Lokal'ni dyzaïnery prezentuyut' yakisni ta styl'ni rechi zibrani v odnomu mistsi</p>
             </div>
-            <div class="hero-img-main">
-                <img src="https://unsplash.com" alt="">
-            </div>
-            <div class="hero-img-side">
-                <img src="https://unsplash.com" alt="">
+            <div class="hero-gallery">
+                <img src="https://unsplash.com" class="img-1">
+                <img src="https://unsplash.com" class="img-2">
             </div>
         </section>
 
-        <section class="section-container">
-            <h2 class="label">KOLEKTSÏYI</h2>
-            <div id="catalog" class="product-grid"></div>
+        <!-- Catálogo Estilo Behance -->
+        <h2 class="label-section">KOLEKTSÏYI</h2>
+        <section id="catalog" class="product-grid"></section>
+
+        <!-- Sección Digest (Pie de página visual) -->
+        <h2 class="label-section">DAÏDZHEST</h2>
+        <section class="digest-grid">
+            <div class="digest-item big"><img src="https://unsplash.com"></div>
+            <div class="digest-item small"><img src="https://unsplash.com"></div>
         </section>
     </main>
 
-    <!-- Panel Admin Invisible -->
-    <div id="admin-panel" class="admin-hidden">
+    <!-- Admin Panel (Invisible por defecto) -->
+    <div id="admin-panel">
         <div class="admin-content">
-            <h3>Panel de Control</h3>
-            <p>Ventas totales: <span id="admin-total-sales">$0</span></p>
-            <p>Órdenes realizadas: <span id="admin-orders">0</span></p>
-            <button onclick="closeAdmin()">Cerrar Panel</button>
+            <h3>HIDDEN ADMIN</h3>
+            <p>Ventas: $<span id="sales">0</span></p>
+            <p>Órdenes: <span id="orders">0</span></p>
+            <button onclick="document.getElementById('admin-panel').style.display='none'">✕</button>
         </div>
     </div>
 
     <!-- Carrito / Checkout -->
     <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="toggleCart()">&times;</span>
-            <h2>TU ORDEN</h2>
-            <div id="cart-items"></div>
-            <div class="total-line">TOTAL: $<span id="total-price">0</span></div>
-            <form id="checkout-form">
-                <input type="text" placeholder="NOMBRE COMPLETO" required>
-                <input type="text" placeholder="DIRECCIÓN" required>
-                <button type="submit" class="btn-order">FINALIZAR COMPRA</button>
-            </form>
+        <div class="modal-box">
+            <h2>CARRITO</h2>
+            <div id="items"></div>
+            <div class="total">TOTAL: $<span id="total">0</span></div>
+            <form id="checkout"><button type="submit">COMPRAR</button></form>
+            <button onclick="toggleCart()" class="btn-close">CERRAR</button>
         </div>
     </div>
 
