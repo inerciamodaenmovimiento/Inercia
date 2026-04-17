@@ -10,3 +10,29 @@
 <body>
 </body>
 </html>
+<script>
+function checkCode() {
+    let pass = prompt("Acceso Inercia - Ingrese Código:");
+    if (pass === "0110") {
+        document.getElementById('admin-panel').style.display = 'block';
+    } else {
+        alert("Código incorrecto.");
+    }
+}
+
+function closeAdmin() {
+    document.getElementById('admin-panel').style.display = 'none';
+}
+
+function updatePreview() {
+    // Cambia el título en tiempo real para que veas cómo queda
+    let title = document.getElementById('new-title').value;
+    let img = document.getElementById('new-img').value;
+    
+    if(title) document.querySelector('h1').innerText = title;
+    if(img) document.querySelector('.hero-img').src = img;
+    
+    alert("¡Vista previa actualizada! Ahora copia este texto y pégalo en tu index.html de GitHub.");
+    closeAdmin();
+}
+</script>
