@@ -50,3 +50,20 @@
     </section>
 </body>
 </html>
+<!-- Candado invisible en la esquina -->
+<div id="secret-admin-trigger" onclick="checkCode()" style="position:fixed; bottom:10px; right:10px; width:20px; height:20px; cursor:pointer; opacity:0.1; z-index:9999;">🔒</div>
+
+<!-- Panel de Administración Oculto -->
+<div id="admin-panel" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:40px; border:1px solid #000; z-index:10000; box-shadow: 0 0 50px rgba(0,0,0,0.5); font-family: sans-serif; width: 80%; max-width: 500px;">
+    <h2 style="font-family:'Playfair Display', serif;">Panel Inercia</h2>
+    <label>Título de la Colección:</label><br>
+    <input type="text" id="new-title" style="width:100%; margin-bottom:20px;"><br>
+    
+    <label>Link de Imagen Principal:</label><br>
+    <input type="text" id="new-img" style="width:100%; margin-bottom:20px;"><br>
+    
+    <button onclick="updatePreview()" style="background:black; color:white; padding:10px 20px; border:none; cursor:pointer;">Aplicar Cambios</button>
+    <button onclick="closeAdmin()" style="background:none; border:none; color:red; cursor:pointer; margin-left:10px;">Cerrar</button>
+    
+    <p style="font-size:10px; margin-top:20px; color:#666;">Nota: Para que los cambios sean permanentes, copia el código final y súbelo a GitHub.</p>
+</div>
