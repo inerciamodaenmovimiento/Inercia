@@ -9,4 +9,39 @@
 <body>
   <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
 </body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INERCIA | Moda en Movimiento</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root { --negro: #111; --rojo: #e63946; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #fff; }
+        header { padding: 40px; text-align: center; border-bottom: 1px solid #eee; }
+        .logo { font-family: 'Playfair Display'; font-size: 2.5rem; letter-spacing: 12px; text-transform: uppercase; }
+        .hero { height: 70vh; background: #f0f0f0 url('https://unsplash.com') center/cover; }
+        .container { max-width: 1200px; margin: 60px auto; padding: 0 20px; text-align: center; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; }
+        .product-card { text-align: center; }
+        .product-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; background: #f9f9f9; cursor: zoom-in; }
+        .price { font-weight: 700; margin: 10px 0; font-size: 0.9rem; }
+        .buy-btn { background: var(--negro); color: #fff; border: none; padding: 12px; width: 100%; cursor: pointer; letter-spacing: 2px; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+    <header><div class="logo">INERCIA</div></header>
+    <div class="hero"></div>
+    <div class="container">
+        <h2 style="font-family:'Playfair Display'; margin-bottom:40px;">New Arrivals</h2>
+        <div class="product-grid" id="products">
+            <!-- Aquí aparecerá lo que subas en el Admin -->
+        </div>
+    </div>
+    <footer style="padding: 60px; text-align: center; font-size: 0.7rem; border-top: 1px solid #eee; margin-top: 80px; letter-spacing: 1px;">
+        © 2026 INERCIA | MODA EN MOVIMIENTO
+    </footer>
+</body>
 </html>
+
