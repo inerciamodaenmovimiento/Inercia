@@ -4,251 +4,259 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
+    <!-- Tipografía Moderna estilo Keyn -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #000000; --accent: #f5f5f5; --gray: #888; }
+        :root { --bg: #ffffff; --text: #000000; --accent: #f5f5f5; --gray: #777; }
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { font-family: 'Inter', sans-serif; margin: 0; color: var(--text); background: var(--bg); overflow-x: hidden; }
 
         /* --- NAVEGACIÓN --- */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 1000; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 800; letter-spacing: -1px; cursor: pointer; }
-        .nav-right { display: flex; gap: 30px; font-size: 13px; text-transform: uppercase; font-weight: 600; }
-        .cart-icon { cursor: pointer; position: relative; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 5%; border-bottom: 1px solid #f0f0f0; position: sticky; top: 0; background: #fff; z-index: 1000; }
+        .logo { font-weight: 700; font-size: 20px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+        .nav-links { display: flex; gap: 40px; font-size: 13px; font-weight: 500; text-transform: uppercase; }
+        .nav-right { display: flex; gap: 20px; cursor: pointer; font-size: 13px; font-weight: 500; }
 
-        /* --- HERO --- */
-        .hero { display: grid; grid-template-columns: 1fr 1fr; height: 80vh; background: var(--accent); }
-        .hero-info { display: flex; flex-direction: column; justify-content: center; padding: 0 10%; }
-        .hero-info h1 { font-size: 4rem; margin: 0; line-height: 1; }
-        .hero-info p { font-size: 1.1rem; color: var(--gray); margin: 20px 0 40px; }
-        .hero-img { width: 100%; height: 100%; object-fit: cover; }
+        /* --- HERO (BANER PRINCIPAL) --- */
+        .hero { height: 80vh; display: flex; align-items: center; justify-content: center; background: var(--accent); position: relative; overflow: hidden; }
+        .hero img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-content { position: absolute; text-align: center; color: #fff; z-index: 2; }
+        .hero-content h1 { font-size: 4rem; font-weight: 700; margin: 0; letter-spacing: -2px; }
+        .hero-content p { font-size: 1.2rem; margin-top: 10px; opacity: 0.9; }
 
-        /* --- GRID PRODUCTOS --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; padding: 80px 5%; }
-        .card { cursor: pointer; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--accent); }
-        .card-info { margin-top: 15px; }
-        .card-tag { font-size: 10px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
-        .card-title { font-size: 16px; font-weight: 600; margin: 5px 0; }
-        .card-price { font-size: 15px; font-weight: 400; color: var(--gray); }
+        /* --- CATÁLOGO --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; padding: 80px 5%; }
+        .card { cursor: pointer; position: relative; }
+        .card-img-box { width: 100%; aspect-ratio: 4/5; background: var(--accent); overflow: hidden; }
+        .card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s ease; }
+        .card:hover img { transform: scale(1.05); }
+        .card-info { margin-top: 20px; text-align: left; }
+        .p-name { font-size: 15px; font-weight: 500; margin: 0; }
+        .p-price { font-size: 14px; color: var(--gray); margin-top: 5px; }
 
-        /* --- MODAL PRODUCTO (CARRUSEL) --- */
+        /* --- MODAL PRODUCTO --- */
         #p-modal { display: none; position: fixed; inset: 0; background: #fff; z-index: 2000; }
         .modal-grid { display: grid; grid-template-columns: 1.2fr 1fr; height: 100vh; }
-        .slider { position: relative; overflow: hidden; background: var(--accent); }
-        .slider-track { display: flex; height: 100%; transition: 0.5s ease; }
-        .slider-track img { min-width: 100%; object-fit: cover; }
-        .modal-details { padding: 80px; display: flex; flex-direction: column; justify-content: center; }
-        .btn-buy { background: #000; color: #fff; border: none; padding: 20px; font-weight: 600; cursor: pointer; margin-top: 40px; width: 100%; }
+        .modal-img-container { background: var(--accent); position: relative; overflow: hidden; }
+        .modal-track { display: flex; height: 100%; transition: 0.5s; }
+        .modal-track img { min-width: 100%; object-fit: cover; }
+        .modal-details { padding: 100px 10%; display: flex; flex-direction: column; justify-content: center; }
+        .m-name { font-size: 2.5rem; font-weight: 700; margin: 0; }
+        .m-price { font-size: 1.5rem; margin: 20px 0; color: var(--gray); }
+        .m-desc { font-size: 15px; line-height: 1.6; color: var(--gray); margin-bottom: 40px; }
+        .btn-add { background: #000; color: #fff; border: none; padding: 20px; font-weight: 600; cursor: pointer; text-transform: uppercase; width: 100%; }
 
-        /* --- CARRITO --- */
-        #cart-panel { position: fixed; top: 0; right: -100%; width: 400px; height: 100vh; background: #fff; z-index: 3000; box-shadow: -10px 0 50px rgba(0,0,0,0.1); transition: 0.4s; padding: 40px; }
-        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-        .cart-item img { width: 60px; height: 80px; object-fit: cover; }
+        /* --- CARRITO LATERAL --- */
+        #cart-panel { position: fixed; top: 0; right: -100%; width: 450px; height: 100vh; background: #fff; z-index: 3000; box-shadow: -10px 0 50px rgba(0,0,0,0.1); transition: 0.4s; padding: 40px; }
+        .cart-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid #f0f0f0; }
+        .cart-item img { width: 70px; height: 90px; object-fit: cover; }
 
-        /* --- ADMIN PANEL --- */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 450px; height: 100vh; background: #fff; z-index: 4000; border-right: 1px solid #eee; padding: 30px; overflow-y: auto; font-size: 13px; }
-        .admin-nav { display: flex; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #eee; }
-        .admin-nav span { cursor: pointer; padding-bottom: 10px; opacity: 0.4; }
+        /* --- ADMIN PRO (0110) --- */
+        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 500px; height: 100vh; background: #fff; z-index: 4000; border-right: 1px solid #eee; padding: 40px; overflow-y: auto; font-size: 13px; }
+        .admin-nav { display: flex; gap: 20px; border-bottom: 1px solid #eee; margin-bottom: 30px; }
+        .admin-nav span { cursor: pointer; padding-bottom: 10px; opacity: 0.4; text-transform: uppercase; }
         .admin-nav span.active { opacity: 1; border-bottom: 2px solid #000; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; }
-        
-        #secret-door { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: pointer; opacity: 0; z-index: 5000; }
+        .tab { display: none; } .tab.active { display: block; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
+        .btn-black { background: #000; color: #fff; border: none; padding: 15px; width: 100%; cursor: pointer; font-weight: 600; text-transform: uppercase; }
+
+        #secret-door { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; cursor: pointer; opacity: 0; z-index: 5000; }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="logo" onclick="location.reload()">INERCIA</div>
-    <div class="nav-right">
-        <span>Colección</span>
-        <div class="cart-icon" onclick="toggleCart(true)">Carrito (<span id="cart-qty">0</span>)</div>
-    </div>
-</nav>
+    <nav>
+        <div class="logo">Inercia</div>
+        <div class="nav-links">
+            <span>Tienda</span><span>Nuevos</span><span>Sobre Nosotros</span>
+        </div>
+        <div class="nav-right">
+            <span onclick="toggleCart(true)">Carrito (<span id="cart-qty">0</span>)</span>
+        </div>
+    </nav>
 
-<section class="hero">
-    <div class="hero-info">
-        <h1 id="h-title">MODA EN <br>MOVIMIENTO</h1>
-        <p id="h-desc">Nuevas siluetas para la vida urbana.</p>
-        <button class="btn-buy" style="width: 200px;" onclick="document.getElementById('catalog').scrollIntoView()">Comprar ahora</button>
-    </div>
-    <img id="h-img" src="https://unsplash.com" class="hero-img">
-</section>
+    <section class="hero">
+        <img id="h-img" src="https://unsplash.com">
+        <div class="hero-content">
+            <h1 id="h-title">INERCIA CORE</h1>
+            <p id="h-sub">Explora la nueva colección permanente</p>
+        </div>
+    </section>
 
-<div class="grid" id="catalog"></div>
+    <div class="grid" id="catalog"></div>
 
-<!-- MODAL PRODUCTO -->
-<div id="p-modal">
-    <div class="modal-grid">
-        <div class="slider">
-            <div class="slider-track" id="m-track"></div>
-            <div style="position:absolute; bottom:20px; right:20px; display:flex; gap:10px;">
-                <button onclick="moveSlide(-1)" style="padding:15px; border:none; background:#fff; cursor:pointer;">←</button>
-                <button onclick="moveSlide(1)" style="padding:15px; border:none; background:#fff; cursor:pointer;">→</button>
+    <!-- MODAL DETALLE PRODUCTO -->
+    <div id="p-modal">
+        <div class="modal-grid">
+            <div class="modal-img-container">
+                <div class="modal-track" id="m-track"></div>
+                <div style="position:absolute; bottom:30px; right:30px; display:flex; gap:10px;">
+                    <button onclick="moveSlide(-1)" style="padding:15px; border:none; background:#fff; cursor:pointer;">←</button>
+                    <button onclick="moveSlide(1)" style="padding:15px; border:none; background:#fff; cursor:pointer;">→</button>
+                </div>
+            </div>
+            <div class="modal-details">
+                <span onclick="closeModal()" style="cursor:pointer; align-self:flex-end; font-size:12px; letter-spacing:1px;">CERRAR</span>
+                <h2 id="m-name" class="m-name">Nombre</h2>
+                <div id="m-price" class="m-price">$0</div>
+                <p id="m-desc" class="m-desc">Descripción...</p>
+                <button class="btn-add" onclick="addToCart()">Añadir al Carrito</button>
             </div>
         </div>
-        <div class="modal-details">
-            <span onclick="closeModal()" style="cursor:pointer; align-self:flex-end;">Cerrar</span>
-            <h2 id="m-title" style="font-size: 3rem; margin:0;"></h2>
-            <div id="m-price" style="font-size: 1.5rem; margin: 20px 0; color: var(--gray);"></div>
-            <p id="m-desc" style="line-height:1.6; color: var(--gray);"></p>
-            <button class="btn-buy" onclick="addToCart()">Añadir al carrito</button>
+    </div>
+
+    <!-- CARRITO LATERAL -->
+    <div id="cart-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+            <h2 style="font-weight:700; margin:0;">CARRITO</h2>
+            <span onclick="toggleCart(false)" style="cursor:pointer; font-size:12px; letter-spacing:1px;">CERRAR</span>
+        </div>
+        <div id="cart-items" style="height: 60vh; overflow-y: auto;">Vacío.</div>
+        <div style="margin-top:auto; border-top:1px solid #eee; padding-top:30px;">
+            <div style="display:flex; justify-content:space-between; font-weight:700; font-size:18px;">
+                <span>Total</span> <span id="cart-total">$0</span>
+            </div>
+            <button class="btn-add" style="margin-top:30px;" onclick="checkout()">Finalizar Pedido</button>
         </div>
     </div>
-</div>
 
-<!-- CARRITO -->
-<div id="cart-panel">
-    <div style="display:flex; justify-content:space-between; margin-bottom:40px;">
-        <h2>Carrito</h2>
-        <span onclick="toggleCart(false)" style="cursor:pointer;">Cerrar</span>
-    </div>
-    <div id="cart-items">Vacío.</div>
-    <div style="margin-top:auto; border-top:1px solid #eee; padding-top:20px;">
-        <div style="display:flex; justify-content:space-between; font-weight:800;">
-            <span>Total</span> <span id="cart-total">$0</span>
+    <!-- ACCESO ADMIN (0110) -->
+    <div id="secret-door" onclick="login()"></div>
+    <div id="admin-panel">
+        <h2 style="font-weight:700;">Admin Panel</h2>
+        <div class="admin-nav">
+            <span class="active" onclick="switchTab(0)">Inventario</span>
+            <span onclick="switchTab(1)">Pedidos</span>
+            <span onclick="switchTab(2)">Textos Home</span>
         </div>
-        <button class="btn-buy" onclick="checkout()">Finalizar pedido</button>
-    </div>
-</div>
 
-<!-- ADMIN -->
-<div id="secret-door" onclick="login()"></div>
-<div id="admin-panel">
-    <h2 style="font-family:'Playfair Display'">Dashboard Inercia</h2>
-    <div class="admin-nav">
-        <span class="active" onclick="switchTab(0)">Productos</span>
-        <span onclick="switchTab(1)">Pedidos</span>
-        <span onclick="switchTab(2)">Tienda</span>
-    </div>
+        <div class="tab active">
+            <label>Subir Fotos (Puedes elegir varias):</label><input type="file" id="a-files" multiple accept="image/*">
+            <label>Nombre del Producto:</label><input type="text" id="a-name">
+            <label>Precio:</label><input type="number" id="a-price">
+            <label>Descripción detallada:</label><textarea id="a-desc" rows="4"></textarea>
+            <button class="btn-black" onclick="publish()">Publicar Producto</button>
+            <h4 style="margin-top:40px;">Baja de Productos</h4>
+            <div id="a-checklist"></div>
+        </div>
 
-    <div class="tab-content active">
-        <label>Fotos (puedes elegir varias):</label><input type="file" id="a-files" multiple accept="image/*">
-        <label>Nombre:</label><input type="text" id="a-name">
-        <label>Precio ($):</label><input type="number" id="a-price">
-        <label>Descripción:</label><textarea id="a-desc"></textarea>
-        <button class="btn-buy" onclick="publish()">Publicar Producto</button>
-        <h4 style="margin-top:40px;">Lista de Inventario (Baja)</h4>
-        <div id="a-checklist"></div>
-    </div>
+        <div class="tab">
+            <div id="a-orders" style="background:#f9f9f9; padding:20px;">No hay pedidos registrados.</div>
+        </div>
 
-    <div class="tab-content">
-        <div id="a-orders" style="background:#f5f5f5; padding:15px;">No hay pedidos.</div>
+        <div class="tab">
+            <label>Título Banner:</label><input type="text" id="in-h-title">
+            <label>Subtítulo:</label><input type="text" id="in-h-sub">
+            <label>Foto Banner:</label><input type="file" id="in-h-img">
+            <button class="btn-black" onclick="updateHome()">Guardar Cambios Home</button>
+        </div>
+
+        <button class="btn-black" style="background: #27ae60; margin-top:50px;" onclick="exportHTML()">DESCARGAR INDEX.HTML</button>
+        <button onclick="location.reload()" style="width:100%; border:none; background:none; color:red; cursor:pointer; margin-top:20px;">Cerrar Panel</button>
     </div>
 
-    <div class="tab-content">
-        <label>Título de la Web:</label><input type="text" id="in-h-title">
-        <label>Banner Principal:</label><input type="file" id="in-h-img">
-        <button class="btn-buy" onclick="saveStore()">Guardar Cambios</button>
-    </div>
+    <script>
+        let cart = [];
+        let curProd = null;
+        let slideIdx = 0;
 
-    <button class="btn-buy" style="background: #27ae60; margin-top:40px;" onclick="exportHTML()">DESCARGAR INDEX.HTML</button>
-</div>
+        function login() { if(prompt("Código Admin:") === "0110") document.getElementById('admin-panel').style.display='block'; }
+        function switchTab(n) {
+            document.querySelectorAll('.admin-nav span').forEach((s,i) => s.className = i===n ? 'active' : '');
+            document.querySelectorAll('.tab').forEach((t,i) => t.className = i===n ? 'tab active' : 'tab');
+        }
 
-<script>
-    let cart = [];
-    let curProd = null;
-    let slideIdx = 0;
+        async function toBase64(f) { return new Promise(r => { const reader = new FileReader(); reader.onload = () => r(reader.result); reader.readAsDataURL(f); }); }
 
-    function login() { if(prompt("Código:") === "0110") document.getElementById('admin-panel').style.display='block'; }
-    function switchTab(n) {
-        document.querySelectorAll('.admin-nav span').forEach((s,i) => s.className = i===n ? 'active' : '');
-        document.querySelectorAll('.tab-content').forEach((t,i) => t.className = i===n ? 'tab-content active' : 'tab-content');
-    }
+        async function publish() {
+            const files = document.getElementById('a-files').files;
+            const name = document.getElementById('a-name').value;
+            const price = document.getElementById('a-price').value;
+            const desc = document.getElementById('a-desc').value;
+            if(files.length === 0 || !name) return alert("Faltan datos");
 
-    async function toB64(f) { return new Promise(r => { const reader = new FileReader(); reader.onload = () => r(reader.result); reader.readAsDataURL(f); }); }
+            const imgs = await Promise.all(Array.from(files).map(f => toBase64(f)));
+            const id = "p" + Date.now();
+            const html = `
+                <div class="card" id="${id}" onclick='openModal("${name}", ${price}, ${JSON.stringify(imgs)}, "${desc}")'>
+                    <div class="card-img-box"><img src="${imgs[0]}"></div>
+                    <div class="card-info">
+                        <div class="p-name">${name}</div>
+                        <div class="p-price">$${price}</div>
+                    </div>
+                </div>`;
+            document.getElementById('catalog').insertAdjacentHTML('beforeend', html);
+            document.getElementById('a-checklist').insertAdjacentHTML('beforeend', `<div id="c-${id}" style="margin-bottom:10px; display:flex; justify-content:space-between;">${name} <span onclick="baja('${id}')" style="color:red; cursor:pointer;">[BAJA]</span></div>`);
+        }
 
-    async function publish() {
-        const files = document.getElementById('a-files').files;
-        const name = document.getElementById('a-name').value;
-        const price = document.getElementById('a-price').value;
-        const desc = document.getElementById('a-desc').value;
-        if(files.length === 0 || !name) return alert("Faltan datos");
+        function baja(id) { document.getElementById(id).remove(); document.getElementById('c-'+id).remove(); }
 
-        const imgs = await Promise.all(Array.from(files).map(f => toB64(f)));
-        const id = "p" + Date.now();
-        const html = `
-            <div class="card" id="${id}" onclick='openModal("${name}", ${price}, ${JSON.stringify(imgs)}, "${desc}")'>
-                <img src="${imgs[0]}">
-                <div class="card-info">
-                    <div class="card-tag">Nueva Colección</div>
-                    <div class="card-title">${name}</div>
-                    <div class="card-price">$${price}</div>
-                </div>
-            </div>`;
-        document.getElementById('catalog').insertAdjacentHTML('beforeend', html);
-        document.getElementById('a-checklist').insertAdjacentHTML('beforeend', `<div id="c-${id}" style="margin-bottom:10px;">${name} <span onclick="baja('${id}')" style="color:red; cursor:pointer;">[Baja]</span></div>`);
-    }
+        function openModal(n, p, imgs, d) {
+            if(document.getElementById('admin-panel').style.display==='block') return;
+            curProd = { n, p, imgs, d };
+            slideIdx = 0;
+            document.getElementById('m-name').innerText = n;
+            document.getElementById('m-price').innerText = "$" + p;
+            document.getElementById('m-desc').innerText = d;
+            const track = document.getElementById('m-track');
+            track.innerHTML = imgs.map(src => `<img src="${src}">`).join('');
+            track.style.transform = `translateX(0)`;
+            document.getElementById('p-modal').style.display = 'block';
+        }
 
-    function baja(id) { document.getElementById(id).remove(); document.getElementById('c-'+id).remove(); }
+        function moveSlide(n) {
+            const track = document.getElementById('m-track');
+            slideIdx = (slideIdx + n + curProd.imgs.length) % curProd.imgs.length;
+            track.style.transform = `translateX(-${slideIdx * 100}%)`;
+        }
 
-    function openModal(n, p, imgs, d) {
-        if(document.getElementById('admin-panel').style.display==='block') return;
-        curProd = { n, p, imgs, d };
-        slideIdx = 0;
-        document.getElementById('m-title').innerText = n;
-        document.getElementById('m-price').innerText = "$" + p;
-        document.getElementById('m-desc').innerText = d;
-        const track = document.getElementById('m-track');
-        track.innerHTML = imgs.map(src => `<img src="${src}">`).join('');
-        track.style.transform = `translateX(0)`;
-        document.getElementById('p-modal').style.display = 'block';
-    }
+        function toggleCart(s) { document.getElementById('cart-panel').style.right = s ? '0' : '-100%'; }
+        function closeModal() { document.getElementById('p-modal').style.display = 'none'; }
 
-    function moveSlide(n) {
-        const track = document.getElementById('m-track');
-        slideIdx = (slideIdx + n + curProd.imgs.length) % curProd.imgs.length;
-        track.style.transform = `translateX(-${slideIdx * 100}%)`;
-    }
+        function addToCart() {
+            cart.push(curProd);
+            updateCart();
+            closeModal();
+            toggleCart(true);
+        }
 
-    function toggleCart(s) { document.getElementById('cart-panel').style.right = s ? '0' : '-100%'; }
-    function closeModal() { document.getElementById('p-modal').style.display = 'none'; }
+        function updateCart() {
+            const list = document.getElementById('cart-items');
+            list.innerHTML = ""; let t = 0;
+            cart.forEach((x, i) => {
+                t += parseInt(x.p);
+                list.innerHTML += `<div class="cart-item"><img src="${x.imgs[0]}"><div><b>${x.n}</b><br>$${x.p}<br><span onclick="removeCart(${i})" style="color:red; cursor:pointer; font-size:10px;">Eliminar</span></div></div>`;
+            });
+            document.getElementById('cart-qty').innerText = cart.length;
+            document.getElementById('cart-total').innerText = "$" + t;
+        }
 
-    function addToCart() {
-        cart.push(curProd);
-        updateCart();
-        closeModal();
-        toggleCart(true);
-    }
+        function removeCart(i) { cart.splice(i, 1); updateCart(); }
 
-    function updateCart() {
-        const list = document.getElementById('cart-items');
-        list.innerHTML = ""; let t = 0;
-        cart.forEach((x, i) => {
-            t += parseInt(x.p);
-            list.innerHTML += `<div class="cart-item"><img src="${x.imgs[0]}"><div><b>${x.n}</b><br>$${x.p}<br><span onclick="removeCart(${i})" style="color:red; cursor:pointer;">Quitar</span></div></div>`;
-        });
-        document.getElementById('cart-qty').innerText = cart.length;
-        document.getElementById('cart-total').innerText = "$" + t;
-    }
+        function checkout() {
+            if(cart.length === 0) return;
+            const orders = document.getElementById('a-orders');
+            if(orders.innerText === "No hay pedidos registrados.") orders.innerHTML = "";
+            orders.innerHTML += `<div style="border-bottom:1px solid #ddd; padding:10px">Pedido #${Date.now()}: ${cart.map(x=>x.n).join(', ')} ($${document.getElementById('cart-total').innerText})</div>`;
+            alert("Pedido registrado con éxito en el Admin.");
+            cart = []; updateCart(); toggleCart(false);
+        }
 
-    function removeCart(i) { cart.splice(i, 1); updateCart(); }
+        async function updateHome() {
+            const t = document.getElementById('in-h-title').value;
+            const s = document.getElementById('in-h-sub').value;
+            const f = document.getElementById('in-h-img').files;
+            if(t) document.getElementById('h-title').innerText = t;
+            if(s) document.getElementById('h-sub').innerText = s;
+            if(f.length) document.getElementById('h-img').src = await toBase64(f[0]);
+            alert("Home actualizado.");
+        }
 
-    function checkout() {
-        const id = Date.now();
-        const orders = document.getElementById('a-orders');
-        if(orders.innerText === "No hay pedidos.") orders.innerHTML = "";
-        orders.innerHTML += `<div style="border-bottom:1px solid #ddd; padding:10px">Pedido #${id}: ${cart.map(x=>x.n).join(', ')} ($${document.getElementById('cart-total').innerText})</div>`;
-        alert("Pedido simulado con éxito.");
-        cart = []; updateCart(); toggleCart(false);
-    }
-
-    async function saveStore() {
-        const t = document.getElementById('in-h-title').value;
-        const f = document.getElementById('in-h-img').files[0];
-        if(t) document.getElementById('h-title').innerHTML = t.replace(/\n/g, '<br>');
-        if(f) document.getElementById('h-img').src = await toB64(f);
-        alert("Cambios aplicados.");
-    }
-
-    function exportHTML() {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(new Blob([document.documentElement.outerHTML], {type:'text/html'}));
-        a.download = 'index.html'; a.click();
-    }
-</script>
+        function exportHTML() {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([document.documentElement.outerHTML], {type:'text/html'}));
+            a.download = 'index.html'; a.click();
+        }
+    </script>
 </body>
 </html>
