@@ -4,167 +4,241 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
-    <!-- Librerías de emergencia (Carga garantizada) -->
     <script src="https://tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         @import url('https://googleapis.com');
-        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #000; margin: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #000; overflow-x: hidden; }
         .serif { font-family: 'Playfair Display', serif; }
-        .admin-view { display: none; }
-        .nav-link { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; color: #999; transition: 0.3s; }
-        .nav-link:hover { color: #000; }
+        .admin-hidden { display: none; }
+        .transition-all { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR TIPO ULTRA -->
-    <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 py-6">
-        <div class="container mx-auto px-8 flex justify-between items-center">
-            <div class="serif text-3xl font-bold tracking-[0.3em] uppercase cursor-pointer" onclick="navigate('home')">INERCIA</div>
-            <div class="hidden lg:flex space-x-12">
-                <a href="javascript:void(0)" onclick="navigate('home')" class="nav-link">Inicio</a>
-                <a href="javascript:void(0)" onclick="scrollToNew()" class="nav-link">Colección</a>
-                <a href="javascript:void(0)" onclick="navigate('admin')" class="nav-link text-red-400">Admin</a>
+    <!-- NAVBAR -->
+    <header class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-50">
+        <nav class="container mx-auto px-8 py-6 flex justify-between items-center">
+            <div class="text-3xl font-bold tracking-[0.4em] serif uppercase cursor-pointer" onclick="navigate('home')">INERCIA</div>
+            <div class="flex items-center space-x-8">
+                <!-- Botón oculto para Admin (Solo se activa con el código en consola o un clic largo en el logo) -->
+                <button onclick="promptAdmin()" class="opacity-0 w-4 h-4 cursor-default">.</button>
+                <button onclick="toggleCart()" class="relative hover:opacity-50 transition-all">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold">0</span>
+                </button>
             </div>
-            <button onclick="toggleCart()" class="text-xl relative">
-                <i class="fa-solid fa-bag-shopping"></i>
-                <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
-            </button>
-        </div>
+        </nav>
     </header>
 
-    <!-- VISTA TIENDA -->
-    <main id="view-home">
-        <!-- BANNER GIGANTE -->
-        <section class="h-screen bg-stone-100 flex items-center justify-center relative overflow-hidden">
-            <img id="main-banner" src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover opacity-80">
+    <!-- VISTA CLIENTE -->
+    <main id="view-home" class="pt-16">
+        <section class="relative h-[85vh] flex items-center justify-center bg-stone-100 overflow-hidden">
+            <img id="display-banner" src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover opacity-80">
             <div class="relative z-10 text-center">
-                <h1 class="serif text-8xl md:text-[120px] italic text-white drop-shadow-2xl">Inercia</h1>
-                <p class="text-white text-xs tracking-[1em] uppercase mt-4">Moda en Movimiento</p>
+                <h1 class="serif text-7xl md:text-[110px] italic text-white drop-shadow-2xl">Inercia</h1>
+                <p class="text-white text-[10px] tracking-[0.8em] uppercase font-light mt-4">Moda en Movimiento</p>
             </div>
         </section>
 
-        <!-- GRILLA DE PRODUCTOS -->
-        <section id="new-arrivals" class="container mx-auto px-8 py-32">
-            <div class="text-center mb-20">
-                <h2 class="serif text-4xl italic">New Arrivals</h2>
-                <div class="h-px w-20 bg-black mx-auto mt-4"></div>
-            </div>
+        <!-- Categorías en Home -->
+        <div id="home-cats" class="container mx-auto px-8 py-12 flex justify-center gap-8 text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400"></div>
+
+        <section id="new-arrivals" class="container mx-auto px-8 py-20">
+            <h2 class="serif text-4xl text-center mb-16 italic">New Arrivals</h2>
             <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-                <!-- Se llenan con JS abajo -->
+                <!-- Se cargan por JS -->
             </div>
         </section>
     </main>
 
-    <!-- VISTA ADMIN -->
-    <main id="view-admin" class="admin-view pt-40 container mx-auto px-8 pb-32">
-        <div class="max-w-3xl mx-auto bg-gray-50 p-10 border">
-            <h2 class="serif text-3xl mb-8 italic">Panel Administrador</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <input id="adm-nombre" type="text" placeholder="Producto" class="p-3 border-b bg-transparent outline-none">
-                <input id="adm-precio" type="number" placeholder="Precio ($)" class="p-3 border-b bg-transparent outline-none">
-                <input id="adm-stock" type="number" placeholder="Stock" class="p-3 border-b bg-transparent outline-none">
-                <input id="adm-cat" type="text" placeholder="Categoría" class="p-3 border-b bg-transparent outline-none">
+    <!-- PANEL ADMINISTRADOR (PROTEGIDO) -->
+    <main id="view-admin" class="admin-hidden pt-32 container mx-auto px-8 pb-32">
+        <div class="flex justify-between items-end border-b pb-6 mb-12">
+            <h2 class="serif text-4xl italic">Panel de Control</h2>
+            <button onclick="navigate('home')" class="text-[10px] uppercase font-bold underline text-gray-400">Cerrar Sesión</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <!-- 1. Alta de Productos -->
+            <div class="lg:col-span-2 bg-stone-50 p-10 rounded-sm border">
+                <h3 class="text-[10px] font-bold uppercase mb-8 tracking-widest text-gray-400">Subir Producto</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <input id="adm-nombre" type="text" placeholder="Nombre de Prenda" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
+                    <input id="adm-precio" type="number" placeholder="Precio ($)" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
+                    <input id="adm-stock" type="number" placeholder="Stock Inicial" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
+                    <input id="adm-cat" type="text" placeholder="Categoría (Ej: Jacket)" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
+                </div>
+                <div class="p-10 border-2 border-dashed border-gray-200 text-center mb-8 bg-white">
+                    <p class="text-[10px] font-bold text-gray-400 mb-4 uppercase">Foto desde tu PC</p>
+                    <input id="adm-file" type="file" class="block w-full text-xs text-gray-500">
+                </div>
+                <button onclick="saveProduct()" class="w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-[0.3em]">Publicar Ahora</button>
             </div>
-            <div class="mb-8 p-10 border-2 border-dashed border-gray-200 text-center">
-                <p class="text-[10px] font-bold uppercase text-gray-400 mb-4">Elegir foto de tu PC</p>
-                <input id="adm-file" type="file" class="text-xs">
+
+            <!-- 2. Ajustes y Ventas -->
+            <div class="space-y-8">
+                <div class="bg-white p-8 border rounded-sm">
+                    <h4 class="text-[10px] font-bold uppercase mb-4 tracking-widest text-gray-400">Cambiar Banner Home</h4>
+                    <input id="adm-banner-url" type="text" placeholder="URL de imagen" class="w-full border-b py-2 text-xs mb-4 outline-none">
+                    <button onclick="updateBanner()" class="w-full bg-stone-100 py-3 text-[9px] font-bold uppercase tracking-widest">Actualizar Banner</button>
+                </div>
+                <div class="bg-white p-8 border rounded-sm h-80 overflow-y-auto">
+                    <h4 class="text-[10px] font-bold uppercase mb-6 tracking-widest text-gray-400">Historial de Ventas</h4>
+                    <div id="adm-ventas" class="text-[10px] space-y-4"></div>
+                </div>
             </div>
-            <button onclick="saveProduct()" class="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-widest">Publicar Producto</button>
-            <button onclick="navigate('home')" class="w-full mt-6 text-[10px] uppercase underline">Volver a la tienda</button>
         </div>
     </main>
 
     <!-- CARRITO -->
-    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-80 md:w-96 bg-white z-[100] shadow-2xl translate-x-full transition-transform duration-500 flex flex-col p-10">
-        <div class="flex justify-between items-center border-b pb-6 mb-6 uppercase tracking-widest text-xs font-bold">
-            <span>Bolsa de Compras</span>
-            <button onclick="toggleCart()" class="text-2xl">&times;</button>
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-white z-[100] shadow-2xl translate-x-full transition-all flex flex-col p-10">
+        <div class="flex justify-between items-center border-b pb-6 mb-6">
+            <span class="serif text-3xl italic">Tu Bolsa</span>
+            <button onclick="toggleCart()" class="text-4xl font-light">&times;</button>
         </div>
-        <div id="cart-items" class="flex-grow overflow-y-auto space-y-4"></div>
-        <div class="border-t pt-6">
-            <div class="flex justify-between font-bold text-xl mb-6"><span>Total</span><span id="cart-total">$0</span></div>
-            <button onclick="checkout()" class="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-widest">Finalizar Pedido</button>
+        <div id="cart-items" class="flex-grow overflow-y-auto space-y-6"></div>
+        <div class="border-t pt-8 space-y-6 bg-stone-50 p-4">
+            <div class="flex justify-between font-bold text-2xl px-2"><span>Total</span><span id="cart-total">$0</span></div>
+            <button onclick="checkout()" class="w-full bg-black text-white py-6 text-[10px] font-bold uppercase tracking-[0.4em]">Finalizar por WhatsApp</button>
+            <button onclick="alert('Arrepentimiento legal registrado')" class="w-full text-gray-400 text-[10px] uppercase underline tracking-tighter">Botón de Arrepentimiento</button>
         </div>
     </div>
 
-    <!-- BOTONES WHATSAPP -->
-    <a href="https://wa.me" target="_blank" class="fixed bottom-10 right-10 w-14 h-14 bg-white border border-gray-100 rounded-full flex items-center justify-center shadow-xl z-50">
-        <i class="fa-brands fa-whatsapp text-2xl"></i>
-    </a>
+    <!-- BOTÓN WHATSAPP -->
+    <a href="https://wa.me" id="wa-btn" target="_blank" class="fixed bottom-10 right-10 w-16 h-16 bg-white border border-gray-100 rounded-full flex items-center justify-center shadow-2xl z-50 hover:scale-110 transition-all"><i class="fa-brands fa-whatsapp text-2xl text-black"></i></a>
 
     <script>
-        // DATOS INICIALES
-        let prods = JSON.parse(localStorage.getItem('in_db_v2')) || [
-            { id: 1, nombre: 'Blusa Brown Ultra', precio: 12500, stock: 5, cat: 'Clothes', img: 'https://unsplash.com' },
-            { id: 2, nombre: 'Grey Coat Inercia', precio: 22900, stock: 3, cat: 'Jacket', img: 'https://unsplash.com' }
+        // MEMORIA LOCAL
+        let prods = JSON.parse(localStorage.getItem('in_db')) || [
+            { id: 1, nombre: 'Blusa Brown Ultra', precio: 12500, stock: 5, cat: 'Summer', img: 'https://unsplash.com' }
         ];
-        let cart = [];
+        let ventas = JSON.parse(localStorage.getItem('in_sales')) || [];
+        let carrito = [];
 
-        function navigate(v) {
-            document.getElementById('view-home').style.display = v === 'home' ? 'block' : 'none';
-            document.getElementById('view-admin').style.display = v === 'admin' ? 'block' : 'none';
-            window.history.pushState("", document.title, window.location.pathname);
+        // SEGURIDAD: CÓDIGO 0110
+        function promptAdmin() {
+            let pass = prompt("Acceso Restringido. Ingrese Código:");
+            if (pass === "0110") { navigate('admin'); }
+            else { alert("Acceso Denegado"); }
         }
 
-        function scrollToNew() {
-            navigate('home');
-            setTimeout(() => { document.getElementById('new-arrivals').scrollIntoView({behavior: 'smooth'}); }, 100);
+        function navigate(view) {
+            document.getElementById('view-home').style.display = view === 'home' ? 'block' : 'none';
+            document.getElementById('view-admin').className = view === 'admin' ? 'pt-32 container mx-auto px-8 pb-32' : 'admin-hidden';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.history.pushState("", document.title, window.location.pathname);
         }
 
         function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('translate-x-full'); }
 
-        function render() {
-            const grid = document.getElementById('grid-productos');
-            grid.innerHTML = prods.map(p => `
-                <div class="text-center group">
-                    <div class="aspect-[2/3] bg-gray-100 overflow-hidden mb-6 relative">
-                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 w-full bg-black text-white py-4 text-[10px] font-bold uppercase opacity-0 group-hover:opacity-100 transition-all">Añadir</button>
-                    </div>
-                    <p class="text-[9px] text-gray-400 uppercase tracking-widest mb-1">${p.cat}</p>
-                    <h3 class="serif text-lg mb-1">${p.nombre}</h3>
-                    <p class="text-sm font-light">$${p.precio.toLocaleString()}</p>
-                </div>
-            `).join('');
-        }
-
+        // ADMINISTRADOR: FUNCIONES
         function saveProduct() {
             const n = document.getElementById('adm-nombre').value;
             const p = document.getElementById('adm-precio').value;
-            const f = document.getElementById('adm-file').files[0];
-            if (f) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    prods.unshift({ id: Date.now(), nombre: n, precio: parseInt(p), stock: 10, cat: 'Nuevos', img: e.target.result });
-                    localStorage.setItem('in_db_v2', JSON.stringify(prods));
-                    render();
+            const s = document.getElementById('adm-stock').value;
+            const c = document.getElementById('adm-cat').value;
+            const file = document.getElementById('adm-file').files[0];
+
+            if (file) {
+                const r = new FileReader();
+                r.onload = (e) => {
+                    prods.push({ id: Date.now(), nombre: n, precio: parseInt(p), stock: parseInt(s), cat: c, img: e.target.result });
+                    localStorage.setItem('in_db', JSON.stringify(prods));
+                    renderAll();
                     navigate('home');
                 };
-                reader.readAsDataURL(f);
+                r.readAsDataURL(file);
             }
         }
 
-        function addToCart(id) {
-            cart.push(prods.find(x => x.id === id));
-            updateCart();
-            toggleCart();
+        function deleteProd(id) {
+            prods = prods.filter(x => x.id !== id);
+            localStorage.setItem('in_db', JSON.stringify(prods));
+            renderAll();
         }
 
-        function updateCart() {
-            const c = document.getElementById('cart-items');
-            c.innerHTML = cart.map(i => `<div class="flex justify-between text-xs border-b pb-2"><span>${i.nombre}</span><span>$${i.precio}</span></div>`).join('');
-            document.getElementById('cart-total').innerText = '$' + cart.reduce((acc, p) => acc + p.precio, 0).toLocaleString();
-            document.getElementById('cart-count').innerText = cart.length;
+        function updateBanner() {
+            const url = document.getElementById('adm-banner-url').value;
+            if(url) {
+                document.getElementById('display-banner').src = url;
+                localStorage.setItem('in_banner_saved', url);
+            }
+        }
+
+        // TIENDA: RENDER
+        function renderAll() {
+            const grid = document.getElementById('grid-productos');
+            const hCats = document.getElementById('home-cats');
+            const hVentas = document.getElementById('adm-ventas');
+
+            grid.innerHTML = prods.map(p => `
+                <div class="group text-center">
+                    <div class="aspect-[2/3] bg-stone-50 overflow-hidden mb-6 relative">
+                        <img src="${p.img}" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
+                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">Añadir a la bolsa</button>
+                        <button onclick="deleteProd(${p.id})" class="absolute top-4 right-4 bg-white/90 text-red-500 w-8 h-8 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
+                    </div>
+                    <h3 class="serif text-xl italic mb-1 uppercase tracking-tighter">${p.nombre}</h3>
+                    <p class="text-[9px] text-gray-400 uppercase tracking-widest mb-2">${p.cat}</p>
+                    <p class="text-sm font-light">$${p.precio.toLocaleString()}</p>
+                    <p class="text-[8px] text-stone-300 mt-2">STOCK: ${p.stock}</p>
+                </div>
+            `).join('');
+
+            const uniqueCats = [...new Set(prods.map(p => p.cat))];
+            hCats.innerHTML = uniqueCats.map(c => `<span>${c}</span>`).join(' <span class="text-stone-200">|</span> ');
+
+            hVentas.innerHTML = ventas.map(v => `
+                <div class="border-b pb-2">
+                    <p class="font-bold">${v.fecha}</p>
+                    <p>${v.resumen} - $${v.total.toLocaleString()}</p>
+                </div>
+            `).reverse().join('');
+        }
+
+        function addToCart(id) {
+            const p = prods.find(x => x.id === id);
+            if(p.stock > 0) { carrito.push(p); updateCartUI(); toggleCart(); }
+            else alert("Sin stock");
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            container.innerHTML = carrito.map((item, i) => `
+                <div class="flex items-center gap-6 pb-6 border-b border-stone-100">
+                    <img src="${item.img}" class="w-20 h-24 object-cover">
+                    <div class="flex-grow">
+                        <h4 class="serif text-lg italic uppercase">${item.nombre}</h4>
+                        <p class="text-sm text-gray-500">$${item.precio.toLocaleString()}</p>
+                    </div>
+                    <button onclick="carrito.splice(${i},1); updateCartUI();" class="text-stone-300 hover:text-black">&times;</button>
+                </div>
+            `).join('');
+            const total = carrito.reduce((acc, p) => acc + p.precio, 0);
+            document.getElementById('cart-total').innerText = '$' + total.toLocaleString();
+            document.getElementById('cart-count').innerText = carrito.length;
         }
 
         function checkout() {
-            const msg = `Pedido Inercia: ${cart.map(p => p.nombre).join(', ')}. Total: $${document.getElementById('cart-total').innerText}`;
+            if(carrito.length === 0) return;
+            const t = carrito.reduce((acc, p) => acc + p.precio, 0);
+            const msg = `PEDIDO INERCIA:\n${carrito.map(p => "- " + p.nombre).join("\n")}\nTOTAL: $${t}`;
+            
+            ventas.push({ fecha: new Date().toLocaleString(), resumen: carrito.length + " prendas", total: t });
+            localStorage.setItem('in_sales', JSON.stringify(ventas));
+            
+            carrito.forEach(item => { const p = prods.find(x => x.id === item.id); if(p) p.stock--; });
+            localStorage.setItem('in_db', JSON.stringify(prods));
+
             window.open(`https://wa.me?text=${encodeURIComponent(msg)}`);
+            carrito = []; updateCartUI(); renderAll(); toggleCart();
         }
 
-        render();
+        const savedB = localStorage.getItem('in_banner_saved');
+        if(savedB) document.getElementById('display-banner').src = savedB;
+
+        renderAll();
     </script>
 </body>
 </html>
