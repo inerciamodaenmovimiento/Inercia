@@ -17,12 +17,13 @@
         .container { padding: 0 6% 100px; }
         .section-header { margin-bottom: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; }
         .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .product-card { cursor: pointer; transition: opacity 0.3s; }
+        .product-card { cursor: pointer; transition: opacity 0.3s; position: relative; }
         .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #e2e1de; margin-bottom: 15px; }
         .product-info h3 { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
         .product-info p { font-size: 0.8rem; color: #666; margin-top: 5px; }
         .cart-aside { position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: #fff; z-index: 2000; padding: 40px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77,0,0.175,1); display: flex; flex-direction: column; }
         .cart-aside.active { transform: translateX(0); }
+        .cart-item { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 15px; border-bottom: 1px solid #f5f5f5; padding-bottom: 10px; }
         .btn-black { width: 100%; padding: 15px; background: #000; color: #fff; border: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 20px; }
         .modal { display: none; position: fixed; inset: 0; background: rgba(244,243,240,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 6%; }
         .modal-content { max-width: 1000px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
@@ -35,6 +36,7 @@
         .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 20px; }
         .admin-table th, .admin-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
         .admin-input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; font-family: inherit; }
+        .del-btn { color: red; cursor: pointer; border: none; background: none; font-size: 0.7rem; }
     </style>
 </head>
 <body>
@@ -75,12 +77,24 @@
             </table>
         </div>
         <div id="tab1" class="admin-tab">
-            <h3>Gestión de Contenido</h3>
-            <input id="new-n" class="admin-input" placeholder="Nombre">
-            <input id="new-p" class="admin-input" type="number" placeholder="Precio">
-            <input id="new-cat" class="admin-input" placeholder="Categoría">
-            <label>Subir fotos (Local):</label><input id="new-i-file" class="admin-input" type="file" multiple accept="image/*">
-            <button onclick="addP()" class="btn-black">Publicar</button>
+            <h3>Inventario</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h4>Nuevo Producto</h4>
+                    <input id="new-n" class="admin-input" placeholder="Nombre">
+                    <input id="new-p" class="admin-input" type="number" placeholder="Precio">
+                    <input id="new-cat" class="admin-input" placeholder="Categoría">
+                    <label>Subir fotos (PC):</label><input id="new-i-file" class="admin-input" type="file" multiple accept="image/*">
+                    <button onclick="addP()" class="btn-black">Publicar</button>
+                </div>
+                <div>
+                    <h4>Lista de Artículos</h4>
+                    <table class="admin-table">
+                        <thead><tr><th>Nombre</th><th>Acción</th></tr></thead>
+                        <tbody id="list-inventory"></tbody>
+                    </table>
+                </div>
+            </div>
             <hr style="margin:30px 0; border-top:1px solid #eee">
             <h3>Editor de Textos</h3>
             <label>H1 Hero:</label><input id="edit-h1" class="admin-input" onchange="saveTexts()">
@@ -138,17 +152,17 @@
 
         function init() {
             const grid = document.getElementById('grid'); grid.innerHTML = '';
-            products.forEach(p => {
+            products.forEach((p, index) => {
                 const card = document.createElement('div'); card.className = 'product-card';
-                card.onclick = () => openModal(p.name, p.price, p.img[0]);
-                card.innerHTML = `<img src="${p.img[0]}"><div class="product-info"><h3>${p.name}</h3><p>$${p.price.toLocaleString()}</p></div>`;
+                card.onclick = () => openModal(p.name, p.price, Array.isArray(p.img) ? p.img[0] : p.img);
+                card.innerHTML = `<img src="${Array.isArray(p.img) ? p.img[0] : p.img}"><div class="product-info"><h3>${p.name}</h3><p style="font-size:0.6rem; color:#999; text-transform:uppercase; letter-spacing:1px;">${p.category || ''}</p><p>$${p.price.toLocaleString()}</p></div>`;
                 grid.appendChild(card);
             });
-            applyTexts(); renderAdmin();
+            renderInventory(); applyTexts(); renderAdmin();
         }
 
         function addP() {
-            let n = document.getElementById('new-n').value, p = parseInt(document.getElementById('new-p').value);
+            let n = document.getElementById('new-n').value, p = parseInt(document.getElementById('new-p').value), cat = document.getElementById('new-cat').value;
             let files = document.getElementById('new-i-file').files, images = [];
             if(n && p && files.length > 0) {
                 Array.from(files).forEach(file => {
@@ -156,9 +170,9 @@
                     reader.onload = (e) => {
                         images.push(e.target.result);
                         if(images.length === files.length) {
-                            products.push({id: Date.now(), name: n, price: p, img: images, category: document.getElementById('new-cat').value});
+                            products.push({id: Date.now(), name: n, price: p, img: images, category: cat});
                             localStorage.setItem('in_prods', JSON.stringify(products));
-                            init(); tab(0);
+                            init();
                         }
                     };
                     reader.readAsDataURL(file);
@@ -166,12 +180,23 @@
             }
         }
 
+        function deleteP(id) {
+            products = products.filter(p => p.id !== id);
+            localStorage.setItem('in_prods', JSON.stringify(products));
+            init();
+        }
+
+        function renderInventory() {
+            const list = document.getElementById('list-inventory');
+            list.innerHTML = products.map(p => `<tr><td>${p.name}</td><td><button class="del-btn" onclick="deleteP(${p.id})">Eliminar</button></td></tr>`).join('');
+        }
+
         function checkout() {
             if(bag.length === 0) return;
             let c = prompt("Nombre y Apellido:"), d = prompt("Dirección de envío:"), t = prompt("Teléfono:"), m = prompt("Pago ("+config.pay+"):"), e = prompt("Envío ("+config.ship+"):");
             if(c && m && e) {
                 if(m.toLowerCase().includes('trans')) alert("DATOS DE PAGO:\n" + config.bank);
-                let order = { id: '#'+Date.now().toString().slice(-4), c, d, t, m, e, items: bag.map(i=>i.n).join(', '), t: document.getElementById('cart-total').innerText, d: new Date().toLocaleString() };
+                let order = { id: '#'+Date.now().toString().slice(-4), c, d, t, m, e, items: bag.map(i=>i.n).join(', '), total: document.getElementById('cart-total').innerText, date: new Date().toLocaleString() };
                 ordersData.push(order);
                 localStorage.setItem('in_orders', JSON.stringify(ordersData));
                 bag = []; updateCart(); toggleCart(); renderAdmin();
@@ -179,11 +204,11 @@
         }
 
         function renderAdmin() {
-            document.getElementById('list-orders').innerHTML = ordersData.map(o => `<tr><td>${o.id}</td><td><b>${o.c}</b><br>${o.d}<br>${o.t}</td><td>${o.items}</td><td>${o.m}<br>${o.e}</td><td>${o.t}</td></tr>`).join('');
-            document.getElementById('list-hist').innerHTML = ordersData.map(o => `<tr><td>${o.d}</td><td>${o.c}</td><td>${o.t}</td></tr>`).join('');
+            document.getElementById('list-orders').innerHTML = ordersData.map(o => `<tr><td>${o.id}</td><td><b>${o.c}</b><br>${o.d}<br>${o.t}</td><td>${o.items}</td><td>${o.m}<br>${o.e}</td><td>${o.total}</td></tr>`).join('');
+            document.getElementById('list-hist').innerHTML = ordersData.map(o => `<tr><td>${o.date}</td><td>${o.c}</td><td>${o.total}</td></tr>`).join('');
             document.getElementById('set-pay').value = config.pay;
             document.getElementById('set-ship').value = config.ship;
-            document.getElementById('set-bank').value = config.bank;
+            document.getElementById('set-bank').value = config.bank || "";
         }
 
         function openModal(n, p, i) { document.getElementById('m-img').src = i; document.getElementById('m-title').innerText = n; document.getElementById('m-price').innerText = `$${p.toLocaleString()}`; document.getElementById('m-add-btn').onclick = () => { bag.push({n, p}); updateCart(); closeModal(); toggleCart(); }; document.getElementById('modal').style.display = 'flex'; }
