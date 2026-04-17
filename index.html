@@ -2,171 +2,85 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Moda en Movimiento</title>
+    <title>INERCIA — Identity System</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0a0a0a;
-            --text: #ffffff;
-            --accent: #0057FF; /* Azul cinético */
-            --gray: #222;
-        }
-
+        :root { --black: #111; --white: #fff; --grey: #f4f4f4; --accent: #0057FF; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--white); color: var(--black); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        
+        /* Header Minimalista */
+        nav { padding: 40px; display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9); }
+        .brand { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: -2px; font-size: 24px; }
+        
+        /* Layout Coral: La grilla rota */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        
+        .section-intro { padding: 150px 0; border-bottom: 1px solid #eee; }
+        .tag { font-family: 'Syncopate'; font-size: 10px; color: var(--accent); margin-bottom: 20px; display: block; }
+        h1 { font-family: 'Syncopate'; font-size: 8vw; line-height: 0.9; text-transform: uppercase; letter-spacing: -5px; }
+        .italic-subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2rem; color: #666; margin-left: 20%; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
+        /* Módulos de Imagen Asimétricos */
+        .project-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; padding: 100px 0; }
+        
+        .image-box { background: var(--grey); position: relative; overflow: hidden; }
+        .image-box img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; filter: grayscale(1); transition: 0.5s; }
+        .image-box:hover img { filter: grayscale(0); }
+        
+        /* Posicionamiento Coral (Broken Grid) */
+        .item-lg { grid-column: 1 / 9; height: 90vh; } /* Imagen dominante */
+        .item-sm { grid-column: 8 / 13; height: 60vh; margin-top: -20vh; border-left: 10px solid var(--white); } /* Superpuesta */
+        .item-mid { grid-column: 3 / 7; height: 70vh; margin-top: 100px; }
 
-        /* Navegación Minimalista */
-        nav {
-            padding: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            z-index: 100;
-            mix-blend-mode: difference;
-        }
+        .meta-data { grid-column: 10 / 13; font-size: 11px; padding-top: 100px; text-transform: uppercase; line-height: 2; border-top: 1px solid var(--black); height: fit-content; }
 
-        .logo {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-        }
-
-        /* Hero - Gran Impacto Visual */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .hero h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 14vw;
-            line-height: 0.8;
-            text-transform: uppercase;
-            margin-left: -1vw;
-        }
-
-        .hero .subtitle {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        /* Marquee (Texto en movimiento constante) */
-        .marquee {
-            border-top: 1px solid var(--gray);
-            border-bottom: 1px solid var(--gray);
-            padding: 1.5rem 0;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .marquee span {
-            display: inline-block;
-            font-family: 'Syncopate', sans-serif;
-            font-size: 4rem;
-            animation: scroll 20s linear infinite;
-            -webkit-text-stroke: 1px white;
-            color: transparent;
-            padding-right: 2rem;
-        }
-
-        @keyframes scroll {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-        }
-
-        /* Grilla Editorial (Estilo Coral) */
-        .editorial-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 2rem;
-            padding: 10rem 2rem;
-        }
-
-        .img-container {
-            background: var(--gray);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .img-container:hover img {
-            transform: scale(1.05);
-            filter: grayscale(0%);
-        }
-
-        .item-1 { grid-column: 1 / 8; height: 80vh; }
-        .item-2 { grid-column: 9 / 13; height: 50vh; align-self: end; }
-        .item-3 { grid-column: 4 / 10; height: 70vh; margin-top: -5rem; z-index: 2; }
-
-        .label {
-            position: absolute;
-            bottom: 2rem;
-            left: 2rem;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 20vw; }
-            .editorial-grid div { grid-column: 1 / 13 !important; height: 60vh; margin: 0 !important; }
-        }
+        /* Footer Estilo Brand Identity */
+        footer { padding: 100px 40px; background: var(--black); color: var(--white); text-align: center; }
+        footer h2 { font-family: 'Syncopate'; font-size: 5vw; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">Inercia</div>
-        <div style="font-size: 0.8rem;">SHOP [0]</div>
-    </nav>
+<nav>
+    <div class="brand">INERCIA.</div>
+    <div style="font-size: 12px; letter-spacing: 2px;">2024 © IDENTITY SYSTEM</div>
+</nav>
 
-    <section class="hero">
-        <p class="subtitle">Moda en Movimiento</p>
-        <h1>INE<br>RCIA</h1>
+<div class="container">
+    <section class="section-intro">
+        <span class="tag">CONCEPT DEVELOPMENT</span>
+        <h1>MODA EN<br>MOVIMIENTO</h1>
+        <p class="italic-subtitle">— La estética de lo cinético.</p>
     </section>
 
-    <div class="marquee">
-        <span>KINETIC • INERCIA • MOTION • KINETIC • INERCIA • MOTION • </span>
-        <span>KINETIC • INERCIA • MOTION • KINETIC • INERCIA • MOTION • </span>
-    </div>
+    <main class="project-grid">
+        <div class="image-box item-lg">
+            <img src="https://unsplash.com" alt="Inercia View">
+            <span style="position:absolute; bottom:20px; left:20px; font-size:10px;">FIGURE 01 — FLOW STATE</span>
+        </div>
+        
+        <aside class="meta-data">
+            <strong>Client:</strong> Inercia Studio<br>
+            <strong>Service:</strong> Brand Identity<br>
+            <strong>Year:</strong> 2024<br>
+            <strong>Typography:</strong> Syncopate / Inter
+        </aside>
 
-    <main class="editorial-grid">
-        <div class="img-container item-1">
-            <img src="https://unsplash.com" alt="Fashion 1">
-            <div class="label">EDICIÓN 001 / VOLUMEN</div>
+        <div class="image-box item-sm">
+            <img src="https://unsplash.com" alt="Inercia Detail">
         </div>
-        <div class="img-container item-2">
-            <img src="https://unsplash.com" alt="Fashion 2">
-            <div class="label">ESTÉTICA / LINEAL</div>
-        </div>
-        <div class="img-container item-3">
-            <img src="https://unsplash.com" alt="Fashion 3">
-            <div class="label">ESTRUCTURA / CINÉTICA</div>
+
+        <div class="image-box item-mid">
+            <img src="https://unsplash.com" alt="Texture">
         </div>
     </main>
+</div>
+
+<footer>
+    <h2>INERCIA</h2>
+    <p style="margin-top: 20px; font-size: 12px; opacity: 0.5;">GITHUB REPO / FRONT-END ONLY</p>
+</footer>
 
 </body>
 </html>
