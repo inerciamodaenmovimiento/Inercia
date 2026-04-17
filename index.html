@@ -3,175 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Shop Sézane Style</title>
+    <title>INERCIA | Moda en Movimiento</title>
     <script src="https://tailwindcss.com"></script>
     <style>
         @import url('https://googleapis.com');
-        body { font-family: 'Inter', sans-serif; color: #1a1a1a; overflow-x: hidden; }
+        
+        :root { --bg-color: #fcfcfc; --text-main: #1a1a1a; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; }
         .serif { font-family: 'Crimson Text', serif; }
-        .admin-on [contenteditable="true"] { outline: 1px dashed #ccc; background: #fafafa; }
-        .cart-dot { animation: scale 0.3s ease; }
-        @keyframes scale { 0% { transform: scale(1); } 50% { transform: scale(1.5); } 100% { transform: scale(1); } }
+        
+        /* Diseño Editorial */
+        .img-container { background: #f4f4f4; overflow: hidden; position: relative; }
+        .admin-active .editable:hover { background: rgba(0,0,0,0.03); outline: 1px solid #ddd; cursor: cell; }
+        
+        /* Ocultar barra de desplazamiento pero mantener funcionalidad */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        /* Botón de compra Sézane */
+        .btn-buy {
+            background: #1a1a1a; color: white;
+            padding: 20px; text-transform: uppercase;
+            letter-spacing: 0.3em; font-size: 11px; font-weight: 600;
+            transition: all 0.4s ease; border: 1px solid #1a1a1a;
+        }
+        .btn-buy:hover { background: transparent; color: #1a1a1a; }
     </style>
 </head>
-<body class="bg-white">
+<body class="selection:bg-black selection:text-white">
 
-    <!-- BARRA ADMIN -->
-    <div id="admin-bar" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black text-white px-8 py-4 rounded-full hidden z-50 flex items-center gap-8 shadow-2xl border border-gray-800">
-        <div class="flex flex-col">
-            <span class="text-[9px] uppercase tracking-widest text-gray-400">Panel de Control</span>
-            <span class="text-xs font-bold">EDICIÓN EN VIVO</span>
+    <!-- ADMIN PANEL (SÓLO CON 0110) -->
+    <div id="admin-ui" class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md border-b border-black h-16 z-50 flex items-center justify-between px-10 hidden shadow-xl">
+        <span class="text-[10px] tracking-[0.4em] font-bold uppercase">Admin Mode / Inercia</span>
+        <div class="flex gap-8">
+            <button onclick="saveToCloud()" class="text-[10px] tracking-widest font-black underline uppercase">Publicar Cambios</button>
+            <button onclick="toggleAdminMode()" class="text-[10px] tracking-widest text-red-500 uppercase">Cerrar</button>
         </div>
-        <button onclick="saveAllToStorage()" class="bg-white text-black px-6 py-2 rounded-full text-[10px] font-bold hover:bg-gray-200 transition uppercase">Guardar Cambios</button>
-        <button onclick="toggleAdmin()" class="text-red-500 text-[10px] font-bold uppercase">Salir</button>
     </div>
 
-    <!-- HEADER -->
-    <header class="py-10 border-b border-gray-100">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <div class="text-[10px] tracking-tighter hidden md:block">FR | EN</div>
-            <h1 class="serif text-5xl tracking-[0.2em] uppercase admin-txt" id="site-logo">SÉZANE</h1>
-            <div class="flex gap-6 text-[10px] font-bold uppercase tracking-widest">
-                <span>Cuenta</span>
-                <div class="relative cursor-pointer" onclick="toggleCart()">
-                    Cesta (<span id="cart-count">0</span>)
-                </div>
-            </div>
-        </div>
-        <nav class="mt-8 flex justify-center gap-10 text-[11px] font-medium tracking-[0.2em] uppercase">
-            <span class="admin-txt">E-Shop</span><span class="admin-txt">Lookbook</span><span class="admin-txt">Journal</span><span class="admin-txt">A Propos</span>
+    <!-- HEADER LIMPIO (SIN HASHES) -->
+    <header class="pt-16 pb-12 text-center border-b border-gray-100">
+        <h1 class="serif text-6xl tracking-[0.2em] uppercase mb-8 cursor-default editable" id="main-title">INERCIA</h1>
+        <nav class="flex justify-center gap-12 text-[10px] tracking-[0.3em] uppercase font-light text-gray-500">
+            <span class="hover:text-black cursor-pointer transition editable">E-shop</span>
+            <span class="hover:text-black cursor-pointer transition editable">Lookbook</span>
+            <span class="hover:text-black cursor-pointer transition editable">Journal</span>
+            <span class="hover:text-black cursor-pointer transition editable">Bag (0)</span>
         </nav>
     </header>
 
-    <!-- PRODUCTO PRINCIPAL -->
-    <main class="container mx-auto px-6 py-16 max-w-6xl">
-        <div class="flex flex-col lg:flex-row gap-20">
-            <!-- Galería -->
-            <div class="w-full lg:w-3/5 grid grid-cols-12 gap-4">
-                <div class="col-span-12">
-                    <img id="main-img" src="https://unsplash.com" 
-                         class="w-full h-auto cursor-pointer admin-img" onclick="triggerImgUpload('main-img')">
+    <!-- CUERPO DE PÁGINA (ESTÉTICA SÉZANE) -->
+    <main class="max-w-6xl mx-auto px-6 py-20">
+        <div class="flex flex-col lg:flex-row gap-24 items-start">
+            
+            <!-- GALERÍA DE IMÁGENES -->
+            <div class="w-full lg:w-[60%] space-y-8">
+                <div class="img-container">
+                    <img id="hero-img" src="https://unsplash.com" 
+                         class="w-full grayscale-[10%] hover:grayscale-0 transition-all duration-700 cursor-pointer"
+                         onclick="changeImage('hero-img')">
                 </div>
-                <div class="col-span-3">
-                    <img id="thumb-1" src="https://unsplash.com" 
-                         class="w-full cursor-pointer admin-img" onclick="triggerImgUpload('thumb-1')">
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="img-container aspect-[3/4]">
+                        <img id="sub-1" src="https://unsplash.com" class="w-full h-full object-cover cursor-pointer" onclick="changeImage('sub-1')">
+                    </div>
+                    <div class="img-container aspect-[3/4]">
+                        <img id="sub-2" src="https://unsplash.com" class="w-full h-full object-cover cursor-pointer" onclick="changeImage('sub-2')">
+                    </div>
                 </div>
             </div>
 
-            <!-- Datos Compra -->
-            <div class="w-full lg:w-2/5">
-                <div class="border-b border-black pb-8 mb-8">
-                    <h2 class="serif text-4xl mb-4 admin-txt uppercase tracking-wide" id="p-name">Essentiels - Hunter</h2>
-                    <p class="text-2xl font-light">€ <span class="admin-txt" id="p-price">180</span></p>
+            <!-- BLOQUE DE TEXTO Y COMPRA -->
+            <div class="w-full lg:w-[40%] lg:sticky lg:top-40">
+                <div class="border-b border-black/10 pb-10 mb-10">
+                    <h2 id="product-name" class="serif text-4xl mb-4 uppercase tracking-widest editable">Essentiels - Hunter</h2>
+                    <p class="text-2xl font-extralight tracking-tighter">€ <span id="product-price" class="editable">180</span></p>
                 </div>
 
-                <p class="text-sm text-gray-700 italic leading-loose mb-10 admin-txt" id="p-desc">
-                    "Ustedes los amaron tanto estos meses que debían integrar los Esenciales... femeninos y confortables."
-                </p>
-
-                <!-- Tallas Funcionales -->
-                <div class="mb-10">
-                    <label class="text-[10px] font-bold uppercase tracking-widest block mb-4">Seleccionar Talla</label>
-                    <div class="flex gap-3" id="size-selector">
-                        <button onclick="selectSize(this)" class="size-btn border w-12 h-12 text-xs flex items-center justify-center hover:border-black transition">36</button>
-                        <button onclick="selectSize(this)" class="size-btn border w-12 h-12 text-xs flex items-center justify-center hover:border-black transition">37</button>
-                        <button onclick="selectSize(this)" class="size-btn border w-12 h-12 text-xs flex items-center justify-center hover:border-black transition">38</button>
+                <div class="space-y-8 text-[13px] leading-[1.8] text-gray-600">
+                    <p id="product-desc" class="italic editable font-light">"Diseño atemporal pensado para la fluidez y el movimiento. Una pieza esencial que redefine la silueta femenina con elegancia natural."</p>
+                    
+                    <div class="pt-6 border-t border-black/5">
+                        <span class="text-[10px] uppercase tracking-widest font-bold block mb-6">Seleccionar Talla</span>
+                        <div class="flex gap-4">
+                            <button class="w-10 h-10 border border-gray-200 text-[10px] hover:border-black transition">36</button>
+                            <button class="w-10 h-10 border border-black text-[10px] font-bold">37</button>
+                            <button class="w-10 h-10 border border-gray-200 text-[10px] hover:border-black transition">38</button>
+                        </div>
                     </div>
-                </div>
 
-                <button onclick="addToCart()" class="w-full bg-black text-white py-5 text-[11px] font-bold uppercase tracking-[0.3em] hover:opacity-90 transition">
-                    Añadir a la Cesta
-                </button>
+                    <button class="w-full btn-buy mt-8">Añadir a la Cesta</button>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- INPUT OCULTO PARA FOTOS -->
-    <input type="file" id="file-input" class="hidden" accept="image/*">
+    <!-- INPUT OCULTO PARA CARGA DE IMÁGENES -->
+    <input type="file" id="image-upload" class="hidden" accept="image/*">
 
     <script>
-        let isAdmin = false;
+        let adminMode = false;
         let buffer = "";
-        let selectedSize = null;
-        let cartItems = 0;
-        let targetImgId = null;
+        let activeImageId = "";
 
-        // --- LÓGICA DE COMPRA ---
-        function selectSize(btn) {
-            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('border-black', 'font-bold'));
-            btn.classList.add('border-black', 'font-bold');
-            selectedSize = btn.innerText;
+        // 1. ELIMINAR CUALQUIER HASH DE LA URL POR DISEÑO
+        if(window.location.hash) {
+            history.replaceState("", document.title, window.location.pathname);
         }
 
-        function addToCart() {
-            if(!selectedSize) {
-                alert("Por favor, selecciona una talla.");
-                return;
-            }
-            cartItems++;
-            const countEl = document.getElementById('cart-count');
-            countEl.innerText = cartItems;
-            countEl.classList.add('cart-dot');
-            setTimeout(() => countEl.classList.remove('cart-dot'), 300);
-            alert(`¡Añadido! ${document.getElementById('p-name').innerText} (Talla ${selectedSize}) en la cesta.`);
-        }
-
-        // --- LÓGICA ADMIN (CÓDIGO 0110) ---
+        // 2. ACTIVACIÓN INVISIBLE (0110)
         window.addEventListener('keydown', (e) => {
             buffer += e.key;
             if (buffer.length > 4) buffer = buffer.substring(1);
-            if (buffer === "0110") toggleAdmin();
+            if (buffer === "0110") toggleAdminMode();
         });
 
-        function toggleAdmin() {
-            isAdmin = !isAdmin;
-            document.body.classList.toggle('admin-on', isAdmin);
-            document.getElementById('admin-bar').classList.toggle('hidden', !isAdmin);
-            document.querySelectorAll('.admin-txt').forEach(el => el.contentEditable = isAdmin);
-            if(isAdmin) console.log("Modo Administrador: Inercia de edición habilitada.");
+        function toggleAdminMode() {
+            adminMode = !adminMode;
+            document.body.classList.toggle('admin-active', adminMode);
+            document.getElementById('admin-ui').classList.toggle('hidden', !adminMode);
+            document.querySelectorAll('.editable').forEach(el => el.contentEditable = adminMode);
+            console.log("Admin: " + (adminMode ? "Habilitado" : "Deshabilitado"));
         }
 
-        function triggerImgUpload(id) {
-            if(!isAdmin) return;
-            targetImgId = id;
-            document.getElementById('file-input').click();
+        // 3. CAMBIO DE IMAGEN POR INERCIA
+        function changeImage(id) {
+            if(!adminMode) return;
+            activeImageId = id;
+            document.getElementById('image-upload').click();
         }
 
-        document.getElementById('file-input').addEventListener('change', function(e) {
+        document.getElementById('image-upload').addEventListener('change', function(e) {
             const file = e.target.files[0];
-            if (file) {
+            if(file) {
                 const reader = new FileReader();
-                reader.onload = (event) => document.getElementById(targetImgId).src = event.target.result;
+                reader.onload = (ev) => document.getElementById(activeImageId).src = ev.target.result;
                 reader.readAsDataURL(file);
             }
         });
 
-        // --- PERSISTENCIA (Para que el cliente vea los cambios después de refrescar) ---
-        function saveAllToStorage() {
-            const pageData = {
-                logo: document.getElementById('site-logo').innerText,
-                name: document.getElementById('p-name').innerText,
-                price: document.getElementById('p-price').innerText,
-                desc: document.getElementById('p-desc').innerText,
-                mainImg: document.getElementById('main-img').src
+        // 4. GUARDADO EN BASE DE DATOS LOCAL
+        function saveToCloud() {
+            const data = {
+                title: document.getElementById('main-title').innerText,
+                product: document.getElementById('product-name').innerText,
+                price: document.getElementById('product-price').innerText,
+                desc: document.getElementById('product-desc').innerText,
+                images: {
+                    hero: document.getElementById('hero-img').src,
+                    s1: document.getElementById('sub-1').src,
+                    s2: document.getElementById('sub-2').src
+                }
             };
-            localStorage.setItem('sezane_data', JSON.stringify(pageData));
-            alert("✅ Cambios guardados en el navegador. Recarga la página y verás que persisten.");
-            toggleAdmin();
+            localStorage.setItem('inercia_db', JSON.stringify(data));
+            alert("✨ Cambios publicados con éxito. Se verán reflejados en cada visita.");
+            toggleAdminMode();
         }
 
-        // Cargar datos guardados al iniciar
+        // 5. CARGA DE DATOS AL INICIAR
         window.onload = () => {
-            const saved = localStorage.getItem('sezane_data');
-            if(saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('site-logo').innerText = data.logo;
-                document.getElementById('p-name').innerText = data.name;
-                document.getElementById('p-price').innerText = data.price;
-                document.getElementById('p-desc').innerText = data.desc;
-                document.getElementById('main-img').src = data.mainImg;
+            const savedData = JSON.parse(localStorage.getItem('inercia_db'));
+            if(savedData) {
+                document.getElementById('main-title').innerText = savedData.title;
+                document.getElementById('product-name').innerText = savedData.product;
+                document.getElementById('product-price').innerText = savedData.price;
+                document.getElementById('product-desc').innerText = savedData.desc;
+                document.getElementById('hero-img').src = savedData.images.hero;
+                document.getElementById('sub-1').src = savedData.images.s1;
+                document.getElementById('sub-2').src = savedData.images.s2;
             }
-        };
+        }
     </script>
 </body>
 </html>
