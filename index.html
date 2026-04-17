@@ -4,203 +4,219 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>inercia</title>
-    <!-- Fuentes de Lujo -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root { --bg: #ffffff; --text: #000000; --muted: #8c8c8c; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; }
 
         /* HEADER */
-        header { padding: 35px 5%; display: flex; justify-content: space-between; align-items: center; background: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f2f2f2; }
-        .nav-link { font-size: 10px; text-transform: uppercase; letter-spacing: 2.5px; text-decoration: none; color: var(--text); font-weight: 600; }
-        .logo { font-family: 'Bodoni Moda', serif; font-size: 34px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
+        header { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; background: #fff; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f2f2f2; }
+        .logo { font-family: 'Bodoni Moda', serif; font-size: 30px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; cursor: default; }
+        nav a { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; color: #000; margin-left: 25px; font-weight: 600; }
 
-        /* HERO - ESTÉTICA LIME */
-        .hero { position: relative; height: 95vh; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .hero-img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-overlay { position: absolute; font-family: 'Bodoni Moda', serif; font-size: clamp(60px, 12vw, 130px); color: #fff; text-transform: uppercase; letter-spacing: 20px; font-weight: 400; pointer-events: none; }
+        /* HERO */
+        .hero { position: relative; height: 90vh; background: #f9f9f9; display: flex; align-items: center; justify-content: center; }
+        .hero img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-title { position: absolute; font-family: 'Bodoni Moda', serif; font-size: clamp(50px, 12vw, 120px); color: #fff; text-transform: uppercase; letter-spacing: 15px; text-align: center; }
 
-        /* SECCIÓN NEW IN */
-        .section-label { text-align: center; margin: 100px 0 50px; font-family: 'Bodoni Moda', serif; font-size: 26px; text-transform: uppercase; letter-spacing: 5px; font-style: italic; }
-        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; padding: 0 5%; margin-bottom: 120px; }
-        .product-card { text-align: center; transition: 0.4s ease; }
-        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 20px; border-radius: 2px; }
-        .product-card p { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+        /* PRODUCTOS */
+        .shop-section { padding: 100px 5%; }
+        .section-label { font-family: 'Bodoni Moda', serif; font-size: 24px; text-transform: uppercase; letter-spacing: 5px; text-align: center; margin-bottom: 60px; font-style: italic; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .product-card { text-align: center; cursor: pointer; transition: 0.4s; position: relative; }
+        .product-card:hover { opacity: 0.8; }
+        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 20px; }
+        .product-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .product-card p { font-size: 12px; color: var(--muted); margin-top: 5px; }
 
-        /* MOSAICO DE CATEGORÍAS */
-        .mosaic { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 5% 120px; }
-        .mosaic-item { position: relative; height: 600px; overflow: hidden; background: #eee; }
-        .mosaic-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(0.2, 1, 0.2, 1); }
-        .mosaic-item:hover img { transform: scale(1.05); }
-        .mosaic-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Bodoni Moda', serif; font-size: 30px; text-transform: uppercase; letter-spacing: 10px; background: rgba(0,0,0,0.05); }
+        /* INFO & PAGOS */
+        .info-footer { padding: 80px 5%; border-top: 1px solid #f2f2f2; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px; background: #fafafa; }
+        .info-footer h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .info-footer p { font-size: 12px; color: var(--muted); line-height: 2; }
 
-        /* FOOTER */
-        footer { padding: 100px 5%; border-top: 1px solid #f2f2f2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 50px; font-size: 10px; color: var(--muted); text-transform: uppercase; }
-        footer h4 { color: #000; margin-bottom: 25px; font-size: 11px; letter-spacing: 2px; }
-        .newsletter input { width: 100%; padding: 12px 0; border: none; border-bottom: 1px solid #ddd; outline: none; margin-bottom: 20px; }
-        .btn-sub { width: 100%; padding: 14px; background: #000; color: #fff; border: none; font-size: 9px; cursor: pointer; letter-spacing: 2px; }
-
-        /* --- PANEL ADMINISTRADOR (OCULTO AL 100%) --- */
-        #admin-panel { 
-            position: fixed; right: -420px; top: 0; width: 400px; height: 100vh; 
-            background: #000; color: #fff; z-index: 10000; padding: 60px 40px; 
-            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -20px 0 50px rgba(0,0,0,0.5); 
-            overflow-y: auto; 
-        }
+        /* --- ADMIN PANEL SECRETO (0110) --- */
+        #admin-panel { position: fixed; right: -450px; top: 0; width: 420px; height: 100vh; background: #000; color: #fff; z-index: 10000; padding: 50px 30px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto; }
         #admin-panel.active { right: 0; }
-        .admin-title { font-family: 'Bodoni Moda', serif; font-size: 24px; font-style: italic; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 15px; }
-        .admin-field { margin-bottom: 25px; }
-        .admin-field label { display: block; font-size: 9px; text-transform: uppercase; color: #888; margin-bottom: 8px; font-weight: bold; }
-        .admin-field input { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; outline: none; border-radius: 4px; }
-        .btn-admin { width: 100%; padding: 18px; background: #fff; color: #000; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 10px; margin-top: 10px; letter-spacing: 2px; }
-        
-        .stock-manager { margin-top: 40px; border-top: 1px solid #222; padding-top: 30px; }
-        .stock-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #111; font-size: 11px; }
-        .btn-del { color: #ff4d4d; border: none; background: none; cursor: pointer; font-weight: bold; }
+        .admin-sec { margin-bottom: 40px; border-bottom: 1px solid #222; padding-bottom: 25px; }
+        .admin-sec h3 { font-size: 12px; text-transform: uppercase; color: #666; margin-bottom: 20px; letter-spacing: 1px; }
+        .field { margin-bottom: 15px; }
+        .field label { display: block; font-size: 10px; text-transform: uppercase; color: #999; margin-bottom: 5px; }
+        .field input, .field textarea { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 4px; font-size: 13px; }
+        .btn-admin { width: 100%; padding: 15px; background: #fff; color: #000; border: none; font-weight: 700; text-transform: uppercase; cursor: pointer; font-size: 11px; }
     </style>
 </head>
 <body>
 
     <header>
-        <div style="display: flex; gap: 40px;"><a href="#" class="nav-link">Catálogo</a><a href="#" class="nav-link">Colecciones</a></div>
+        <nav><a href="#productos">Colección</a></nav>
         <div class="logo">inercia</div>
-        <div style="display: flex; gap: 40px;"><a href="#" class="nav-link">Estudio</a><a href="#" class="nav-link">Cuenta</a></div>
+        <nav><a href="#contacto">Contacto</a></nav>
     </header>
 
-    <main>
-        <section class="hero">
-            <img src="https://unsplash.com" class="hero-img">
-            <div class="hero-overlay" id="hero-display">inercia</div>
-        </section>
+    <div class="hero">
+        <img src="https://unsplash.com" id="hero-img">
+        <div class="hero-title" id="hero-text">inercia</div>
+    </div>
 
+    <section class="shop-section" id="productos">
         <h2 class="section-label">new in</h2>
-        <div class="product-grid" id="main-grid">
-            <!-- Dinámico -->
+        <div class="product-grid" id="main-grid"></div>
+    </section>
+
+    <footer class="info-footer" id="contacto">
+        <div>
+            <h4>Contacto</h4>
+            <p id="footer-email">hola@inercia.com</p>
+            <p id="footer-whatsapp">+54 9 11 0000-0000</p>
         </div>
-
-        <section class="mosaic">
-            <div class="mosaic-item" style="grid-row: span 2; height: auto;">
-                <img src="https://unsplash.com">
-                <div class="mosaic-label">ropa</div>
-            </div>
-            <div class="mosaic-item" style="height: 400px;">
-                <img src="https://unsplash.com">
-                <div class="mosaic-label">bolsos</div>
-            </div>
-            <div class="mosaic-item" style="height: 400px;">
-                <img src="https://unsplash.com">
-                <div class="mosaic-label">accesorios</div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div><h4>inercia</h4><p>Novedades</p><p>Colecciones</p></div>
-        <div><h4>Explorar</h4><p>Sobre la marca</p><p>Lookbooks</p></div>
-        <div><h4>Ayuda</h4><p>Guía de talles</p><p>Contacto</p></div>
-        <div class="newsletter">
-            <h4>Newsletter</h4>
-            <input type="email" placeholder="Tu email aquí">
-            <button class="btn-sub">Suscribirse</button>
+        <div>
+            <h4>Métodos de Pago</h4>
+            <p id="footer-payments">Transferencia bancaria, Tarjetas de crédito, Efectivo.</p>
+        </div>
+        <div>
+            <h4>Envíos</h4>
+            <p>A todo el país a través de Correo Argentino y envíos personalizados en CABA.</p>
         </div>
     </footer>
 
-    <!-- PANEL ADMIN (SÓLO ACCESIBLE CON EL CÓDIGO 0110) -->
+    <!-- ADMIN PANEL TOTALMENTE FUNCIONAL -->
     <div id="admin-panel">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-            <h3 class="admin-title">Panel de Dueña</h3>
+            <h2 style="font-family:'Bodoni Moda', serif; font-style:italic;">Configuración General</h2>
             <span onclick="toggleAdmin()" style="cursor:pointer; font-size:24px;">&times;</span>
         </div>
 
-        <div class="admin-field">
-            <label>Editar Título Principal</label>
-            <input type="text" id="in-hero-title" oninput="updateHero()" placeholder="inercia">
+        <!-- SECCIÓN IDENTIDAD -->
+        <div class="admin-sec">
+            <h3>Identidad Visual</h3>
+            <div class="field"><label>Nombre de Marca</label><input type="text" id="in-name" oninput="updateUI()" placeholder="inercia"></div>
+            <div class="field"><label>URL Imagen Hero</label><input type="text" id="in-hero-url" oninput="updateUI()" placeholder="https://..."></div>
         </div>
 
-        <div style="margin-top: 40px;">
-            <label style="font-size:10px; color:#fff; display:block; margin-bottom:20px;">AÑADIR PRODUCTO</label>
-            <div class="admin-field"><input type="text" id="p-name" placeholder="Nombre de prenda"></div>
-            <div class="admin-field"><input type="text" id="p-price" placeholder="Precio (ej: $15.000)"></div>
-            <div class="admin-field"><input type="text" id="p-img" placeholder="URL de la Foto"></div>
-            <button class="btn-admin" onclick="addP()">Publicar en la tienda</button>
+        <!-- SECCIÓN PRODUCTOS -->
+        <div class="admin-sec">
+            <h3>Gestión de Productos</h3>
+            <div class="field"><input type="text" id="p-name" placeholder="Nombre de Prenda"></div>
+            <div class="field"><input type="text" id="p-price" placeholder="Precio"></div>
+            <div class="field"><input type="text" id="p-img" placeholder="Link de Foto"></div>
+            <button class="btn-admin" onclick="addProduct()">Añadir Producto</button>
+            <div id="admin-list" style="margin-top:20px;"></div>
         </div>
 
-        <div class="stock-manager" id="admin-list">
-            <!-- Gestión de stock -->
+        <!-- SECCIÓN CONTACTO Y PAGOS -->
+        <div class="admin-sec">
+            <h3>Contacto & Pagos</h3>
+            <div class="field"><label>WhatsApp (Sin espacios)</label><input type="text" id="in-wsp" placeholder="54911..."></div>
+            <div class="field"><label>Email de contacto</label><input type="text" id="in-mail"></div>
+            <div class="field"><label>Métodos de Pago (Texto)</label><textarea id="in-pay" rows="3"></textarea></div>
+            <button class="btn-admin" onclick="saveSettings()">Guardar Configuración</button>
         </div>
     </div>
 
     <script>
-        // Memoria de la tienda
-        let db = JSON.parse(localStorage.getItem('inercia_v6')) || [
-            { name: "Silk Dress Black", price: "$28.000", img: "https://unsplash.com" },
-            { name: "Leather Tote", price: "$35.000", img: "https://unsplash.com" },
-            { name: "Minimal Set", price: "$8.500", img: "https://unsplash.com" }
+        // Memoria completa de la página
+        let config = JSON.parse(localStorage.getItem('inercia_settings')) || {
+            name: "inercia",
+            hero: "https://unsplash.com",
+            whatsapp: "5491100000000",
+            email: "contacto@inercia.com",
+            payments: "Transferencia, Efectivo, Mercado Pago"
+        };
+
+        let products = JSON.parse(localStorage.getItem('inercia_products')) || [
+            { name: "Black Silk Dress", price: "$28.000", img: "https://unsplash.com" },
+            { name: "Leather Tote", price: "$35.000", img: "https://unsplash.com" }
         ];
 
-        // DETECCIÓN DEL CÓDIGO SECRETO 0110
-        let secretKey = "";
+        // Código 0110
+        let buffer = "";
         window.onkeydown = (e) => {
-            secretKey += e.key;
-            if(secretKey.includes("0110")) {
-                toggleAdmin();
-                secretKey = "";
-            }
-            if(secretKey.length > 8) secretKey = "";
+            buffer += e.key;
+            if(buffer.includes("0110")) { toggleAdmin(); buffer = ""; }
+            if(buffer.length > 6) buffer = "";
         }
 
         function toggleAdmin() { document.getElementById('admin-panel').classList.toggle('active'); }
 
-        function updateHero() {
-            const v = document.getElementById('in-hero-title').value;
-            if(v) document.getElementById('hero-display').innerText = v;
+        function updateUI() {
+            document.getElementById('hero-text').innerText = document.getElementById('in-name').value || config.name;
+            document.querySelector('.logo').innerText = document.getElementById('in-name').value || config.name;
+            document.getElementById('hero-img').src = document.getElementById('in-hero-url').value || config.hero;
         }
 
-        function render() {
+        function saveSettings() {
+            config.name = document.getElementById('in-name').value || config.name;
+            config.hero = document.getElementById('in-hero-url').value || config.hero;
+            config.whatsapp = document.getElementById('in-wsp').value || config.whatsapp;
+            config.email = document.getElementById('in-mail').value || config.email;
+            config.payments = document.getElementById('in-pay').value || config.payments;
+            
+            localStorage.setItem('inercia_settings', JSON.stringify(config));
+            renderAll();
+            alert("Configuración actualizada.");
+        }
+
+        function renderAll() {
+            // Render de textos
+            document.getElementById('hero-text').innerText = config.name;
+            document.querySelector('.logo').innerText = config.name;
+            document.getElementById('hero-img').src = config.hero;
+            document.getElementById('footer-email').innerText = config.email;
+            document.getElementById('footer-whatsapp').innerText = "+" + config.whatsapp;
+            document.getElementById('footer-payments').innerText = config.payments;
+
+            // Render de productos
             const grid = document.getElementById('main-grid');
             const list = document.getElementById('admin-list');
-            grid.innerHTML = '';
-            list.innerHTML = '<label style="color:#666; font-size:10px; margin-bottom:15px; display:block;">GESTIÓN DE STOCK</label>';
+            grid.innerHTML = ''; list.innerHTML = '';
 
-            db.forEach((p, i) => {
+            products.forEach((p, i) => {
                 grid.innerHTML += `
-                    <div class="product-card">
+                    <div class="product-card" onclick="buyProduct('${p.name}')">
                         <img src="${p.img}">
-                        <p>${p.name} — ${p.price}</p>
+                        <h3>${p.name}</h3>
+                        <p>${p.price}</p>
                     </div>
                 `;
                 list.innerHTML += `
-                    <div class="stock-item">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:11px;">
                         <span>${p.name}</span>
-                        <button class="btn-del" onclick="del(${i})">ELIMINAR</button>
+                        <span onclick="delProduct(${i})" style="color:red; cursor:pointer">Eliminar</span>
                     </div>
                 `;
             });
-            localStorage.setItem('inercia_v6', JSON.stringify(db));
+            localStorage.setItem('inercia_products', JSON.stringify(products));
         }
 
-        function addP() {
+        function buyProduct(name) {
+            const msg = `Hola Inercia! Me interesa el producto: ${name}. ¿Tienen stock disponible?`;
+            window.open(`https://wa.me{config.whatsapp}?text=${encodeURIComponent(msg)}`);
+        }
+
+        function addProduct() {
             const n = document.getElementById('p-name').value, 
                   p = document.getElementById('p-price').value, 
                   i = document.getElementById('p-img').value;
             if(n && p && i) {
-                db.push({name: n, price: p, img: i});
-                render();
+                products.push({name: n, price: p, img: i});
+                renderAll();
                 document.getElementById('p-name').value = '';
                 document.getElementById('p-price').value = '';
                 document.getElementById('p-img').value = '';
             }
         }
 
-        function del(i) {
-            if(confirm("¿Estás segura de borrar este producto de inercia?")) {
-                db.splice(i, 1);
-                render();
-            }
-        }
+        function delProduct(i) { products.splice(i, 1); renderAll(); }
 
-        render();
+        // Carga de campos de admin
+        document.getElementById('in-name').value = config.name;
+        document.getElementById('in-hero-url').value = config.hero;
+        document.getElementById('in-wsp').value = config.whatsapp;
+        document.getElementById('in-mail').value = config.email;
+        document.getElementById('in-pay').value = config.payments;
+
+        renderAll();
     </script>
 </body>
 </html>
