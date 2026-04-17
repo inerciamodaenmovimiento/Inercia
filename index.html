@@ -1,172 +1,143 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Studio</title>
-    <style>
-        :root {
-            --bg-base: #f4f3f0;
-            --text-dark: #1a1a1a;
-            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-main); background: var(--bg-base); color: var(--text-dark); line-height: 1.5; }
-        
-        /* NAV */
-        .header { padding: 30px 6%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-base); z-index: 1000; }
-        .logo { font-weight: 600; font-size: 1.3rem; letter-spacing: 6px; text-transform: uppercase; }
-        .nav-right { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+<!-- INTEGRACIÓN DE PANEL ADMIN SENIOR - INERCIA -->
+<style>
+    .admin-full-panel { display: none; position: fixed; inset: 0; background: #000; color: #fff; z-index: 5000; padding: 40px; overflow-y: auto; font-family: monospace; }
+    .admin-nav { display: flex; gap: 20px; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+    .admin-nav span { cursor: pointer; color: #666; font-size: 0.8rem; }
+    .admin-nav span.active { color: #fff; text-decoration: underline; }
+    .admin-section { display: none; }
+    .admin-section.active { display: block; }
+    .order-card { background: #111; padding: 20px; margin-bottom: 10px; border: 1px solid #222; font-size: 0.8rem; }
+    .status-tag { padding: 2px 8px; border-radius: 3px; font-size: 0.7rem; }
+    .table-admin { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .table-admin th { text-align: left; color: #666; font-size: 0.7rem; padding: 10px; border-bottom: 1px solid #222; }
+    .table-admin td { padding: 10px; border-bottom: 1px solid #111; font-size: 0.8rem; }
+</style>
 
-        /* HERO */
-        .hero { padding: 40px 6% 80px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; }
-        .hero-text h1 { font-size: 4rem; font-weight: 300; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
-        .hero-img { width: 100%; aspect-ratio: 16/9; background: url('https://unsplash.com') center/cover; }
+<div id="admin-full" class="admin-full-panel">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+        <h2 style="letter-spacing:4px;">INERCIA BACKOFFICE</h2>
+        <span onclick="document.getElementById('admin-full').style.display='none'" style="cursor:pointer;">[SALIR]</span>
+    </div>
 
-        /* GRID */
-        .container { padding: 0 6% 100px; }
-        .section-header { margin-bottom: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; }
-        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .product-card { cursor: pointer; transition: opacity 0.3s; }
-        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #e2e1de; margin-bottom: 15px; }
-        .product-info h3 { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-        .product-info p { font-size: 0.8rem; color: #666; margin-top: 5px; }
+    <nav class="admin-nav">
+        <span class="a-tab active" onclick="switchTab('orders')">PEDIDOS RECIENTES</span>
+        <span class="a-tab" onclick="switchTab('inventory')">INVENTARIO</span>
+        <span class="a-tab" onclick="switchTab('settings')">PAGOS Y ENVÍOS</span>
+        <span class="a-tab" onclick="switchTab('history')">HISTORIAL</span>
+    </nav>
 
-        /* CART ASIDE */
-        .cart-aside { position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: #fff; z-index: 2000; padding: 40px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77,0,0.175,1); }
-        .cart-aside.active { transform: translateX(0); }
-        .cart-item { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 15px; border-bottom: 1px solid #f5f5f5; padding-bottom: 10px; }
-        .btn-black { width: 100%; padding: 15px; background: #000; color: #fff; border: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 20px; }
-
-        /* MODAL */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(244,243,240,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 6%; }
-        .modal-content { max-width: 1000px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-
-        /* ADMIN */
-        .admin-panel { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; background: #000; color: #fff; padding: 40px; z-index: 4000; }
-        .admin-panel input { width: 100%; padding: 12px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #333; color: #fff; }
-
-        @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, 1fr); } .hero { grid-template-columns: 1fr; } .modal-content { grid-template-columns: 1fr; } }
-    </style>
-</head>
-<body>
-
-    <header class="header">
-        <div class="logo">INERCIA</div>
-        <div class="nav-right" onclick="toggleCart()">BOLSA (<span id="cart-count">0</span>)</div>
-    </header>
-
-    <section class="hero">
-        <div class="hero-text"><h1>INERCIA<br>STUDIO</h1><p style="font-size:0.7rem; color:#666; letter-spacing:1px; margin-top:20px;">MOVIMIENTO Y ESTILO EN CADA PRENDA.</p></div>
-        <div class="hero-img"></div>
+    <!-- Módulo de Pedidos -->
+    <section id="orders" class="admin-section active">
+        <table class="table-admin">
+            <thead><tr><th>ID</th><th>CLIENTE</th><th>MÉTODO PAGO</th><th>ENVÍO</th><th>TOTAL</th><th>ESTADO</th></tr></thead>
+            <tbody id="orders-list"></tbody>
+        </table>
     </section>
 
-    <main class="container">
-        <div class="section-header"><span>Colecciones Propias</span><span>2026</span></div>
-        <div class="product-grid" id="grid">
-            <!-- Los productos se cargan aquí -->
+    <!-- Módulo de Inventario -->
+    <section id="inventory" class="admin-section">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px;">
+            <div>
+                <h3>AÑADIR PRODUCTO</h3>
+                <input type="text" id="p-name" placeholder="Nombre" style="width:100%; padding:10px; margin-top:10px; background:#111; border:1px solid #333; color:#fff;">
+                <input type="number" id="p-price" placeholder="Precio" style="width:100%; padding:10px; margin-top:10px; background:#111; border:1px solid #333; color:#fff;">
+                <input type="text" id="p-img" placeholder="URL Imagen" style="width:100%; padding:10px; margin-top:10px; background:#111; border:1px solid #333; color:#fff;">
+                <button onclick="saveNewProd()" style="margin-top:20px; width:100%; padding:10px; background:#fff; color:#000; border:none; cursor:pointer;">PUBLICAR</button>
+            </div>
+            <div id="inventory-list"></div>
         </div>
-    </main>
+    </section>
 
-    <!-- UI -->
-    <aside class="cart-aside" id="cart-aside">
-        <h2 style="font-size:0.8rem; letter-spacing:2px; margin-bottom:30px;">TU BOLSA</h2>
-        <div id="cart-list"></div>
-        <div style="margin-top:auto; padding-top:20px; border-top:1px solid #eee;">
-            <div style="display:flex; justify-content:space-between; font-weight:600;"><span>TOTAL</span><span id="cart-total">$0</span></div>
-            <button class="btn-black">Finalizar Compra</button>
-            <p onclick="toggleCart()" style="text-align:center; font-size:0.6rem; margin-top:15px; cursor:pointer; letter-spacing:1px;">CERRAR</p>
-        </div>
-    </aside>
-
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <img id="m-img" src="" style="width:100%; aspect-ratio:3/4; object-fit:cover;">
-            <div style="display:flex; flex-direction:column; justify-content:center;">
-                <h2 id="m-title" style="font-size:2.5rem; font-weight:300; margin-bottom:10px;"></h2>
-                <p id="m-price" style="font-size:1.2rem; margin-bottom:30px; color:#666;"></p>
-                <button id="m-add-btn" class="btn-black">Añadir a la bolsa</button>
-                <p onclick="closeModal()" style="margin-top:20px; cursor:pointer; font-size:0.7rem; letter-spacing:2px;">VOLVER</p>
+    <!-- Configuración Pagos/Envíos -->
+    <section id="settings" class="admin-section">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px;">
+            <div>
+                <h3>MÉTODOS DE PAGO</h3>
+                <div id="pay-methods-config" style="margin-top:20px;"></div>
+            </div>
+            <div>
+                <h3>MÉTODOS DE ENVÍO</h3>
+                <div id="ship-methods-config" style="margin-top:20px;"></div>
             </div>
         </div>
-    </div>
+    </section>
+</div>
 
-    <div class="admin-panel" id="admin">
-        <h2 style="font-size:0.7rem; letter-spacing:2px; margin-bottom:20px;">INERCIA ADMIN</h2>
-        <input type="text" id="a-name" placeholder="Nombre del Producto">
-        <input type="number" id="a-price" placeholder="Precio">
-        <input type="text" id="a-img" placeholder="URL de Imagen">
-        <button class="btn-black" style="background:#fff; color:#000" onclick="createProduct()">Guardar Cambios</button>
-    </div>
+<script>
+    // DATA CORE
+    let orders = JSON.parse(localStorage.getItem('inercia_orders')) || [];
+    let config = JSON.parse(localStorage.getItem('inercia_config')) || {
+        payments: ['Transferencia Bancaria', 'Mercado Pago', 'Efectivo'],
+        shipping: ['Correo Argentino', 'Retiro en Local', 'Envío Express']
+    };
 
-    <script>
-        let bag = [];
-        let code = "";
-        // Base de datos inicial si el LocalStorage está vacío
-        let products = JSON.parse(localStorage.getItem('inercia_prods')) || [
-            {id: 1, name: 'Abrigo Estructura', price: 42000, img: 'https://unsplash.com'},
-            {id: 2, name: 'Puffer Inercia', price: 35000, img: 'https://unsplash.com'}
-        ];
-
-        function init() {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            products.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.onclick = () => openModal(p.name, p.price, p.img);
-                card.innerHTML = `<img src="${p.img}"><div class="product-info"><h3>${p.name}</h3><p>$${p.price.toLocaleString()}</p></div>`;
-                grid.appendChild(card);
-            });
-        }
-
-        function openModal(n, p, i) {
-            document.getElementById('m-img').src = i;
-            document.getElementById('m-title').innerText = n;
-            document.getElementById('m-price').innerText = `$${p.toLocaleString()}`;
-            document.getElementById('m-add-btn').onclick = () => { bag.push({n, p}); updateCart(); closeModal(); toggleCart(); };
-            document.getElementById('modal').style.display = 'flex';
-        }
-
-        function closeModal() { document.getElementById('modal').style.display = 'none'; }
-        function toggleCart() { document.getElementById('cart-aside').classList.toggle('active'); }
-
-        function updateCart() {
-            const list = document.getElementById('cart-list');
-            list.innerHTML = '';
-            let total = 0;
-            bag.forEach(item => {
-                list.innerHTML += `<div class="cart-item"><span>${item.n}</span><span>$${item.p.toLocaleString()}</span></div>`;
-                total += item.p;
-            });
-            document.getElementById('cart-count').innerText = bag.length;
-            document.getElementById('cart-total').innerText = `$${total.toLocaleString()}`;
-        }
-
-        // PERSISTENCIA ADMIN
-        window.onkeydown = (e) => {
-            code += e.key;
-            if(code.includes("0110")) { document.getElementById('admin').style.display = 'block'; code = ""; }
-            if(code.length > 10) code = "";
+    // Sobrescribir función de finalizar compra para capturar datos
+    document.querySelector('.btn-black').onclick = function() {
+        if(bag.length === 0) return alert("Bolsa vacía");
+        const customer = prompt("Nombre del cliente:");
+        const pay = prompt("Método de pago (" + config.payments.join('/') + "):");
+        const ship = prompt("Método de envío (" + config.shipping.join('/') + "):");
+        
+        const newOrder = {
+            id: '#' + Math.floor(Math.random()*9000 + 1000),
+            customer,
+            pay,
+            ship,
+            total: document.getElementById('cart-total').innerText,
+            date: new Date().toLocaleDateString(),
+            items: [...bag]
         };
+        
+        orders.push(newOrder);
+        localStorage.setItem('inercia_orders', JSON.stringify(orders));
+        bag = [];
+        updateCart();
+        toggleCart();
+        alert("Pedido procesado con éxito.");
+    };
 
-        function createProduct() {
-            const name = document.getElementById('a-name').value;
-            const price = parseInt(document.getElementById('a-price').value);
-            const img = document.getElementById('a-img').value || 'https://unsplash.com';
-            
-            if(name && price) {
-                products.push({id: Date.now(), name, price, img});
-                localStorage.setItem('inercia_prods', JSON.stringify(products));
-                init();
-                document.getElementById('admin').style.display = 'none';
-                // Reset campos
-                document.getElementById('a-name').value = '';
-                document.getElementById('a-price').value = '';
-            }
+    function switchTab(tabId) {
+        document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.a-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+        if(tabId === 'orders') renderOrders();
+    }
+
+    function renderOrders() {
+        const list = document.getElementById('orders-list');
+        list.innerHTML = orders.map(o => `
+            <tr>
+                <td>${o.id}</td>
+                <td>${o.customer}</td>
+                <td>${o.pay}</td>
+                <td>${o.ship}</td>
+                <td>${o.total}</td>
+                <td><span class="status-tag" style="background:#222;">PROCESANDO</span></td>
+            </tr>
+        `).join('');
+    }
+
+    function saveNewProd() {
+        const n = document.getElementById('p-name').value;
+        const p = parseInt(document.getElementById('p-price').value);
+        const i = document.getElementById('p-img').value;
+        if(n && p) {
+            products.push({id: Date.now(), name: n, price: p, img: i});
+            localStorage.setItem('inercia_prods', JSON.stringify(products));
+            init();
+            alert("Producto añadido.");
         }
+    }
 
-        init();
-    </script>
-</body>
-</html>
+    // Listener para activar Dashboard 0110
+    let fullCode = "";
+    window.addEventListener('keydown', (e) => {
+        fullCode += e.key;
+        if(fullCode.includes("0110")) {
+            document.getElementById('admin-full').style.display = 'block';
+            renderOrders();
+            fullCode = "";
+        }
+    });
+</script>
