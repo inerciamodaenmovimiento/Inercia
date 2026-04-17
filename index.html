@@ -4,92 +4,197 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
-    <!-- Fuentes elegantes -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #f0f0e8; --text: #2c2c2c; --line: rgba(0,0,0,0.1); }
+        :root { --bg: #f0f0e8; --text: #2c2c2c; --line: rgba(0,0,0,0.1); --accent: #27ae60; }
+        * { box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; }
+        /* Grano de Película */
+        body::before { content: ""; position: fixed; inset: 0; background: url(https://vercel.app); opacity: 0.04; pointer-events: none; z-index: 1000; }
 
-        /* Efecto Grano de Película */
-        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url(https://vercel.app); opacity: 0.04; pointer-events: none; z-index: 1000; }
-
-        /* 1. Header Minimalista */
+        /* --- DISEÑO EDITORIAL --- */
         nav { display: flex; justify-content: space-around; align-items: center; padding: 40px 5%; text-transform: uppercase; font-size: 10px; letter-spacing: 3px; border-bottom: 1px solid var(--line); }
         .logo { font-family: 'Playfair Display', serif; font-size: 45px; letter-spacing: 8px; font-weight: 400; }
 
-        /* 2. Hero Section (Foto Principal) */
-        .hero { position: relative; width: 90%; margin: 30px auto; height: 85vh; overflow: hidden; }
-        .hero img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); }
+        .hero { position: relative; width: 90%; margin: 30px auto; height: 85vh; overflow: hidden; background: #000; }
+        .hero img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); opacity: 0.8; }
         .hero-text { position: absolute; bottom: 8%; left: 5%; color: white; text-transform: uppercase; }
-        .hero-text h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0; letter-spacing: 2px; }
-        .hero-text p { font-size: 11px; letter-spacing: 4px; margin-top: 10px; border-bottom: 1px solid white; display: inline-block; padding-bottom: 5px; }
+        .hero-text h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0; }
 
-        /* 3. Grilla de Colecciones (01, 02, 03) */
-        .collections { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; padding: 100px 10%; text-align: center; }
-        .col-item span { font-size: 13px; color: #999; display: block; margin-bottom: 25px; letter-spacing: 2px; }
-        .col-item .img-wrapper { width: 100%; height: 480px; overflow: hidden; border: 1px solid var(--line); }
-        .col-item img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.8); transition: 0.6s; }
-        .col-item img:hover { filter: grayscale(0); transform: scale(1.03); }
-        .col-item h3 { font-family: 'Playfair Display', serif; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-top: 25px; border-bottom: 1px solid var(--text); display: inline-block; padding-bottom: 3px; }
+        .magazine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 100px 10%; }
+        .product-card { cursor: pointer; text-align: center; position: relative; }
+        .product-card img { width: 100%; height: 450px; object-fit: cover; filter: grayscale(0.7); border: 1px solid var(--line); transition: 0.5s; }
+        .product-card:hover img { filter: grayscale(0); }
+        .product-card h3 { font-family: 'Playfair Display', serif; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-top: 15px; border-bottom: 1px solid var(--text); display: inline-block; }
 
-        /* 4. Sección de Frase (The Magic) */
-        .quote-block { position: relative; height: 90vh; background: #ddd; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
-        .quote-block img { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.8; filter: sepia(0.2) grayscale(0.4); }
-        .quote-content { z-index: 10; color: white; padding: 0 10%; }
-        .quote-content h2 { font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 400; line-height: 1.1; margin: 0; }
-        .quote-content i { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 5.5rem; text-transform: none; }
+        .quote-block { position: relative; height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; background: #e0ded4; margin-top: 50px; }
+        .quote-block img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; filter: grayscale(0.5); }
+        .quote-content { z-index: 10; color: white; }
+        .quote-content h2 { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 400; margin: 0; }
+        .quote-content i { font-family: 'Cormorant+Garamond', serif; font-style: italic; font-size: 5rem; text-transform: none; }
 
-        /* Footer */
-        footer { padding: 80px 10%; text-align: center; font-size: 10px; letter-spacing: 3px; color: #888; border-top: 1px solid var(--line); }
+        /* --- VISTA DETALLADA (MODAL) --- */
+        #view-modal { display: none; position: fixed; inset: 0; background: rgba(240, 240, 232, 0.98); z-index: 2000; align-items: center; justify-content: center; padding: 40px; }
+        .modal-body { display: grid; grid-template-columns: 1fr 1fr; max-width: 1100px; background: white; border: 1px solid var(--line); position: relative; }
+        .modal-img { width: 100%; height: 70vh; object-fit: cover; }
+        .modal-info { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .modal-info h2 { font-family: 'Playfair Display', serif; font-size: 3rem; margin: 0; }
+        .modal-info .price { font-size: 1.5rem; margin: 20px 0; font-weight: 200; }
+        .modal-info .desc { font-size: 0.9rem; line-height: 1.8; color: #666; margin-bottom: 30px; }
+        .btn-buy { background: black; color: white; border: none; padding: 15px; cursor: pointer; letter-spacing: 3px; font-size: 11px; }
+
+        /* --- PANEL ADMIN (SIDEBAR) --- */
+        #admin-panel { display: none; position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: white; z-index: 3000; padding: 30px; overflow-y: auto; box-shadow: -10px 0 50px rgba(0,0,0,0.1); font-size: 12px; }
+        .admin-sec { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        label { display: block; font-weight: 600; text-transform: uppercase; font-size: 10px; margin-top: 15px; color: #888; }
+        input, textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; font-family: 'Montserrat'; }
+        .btn-admin { background: black; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-del { background: red; color: white; border: none; padding: 5px 10px; cursor: pointer; margin-top: 10px; font-size: 9px; }
+        #secret-door { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: pointer; opacity: 0; z-index: 4000; }
     </style>
 </head>
 <body>
 
     <nav>
-        <span>Colecciones</span>
-        <span>Editorial</span>
+        <span id="nav-1">Colecciones</span>
         <div class="logo">INERCIA</div>
-        <span>Shop</span>
-        <span>Info</span>
+        <span id="nav-2">Shop Info</span>
     </nav>
 
     <section class="hero">
-        <img src="https://unsplash.com" alt="Inercia Hero">
+        <img id="h-img" src="https://unsplash.com">
         <div class="hero-text">
-            <h2>Miracle Collection</h2>
-            <p>Explorar ahora</p>
+            <h2 id="h-title">Miracle Collection</h2>
+            <p id="h-sub">Explore Now</p>
         </div>
     </section>
 
-    <section class="collections">
-        <div class="col-item">
-            <span>01</span>
-            <div class="img-wrapper"><img src="https://unsplash.com"></div>
-            <h3>Bestsellers</h3>
-        </div>
-        <div class="col-item">
-            <span>02</span>
-            <div class="img-wrapper"><img src="https://unsplash.com"></div>
-            <h3>Destacados</h3>
-        </div>
-        <div class="col-item">
-            <span>03</span>
-            <div class="img-wrapper"><img src="https://unsplash.com"></div>
-            <h3>Ver Todo</h3>
-        </div>
-    </section>
+    <div class="magazine-grid" id="main-catalog">
+        <!-- Los productos aparecerán aquí -->
+    </div>
 
     <section class="quote-block">
-        <img src="https://unsplash.com">
+        <img id="q-img" src="https://unsplash.com">
         <div class="quote-content">
-            <h2>Donde hay <i>Movimiento</i>,<br>hay magia</h2>
+            <h2 id="q-text">Donde hay <i>Movimiento</i>,<br>hay magia</h2>
         </div>
     </section>
 
-    <footer>
-        INERCIA &copy; 2026 — MODA EN CONSTANTE MOVIMIENTO
+    <footer style="padding: 100px 10%; text-align: center; border-top: 1px solid var(--line);">
+        <div id="footer-envio" style="font-size: 11px; letter-spacing: 2px;">ENVÍOS: Correo Argentino / Andreani</div>
+        <div id="footer-pago" style="font-size: 11px; letter-spacing: 2px; margin-top: 10px;">PAGOS: Transferencia bancaria y Tarjetas</div>
     </footer>
 
+    <!-- VISTA PRODUCTO -->
+    <div id="view-modal">
+        <div class="modal-body">
+            <span onclick="this.parentElement.parentElement.style.display='none'" style="position:absolute; top:20px; right:20px; cursor:pointer; font-size:24px;">&times;</span>
+            <img id="m-img" class="modal-img">
+            <div class="modal-info">
+                <h2 id="m-title">Producto</h2>
+                <div class="price" id="m-price">$0</div>
+                <p class="desc" id="m-desc">Descripción detallada...</p>
+                <p id="m-stock" style="font-size: 10px; color: gray; margin-bottom: 20px;">STOCK: 0</p>
+                <button class="btn-buy" onclick="addOrder()">COMPRAR AHORA</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL ADMIN -->
+    <div id="secret-door" onclick="login()"></div>
+    <div id="admin-panel">
+        <h2 style="font-family:'Playfair Display'">Inercia Admin</h2>
+        
+        <div class="admin-sec">
+            <h4>TEXTOS HOME</h4>
+            <label>Título Hero:</label><input type="text" id="in-h-title" oninput="document.getElementById('h-title').innerText=this.value">
+            <label>Subtítulo Hero:</label><input type="text" id="in-h-sub" oninput="document.getElementById('h-sub').innerText=this.value">
+            <label>Frase Mágica:</label><input type="text" id="in-q-text" oninput="document.getElementById('q-text').innerHTML=this.value">
+        </div>
+
+        <div class="admin-sec">
+            <h4>NUEVO PRODUCTO</h4>
+            <label>Imagen:</label><input type="file" id="p-img" accept="image/*">
+            <label>Nombre:</label><input type="text" id="p-name">
+            <label>Precio:</label><input type="number" id="p-price">
+            <label>Stock:</label><input type="number" id="p-stock">
+            <label>Descripción:</label><textarea id="p-desc"></textarea>
+            <button class="btn-admin" style="background:var(--accent)" onclick="uploadProduct()">SUBIR PRODUCTO</button>
+        </div>
+
+        <div class="admin-sec">
+            <h4>MÉTODOS Y LOGÍSTICA</h4>
+            <label>Info Envío:</label><input type="text" oninput="document.getElementById('footer-envio').innerText=this.value">
+            <label>Info Pago:</label><input type="text" oninput="document.getElementById('footer-pago').innerText=this.value">
+        </div>
+
+        <div class="admin-sec">
+            <h4>HISTORIAL DE PEDIDOS</h4>
+            <div id="order-list" style="max-height: 150px; overflow: auto; background: #f9f9f9; padding: 10px;">Sin pedidos.</div>
+        </div>
+
+        <button class="btn-admin" onclick="exportHTML()">DESCARGAR INDEX.HTML ACTUALIZADO</button>
+        <button onclick="document.getElementById('admin-panel').style.display='none'" style="width:100%; border:none; background:none; color:red; margin-top:20px; cursor:pointer;">CERRAR PANEL</button>
+    </div>
+
+    <script>
+        function login() { if(prompt("Acceso Inercia:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
+
+        async function uploadProduct() {
+            const file = document.getElementById('p-img').files[0];
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const stock = document.getElementById('p-stock').value;
+            const desc = document.getElementById('p-desc').value;
+
+            if(!file || !name) return alert("Faltan datos");
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const id = Date.now();
+                const img = e.target.result;
+                const html = `
+                    <div class="product-card" id="pc-${id}" onclick="openProduct('${name}', '${price}', '${img}', '${desc}', '${stock}')">
+                        <img src="${img}">
+                        <h3>${name}</h3>
+                        <button class="btn-del" onclick="event.stopPropagation(); document.getElementById('pc-${id}').remove()">Eliminar</button>
+                    </div>
+                `;
+                document.getElementById('main-catalog').insertAdjacentHTML('beforeend', html);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openProduct(n, p, i, d, s) {
+            if(document.getElementById('admin-panel').style.display === 'block') return;
+            document.getElementById('m-title').innerText = n;
+            document.getElementById('m-price').innerText = "$" + p;
+            document.getElementById('m-img').src = i;
+            document.getElementById('m-desc').innerText = d;
+            document.getElementById('m-stock').innerText = "STOCK: " + s;
+            document.getElementById('view-modal').style.display = 'flex';
+        }
+
+        function addOrder() {
+            const prod = document.getElementById('m-title').innerText;
+            const list = document.getElementById('order-list');
+            if(list.innerText === "Sin pedidos.") list.innerHTML = "";
+            list.innerHTML += `<div style="border-bottom:1px solid #ddd; padding:5px">Pedido: ${prod} - ${new Date().toLocaleDateString()}</div>`;
+            alert("Pedido registrado en el historial.");
+            document.getElementById('view-modal').style.display = 'none';
+        }
+
+        function exportHTML() {
+            document.querySelectorAll('.btn-del').forEach(b => b.style.display = 'none');
+            const html = document.documentElement.outerHTML;
+            const blob = new Blob([html], {type: 'text/html'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'index.html';
+            a.click();
+            alert("Sube el archivo descargado a tu GitHub.");
+        }
+    </script>
 </body>
 </html>
