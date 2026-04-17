@@ -1,53 +1,79 @@
-<!-- ADMIN BACKOFFICE INERCIA (0110) -->
 <style>
-#adm-root{display:none;position:fixed;inset:0;background:#fcfcfc;z-index:9999;font-family:sans-serif;color:#1a1a1a;overflow-y:auto}
-.adm-v{display:flex;height:100%}
-.adm-s{width:220px;background:#111;color:#fff;padding:40px 20px;flex-shrink:0}
-.adm-m{flex-grow:1;padding:60px 8%;background:#f4f3f0}
-.adm-t{cursor:pointer;display:block;margin-bottom:20px;font-size:11px;letter-spacing:2px;color:#666;text-transform:uppercase}
-.adm-t.act{color:#fff}
-.adm-box{display:none;background:#fff;padding:30px;border:1px solid #eee}
-.adm-box.act{display:block}
-.adm-tbl{width:100%;border-collapse:collapse;margin-top:20px;font-size:12px}
-.adm-tbl th{text-align:left;padding:12px;border-bottom:1px solid #eee;color:#999}
-.adm-tbl td{padding:12px;border-bottom:1px solid #f9f9f9}
-input,select{width:100%;padding:10px;margin:10px 0;border:1px solid #eee;background:#f9f9f9}
+#admin-screen { display: none; position: fixed; inset: 0; background: #fff; z-index: 9999; font-family: sans-serif; }
+.admin-nav { background: #000; color: #fff; padding: 20px; display: flex; gap: 20px; font-size: 12px; letter-spacing: 1px; }
+.admin-nav span { cursor: pointer; opacity: 0.6; }
+.admin-nav span.active { opacity: 1; text-decoration: underline; }
+.admin-tab { display: none; padding: 40px; }
+.admin-tab.active { display: block; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.admin-table th, .admin-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+.admin-input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
 </style>
-<div id="adm-root">
-<div class="adm-v">
-<aside class="adm-s">
-<h2 style="font-size:14px;letter-spacing:4px;margin-bottom:50px">INERCIA</h2>
-<span class="adm-t act" onclick="adT(0)">Pedidos</span>
-<span class="adm-t" onclick="adT(1)">Productos</span>
-<span class="adm-t" onclick="adT(2)">Pagos y Envíos</span>
-<span class="adm-t" onclick="adT(3)">Historial</span>
-<span class="adm-t" style="margin-top:100px;color:red" onclick="document.getElementById('adm-root').style.display='none'">Cerrar</span>
-</aside>
-<main class="adm-m">
-<div class="adm-box act" id="b0">
-<h3>Checklist de Pedidos</h3>
-<table class="adm-tbl"><thead><tr><th>ID</th><th>Comprador</th><th>Pago</th><th>Envío</th><th>Total</th></tr></thead><tbody id="p-list"></tbody></table>
-</div>
-<div class="adm-box" id="b1">
-<h3>Gestión de Inventario</h3>
-<input id="in-n" placeholder="Nombre"><input id="in-p" type="number" placeholder="Precio"><input id="in-i" placeholder="URL Imagen"><button class="btn-black" onclick="newP()">Publicar</button>
-</div>
-<div class="adm-box" id="b2">
-<h3>Métodos de Pago y Envío</h3>
-<label>Pagos Activos</label><input id="set-p" value="Transferencia, Mercado Pago, Efectivo"><label>Envíos Activos</label><input id="set-e" value="Correo Argentino, Local, Express">
-</div>
-<div class="adm-box" id="b3">
-<h3>Historial de Ventas</h3>
-<table class="adm-tbl"><thead><tr><th>Fecha</th><th>Cliente</th><th>Monto</th></tr></thead><tbody id="h-list"></tbody></table>
-</div>
-</main>
-</div>
+<div id="admin-screen">
+    <div class="admin-nav">
+        <span onclick="tab(0)" class="t-btn active">PEDIDOS</span>
+        <span onclick="tab(1)" class="t-btn">PRODUCTOS</span>
+        <span onclick="tab(2)" class="t-btn">PAGOS/ENVÍOS</span>
+        <span onclick="tab(3)" class="t-btn">HISTORIAL</span>
+        <span onclick="document.getElementById('admin-screen').style.display='none'" style="margin-left:auto;color:red">CERRAR</span>
+    </div>
+    <div id="tab0" class="admin-tab active">
+        <h3>Checklist de Pedidos</h3>
+        <table class="admin-table">
+            <thead><tr><th>ID</th><th>Comprador</th><th>Pago</th><th>Envío</th><th>Total</th></tr></thead>
+            <tbody id="list-orders"></tbody>
+        </table>
+    </div>
+    <div id="tab1" class="admin-tab">
+        <h3>Gestión de Secciones</h3>
+        <input id="new-n" class="admin-input" placeholder="Nombre del producto">
+        <input id="new-p" class="admin-input" type="number" placeholder="Precio">
+        <input id="new-i" class="admin-input" placeholder="URL Imagen">
+        <button onclick="addP()" class="btn-black">Publicar Producto</button>
+    </div>
+    <div id="tab2" class="admin-tab">
+        <h3>Configuración de Métodos</h3>
+        <label>Métodos de Pago:</label><input id="set-pay" class="admin-input" value="Transferencia, Efectivo">
+        <label>Métodos de Envío:</label><input id="set-ship" class="admin-input" value="Correo Argentino, Retiro">
+    </div>
+    <div id="tab3" class="admin-tab">
+        <h3>Historial de Pedidos</h3>
+        <table class="admin-table">
+            <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th></tr></thead>
+            <tbody id="list-hist"></tbody>
+        </table>
+    </div>
 </div>
 <script>
-let oData = JSON.parse(localStorage.getItem('in_orders')) || [];
-function adT(idx){document.querySelectorAll('.adm-box').forEach((b,i)=>{b.classList.toggle('act',i===idx)});document.querySelectorAll('.adm-t').forEach((t,i)=>{t.classList.toggle('act',i===idx)})}
-window.addEventListener('keydown',e=>{code+=e.key;if(code.includes("0110")){document.getElementById('adm-root').style.display='block';updP();code=""}});
-function newP(){let n=document.getElementById('in-n').value,p=parseInt(document.getElementById('in-p').value),i=document.getElementById('in-i').value;if(n&&p){products.push({id:Date.now(),name:n,price:p,img:i});localStorage.setItem('inercia_prods',JSON.stringify(products));init();adT(0)}}
-function updP(){document.getElementById('p-list').innerHTML=oData.map(o=>`<tr><td>${o.id}</td><td>${o.c}</td><td>${o.m}</td><td>${o.e}</td><td>${o.t}</td></tr>`).join('');document.getElementById('h-list').innerHTML=oData.map(o=>`<tr><td>${o.d}</td><td>${o.c}</td><td>${o.t}</td></tr>`).join('')}
-document.querySelector('.btn-black').addEventListener('click',()=>{if(bag.length>0){let c=prompt("Nombre:"),m=prompt("Pago:"),e=prompt("Envio:");let ord={id:'#'+Math.floor(Math.random()*999),c,m,e,t:document.getElementById('cart-total').innerText,d:new Date().toLocaleDateString()};oData.push(ord);localStorage.setItem('in_orders',JSON.stringify(oData));bag=[];updateCart();toggleCart();updP()}});
+let ordersData = JSON.parse(localStorage.getItem('in_orders')) || [];
+function tab(i) {
+    document.querySelectorAll('.admin-tab').forEach((t, idx) => t.classList.toggle('active', i === idx));
+    document.querySelectorAll('.t-btn').forEach((b, idx) => b.classList.toggle('active', i === idx));
+}
+window.addEventListener('keydown', e => {
+    code += e.key;
+    if(code.includes("0110")) { document.getElementById('admin-screen').style.display='block'; renderAdmin(); code=""; }
+    if(code.length > 10) code = "";
+});
+function addP() {
+    let n = document.getElementById('new-n').value, p = parseInt(document.getElementById('new-p').value), i = document.getElementById('new-i').value;
+    if(n && p) {
+        products.push({id: Date.now(), name: n, price: p, img: i});
+        localStorage.setItem('in_prods', JSON.stringify(products));
+        init(); tab(0);
+    }
+}
+function renderAdmin() {
+    document.getElementById('list-orders').innerHTML = ordersData.map(o => `<tr><td>${o.id}</td><td>${o.c}</td><td>${o.m}</td><td>${o.e}</td><td>${o.t}</td></tr>`).join('');
+    document.getElementById('list-hist').innerHTML = ordersData.map(o => `<tr><td>${o.d}</td><td>${o.c}</td><td>${o.t}</td></tr>`).join('');
+}
+document.querySelector('.btn-black').addEventListener('click', () => {
+    if(bag.length > 0) {
+        let c = prompt("Nombre Comprador:"), m = prompt("Método Pago:"), e = prompt("Método Envío:");
+        let order = { id: '#'+Date.now().toString().slice(-4), c, m, e, t: document.getElementById('cart-total').innerText, d: new Date().toLocaleDateString() };
+        ordersData.push(order);
+        localStorage.setItem('in_orders', JSON.stringify(ordersData));
+        bag = []; updateCart(); toggleCart(); renderAdmin();
+    }
+});
 </script>
