@@ -4,87 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
-    <!-- Tipografías de Revista -->
     <link href="https://googleapis.com" rel="stylesheet">
-    
     <style>
         :root { --bg: #ffffff; --text: #1a1a1a; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; transition: 0.3s; }
+        header { padding: 40px; text-align: center; border-bottom: 1px solid #eee; letter-spacing: 5px; font-size: 1.5rem; }
         
-        /* Estilo Revista */
-        header { padding: 40px; text-align: center; border-bottom: 1px solid #f0f0f0; letter-spacing: 5px; font-weight: 300; }
-        .hero { display: grid; grid-template-columns: 1fr 1fr; height: 90vh; align-items: center; padding: 0 8%; gap: 40px; }
-        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 6rem; line-height: 0.9; margin: 0; text-transform: uppercase; }
-        .hero-img { width: 100%; height: 80vh; object-fit: cover; box-shadow: 20px 20px 0px #f5f2ed; }
+        /* Banner Home */
+        .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 80vh; align-items: center; padding: 50px 8%; gap: 40px; }
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 5rem; margin: 0; text-transform: uppercase; }
+        .hero-img { width: 100%; max-height: 70vh; object-fit: cover; }
 
-        /* Candado Secreto Inferior Derecho */
-        #secret-trigger { 
-            position: fixed; bottom: 10px; right: 10px; width: 30px; height: 30px; 
-            cursor: pointer; opacity: 0.05; z-index: 9999; transition: 0.3s;
-        }
-        #secret-trigger:hover { opacity: 0.5; }
+        /* Grid de Productos */
+        .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; padding: 50px 8%; }
+        .product-card { border: 1px solid #eee; padding: 15px; position: relative; }
+        .product-card img { width: 100%; height: 350px; object-fit: cover; }
+        .badge { position: absolute; top: 10px; left: 10px; background: red; color: white; padding: 5px 10px; font-size: 10px; }
+        .stock { font-size: 11px; color: #888; }
 
-        /* Panel Admin */
+        /* Información de Pago/Envío */
+        .info-footer { background: #f9f9f9; padding: 40px 8%; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid #eee; }
+
+        /* Panel Admin - Scrollable */
         #admin-panel { 
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            background: white; padding: 30px; border: 2px solid black; z-index: 10000; 
-            box-shadow: 0 0 100px rgba(0,0,0,0.2); width: 350px; 
+            display: none; position: fixed; top: 0; right: 0; width: 400px; height: 100vh; 
+            background: white; z-index: 10000; box-shadow: -5px 0 20px rgba(0,0,0,0.1); 
+            padding: 25px; overflow-y: auto; font-size: 13px;
         }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
-        .btn-admin { background: black; color: white; border: none; padding: 10px 20px; cursor: pointer; width: 100%; margin-top: 10px; }
+        input, textarea, select { width: 100%; padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ccc; }
+        .btn-add { background: #27ae60; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; font-weight: bold; }
+        .btn-save { background: black; color: white; border: none; padding: 15px; width: 100%; margin-top: 20px; cursor: pointer; }
+        #secret-trigger { position: fixed; bottom: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer; opacity: 0.05; z-index: 9999; }
     </style>
 </head>
 <body>
 
-    <header>INERCIA</header>
+<div id="top-info" style="background:black; color:white; text-align:center; padding:8px; font-size:11px; letter-spacing:1px;">ENVÍOS A TODO EL PAÍS</div>
+<header>INERCIA</header>
 
-    <section class="hero">
-        <div class="hero-text">
-            <h1 id="main-title">MODA EN <br>MOVIMIENTO</h1>
-            <p style="color: #666; margin-top: 20px;">Colección Editorial 2026</p>
-        </div>
-        <img src="https://unsplash.com" id="main-img" class="hero-img">
-    </section>
-
-    <!-- EL CANDADO INVISIBLE -->
-    <div id="secret-trigger" onclick="checkCode()">🔒</div>
-
-    <!-- PANEL ADMIN OCULTO -->
-    <div id="admin-panel">
-        <h3 style="font-family: 'Playfair Display';">Editor Inercia</h3>
-        <label>Nuevo Título:</label>
-        <input type="text" id="edit-title" placeholder="Ej: Nueva Colección">
-        <label>URL de Imagen:</label>
-        <input type="text" id="edit-img" placeholder="Link de la foto">
-        <button class="btn-admin" onclick="applyChanges()">Actualizar Vista</button>
-        <button onclick="closeAdmin()" style="background:none; border:none; color:red; margin-top:15px; cursor:pointer; width:100%;">Cerrar</button>
+<section class="hero">
+    <div class="hero-text">
+        <h1 id="h-title">MODA EN MOVIMIENTO</h1>
+        <p id="h-desc">Colección Editorial 2026</p>
     </div>
+    <img src="https://placeholder.com" id="h-img" class="hero-img">
+</section>
 
-    <!-- AQUÍ VA EL JAVASCRIPT -->
-    <script>
-        function checkCode() {
-            let pass = prompt("Acceso Restringido - Inercia\nIngrese el código de seguridad:");
-            if (pass === "0110") {
-                document.getElementById('admin-panel').style.display = 'block';
-            } else if (pass !== null) {
-                alert("Código Incorrecto");
-            }
-        }
+<section class="catalog" id="product-list">
+    <!-- Los productos aparecerán aquí -->
+</section>
 
-        function closeAdmin() {
-            document.getElementById('admin-panel').style.display = 'none';
-        }
+<section class="info-footer">
+    <div>
+        <h3>MÉTODOS DE ENVÍO</h3>
+        <p id="txt-envio">Detalles de envío...</p>
+    </div>
+    <div>
+        <h3>MÉTODOS DE PAGO</h3>
+        <p id="txt-pago">Detalles de pago...</p>
+    </div>
+</section>
 
-        function applyChanges() {
-            let newTitle = document.getElementById('edit-title').value;
-            let newImg = document.getElementById('edit-img').value;
+<div id="secret-trigger" onclick="openAdmin()">🔒</div>
 
-            if(newTitle) document.getElementById('main-title').innerText = newTitle;
-            if(newImg) document.getElementById('main-img').src = newImg;
+<!-- PANEL DE CONTROL AVANZADO -->
+<div id="admin-panel">
+    <h2 style="font-family:'Playfair Display'">Panel Inercia v2.0</h2>
+    
+    <hr>
+    <h4>TEXTOS DEL HOME & BANNER</h4>
+    <label>Título Home:</label><input type="text" id="in-h-title">
+    <label>Descripción Home:</label><input type="text" id="in-h-desc">
+    <label>Subir Banner Home (Foto):</label><input type="file" id="in-h-img" accept="image/*">
 
-            alert("Cambios aplicados en la vista previa.\n\nRecuerda: Para que sean permanentes, debes actualizar tu archivo en GitHub.");
-            closeAdmin();
-        }
-    </script>
+    <hr>
+    <h4>AGREGAR PRODUCTO</h4>
+    <label>Foto del Producto:</label><input type="file" id="p-img" accept="image/*">
+    <label>Nombre:</label><input type="text" id="p-name">
+    <label>Precio ($):</label><input type="number" id="p-price">
+    <label>Descuento (%):</label><input type="number" id="p-disc" placeholder="0">
+    <label>Stock:</label><input type="number" id="p-stock">
+    <label>Descripción:</label><textarea id="p-desc"></textarea>
+    <button class="btn-add" onclick="addProduct()">+ Agregar a la Lista</button>
+
+    <hr>
+    <h4>PAGO Y ENVÍO</h4>
+    <label>Info Envío:</label><textarea id="in-envio"></textarea>
+    <label>Info Pago:</label><textarea id="in-pago"></textarea>
+
+    <button class="btn-save" onclick="saveAll()">APLICAR CAMBIOS</button>
+    <button onclick="document.getElementById('admin-panel').style.display='none'" style="width:100%; background:none; border:none; color:red; cursor:pointer; margin-top:10px;">Cerrar</button>
+</div>
+
+<script>
+    function openAdmin() {
+        if(prompt("Código:") === "0110") document.getElementById('admin-panel').style.display = 'block';
+    }
+
+    // Función para manejar fotos locales
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    async function addProduct() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const stock = document.getElementById('p-stock').value;
+        const disc = document.getElementById('p-disc').value;
+        const file = document.getElementById('p-img').files[0];
+        
+        let imgUrl = "https://placeholder.com";
+        if(file) imgUrl = await getBase64(file);
+
+        const html = `
+            <div class="product-card">
+                ${disc > 0 ? `<div class="badge">-${disc}%</div>` : ''}
+                <img src="${imgUrl}">
+                <h4>${name}</h4>
+                <p><strong>$${price}</strong></p>
+                <p class="stock">Stock: ${stock} unidades</p>
+            </div>
+        `;
+        document.getElementById('product-list').innerHTML += html;
+        alert("Producto añadido a la vista previa.");
+    }
+
+    async function saveAll() {
+        // Actualizar textos Home
+        if(document.getElementById('in-h-title').value) document.getElementById('h-title').innerText = document.getElementById('in-h-title').value;
+        if(document.getElementById('in-h-desc').value) document.getElementById('h-desc').innerText = document.getElementById('in-h-desc').value;
+        
+        // Actualizar Banner
+        const bannerFile = document.getElementById('in-h-img').files[0];
+        if(bannerFile) document.getElementById('h-img').src = await getBase64(bannerFile);
+
+        // Actualizar Envío/Pago
+        if(document.getElementById('in-envio').value) document.getElementById('txt-envio').innerText = document.getElementById('in-envio').value;
+        if(document.getElementById('in-pago').value) document.getElementById('txt-pago').innerText = document.getElementById('in-pago').value;
+
+        alert("¡Todo actualizado! Copia el código fuente si deseas guardar permanentemente en GitHub.");
+        document.getElementById('admin-panel').style.display = 'none';
+    }
+</script>
 </body>
 </html>
