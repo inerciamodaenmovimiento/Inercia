@@ -1,43 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
-</script>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INERCIA | Moda en Movimiento</title>
-    <link href="https://googleapis.com" rel="stylesheet">
     </script>
     <style>
-        :root { --negro: #111; --rojo: #e63946; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: #fff; }
-        header { padding: 40px; text-align: center; border-bottom: 1px solid #eee; }
-        .logo { font-family: 'Playfair Display'; font-size: 2.5rem; letter-spacing: 12px; text-transform: uppercase; }
-        .hero { height: 70vh; background: #f0f0f0 url('https://unsplash.com') center/cover; }
-        .container { max-width: 1200px; margin: 60px auto; padding: 0 20px; text-align: center; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; }
-        .product-card { text-align: center; border: 1px solid #eee; padding: 15px; }
-        .product-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
-        .price { font-weight: 700; margin: 10px 0; }
-        .buy-btn { background: var(--negro); color: #fff; border: none; padding: 12px; width: 100%; cursor: pointer; letter-spacing: 2px; font-size: 0.7rem; }
+        body { font-family: 'Inter', sans-serif; text-align: center; margin: 0; }
+        header { padding: 50px; border-bottom: 1px solid #eee; }
+        .logo { font-size: 2.5rem; letter-spacing: 10px; font-weight: 900; }
+        .hero { height: 60vh; background: #f4f4f4; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
     <header><div class="logo">INERCIA</div></header>
-    <div class="hero"></div>
-    <div class="container">
-        <h2 style="font-family:'Playfair Display'; margin-bottom:40px;">New Arrivals</h2>
-        <div class="product-grid" id="products">
-            <!-- Ejemplo de producto -->
-            <div class="product-card">
-                <img src="https://unsplash.com">
-                <h3>Producto de Prueba</h3>
-                <p class="price">$1,299.00</p>
-                <button class="buy-btn">AÑADIR A BOLSA</button>
-            </div>
-        </div>
-    </div>
-    <footer style="padding: 60px; text-align: center; font-size: 0.7rem; border-top: 1px solid #eee; margin-top: 80px;">
-        © 2026 INERCIA | MODA EN MOVIMIENTO
-    </footer>
+    <div class="hero"><h1>PRÓXIMAMENTE</h1></div>
+
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
 </body>
 </html>
