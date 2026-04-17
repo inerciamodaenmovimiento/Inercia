@@ -4,46 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inercia | Administrador</title>
-  <!-- Widget de Identidad para el Login -->
   </script>
 </head>
 <body>
-  <!-- El script que genera la interfaz del Admin -->
+  <!-- Este script es el que crea el panel visual -->
   <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
-backend:
-  name: git-gateway
-  branch: main # Asegúrate de que tu rama se llame main
-
-media_folder: "images/uploads" # Donde se guardarán tus fotos
-public_folder: "/images/uploads"
-
-collections:
-  - name: "productos"
-    label: "Productos"
-    folder: "content/productos"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - {label: "Nombre del Producto", name: "title", widget: "string"}
-      - {label: "Precio", name: "price", widget: "number"}
-      - {label: "Stock Disponible", name: "stock", widget: "number"}
-      - {label: "Descripción Detallada", name: "body", widget: "markdown"}
-      - {label: "Categoría", name: "category", widget: "select", options: ["New Arrival", "Jacket", "Clothes", "Sale"]}
-      - label: "Carrusel de Fotos"
-        name: "gallery"
-        widget: "list"
-        fields:
-          - {label: "Imagen", name: "image", widget: "image"}
-
-  - name: "configuracion"
-    label: "Configuración de Página"
-    files:
-      - label: "Banners y Textos"
-        name: "home"
-        file: "content/home.yml"
-        fields:
-          - {label: "Título Banner Principal", name: "hero_title", widget: "string"}
-          - {label: "Imagen Hero", name: "hero_image", widget: "image"}
-          - {label: "Texto Colección Central", name: "collection_text", widget: "string"}
