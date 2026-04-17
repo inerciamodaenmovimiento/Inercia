@@ -3,183 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA — Identity & Motion</title>
-    <!-- Fuentes: Una Serif elegante y una Sans técnica -->
+    <title>INERCIA — Identity System</title>
+    <!-- Tipografías de Coral: Sans-Serif técnica y Serif itálica -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
             --text: #1a1a1a;
-            --line: #e5e5e5;
             --accent: #0057FF;
+            --line: #efefef;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: 'Inter', sans-serif; 
-            -webkit-font-smoothing: antialiased;
-        }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* Líneas de estructura tipo Coral */
-        .grid-line {
-            position: fixed;
-            background: var(--line);
-            z-index: 100;
-        }
-        .v-line { width: 1px; height: 100%; top: 0; }
-        .h-line { height: 1px; width: 100%; left: 0; }
+        /* Estructura de Grilla Coral */
+        .page-border { position: fixed; background: var(--line); z-index: 1000; }
+        .v-line { width: 1px; height: 100vh; top: 0; }
+        .h-line { height: 1px; width: 100vw; left: 0; }
 
-        /* Header */
         header {
-            padding: 40px;
+            height: 100vh;
+            padding: 60px;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: flex-start;
             border-bottom: 1px solid var(--line);
         }
 
-        .brand-box h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 22px;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-        }
+        .brand h1 { font-family: 'Syncopate', sans-serif; font-size: clamp(2rem, 15vw, 12rem); line-height: 0.8; letter-spacing: -0.05em; text-transform: uppercase; }
+        .brand p { font-size: 10px; text-transform: uppercase; letter-spacing: 5px; margin-top: 20px; color: var(--accent); }
 
-        .brand-box p {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 5px;
-            color: #888;
-        }
+        .statement { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2.5rem; max-width: 600px; align-self: flex-end; line-height: 1.1; }
 
-        /* Hero Editorial */
-        .hero {
-            padding: 100px 40px;
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-        }
+        /* Galería Editorial */
+        .gallery { padding: 100px 60px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
 
-        .hero-title {
-            grid-column: 1 / 10;
-            font-family: 'Syncopate', sans-serif;
-            font-size: 10vw;
-            line-height: 0.85;
-            text-transform: uppercase;
-            margin-bottom: 60px;
-        }
+        .img-box { position: relative; background: #f4f4f4; overflow: hidden; margin-bottom: 80px; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .img-box:hover img { filter: grayscale(0%); transform: scale(1.05); }
 
-        .hero-statement {
-            grid-column: 7 / 12;
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 2.5vw;
-            line-height: 1.2;
-            color: #444;
-        }
+        .item-1 { grid-column: 1 / 9; height: 80vh; }
+        .item-2 { grid-column: 8 / 13; height: 50vh; margin-top: -15vh; border: 20px solid white; z-index: 2; }
+        .item-3 { grid-column: 2 / 7; height: 70vh; }
+        .item-4 { grid-column: 9 / 12; height: 40vh; align-self: end; }
 
-        /* Galería Estilo Coral (Broken Grid) */
-        .main-content {
-            padding: 0 40px 100px 40px;
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 20px;
-        }
+        .meta { position: absolute; bottom: -30px; left: 0; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; }
 
-        .image-wrapper {
-            position: relative;
-            background: #f9f9f9;
-            overflow: hidden;
-        }
+        footer { padding: 100px 60px; border-top: 1px solid var(--line); text-align: center; }
+        footer h2 { font-family: 'Syncopate', sans-serif; font-size: 10vw; opacity: 0.1; }
 
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .image-wrapper:hover img {
-            transform: scale(1.05);
-        }
-
-        /* Layout específico de las piezas */
-        .pos-1 { grid-column: 1 / 8; height: 100vh; }
-        .pos-2 { grid-column: 9 / 13; height: 60vh; align-self: center; }
-        .pos-3 { grid-column: 3 / 10; height: 80vh; margin-top: 100px; }
-
-        .caption {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid var(--line);
-            padding: 60px 40px;
-            text-align: center;
-        }
-
-        footer h2 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 15vw;
-            opacity: 0.05;
-            pointer-events: none;
+        @media (max-width: 768px) {
+            .gallery { display: block; }
+            .img-box { width: 100% !important; height: 60vh !important; margin: 0 0 50px 0 !important; border: none !important; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Líneas decorativas de fondo -->
-    <div class="grid-line v-line" style="left: 40px;"></div>
-    <div class="grid-line v-line" style="right: 40px;"></div>
+    <!-- Líneas de Guía Estética -->
+    <div class="page-border v-line" style="left: 60px;"></div>
+    <div class="page-border v-line" style="right: 60px;"></div>
 
     <header>
-        <div class="brand-box">
-            <h1>Inercia</h1>
-            <p>Moda en movimiento / Identity</p>
+        <div class="brand">
+            <p>Identity System v.01</p>
+            <h1>INE<br>RCIA.</h1>
         </div>
-        <div style="font-size: 10px;">EST. 2024</div>
+        <div class="statement">
+            "Moda en movimiento: Una exploración de la forma humana y la inercia del tejido."
+        </div>
     </header>
 
-    <section class="hero">
-        <h1 class="hero-title">Iner<br>cia.</h1>
-        <p class="hero-statement">Capturando la esencia del cuerpo humano a través de texturas cinéticas y minimalismo estructural.</p>
-    </section>
-
-    <main class="main-content" id="gallery">
-        <!-- Las imágenes se cargan desde el data.json -->
+    <main class="gallery">
+        <div class="img-box item-1">
+            <img src="https://unsplash.com" alt="Inercia 01">
+            <span class="meta">01 — Concept / Flow</span>
+        </div>
+        <div class="img-box item-2">
+            <img src="https://unsplash.com" alt="Inercia 02">
+            <span class="meta">02 — Kinetic Detail</span>
+        </div>
+        <div class="img-box item-3">
+            <img src="https://unsplash.com" alt="Inercia 03">
+            <span class="meta">03 — Structural Motion</span>
+        </div>
+        <div class="img-box item-4">
+            <img src="https://unsplash.com" alt="Inercia 04">
+            <span class="meta">04 — Atmosphere</span>
+        </div>
     </main>
 
     <footer>
         <h2>INERCIA</h2>
     </footer>
 
-    <script>
-        // Carga dinámica de tu "Admin" (data.json)
-        fetch('data.json')
-            .then(res => res.json())
-            .then(data => {
-                const container = document.getElementById('gallery');
-                data.images.forEach((item, index) => {
-                    const div = document.createElement('div');
-                    div.className = `image-wrapper pos-${(index % 3) + 1}`;
-                    div.innerHTML = `
-                        <img src="${item.url}" alt="Inercia Editorial">
-                        <div class="caption">
-                            <span>0${index + 1} // ${item.title}</span>
-                            <span>${item.year || '2024'}</span>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                });
-            });
-    </script>
 </body>
 </html>
