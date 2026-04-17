@@ -3,145 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Tech-Shell v1.0 | Minimal Store</title>
+    <title>VICKY | Functional Apparel</title>
     <script src="https://tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         @import url('https://googleapis.com');
         
-        :root {
-            --stone-50: #f5f5f4;
-            --stone-200: #e7e5e4;
-            --stone-600: #78716c;
-            --stone-900: #1c1917;
-        }
-
-        body { font-family: 'Inter', sans-serif; background-color: var(--stone-50); }
+        body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: #1a1a1a; }
         .mono { font-family: 'JetBrains Mono', monospace; }
-        
-        /* Animación suave para el botón */
-        .btn-tech {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-tech:hover {
-            letter-spacing: 1px;
-            background-color: #000;
-        }
+        .tracking-ultra { letter-spacing: 0.15em; }
     </style>
 </head>
 <body>
 
-    <!-- Nav Minimalista -->
-    <nav class="p-6 flex justify-between items-center border-b border-stone-200 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="font-bold tracking-tighter text-xl uppercase">Equip<span class="text-stone-400">ment</span></div>
-        <div class="flex gap-8 text-xs font-medium uppercase tracking-widest">
-            <a href="#" class="hover:text-stone-500 transition">Sistemas</a>
-            <a href="#" class="hover:text-stone-500 transition">Explorar</a>
-            <button class="relative">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span class="absolute -top-2 -right-2 bg-stone-900 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">1</span>
-            </button>
+    <!-- Header Estilo Referencia -->
+    <header class="border-b border-gray-100 sticky top-0 bg-white/90 backdrop-blur-sm z-50">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <button class="text-xl"><i class="fa-solid fa-bars-staggered"></i></button>
+            <h1 class="text-2xl font-bold tracking-tighter uppercase">VICKY</h1>
+            <div class="flex gap-5 text-sm">
+                <i class="fa-solid fa-magnifying-glass cursor-pointer"></i>
+                <i class="fa-solid fa-user cursor-pointer"></i>
+                <div class="relative">
+                    <i class="fa-solid fa-bag-shopping cursor-pointer"></i>
+                    <span class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
+                </div>
+            </div>
         </div>
-    </nav>
+    </header>
 
-    <main class="container mx-auto px-4 py-8 lg:py-16">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <main>
+        <!-- Hero Section -->
+        <section class="container mx-auto px-6 py-12 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold tracking-ultra uppercase mb-12">Dress here and be in style</h2>
             
-            <!-- Columna Galería (6/12) -->
-            <div class="lg:col-span-7 space-y-4">
-                <div class="aspect-[3/4] bg-stone-200 overflow-hidden rounded-sm">
-                    <img src="https://unsplash.com" 
-                         alt="Apex Tech-Shell" class="w-full h-full object-cover mix-blend-multiply grayscale-[0.2]">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="aspect-square bg-stone-200 rounded-sm overflow-hidden">
-                        <img src="https://unsplash.com" class="w-full h-full object-cover">
-                    </div>
-                    <div class="aspect-square bg-stone-200 rounded-sm flex items-center justify-center p-8 border border-dashed border-stone-400">
-                        <p class="text-[10px] uppercase tracking-widest text-stone-500 text-center">Detalle Membrana <br> 3L Gore-Tex Ready</p>
+            <div class="relative w-full max-w-5xl mx-auto aspect-[16/9] bg-[#E5E5E5] overflow-hidden group">
+                <img src="https://unsplash.com" 
+                     alt="New Collection" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/10">
+                    <div class="bg-white px-8 py-4 shadow-xl">
+                        <p class="text-xs tracking-widest font-bold uppercase mb-1">New Collection</p>
+                        <p class="text-[10px] text-gray-500 uppercase">Up to 20% Discount</p>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Columna Info (5/12) -->
-            <div class="lg:col-span-5 flex flex-col justify-start">
-                <div class="mb-8">
-                    <span class="mono text-[10px] text-stone-500 uppercase tracking-tighter">Categoría: Outerwear / v1.0</span>
-                    <h1 class="text-4xl font-semibold text-stone-900 mt-2 mb-4 tracking-tight">Apex Tech-Shell Carbon</h1>
-                    <p class="mono text-2xl font-medium text-stone-900">$185.000,00</p>
-                </div>
-
-                <p class="text-stone-600 leading-relaxed mb-8 text-sm">
-                    Diseñada para el entorno incierto. La Apex v1.0 fusiona una membrana de 3 capas con costuras termoselladas. 
-                    Protección total contra agua y viento sin comprometer la transpirabilidad urbana.
-                </p>
-
-                <!-- Especificaciones Técnicas (Grid de iconos) -->
-                <div class="grid grid-cols-3 gap-4 mb-8 py-6 border-y border-stone-200">
-                    <div class="text-center">
-                        <i class="fa-solid fa-droplet text-stone-400 mb-2"></i>
-                        <p class="mono text-[9px] uppercase font-bold">20k Waterproof</p>
-                    </div>
-                    <div class="text-center">
-                        <i class="fa-solid fa-wind text-stone-400 mb-2"></i>
-                        <p class="mono text-[9px] uppercase font-bold">Windproof</p>
-                    </div>
-                    <div class="text-center">
-                        <i class="fa-solid fa-weight-hanging text-stone-400 mb-2"></i>
-                        <p class="mono text-[9px] uppercase font-bold">420g Ultra-light</p>
-                    </div>
-                </div>
-
-                <!-- Talles -->
-                <div class="mb-8">
-                    <div class="flex justify-between mb-3">
-                        <span class="text-xs font-bold uppercase tracking-widest">Seleccionar Talle</span>
-                        <a href="#" class="text-[10px] underline text-stone-400 uppercase">Guía de calce</a>
-                    </div>
-                    <div class="flex gap-2">
-                        <button class="w-12 h-12 border border-stone-200 flex items-center justify-center text-xs hover:border-stone-900 transition active:bg-stone-900 active:text-white">S</button>
-                        <button class="w-12 h-12 border border-stone-900 flex items-center justify-center text-xs bg-stone-900 text-white">M</button>
-                        <button class="w-12 h-12 border border-stone-200 flex items-center justify-center text-xs hover:border-stone-900 transition">L</button>
-                        <button class="w-12 h-12 border border-stone-200 flex items-center justify-center text-xs hover:border-stone-900 transition">XL</button>
-                    </div>
-                </div>
-
-                <!-- Acciones -->
+        <!-- New Collection Grid -->
+        <section class="container mx-auto px-6 py-16">
+            <div class="flex justify-between items-end mb-8">
+                <h3 class="text-sm font-bold tracking-widest uppercase">New Collection</h3>
+                <a href="#" class="text-[10px] uppercase border-b border-black pb-1">See more</a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Producto 1 -->
                 <div class="space-y-4">
-                    <button class="btn-tech w-full bg-stone-900 text-white py-5 text-xs font-bold uppercase tracking-[2px]">
-                        Añadir al equipo de viaje
-                    </button>
-                    <p class="text-[10px] text-stone-400 flex items-center gap-2 px-2">
-                        <i class="fa-solid fa-truck-fast"></i> Envío prioritario certificado disponible
-                    </p>
+                    <div class="aspect-[3/4] bg-gray-100 overflow-hidden">
+                        <img src="https://unsplash.com" class="w-full h-full object-cover hover:opacity-90 transition">
+                    </div>
+                    <div>
+                        <p class="text-xs uppercase font-bold">Body-cut out soft</p>
+                        <p class="mono text-[11px] text-gray-500">$45.000</p>
+                    </div>
                 </div>
-
-                <!-- Acordeón de info -->
-                <div class="mt-12 border-t border-stone-200">
-                    <details class="group py-4 border-b border-stone-200">
-                        <summary class="list-none flex justify-between items-center cursor-pointer uppercase text-[11px] font-bold tracking-widest">
-                            Composición del material
-                            <span class="group-open:rotate-180 transition-transform">↓</span>
-                        </summary>
-                        <p class="mt-4 text-xs text-stone-500 leading-relaxed mono">
-                            88% Nylon Reciclado, 12% Elastano. <br>
-                            Acabado DWR (Durable Water Repellent) libre de PFC.
-                        </p>
-                    </details>
+                <!-- Producto 2 -->
+                <div class="space-y-4">
+                    <div class="aspect-[3/4] bg-gray-100 overflow-hidden">
+                        <img src="https://unsplash.com" class="w-full h-full object-cover hover:opacity-90 transition">
+                    </div>
+                    <div>
+                        <p class="text-xs uppercase font-bold">Jeans grey oversize</p>
+                        <p class="mono text-[11px] text-gray-500">$62.500</p>
+                    </div>
+                </div>
+                <!-- Producto 3 -->
+                <div class="space-y-4">
+                    <div class="aspect-[3/4] bg-gray-100 overflow-hidden relative">
+                        <img src="https://unsplash.com" class="w-full h-full object-cover hover:opacity-90 transition">
+                        <span class="absolute top-4 right-4 bg-black text-white text-[9px] px-2 py-1 uppercase tracking-tighter">Tech-Shell</span>
+                    </div>
+                    <div>
+                        <p class="text-xs uppercase font-bold">Jacket Gorp-v1</p>
+                        <p class="mono text-[11px] text-gray-500">$128.000</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section class="bg-[#F9F9F9] py-20 px-6">
+            <div class="container mx-auto max-w-5xl">
+                <h3 class="text-sm font-bold tracking-widest uppercase mb-12">About Us</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <img src="https://unsplash.com" alt="Studio" class="w-full grayscale">
+                    <div class="space-y-6">
+                        <p class="text-sm leading-relaxed text-gray-600 italic">
+                            "VICKY is a premium equipment company that creates durable and technical solutions for the modern explorer."
+                        </p>
+                        <p class="text-xs text-gray-500 leading-relaxed uppercase tracking-wider">
+                            Diseñamos cada pieza pensando en la transición climática y la resistencia estructural. No es solo ropa, es arquitectura corporal.
+                        </p>
+                        <button class="text-[10px] font-bold uppercase border border-black px-6 py-3 hover:bg-black hover:text-white transition">Read more</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories (Visual Grid) -->
+        <section class="container mx-auto px-6 py-20">
+            <h3 class="text-sm font-bold tracking-widest uppercase mb-8">Product Categories</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="group relative aspect-square bg-gray-200 overflow-hidden cursor-pointer">
+                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-end p-4">
+                        <span class="text-white text-[10px] font-bold uppercase tracking-widest">Jackets & Coats</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-square bg-gray-200 overflow-hidden cursor-pointer">
+                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-end p-4">
+                        <span class="text-white text-[10px] font-bold uppercase tracking-widest">Trousers</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-square bg-gray-200 overflow-hidden cursor-pointer">
+                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-end p-4">
+                        <span class="text-white text-[10px] font-bold uppercase tracking-widest">Base Layers</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-square bg-gray-200 overflow-hidden cursor-pointer">
+                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-end p-4">
+                        <span class="text-white text-[10px] font-bold uppercase tracking-widest">Gear</span>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer Simple -->
-    <footer class="bg-white py-12 px-4 border-t border-stone-200">
-        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="mono text-[10px] text-stone-400">© 2024 SYSTEM_LOGISTICS_UNIT</div>
-            <div class="flex gap-6 text-[10px] uppercase font-bold tracking-widest text-stone-900">
-                <a href="#">Sustentabilidad</a>
-                <a href="#">Mantenimiento</a>
-                <a href="#">Contacto</a>
+    <!-- Footer Estilo Referencia -->
+    <footer class="bg-[#F2F2F2] pt-16 pb-8 px-6">
+        <div class="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+            <div>
+                <h4 class="text-xl font-bold mb-6">VICKY</h4>
+                <p class="text-[10px] text-gray-400 uppercase leading-loose">Built to endure the urban and natural wilderness.</p>
             </div>
+            <div class="space-y-3">
+                <p class="text-[11px] font-bold uppercase tracking-widest">Catalog</p>
+                <ul class="text-[10px] text-gray-500 space-y-2 uppercase tracking-tighter">
+                    <li><a href="#" class="hover:text-black">New In</a></li>
+                    <li><a href="#" class="hover:text-black">Best Sellers</a></li>
+                    <li><a href="#" class="hover:text-black">All Products</a></li>
+                </ul>
+            </div>
+            <div class="space-y-3">
+                <p class="text-[11px] font-bold uppercase tracking-widest">Info</p>
+                <ul class="text-[10px] text-gray-500 space-y-2 uppercase tracking-tighter">
+                    <li><a href="#" class="hover:text-black">Shipping</a></li>
+                    <li><a href="#" class="hover:text-black">Sustainability</a></li>
+                    <li><a href="#" class="hover:text-black">Returns</a></li>
+                </ul>
+            </div>
+            <div class="space-y-3">
+                <p class="text-[11px] font-bold uppercase tracking-widest">Contacts</p>
+                <p class="text-[10px] text-gray-500 uppercase">studio@vicky.design</p>
+                <p class="text-[10px] text-gray-500 uppercase">+54 11 0000-0000</p>
+            </div>
+        </div>
+        <div class="text-center border-t border-gray-200 pt-8">
+            <p class="mono text-[9px] text-gray-400 uppercase tracking-widest">© 2024 VICKY SYSTEM LOGISTICS UNIT. ALL RIGHTS RESERVED.</p>
         </div>
     </footer>
 
