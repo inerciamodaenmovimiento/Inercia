@@ -3,102 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Store | Tienda Online</title>
+    <title>Apex Tech-Shell v1.0 | Minimal Store</title>
     <script src="https://tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         @import url('https://googleapis.com');
-        body { font-family: 'Inter', sans-serif; }
+        
+        :root {
+            --stone-50: #f5f5f4;
+            --stone-200: #e7e5e4;
+            --stone-600: #78716c;
+            --stone-900: #1c1917;
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--stone-50); }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Animación suave para el botón */
+        .btn-tech {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-tech:hover {
+            letter-spacing: 1px;
+            background-color: #000;
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body>
 
-    <!-- Barra de Navegación -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="#" class="text-xl font-bold tracking-tighter uppercase">Minimal<span class="text-blue-600">Store</span></a>
-            
-            <div class="flex items-center gap-6">
-                <ul class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
-                    <li><a href="#" class="hover:text-black">Hombres</a></li>
-                    <li><a href="#" class="hover:text-black">Mujeres</a></li>
-                    <li><a href="#" class="hover:text-black">Accesorios</a></li>
-                </ul>
-                
-                <!-- Icono Carrito -->
-                <button class="relative p-2 hover:bg-gray-100 rounded-full transition-colors" id="cart-btn">
-                    <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    <span id="cart-count" class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">0</span>
-                </button>
-            </div>
+    <!-- Nav Minimalista -->
+    <nav class="p-6 flex justify-between items-center border-b border-stone-200 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="font-bold tracking-tighter text-xl uppercase">Equip<span class="text-stone-400">ment</span></div>
+        <div class="flex gap-8 text-xs font-medium uppercase tracking-widest">
+            <a href="#" class="hover:text-stone-500 transition">Sistemas</a>
+            <a href="#" class="hover:text-stone-500 transition">Explorar</a>
+            <button class="relative">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="absolute -top-2 -right-2 bg-stone-900 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">1</span>
+            </button>
         </div>
     </nav>
 
-    <!-- Héroe / Banner -->
-    <header class="bg-white py-12 border-b border-gray-100">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Nueva Colección</h1>
-            <p class="text-gray-500 max-w-xl mx-auto">Diseños esenciales para el día a día con la mejor calidad textil.</p>
-        </div>
-    </header>
+    <main class="container mx-auto px-4 py-8 lg:py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- Columna Galería (6/12) -->
+            <div class="lg:col-span-7 space-y-4">
+                <div class="aspect-[3/4] bg-stone-200 overflow-hidden rounded-sm">
+                    <img src="https://unsplash.com" 
+                         alt="Apex Tech-Shell" class="w-full h-full object-cover mix-blend-multiply grayscale-[0.2]">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="aspect-square bg-stone-200 rounded-sm overflow-hidden">
+                        <img src="https://unsplash.com" class="w-full h-full object-cover">
+                    </div>
+                    <div class="aspect-square bg-stone-200 rounded-sm flex items-center justify-center p-8 border border-dashed border-stone-400">
+                        <p class="text-[10px] uppercase tracking-widest text-stone-500 text-center">Detalle Membrana <br> 3L Gore-Tex Ready</p>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Grilla de Productos -->
-    <main class="container mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="product-grid">
-            <!-- Los productos se cargan dinámicamente con JS -->
+            <!-- Columna Info (5/12) -->
+            <div class="lg:col-span-5 flex flex-col justify-start">
+                <div class="mb-8">
+                    <span class="mono text-[10px] text-stone-500 uppercase tracking-tighter">Categoría: Outerwear / v1.0</span>
+                    <h1 class="text-4xl font-semibold text-stone-900 mt-2 mb-4 tracking-tight">Apex Tech-Shell Carbon</h1>
+                    <p class="mono text-2xl font-medium text-stone-900">$185.000,00</p>
+                </div>
+
+                <p class="text-stone-600 leading-relaxed mb-8 text-sm">
+                    Diseñada para el entorno incierto. La Apex v1.0 fusiona una membrana de 3 capas con costuras termoselladas. 
+                    Protección total contra agua y viento sin comprometer la transpirabilidad urbana.
+                </p>
+
+                <!-- Especificaciones Técnicas (Grid de iconos) -->
+                <div class="grid grid-cols-3 gap-4 mb-8 py-6 border-y border-stone-200">
+                    <div class="text-center">
+                        <i class="fa-solid fa-droplet text-stone-400 mb-2"></i>
+                        <p class="mono text-[9px] uppercase font-bold">20k Waterproof</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fa-solid fa-wind text-stone-400 mb-2"></i>
+                        <p class="mono text-[9px] uppercase font-bold">Windproof</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fa-solid fa-weight-hanging text-stone-400 mb-2"></i>
+                        <p class="mono text-[9px] uppercase font-bold">420g Ultra-light</p>
+                    </div>
+                </div>
+
+                <!-- Talles -->
+                <div class="mb-8">
+                    <div class="flex justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-widest">Seleccionar Talle</span>
+                        <a href="#" class="text-[10px] underline text-stone-400 uppercase">Guía de calce</a>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="w-12 h-12 border border-stone-200 flex items-center justify-center text-xs hover:border-stone-900 transition active:bg-stone-900 active:text-white">S</button>
+                        <button class="w-12 h-12 border border-stone-900 flex items-center justify-center text-xs bg-stone-900 text-white">M</button>
+                        <button class="w-12 h-12 border border-stone-200 flex items-center justify-center text-xs hover:border-stone-900 transition">L</button>
+                        <button class="w-12 h-12 border border-stone-200 flex items-center justify-center text-xs hover:border-stone-900 transition">XL</button>
+                    </div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="space-y-4">
+                    <button class="btn-tech w-full bg-stone-900 text-white py-5 text-xs font-bold uppercase tracking-[2px]">
+                        Añadir al equipo de viaje
+                    </button>
+                    <p class="text-[10px] text-stone-400 flex items-center gap-2 px-2">
+                        <i class="fa-solid fa-truck-fast"></i> Envío prioritario certificado disponible
+                    </p>
+                </div>
+
+                <!-- Acordeón de info -->
+                <div class="mt-12 border-t border-stone-200">
+                    <details class="group py-4 border-b border-stone-200">
+                        <summary class="list-none flex justify-between items-center cursor-pointer uppercase text-[11px] font-bold tracking-widest">
+                            Composición del material
+                            <span class="group-open:rotate-180 transition-transform">↓</span>
+                        </summary>
+                        <p class="mt-4 text-xs text-stone-500 leading-relaxed mono">
+                            88% Nylon Reciclado, 12% Elastano. <br>
+                            Acabado DWR (Durable Water Repellent) libre de PFC.
+                        </p>
+                    </details>
+                </div>
+            </div>
         </div>
     </main>
 
     <!-- Footer Simple -->
-    <footer class="bg-white border-t border-gray-200 py-8">
-        <div class="text-center text-gray-400 text-sm">
-            &copy; 2024 Minimal Store. Inspirado en Tienda Nube.
+    <footer class="bg-white py-12 px-4 border-t border-stone-200">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mono text-[10px] text-stone-400">© 2024 SYSTEM_LOGISTICS_UNIT</div>
+            <div class="flex gap-6 text-[10px] uppercase font-bold tracking-widest text-stone-900">
+                <a href="#">Sustentabilidad</a>
+                <a href="#">Mantenimiento</a>
+                <a href="#">Contacto</a>
+            </div>
         </div>
     </footer>
 
-    <script>
-        // Datos de ejemplo
-        const products = [
-            { id: 1, name: "Remera Oversize Blanca", price: 15900, img: "https://unsplash.com" },
-            { id: 2, name: "Jean Slim Fit Azul", price: 42000, img: "https://unsplash.com" },
-            { id: 3, name: "Campera Denim Classic", price: 58500, img: "https://unsplash.com" },
-            { id: 4, name: "Gorra Urbana Negra", price: 8900, img: "https://unsplash.com" },
-        ];
-
-        let cartCount = 0;
-        const grid = document.getElementById('product-grid');
-        const countBadge = document.getElementById('cart-count');
-
-        // Renderizar Productos
-        function renderProducts() {
-            grid.innerHTML = products.map(p => `
-                <div class="group bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-transparent hover:border-gray-100">
-                    <div class="relative overflow-hidden aspect-[3/4]">
-                        <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <button onclick="addToCart()" class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm text-black py-3 rounded-md font-semibold opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 shadow-lg hover:bg-black hover:text-white">
-                            Agregar al carrito
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-sm text-gray-600 uppercase tracking-widest mb-1">Esenciales</h3>
-                        <p class="font-bold text-lg mb-2">${p.name}</p>
-                        <p class="text-blue-600 font-bold text-xl">$${p.price.toLocaleString('es-AR')}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Lógica de Carrito Simple
-        function addToCart() {
-            cartCount++;
-            countBadge.innerText = cartCount;
-            
-            // Animación pequeña al badge
-            countBadge.classList.add('scale-125');
-            setTimeout(() => countBadge.classList.remove('scale-125'), 200);
-        }
-
-        renderProducts();
-    </script>
 </body>
 </html>
