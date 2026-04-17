@@ -3,191 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VICKY | Studio Collection</title>
+    <title>INERCIA | Studio</title>
     <style>
         :root {
-            --bg-base: #f4f3f0; /* Color crema de la imagen */
+            --bg-base: #f4f3f0;
             --text-dark: #1a1a1a;
-            --accent: #000000;
             --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-main); background: var(--bg-base); color: var(--text-dark); line-height: 1.5; overflow-x: hidden; }
+        body { font-family: var(--font-main); background: var(--bg-base); color: var(--text-dark); line-height: 1.5; }
         
-        /* NAVIGATION */
-        .header { padding: 30px 6%; display: flex; justify-content: space-between; align-items: center; background: transparent; }
-        .logo { font-weight: 600; font-size: 1.2rem; letter-spacing: 5px; text-transform: uppercase; cursor: pointer; }
-        .nav-links { display: flex; gap: 30px; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
-        .nav-links span { cursor: pointer; }
+        /* NAV */
+        .header { padding: 30px 6%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-base); z-index: 1000; }
+        .logo { font-weight: 600; font-size: 1.3rem; letter-spacing: 6px; text-transform: uppercase; }
+        .nav-right { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
 
-        /* HERO SECTION */
-        .hero { padding: 40px 6% 80px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: end; }
-        .hero-text { padding-bottom: 40px; }
-        .hero-text h1 { font-size: 3.5rem; font-weight: 300; letter-spacing: -1px; line-height: 1.1; margin-bottom: 20px; }
-        .hero-img { width: 100%; aspect-ratio: 16/9; background: #e2e1de url('https://unsplash.com') center/cover; }
+        /* HERO */
+        .hero { padding: 40px 6% 80px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; }
+        .hero-text h1 { font-size: 4rem; font-weight: 300; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
+        .hero-img { width: 100%; aspect-ratio: 16/9; background: url('https://unsplash.com') center/cover; }
 
-        /* PRODUCT GRID */
-        .container { padding: 60px 6%; }
-        .section-header { margin-bottom: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .section-header h2 { font-size: 0.75rem; letter-spacing: 3px; font-weight: 500; text-transform: uppercase; }
-        
-        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        /* GRID */
+        .container { padding: 0 6% 100px; }
+        .section-header { margin-bottom: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; }
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .product-card { cursor: pointer; transition: opacity 0.3s; }
-        .product-card:hover { opacity: 0.8; }
-        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #e2e1de; margin-bottom: 12px; }
-        .product-info h3 { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-        .product-info p { font-size: 0.7rem; color: #666; margin-top: 4px; }
+        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #e2e1de; margin-bottom: 15px; }
+        .product-info h3 { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .product-info p { font-size: 0.8rem; color: #666; margin-top: 5px; }
 
-        /* CARRITO FLOTANTE */
-        .cart-aside { position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: #fff; z-index: 2000; padding: 40px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77,0,0.175,1); box-shadow: -10px 0 30px rgba(0,0,0,0.05); }
+        /* CART ASIDE */
+        .cart-aside { position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: #fff; z-index: 2000; padding: 40px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77,0,0.175,1); }
         .cart-aside.active { transform: translateX(0); }
-        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        #cart-list { list-style: none; margin: 30px 0; }
-        .cart-item { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 15px; text-transform: uppercase; }
-        .cart-footer { border-top: 1px solid #eee; padding-top: 20px; position: absolute; bottom: 40px; width: calc(100% - 80px); }
-        .btn-buy { width: 100%; padding: 15px; background: #000; color: #fff; border: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+        .cart-item { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 15px; border-bottom: 1px solid #f5f5f5; padding-bottom: 10px; }
+        .btn-black { width: 100%; padding: 15px; background: #000; color: #fff; border: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 20px; }
 
         /* MODAL */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(244,243,240,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 40px; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(244,243,240,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 6%; }
         .modal-content { max-width: 1000px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-        .modal-close { position: absolute; top: 40px; right: 6%; cursor: pointer; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
 
-        /* ADMIN PANEL */
-        .admin-panel { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; background: #1a1a1a; color: #fff; padding: 40px; z-index: 4000; }
-        .admin-panel h2 { font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; }
-        .admin-panel input { width: 100%; padding: 12px; margin-bottom: 10px; background: #2a2a2a; border: 1px solid #333; color: #fff; font-size: 0.8rem; }
+        /* ADMIN */
+        .admin-panel { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; background: #000; color: #fff; padding: 40px; z-index: 4000; }
+        .admin-panel input { width: 100%; padding: 12px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #333; color: #fff; }
 
-        @media (max-width: 900px) {
-            .hero { grid-template-columns: 1fr; }
-            .product-grid { grid-template-columns: repeat(2, 1fr); }
-            .modal-content { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, 1fr); } .hero { grid-template-columns: 1fr; } .modal-content { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <div class="logo">VICKY</div>
-        <div class="nav-links">
-            <span>Colecciones</span>
-            <span onclick="toggleCart()">Bolsa (<span id="cart-count">0</span>)</span>
-        </div>
+        <div class="logo">INERCIA</div>
+        <div class="nav-right" onclick="toggleCart()">BOLSA (<span id="cart-count">0</span>)</div>
     </header>
 
     <section class="hero">
-        <div class="hero-text">
-            <h1>UKRAINIAN<br>BRANDS:</h1>
-            <p style="font-size: 0.75rem; letter-spacing: 1px; color: #666; max-width: 400px;">
-                Diseñadores locales presentan prendas de alta calidad y estilo reunidas en un solo lugar.
-            </p>
-        </div>
+        <div class="hero-text"><h1>INERCIA<br>STUDIO</h1><p style="font-size:0.7rem; color:#666; letter-spacing:1px; margin-top:20px;">MOVIMIENTO Y ESTILO EN CADA PRENDA.</p></div>
         <div class="hero-img"></div>
     </section>
 
     <main class="container">
-        <div class="section-header"><h2>Colecciones</h2><span>Ver todo</span></div>
+        <div class="section-header"><span>Colecciones Propias</span><span>2026</span></div>
         <div class="product-grid" id="grid">
-            <div class="product-card" onclick="openModal('Puffer Jacket', 32000, 'https://unsplash.com')">
-                <img src="https://unsplash.com" alt="Prod">
-                <div class="product-info"><h3>Puffer Jacket</h3><p>$32.000</p></div>
-            </div>
-            <div class="product-card" onclick="openModal('Minimal Coat', 45000, 'https://unsplash.com')">
-                <img src="https://unsplash.com" alt="Prod">
-                <div class="product-info"><h3>Minimal Coat</h3><p>$45.000</p></div>
-            </div>
+            <!-- Los productos se cargan aquí -->
         </div>
     </main>
 
-    <!-- UI COMPONENTS -->
+    <!-- UI -->
     <aside class="cart-aside" id="cart-aside">
-        <div class="cart-header">
-            <h2 style="font-size: 0.8rem; letter-spacing: 2px;">TU BOLSA</h2>
-            <span onclick="toggleCart()" style="cursor:pointer; font-size: 0.7rem;">CERRAR</span>
-        </div>
+        <h2 style="font-size:0.8rem; letter-spacing:2px; margin-bottom:30px;">TU BOLSA</h2>
         <div id="cart-list"></div>
-        <div class="cart-footer">
-            <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-weight:600;">
-                <span>TOTAL</span><span id="cart-total">$0</span>
-            </div>
-            <button class="btn-buy">Finalizar Compra</button>
+        <div style="margin-top:auto; padding-top:20px; border-top:1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; font-weight:600;"><span>TOTAL</span><span id="cart-total">$0</span></div>
+            <button class="btn-black">Finalizar Compra</button>
+            <p onclick="toggleCart()" style="text-align:center; font-size:0.6rem; margin-top:15px; cursor:pointer; letter-spacing:1px;">CERRAR</p>
         </div>
     </aside>
 
     <div class="modal" id="modal">
-        <span class="modal-close" onclick="closeModal()">Volver</span>
         <div class="modal-content">
             <img id="m-img" src="" style="width:100%; aspect-ratio:3/4; object-fit:cover;">
             <div style="display:flex; flex-direction:column; justify-content:center;">
-                <h2 id="m-title" style="font-size:2rem; font-weight:300; margin-bottom:20px; text-transform:uppercase;"></h2>
-                <p id="m-price" style="font-size:1.2rem; margin-bottom:40px; color:#666;"></p>
-                <button id="m-add-btn" class="btn-buy">Añadir a la bolsa</button>
+                <h2 id="m-title" style="font-size:2.5rem; font-weight:300; margin-bottom:10px;"></h2>
+                <p id="m-price" style="font-size:1.2rem; margin-bottom:30px; color:#666;"></p>
+                <button id="m-add-btn" class="btn-black">Añadir a la bolsa</button>
+                <p onclick="closeModal()" style="margin-top:20px; cursor:pointer; font-size:0.7rem; letter-spacing:2px;">VOLVER</p>
             </div>
         </div>
     </div>
 
     <div class="admin-panel" id="admin">
-        <span style="float:right; cursor:pointer" onclick="document.getElementById('admin').style.display='none'">[X]</span>
-        <h2>NEW ITEM (0110)</h2>
-        <input type="text" id="a-name" placeholder="Product Name">
-        <input type="number" id="a-price" placeholder="Price">
-        <input type="text" id="a-img" placeholder="Image URL">
-        <button class="btn-buy" style="background:#fff; color:#000" onclick="createProduct()">Publicar</button>
+        <h2 style="font-size:0.7rem; letter-spacing:2px; margin-bottom:20px;">INERCIA ADMIN</h2>
+        <input type="text" id="a-name" placeholder="Nombre del Producto">
+        <input type="number" id="a-price" placeholder="Precio">
+        <input type="text" id="a-img" placeholder="URL de Imagen">
+        <button class="btn-black" style="background:#fff; color:#000" onclick="createProduct()">Guardar Cambios</button>
     </div>
 
     <script>
         let bag = [];
         let code = "";
+        // Base de datos inicial si el LocalStorage está vacío
+        let products = JSON.parse(localStorage.getItem('inercia_prods')) || [
+            {id: 1, name: 'Abrigo Estructura', price: 42000, img: 'https://unsplash.com'},
+            {id: 2, name: 'Puffer Inercia', price: 35000, img: 'https://unsplash.com'}
+        ];
 
-        function toggleCart() { document.getElementById('cart-aside').classList.toggle('active'); }
-
-        function addToBag(name, price) {
-            bag.push({name, price});
-            updateUI();
-            if(!document.getElementById('cart-aside').classList.contains('active')) toggleCart();
+        function init() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => openModal(p.name, p.price, p.img);
+                card.innerHTML = `<img src="${p.img}"><div class="product-info"><h3>${p.name}</h3><p>$${p.price.toLocaleString()}</p></div>`;
+                grid.appendChild(card);
+            });
         }
 
-        function updateUI() {
+        function openModal(n, p, i) {
+            document.getElementById('m-img').src = i;
+            document.getElementById('m-title').innerText = n;
+            document.getElementById('m-price').innerText = `$${p.toLocaleString()}`;
+            document.getElementById('m-add-btn').onclick = () => { bag.push({n, p}); updateCart(); closeModal(); toggleCart(); };
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        function toggleCart() { document.getElementById('cart-aside').classList.toggle('active'); }
+
+        function updateCart() {
             const list = document.getElementById('cart-list');
             list.innerHTML = '';
             let total = 0;
             bag.forEach(item => {
-                list.innerHTML += `<div class="cart-item"><span>${item.name}</span><span>$${item.price.toLocaleString()}</span></div>`;
-                total += item.price;
+                list.innerHTML += `<div class="cart-item"><span>${item.n}</span><span>$${item.p.toLocaleString()}</span></div>`;
+                total += item.p;
             });
             document.getElementById('cart-count').innerText = bag.length;
             document.getElementById('cart-total').innerText = `$${total.toLocaleString()}`;
         }
 
-        function openModal(name, price, img) {
-            document.getElementById('m-img').src = img;
-            document.getElementById('m-title').innerText = name;
-            document.getElementById('m-price').innerText = `$${price.toLocaleString()}`;
-            document.getElementById('m-add-btn').onclick = () => { addToBag(name, price); closeModal(); };
-            document.getElementById('modal').style.display = 'flex';
-        }
-
-        function closeModal() { document.getElementById('modal').style.display = 'none'; }
-
-        // ADMIN TRIGGER (0110)
+        // PERSISTENCIA ADMIN
         window.onkeydown = (e) => {
             code += e.key;
             if(code.includes("0110")) { document.getElementById('admin').style.display = 'block'; code = ""; }
-            if(code.length > 6) code = "";
+            if(code.length > 10) code = "";
         };
 
         function createProduct() {
-            const n = document.getElementById('a-name').value;
-            const p = parseInt(document.getElementById('a-price').value);
-            const i = document.getElementById('a-img').value || 'https://unsplash.com';
-            if(!n || !p) return;
-
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.onclick = () => openModal(n, p, i);
-            card.innerHTML = `<img src="${i}"><div class="product-info"><h3>${n}</h3><p>$${p.toLocaleString()}</p></div>`;
-            document.getElementById('grid').prepend(card);
-            document.getElementById('admin').style.display = 'none';
+            const name = document.getElementById('a-name').value;
+            const price = parseInt(document.getElementById('a-price').value);
+            const img = document.getElementById('a-img').value || 'https://unsplash.com';
+            
+            if(name && price) {
+                products.push({id: Date.now(), name, price, img});
+                localStorage.setItem('inercia_prods', JSON.stringify(products));
+                init();
+                document.getElementById('admin').style.display = 'none';
+                // Reset campos
+                document.getElementById('a-name').value = '';
+                document.getElementById('a-price').value = '';
+            }
         }
+
+        init();
     </script>
 </body>
 </html>
