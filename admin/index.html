@@ -1,38 +1,90 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inercia Admin | Panel de Control</title>
-  <!-- Script del CMS -->
-  <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inercia | Moda en Movimiento</title>
+    <!-- Tipografías de Revista -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    
+    <style>
+        :root { --bg: #ffffff; --text: #1a1a1a; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        
+        /* Estilo Revista */
+        header { padding: 40px; text-align: center; border-bottom: 1px solid #f0f0f0; letter-spacing: 5px; font-weight: 300; }
+        .hero { display: grid; grid-template-columns: 1fr 1fr; height: 90vh; align-items: center; padding: 0 8%; gap: 40px; }
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 6rem; line-height: 0.9; margin: 0; text-transform: uppercase; }
+        .hero-img { width: 100%; height: 80vh; object-fit: cover; box-shadow: 20px 20px 0px #f5f2ed; }
+
+        /* Candado Secreto Inferior Derecho */
+        #secret-trigger { 
+            position: fixed; bottom: 10px; right: 10px; width: 30px; height: 30px; 
+            cursor: pointer; opacity: 0.05; z-index: 9999; transition: 0.3s;
+        }
+        #secret-trigger:hover { opacity: 0.5; }
+
+        /* Panel Admin */
+        #admin-panel { 
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            background: white; padding: 30px; border: 2px solid black; z-index: 10000; 
+            box-shadow: 0 0 100px rgba(0,0,0,0.2); width: 350px; 
+        }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
+        .btn-admin { background: black; color: white; border: none; padding: 10px 20px; cursor: pointer; width: 100%; margin-top: 10px; }
+    </style>
 </head>
 <body>
+
+    <header>INERCIA</header>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1 id="main-title">MODA EN <br>MOVIMIENTO</h1>
+            <p style="color: #666; margin-top: 20px;">Colección Editorial 2026</p>
+        </div>
+        <img src="https://unsplash.com" id="main-img" class="hero-img">
+    </section>
+
+    <!-- EL CANDADO INVISIBLE -->
+    <div id="secret-trigger" onclick="checkCode()">🔒</div>
+
+    <!-- PANEL ADMIN OCULTO -->
+    <div id="admin-panel">
+        <h3 style="font-family: 'Playfair Display';">Editor Inercia</h3>
+        <label>Nuevo Título:</label>
+        <input type="text" id="edit-title" placeholder="Ej: Nueva Colección">
+        <label>URL de Imagen:</label>
+        <input type="text" id="edit-img" placeholder="Link de la foto">
+        <button class="btn-admin" onclick="applyChanges()">Actualizar Vista</button>
+        <button onclick="closeAdmin()" style="background:none; border:none; color:red; margin-top:15px; cursor:pointer; width:100%;">Cerrar</button>
+    </div>
+
+    <!-- AQUÍ VA EL JAVASCRIPT -->
+    <script>
+        function checkCode() {
+            let pass = prompt("Acceso Restringido - Inercia\nIngrese el código de seguridad:");
+            if (pass === "0110") {
+                document.getElementById('admin-panel').style.display = 'block';
+            } else if (pass !== null) {
+                alert("Código Incorrecto");
+            }
+        }
+
+        function closeAdmin() {
+            document.getElementById('admin-panel').style.display = 'none';
+        }
+
+        function applyChanges() {
+            let newTitle = document.getElementById('edit-title').value;
+            let newImg = document.getElementById('edit-img').value;
+
+            if(newTitle) document.getElementById('main-title').innerText = newTitle;
+            if(newImg) document.getElementById('main-img').src = newImg;
+
+            alert("Cambios aplicados en la vista previa.\n\nRecuerda: Para que sean permanentes, debes actualizar tu archivo en GitHub.");
+            closeAdmin();
+        }
+    </script>
 </body>
 </html>
-<script>
-function checkCode() {
-    let pass = prompt("Acceso Inercia - Ingrese Código:");
-    if (pass === "0110") {
-        document.getElementById('admin-panel').style.display = 'block';
-    } else {
-        alert("Código incorrecto.");
-    }
-}
-
-function closeAdmin() {
-    document.getElementById('admin-panel').style.display = 'none';
-}
-
-function updatePreview() {
-    // Cambia el título en tiempo real para que veas cómo queda
-    let title = document.getElementById('new-title').value;
-    let img = document.getElementById('new-img').value;
-    
-    if(title) document.querySelector('h1').innerText = title;
-    if(img) document.querySelector('.hero-img').src = img;
-    
-    alert("¡Vista previa actualizada! Ahora copia este texto y pégalo en tu index.html de GitHub.");
-    closeAdmin();
-}
-</script>
