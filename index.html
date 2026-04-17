@@ -6,50 +6,53 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #000000; --accent: #f8f8f8; --gray: #666; --red: #ff4d4d; }
+        :root { --bg: #ffffff; --text: #000000; --accent: #f8f8f8; --gray: #888; --red: #ff4d4d; --green: #27ae60; }
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { font-family: 'Inter', sans-serif; margin: 0; color: var(--text); background: var(--bg); overflow-x: hidden; }
 
-        /* --- MARQUEE (TEXTO QUE SE MUEVE) --- */
-        .marquee { background: #000; color: #fff; overflow: hidden; white-space: nowrap; padding: 10px 0; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
-        .marquee-content { display: inline-block; animation: scroll 20s linear infinite; padding-left: 100%; }
+        /* --- MARQUEE --- */
+        .marquee { background: #000; color: #fff; overflow: hidden; white-space: nowrap; padding: 12px 0; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+        .marquee-content { display: inline-block; animation: scroll 25s linear infinite; padding-left: 100%; }
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
         /* --- NAV --- */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 5%; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 1000; }
-        .logo { font-weight: 900; font-size: 22px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; }
-        .cart-trigger { cursor: pointer; font-size: 12px; font-weight: 600; border-bottom: 1px solid #000; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6%; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 1000; }
+        .logo { font-weight: 900; font-size: 24px; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; }
 
         /* --- GRID --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; padding: 80px 5%; }
-        .card { cursor: pointer; position: relative; }
-        .card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; transition: 0.6s; }
-        .card:hover img { transform: scale(1.02); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 50px; padding: 60px 6%; }
+        .card { cursor: pointer; position: relative; border: 1px solid transparent; transition: 0.4s; }
+        .card:hover { border: 1px solid #eee; }
+        .card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+        .sold-out-badge { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.8); color: #fff; padding: 8px 15px; font-size: 10px; font-weight: 700; letter-spacing: 2px; }
 
-        /* --- MODAL DETALLE (PRODUCT VIEW) --- */
+        /* --- MODAL DETALLE --- */
         #p-modal { display: none; position: fixed; inset: 0; background: #fff; z-index: 2000; overflow-y: auto; }
         .modal-grid { display: grid; grid-template-columns: 1.2fr 1fr; min-height: 100vh; }
-        .modal-details { padding: 80px 10%; display: flex; flex-direction: column; justify-content: center; }
-        .m-title { font-size: 3rem; font-weight: 900; line-height: 1; }
-        .logistics-box { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 12px; }
-        .logistics-box h4 { text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .modal-details { padding: 80px 12%; display: flex; flex-direction: column; justify-content: center; }
+        .m-title { font-size: 3.5rem; font-weight: 900; line-height: 0.9; margin: 0; }
+        .log-box { margin-top: 40px; border-top: 1px solid #eee; padding-top: 25px; }
+        .log-box h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; color: var(--gray); }
 
-        /* --- ADMIN PRO --- */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 500px; height: 100vh; background: #fff; z-index: 4000; border-right: 2px solid #000; padding: 40px; overflow-y: auto; }
-        .close-admin { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 20px; font-weight: 900; }
-        .admin-tabs { display: flex; gap: 20px; border-bottom: 1px solid #eee; margin-bottom: 30px; }
-        .admin-tabs span { cursor: pointer; padding-bottom: 10px; font-size: 11px; opacity: 0.4; text-transform: uppercase; font-weight: 700; }
-        .admin-tabs span.active { opacity: 1; border-bottom: 2px solid #000; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .inventory-list { background: #f9f9f9; padding: 15px; margin-top: 10px; border-radius: 4px; }
-        .status-live { color: green; font-weight: 700; }
-        .status-sold { color: var(--red); font-weight: 700; }
+        /* --- DASHBOARD ADMIN PRO --- */
+        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 550px; height: 100vh; background: #fff; z-index: 4000; border-right: 3px solid #000; padding: 40px; overflow-y: auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--accent); padding: 20px; border-radius: 8px; text-align: center; }
+        .stat-card span { display: block; font-size: 24px; font-weight: 900; }
+        
+        .tab-btn { cursor: pointer; padding: 10px 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; opacity: 0.4; }
+        .tab-btn.active { opacity: 1; border-bottom: 2px solid #000; }
+        .admin-tab { display: none; margin-top: 30px; }
+        .admin-tab.active { display: block; }
 
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; font-family: inherit; }
-        .btn-black { background: #000; color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; text-transform: uppercase; font-weight: 700; letter-spacing: 2px; }
+        .inventory-item { display: flex; align-items: center; gap: 15px; background: #f9f9f9; padding: 10px; margin-bottom: 10px; border: 1px solid #eee; }
+        .inventory-item img { width: 50px; height: 60px; object-fit: cover; }
+        
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; font-family: inherit; }
+        .btn-black { background: #000; color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; text-transform: uppercase; font-weight: 800; letter-spacing: 2px; }
 
-        #secret-door { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; cursor: pointer; opacity: 0; z-index: 5000; }
+        #secret-trigger { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: pointer; opacity: 0; z-index: 5000; }
     </style>
 </head>
 <body>
@@ -58,7 +61,7 @@
 
     <nav>
         <div class="logo">INERCIA</div>
-        <div class="cart-trigger" onclick="openAdminDirect()">DASHBOARD</div>
+        <div style="font-size: 11px; font-weight: 700; cursor: pointer;" onclick="document.getElementById('admin-panel').style.display='block'">DASHBOARD</div>
     </nav>
 
     <div class="grid" id="main-catalog"></div>
@@ -68,142 +71,180 @@
         <div class="modal-grid">
             <img id="m-img" style="width:100%; height:100vh; object-fit:cover;">
             <div class="modal-details">
-                <span onclick="closeModal()" style="cursor:pointer; font-weight:900; letter-spacing:2px; margin-bottom:40px;">← VOLVER</span>
+                <span onclick="closeModal()" style="cursor:pointer; font-weight:900; letter-spacing:3px; margin-bottom:40px;">← VOLVER</span>
                 <h2 id="m-title" class="m-title">Producto</h2>
-                <div id="m-price" style="font-size: 24px; margin: 20px 0; font-weight: 300;">$0</div>
-                <p id="m-desc" style="color:var(--gray); line-height:1.8;"></p>
+                <div id="m-price" style="font-size: 28px; margin: 20px 0; font-weight: 300;">$0</div>
+                <p id="m-desc" style="color:var(--gray); line-height:2;"></p>
                 
-                <div class="logistics-box">
-                    <h4>Métodos de Pago</h4>
-                    <p id="val-pago">Transferencia bancaria (-15%) o Tarjetas de crédito.</p>
+                <div class="log-box">
+                    <h4>MÉTODOS DE PAGO</h4>
+                    <p id="val-pago">Transferencia bancaria (-15% OFF) o Mercado Pago.</p>
                 </div>
-                <div class="logistics-box">
-                    <h4>Métodos de Envío</h4>
-                    <p id="val-envio">Envíos a domicilio vía Andreani o retiro por Showroom.</p>
+                <div class="log-box">
+                    <h4>MÉTODOS DE ENVÍO</h4>
+                    <p id="val-envio">Envíos a todo el país vía Andreani o Correo Argentino.</p>
                 </div>
-                <button class="btn-black" style="margin-top:40px;" onclick="simulateSale()">Marcar como Vendido</button>
+                <div id="m-status-btn" style="margin-top:40px;"></div>
             </div>
         </div>
     </div>
 
-    <footer style="padding: 100px 5%; border-top: 1px solid #eee; text-align: center;">
-        <h4 style="letter-spacing: 5px;">CONTACTO</h4>
-        <p style="font-size: 12px; color: var(--gray);">INSTAGRAM: @INERCIAMODA — EMAIL: HOLA@INERCIAMODA.COM</p>
-    </footer>
-
-    <!-- ADMIN PANEL -->
-    <div id="secret-door" onclick="login()"></div>
+    <!-- ADMIN PANEL DASHBOARD -->
+    <div id="secret-trigger" onclick="login()"></div>
     <div id="admin-panel">
-        <span class="close-admin" onclick="document.getElementById('admin-panel').style.display='none'">&times;</span>
-        <h2 style="font-weight:900;">Inercia Admin</h2>
-        <div class="admin-tabs">
-            <span class="active" onclick="switchTab(0)">Inventario</span>
-            <span onclick="switchTab(1)">Ventas</span>
-            <span onclick="switchTab(2)">Textos & Web</span>
+        <div class="admin-header">
+            <h2 style="margin:0; font-weight:900;">INERCIA DASHBOARD</h2>
+            <span onclick="this.parentElement.parentElement.style.display='none'" style="cursor:pointer; font-weight:900;">CERRAR ×</span>
         </div>
 
-        <!-- TAB INVENTARIO -->
-        <div class="tab-content active">
-            <label>Fotos del Producto:</label><input type="file" id="a-files" multiple accept="image/*">
+        <div class="stats-grid">
+            <div class="stat-card">VENTAS TOTALES<span id="stat-sales">$0</span></div>
+            <div class="stat-card">PEDIDOS<span id="stat-count">0</span></div>
+        </div>
+
+        <div style="display:flex; border-bottom:1px solid #eee;">
+            <span class="tab-btn active" onclick="switchTab(0)">Inventario</span>
+            <span class="tab-btn" onclick="switchTab(1)">Ventas</span>
+            <span class="tab-btn" onclick="switchTab(2)">Web Config</span>
+        </div>
+
+        <!-- TAB 0: INVENTARIO -->
+        <div class="admin-tab active">
+            <h4>Añadir Producto</h4>
+            <label>Foto:</label><input type="file" id="a-file" accept="image/*">
             <label>Nombre:</label><input type="text" id="a-name">
             <label>Precio:</label><input type="number" id="a-price">
-            <label>Descripción:</label><textarea id="a-desc"></textarea>
-            <button class="btn-black" onclick="publish()">Publicar Producto</button>
-            <h4 style="margin-top:40px;">Publicados (En Vivo)</h4>
-            <div id="a-inventory" class="inventory-list">Sin productos activos.</div>
+            <label>Stock Inicial:</label><input type="number" id="a-stock" value="1">
+            <label>Descripción:</label><textarea id="a-desc" rows="3"></textarea>
+            <button class="btn-black" onclick="publish()">Publicar en Web</button>
+            
+            <h4 style="margin-top:40px;">Checklist de Stock</h4>
+            <div id="a-inventory">Sin productos activos.</div>
         </div>
 
-        <!-- TAB VENTAS -->
-        <div class="tab-content">
-            <h4>Productos Vendidos</h4>
-            <div id="a-sales" class="inventory-list">Sin ventas registradas.</div>
+        <!-- TAB 1: VENTAS -->
+        <div class="admin-tab">
+            <h4>Historial de Pedidos Realizados</h4>
+            <div id="a-sales-log" style="background:#f9f9f9; padding:15px; font-size:12px;">No hay ventas registradas.</div>
         </div>
 
-        <!-- TAB WEB CONFIG -->
-        <div class="tab-content">
-            <label>Texto Superior (Marquee):</label><input type="text" id="in-marquee">
-            <label>Detalle de Pagos:</label><textarea id="in-pago"></textarea>
-            <label>Detalle de Envíos:</label><textarea id="in-envio"></textarea>
-            <button class="btn-black" onclick="updateWeb()">Guardar Cambios</button>
+        <!-- TAB 2: CONFIGURACIÓN -->
+        <div class="admin-tab">
+            <label>Marquee Superior (Texto movible):</label><input type="text" id="in-marquee">
+            <label>Políticas de Pago:</label><textarea id="in-pago"></textarea>
+            <label>Políticas de Envío:</label><textarea id="in-envio"></textarea>
+            <button class="btn-black" onclick="updateConfig()">Aplicar a toda la Web</button>
         </div>
     </div>
 
     <script>
+        let products = [];
+        let salesTotal = 0;
+        let ordersCount = 0;
         let selectedProduct = null;
 
-        function login() { if(prompt("Acceso:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
-        function openAdminDirect() { document.getElementById('admin-panel').style.display = 'block'; }
-        
+        function login() { if(prompt("Código Maestro:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
         function switchTab(n) {
-            document.querySelectorAll('.admin-tabs span').forEach((s,i) => s.className = i===n ? 'active' : '');
-            document.querySelectorAll('.tab-content').forEach((t,i) => t.className = i===n ? 'tab-content active' : 'tab-content');
+            document.querySelectorAll('.tab-btn').forEach((s,i) => s.className = i===n ? 'tab-btn active' : 'tab-btn');
+            document.querySelectorAll('.admin-tab').forEach((t,i) => t.className = i===n ? 'admin-tab active' : 'admin-tab');
         }
 
         async function toB64(f) { return new Promise(r => { const reader = new FileReader(); reader.onload = () => r(reader.result); reader.readAsDataURL(f); }); }
 
         async function publish() {
-            const files = document.getElementById('a-files').files;
+            const f = document.getElementById('a-file').files[0];
             const name = document.getElementById('a-name').value;
             const price = document.getElementById('a-price').value;
+            const stock = document.getElementById('a-stock').value;
             const desc = document.getElementById('a-desc').value;
-            if(!files[0] || !name) return alert("Faltan datos");
 
-            const img = await toB64(files[0]);
-            const id = "id-" + Date.now();
+            if(!f || !name) return alert("Faltan datos");
+            const img = await toB64(f);
+            const id = "p-" + Date.now();
             
-            const html = `
-                <div class="card" id="${id}" onclick="openModal('${name}', '${price}', '${img}', '${desc}')">
-                    <img src="${img}">
-                    <div style="margin-top:15px; font-weight:700;">${name} — $${price}</div>
-                </div>`;
-            document.getElementById('main-catalog').insertAdjacentHTML('beforeend', html);
-            
-            // Listado Admin
-            const inv = document.getElementById('a-inventory');
-            if(inv.innerText === "Sin productos activos.") inv.innerHTML = "";
-            inv.innerHTML += `<div id="row-${id}" style="border-bottom:1px solid #ddd; padding:10px;">
-                <span class="status-live">LIVE</span> | ${name} 
-                <span onclick="baja('${id}')" style="color:red; cursor:pointer; float:right;">[BAJA]</span>
-            </div>`;
+            const pObj = { id, name, price, stock, desc, img };
+            products.push(pObj);
+            renderCatalog();
+            renderAdminInventory();
         }
 
-        function openModal(n, p, i, d) {
+        function renderCatalog() {
+            const container = document.getElementById('main-catalog');
+            container.innerHTML = "";
+            products.forEach(p => {
+                const isSoldOut = p.stock <= 0;
+                container.innerHTML += `
+                    <div class="card" onclick="openModal('${p.id}')">
+                        ${isSoldOut ? '<div class="sold-out-badge">AGOTADO</div>' : ''}
+                        <img src="${p.img}" style="${isSoldOut ? 'opacity:0.4' : ''}">
+                        <div style="margin-top:15px; font-weight:700; letter-spacing:1px;">${p.name.toUpperCase()} — $${p.price}</div>
+                    </div>`;
+            });
+        }
+
+        function renderAdminInventory() {
+            const inv = document.getElementById('a-inventory');
+            inv.innerHTML = "";
+            products.forEach(p => {
+                inv.innerHTML += `
+                    <div class="inventory-item">
+                        <img src="${p.img}">
+                        <div style="flex:1"><b>${p.name}</b><br><small>Stock: ${p.stock}</small></div>
+                        <button onclick="deleteProduct('${p.id}')" style="color:red; background:none; border:none; cursor:pointer;">BORRAR</button>
+                    </div>`;
+            });
+        }
+
+        function openModal(id) {
             if(document.getElementById('admin-panel').style.display === 'block') return;
-            selectedProduct = { n, p, i, id: event.currentTarget.id };
-            document.getElementById('m-title').innerText = n;
-            document.getElementById('m-price').innerText = "$" + p;
-            document.getElementById('m-img').src = i;
-            document.getElementById('m-desc').innerText = d;
+            selectedProduct = products.find(p => p.id === id);
+            document.getElementById('m-title').innerText = selectedProduct.name;
+            document.getElementById('m-price').innerText = "$" + selectedProduct.price;
+            document.getElementById('m-img').src = selectedProduct.img;
+            document.getElementById('m-desc').innerText = selectedProduct.desc;
+            
+            const btnBox = document.getElementById('m-status-btn');
+            if(selectedProduct.stock > 0) {
+                btnBox.innerHTML = `<button class="btn-black" onclick="processSale()">MARCAR COMO VENDIDO (-1 STOCK)</button>`;
+            } else {
+                btnBox.innerHTML = `<button class="btn-black" style="background:#ccc; cursor:not-allowed;">PRODUCTO AGOTADO</button>`;
+            }
             document.getElementById('p-modal').style.display = 'block';
         }
 
-        function closeModal() { document.getElementById('p-modal').style.display = 'none'; }
-
-        function simulateSale() {
-            const sales = document.getElementById('a-sales');
-            if(sales.innerText === "Sin ventas registradas.") sales.innerHTML = "";
-            sales.innerHTML += `<div class="status-sold" style="padding:10px; border-bottom:1px solid #ddd;">SOLD: ${selectedProduct.n} — $${selectedProduct.p}</div>`;
-            alert("Producto marcado como vendido.");
-            baja(selectedProduct.id);
+        function processSale() {
+            selectedProduct.stock--;
+            salesTotal += parseInt(selectedProduct.price);
+            ordersCount++;
+            
+            document.getElementById('stat-sales').innerText = "$" + salesTotal;
+            document.getElementById('stat-count').innerText = ordersCount;
+            
+            const log = document.getElementById('a-sales-log');
+            if(log.innerText === "No hay ventas registradas.") log.innerHTML = "";
+            log.innerHTML += `<div>Vendido: ${selectedProduct.name} — $${selectedProduct.price} (${new Date().toLocaleTimeString()})</div>`;
+            
+            alert("Venta procesada con éxito.");
+            renderCatalog();
+            renderAdminInventory();
             closeModal();
         }
 
-        function baja(id) {
-            const el = document.getElementById(id);
-            if(el) el.remove();
-            const row = document.getElementById('row-'+id);
-            if(row) row.remove();
+        function deleteProduct(id) {
+            products = products.filter(p => p.id !== id);
+            renderCatalog();
+            renderAdminInventory();
         }
 
-        function updateWeb() {
+        function updateConfig() {
             if(document.getElementById('in-marquee').value) document.getElementById('txt-marquee').innerText = document.getElementById('in-marquee').value;
             if(document.getElementById('in-pago').value) document.getElementById('val-pago').innerText = document.getElementById('in-pago').value;
             if(document.getElementById('in-envio').value) document.getElementById('val-envio').innerText = document.getElementById('in-envio').value;
-            alert("Web actualizada correctamente.");
+            alert("Web actualizada.");
         }
 
-        // Close on ESC
-        document.addEventListener('keydown', (e) => { if(e.key === "Escape") { closeModal(); document.getElementById('admin-panel').style.display='none'; }});
+        function closeModal() { document.getElementById('p-modal').style.display = 'none'; }
+        document.addEventListener('keydown', (e) => { if(e.key === "Escape") closeModal(); });
     </script>
 </body>
 </html>
