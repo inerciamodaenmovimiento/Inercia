@@ -4,158 +4,250 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
-    <!-- Tailwind CSS Corregido -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Corregido -->
+    <script src="https://tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         @import url('https://googleapis.com');
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .serif { font-family: 'Playfair Display', serif; }
+        .admin-section { display: none; } /* Seccion oculta por defecto */
     </style>
 </head>
 <body class="bg-white text-gray-900">
 
-    <!-- NAVEGACIÓN -->
-    <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+    <!-- NAVBAR -->
+    <header class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="text-2xl font-bold tracking-[0.2em] serif uppercase">Inercia</div>
             <ul class="hidden md:flex space-x-8 text-[10px] uppercase tracking-widest font-bold">
-                <li><a href="#" class="hover:text-gray-500">Inicio</a></li>
-                <li><a href="#productos" class="hover:text-gray-500">Colección</a></li>
-                <li><a href="#admin" class="text-red-500 hover:text-red-800">Administrador</a></li>
+                <li><a href="#" onclick="showSection('home')" class="hover:text-gray-500">Inicio</a></li>
+                <li><a href="#" onclick="toggleAdmin()" class="text-red-500">Administrador</a></li>
             </ul>
-            <div class="flex items-center space-x-5">
-                <button onclick="toggleCart()" class="relative">
-                    <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
-                </button>
-            </div>
+            <button onclick="toggleCart()" class="relative">
+                <i class="fa-solid fa-bag-shopping text-xl"></i>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
+            </button>
         </nav>
     </header>
 
-    <!-- HERO SECTION (BANNER) -->
-    <section id="home-banner" class="relative h-[90vh] flex items-center justify-center bg-gray-900 text-white">
-        <img id="banner-img" src="https://unsplash.com" 
-             class="absolute inset-0 w-full h-full object-cover opacity-60">
-        <div class="relative z-10 text-center px-4">
-            <h1 class="text-6xl md:text-8xl serif mb-2">Inercia</h1>
-            <p class="text-sm tracking-[0.5em] uppercase opacity-80 mb-10">Moda en Movimiento</p>
-            <a href="#productos" class="border border-white px-10 py-4 text-[10px] uppercase tracking-[0.2em] hover:bg-white hover:text-black transition duration-300">Ver Catálogo</a>
-        </div>
-    </section>
-
-    <!-- SECCIÓN DE PRODUCTOS -->
-    <section id="productos" class="container mx-auto px-6 py-20">
-        <div class="flex justify-between items-end mb-16">
-            <div>
-                <h2 class="text-4xl serif mb-2">Nuevos Ingresos</h2>
-                <div class="h-1 w-20 bg-black"></div>
+    <!-- SECCIÓN HOME (BANNER + PRODUCTOS) -->
+    <main id="home-view">
+        <!-- Banner Principal Dinámico -->
+        <section id="hero" class="relative h-[80vh] flex items-center justify-center bg-black">
+            <img id="main-banner" src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover opacity-60">
+            <div class="relative z-10 text-center text-white">
+                <h1 class="text-6xl md:text-8xl serif mb-4">Inercia</h1>
+                <p class="text-sm tracking-[0.5em] uppercase">Moda en Movimiento</p>
             </div>
-        </div>
-        <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-            <!-- Cargados por JS -->
-        </div>
-    </section>
+        </section>
 
-    <!-- PANEL ADMINISTRADOR -->
-    <section id="admin" class="bg-gray-50 py-20 border-t border-gray-200">
-        <div class="container mx-auto px-6 max-w-3xl">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl serif mb-2">Panel de Control</h2>
-                <p class="text-xs uppercase tracking-widest text-gray-400">Gestiona tu tienda Inercia</p>
-            </div>
-            <div class="bg-white p-10 rounded-xl shadow-sm border border-gray-100">
-                <h3 class="text-sm font-bold uppercase mb-6 border-b pb-2">Subir Nuevo Producto</h3>
-                <div class="space-y-6">
-                    <input id="admin-nombre" type="text" placeholder="Nombre" class="w-full border-b py-2 outline-none">
-                    <div class="grid grid-cols-2 gap-6">
-                        <input id="admin-precio" type="number" placeholder="Precio ($)" class="w-full border-b py-2 outline-none">
-                        <input id="admin-stock" type="number" placeholder="Stock" class="w-full border-b py-2 outline-none">
+        <!-- Categorías en el Home -->
+        <section class="container mx-auto px-6 py-12 flex space-x-4 overflow-x-auto" id="home-categories">
+            <!-- Cargadas dinamicamente -->
+        </section>
+
+        <!-- Grilla de Productos -->
+        <section class="container mx-auto px-6 py-12">
+            <h2 class="text-3xl serif mb-12 border-b pb-4">Nuestra Colección</h2>
+            <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"></div>
+        </section>
+    </main>
+
+    <!-- PANEL ADMINISTRADOR (Oculto) -->
+    <aside id="admin-panel" class="admin-section pt-32 container mx-auto px-6 pb-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- 1. Gestión de Productos -->
+            <div class="bg-gray-50 p-8 rounded-xl border">
+                <h3 class="font-bold uppercase text-xs mb-6 border-b pb-2"><i class="fa-solid fa-plus mr-2"></i>Subir Producto</h3>
+                <div class="space-y-4">
+                    <input id="prod-nombre" type="text" placeholder="Nombre del producto" class="w-full p-2 text-sm border rounded">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input id="prod-precio" type="number" placeholder="Precio ($)" class="w-full p-2 text-sm border rounded">
+                        <input id="prod-stock" type="number" placeholder="Stock Inicial" class="w-full p-2 text-sm border rounded">
                     </div>
-                    <input id="admin-img" type="text" placeholder="URL de la foto" class="w-full border-b py-2 outline-none">
-                    <button onclick="agregarProductoDesdeAdmin()" class="w-full bg-black text-white py-4 text-xs font-bold uppercase tracking-widest">Publicar en la Web</button>
+                    <input id="prod-cat" type="text" placeholder="Categoría (Ej: Verano)" class="w-full p-2 text-sm border rounded">
+                    <div class="p-4 border-2 border-dashed rounded text-center">
+                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Imágenes del Carrusel</p>
+                        <input id="prod-imgs" type="file" multiple class="text-xs">
+                        <p class="text-[9px] mt-2 text-gray-400 italic">*Se guardan localmente para esta demo</p>
+                    </div>
+                    <button onclick="guardarProducto()" class="w-full bg-black text-white py-3 text-xs font-bold uppercase tracking-widest">Publicar Producto</button>
+                </div>
+            </div>
+
+            <!-- 2. Gestión de Banner y Historial -->
+            <div class="space-y-8">
+                <div class="bg-white p-6 border rounded-xl">
+                    <h3 class="font-bold uppercase text-xs mb-4">Modificar Banner Home</h3>
+                    <input id="new-banner-url" type="text" placeholder="URL de nueva imagen" class="w-full p-2 text-sm border rounded mb-2">
+                    <button onclick="actualizarBanner()" class="bg-gray-800 text-white px-4 py-2 text-[10px] uppercase">Cambiar Imagen</button>
+                </div>
+                
+                <div class="bg-white p-6 border rounded-xl max-h-96 overflow-y-auto">
+                    <h3 class="font-bold uppercase text-xs mb-4">Historial de Ventas</h3>
+                    <div id="historial-pedidos" class="text-[10px] space-y-2"></div>
                 </div>
             </div>
         </div>
-    </section>
+    </aside>
 
     <!-- CARRITO LATERAL -->
     <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white z-[60] shadow-2xl translate-x-full transition-transform duration-500">
         <div class="p-8 flex flex-col h-full">
             <div class="flex justify-between items-center border-b pb-6 mb-6">
-                <span class="serif text-2xl tracking-tighter">Mi Carrito</span>
-                <button onclick="toggleCart()" class="text-3xl font-light">&times;</button>
+                <span class="serif text-2xl">Mi Bolsa</span>
+                <button onclick="toggleCart()" class="text-3xl">&times;</button>
             </div>
-            <div id="cart-items" class="flex-grow overflow-y-auto space-y-6"></div>
+            <div id="cart-items" class="flex-grow overflow-y-auto space-y-4"></div>
             <div class="border-t pt-6 space-y-4">
-                <div class="flex justify-between items-center px-2">
-                    <span class="text-xs uppercase font-bold tracking-widest">Total</span>
-                    <span id="cart-total" class="text-xl serif">$0</span>
-                </div>
-                <button class="w-full bg-black text-white py-5 text-[10px] uppercase font-bold tracking-widest">Proceder al Pago</button>
+                <div class="flex justify-between px-2 font-bold"><span>Total</span><span id="cart-total">$0</span></div>
+                <button onclick="finalizarCompra()" class="w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-widest">Finalizar Compra (WhatsApp)</button>
+                <button onclick="alert('Arrepentimiento registrado')" class="w-full text-gray-400 text-[10px] uppercase underline">Botón de Arrepentimiento</button>
             </div>
         </div>
     </div>
 
-    <!-- CONTACTO -->
-    <div class="fixed bottom-8 right-8 flex flex-col space-y-4 z-50">
-        <a href="#" class="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-xl"><i class="fa-brands fa-whatsapp text-3xl"></i></a>
-        <a href="#" class="w-14 h-14 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-full flex items-center justify-center shadow-xl"><i class="fa-brands fa-instagram text-3xl"></i></a>
+    <!-- CONTACTOS FLOTANTES -->
+    <div class="fixed bottom-6 right-6 flex flex-col space-y-3 z-50">
+        <a href="https://wa.me" class="w-12 h-12 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
+        <a href="https://instagram.com" class="w-12 h-12 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-full flex items-center justify-center shadow-lg"><i class="fa-brands fa-instagram text-2xl"></i></a>
     </div>
 
     <script>
-        let productos = [
-            { id: 1, nombre: 'Blusa Larga Brown', precio: 12500, img: 'https://unsplash.com' },
-            { id: 2, nombre: 'Abrigo Grey Check', precio: 22900, img: 'https://unsplash.com' }
-        ];
+        // --- LÓGICA DE DATOS ---
+        let productos = JSON.parse(localStorage.getItem('inercia_prods')) || [];
         let carrito = [];
+        let historial = JSON.parse(localStorage.getItem('inercia_ventas')) || [];
+        let bannerActual = localStorage.getItem('inercia_banner') || "https://unsplash.com";
 
-        function renderProductos() {
+        // --- INICIALIZACIÓN ---
+        window.onload = () => {
+            renderTienda();
+            renderHistorial();
+            document.getElementById('main-banner').src = bannerActual;
+        }
+
+        function toggleAdmin() {
+            const home = document.getElementById('home-view');
+            const admin = document.getElementById('admin-panel');
+            home.classList.toggle('hidden');
+            admin.classList.toggle('admin-section');
+        }
+
+        // --- GESTIÓN DE PRODUCTOS ---
+        function guardarProducto() {
+            const nombre = document.getElementById('prod-nombre').value;
+            const precio = document.getElementById('prod-precio').value;
+            const stock = document.getElementById('prod-stock').value;
+            const cat = document.getElementById('prod-cat').value;
+            const imgsInput = document.getElementById('prod-imgs');
+
+            // Convertimos la primera imagen a Base64 para que se guarde en el navegador
+            if (imgsInput.files && imgsInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const nuevo = { id: Date.now(), nombre, precio: parseInt(precio), stock: parseInt(stock), cat, img: e.target.result };
+                    productos.push(nuevo);
+                    localStorage.setItem('inercia_prods', JSON.stringify(productos));
+                    renderTienda();
+                    alert("Producto publicado!");
+                };
+                reader.readAsDataURL(imgsInput.files[0]);
+            }
+        }
+
+        function eliminarProducto(id) {
+            productos = productos.filter(p => p.id !== id);
+            localStorage.setItem('inercia_prods', JSON.stringify(productos));
+            renderTienda();
+        }
+
+        function actualizarBanner() {
+            const url = document.getElementById('new-banner-url').value;
+            localStorage.setItem('inercia_banner', url);
+            document.getElementById('main-banner').src = url;
+            alert("Banner actualizado");
+        }
+
+        // --- RENDERIZADO ---
+        function renderTienda() {
             const grid = document.getElementById('grid-productos');
+            const catHome = document.getElementById('home-categories');
+            
+            // Render productos con stock
             grid.innerHTML = productos.map(p => `
-                <div class="group relative">
-                    <div class="aspect-[3/4] overflow-hidden bg-gray-100 mb-4 relative">
-                        <img src="${p.img}" class="w-full h-full object-cover">
-                        <button onclick="agregarAlCarrito(${p.id})" class="absolute bottom-0 w-full bg-black text-white py-4 text-[10px] uppercase font-bold opacity-0 group-hover:opacity-100 transition-all">Agregar al carrito</button>
-                    </div>
-                    <h3 class="text-sm font-medium">${p.nombre}</h3>
-                    <p class="text-gray-500 text-xs mt-1">$${p.precio.toLocaleString()}</p>
+                <div class="group border p-4 rounded-lg relative">
+                    <img src="${p.img}" class="aspect-[3/4] object-cover mb-4">
+                    <h4 class="text-sm font-bold uppercase">${p.nombre}</h4>
+                    <p class="text-xs text-gray-500 mb-2">$${p.precio.toLocaleString()}</p>
+                    <p class="text-[10px] text-red-400 mb-4">Stock: ${p.stock}</p>
+                    <button onclick="agregarAlCarrito(${p.id})" class="w-full bg-black text-white py-2 text-[10px] uppercase font-bold">Comprar</button>
+                    <button onclick="eliminarProducto(${p.id})" class="absolute top-2 right-2 bg-red-500 text-white w-6 h-6 rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-trash"></i></button>
                 </div>
+            `).join('');
+
+            // Render Categorías Personalizadas en Home
+            const categoriasUnicas = [...new Set(productos.map(p => p.cat))];
+            catHome.innerHTML = categoriasUnicas.map(c => `
+                <button class="bg-gray-100 px-6 py-2 rounded-full text-[10px] uppercase font-bold tracking-widest hover:bg-black hover:text-white transition">${c}</button>
             `).join('');
         }
 
+        // --- CARRITO Y VENTA ---
         function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('translate-x-full'); }
 
         function agregarAlCarrito(id) {
-            carrito.push(productos.find(p => p.id === id));
+            const p = productos.find(x => x.id === id);
+            if(p.stock <= 0) return alert("Sin stock");
+            carrito.push(p);
             actualizarCarritoUI();
-            toggleCart();
         }
 
         function actualizarCarritoUI() {
             const container = document.getElementById('cart-items');
             container.innerHTML = carrito.map((item, i) => `
-                <div class="flex justify-between border-b pb-4">
-                    <span class="text-xs font-bold uppercase">${item.nombre}</span>
-                    <span class="text-xs">$${item.precio.toLocaleString()}</span>
+                <div class="flex justify-between items-center text-xs">
+                    <span>${item.nombre}</span>
+                    <span>$${item.precio}</span>
                 </div>
             `).join('');
-            document.getElementById('cart-total').innerText = '$' + carrito.reduce((acc, p) => acc + p.precio, 0).toLocaleString();
+            const total = carrito.reduce((acc, p) => acc + p.precio, 0);
+            document.getElementById('cart-total').innerText = '$' + total;
             document.getElementById('cart-count').innerText = carrito.length;
         }
 
-        function agregarProductoDesdeAdmin() {
-            const n = document.getElementById('admin-nombre').value;
-            const p = parseInt(document.getElementById('admin-precio').value);
-            const i = document.getElementById('admin-img').value;
-            if(n && p && i) {
-                productos.push({ id: Date.now(), nombre: n, precio: p, img: i });
-                renderProductos();
-            }
+        function finalizarCompra() {
+            if(carrito.length === 0) return;
+            const total = carrito.reduce((acc, p) => acc + p.precio, 0);
+            const msg = `Hola Inercia! Quiero comprar:\n${carrito.map(p => "- " + p.nombre).join("\n")}\nTotal: $${total}`;
+            
+            // Registro en Historial
+            historial.push({ fecha: new Date().toLocaleString(), items: carrito.length, total });
+            localStorage.setItem('inercia_ventas', JSON.stringify(historial));
+            
+            // Descontar stock
+            carrito.forEach(item => {
+                const p = productos.find(x => x.id === item.id);
+                if(p) p.stock--;
+            });
+            localStorage.setItem('inercia_prods', JSON.stringify(productos));
+            
+            window.open(`https://wa.me?text=${encodeURIComponent(msg)}`);
+            carrito = [];
+            actualizarCarritoUI();
+            renderTienda();
+            renderHistorial();
         }
 
-        renderProductos();
+        function renderHistorial() {
+            const h = document.getElementById('historial-pedidos');
+            h.innerHTML = historial.map(v => `
+                <div class="border-b pb-2 mb-2">
+                    <p class="font-bold">${v.fecha}</p>
+                    <p>Venta por $${v.total} (${v.items} items)</p>
+                </div>
+            `).reverse().join('');
+        }
     </script>
 </body>
 </html>
