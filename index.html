@@ -6,125 +6,130 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; --soft: #f4f4f4; }
+        :root { --bg: #ffffff; --text: #1a1a1a; --soft-grey: #f8f8f8; }
         body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         
-        /* Navegación Minimalista */
-        nav { padding: 40px 8%; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; font-size: 11px; letter-spacing: 2px; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 24px; letter-spacing: 4px; font-weight: 700; }
+        /* HEADER EDITORIAL */
+        nav { padding: 40px 6%; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; font-size: 10px; letter-spacing: 3px; }
+        .brand { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; letter-spacing: 5px; }
 
-        /* Estructura Hero - Estilo Revista */
-        .hero { display: grid; grid-template-columns: 1fr 1.2fr; height: 90vh; align-items: center; padding: 0 8%; background: var(--soft); position: relative; }
-        .hero-text { z-index: 2; }
-        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 6rem; line-height: 0.9; margin: 0; font-weight: 700; }
-        .hero-text p { font-size: 14px; max-width: 300px; line-height: 1.6; margin-top: 30px; color: #666; }
-        .hero-img-container { height: 80%; width: 100%; position: relative; }
-        .hero-img { width: 100%; height: 100%; object-fit: cover; }
+        /* SECCIÓN HERO (Basada en tu imagen) */
+        .hero { display: grid; grid-template-columns: 1fr 1fr; height: 100vh; background: var(--soft-grey); align-items: center; padding: 0 6%; position: relative; overflow: hidden; }
+        .hero-text { z-index: 10; max-width: 500px; }
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 5.5rem; line-height: 0.9; margin: 0; }
+        .hero-text p { font-size: 13px; color: #666; margin-top: 30px; line-height: 1.8; max-width: 300px; }
+        
+        .hero-img-box { position: relative; width: 100%; height: 80%; }
+        .main-img { width: 100%; height: 100%; object-fit: contain; }
+        .floating-leaf { position: absolute; bottom: 0; right: -50px; width: 300px; z-index: 11; filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.1)); }
 
-        /* Cuadrícula Editorial Asimétrica */
-        .magazine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; padding: 120px 8%; align-items: start; }
-        .item { position: relative; }
-        .item img { width: 100%; height: auto; transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
-        .item:nth-child(2) { margin-top: 100px; } /* Desfase asimétrico */
-        .item h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin: 20px 0 5px; font-weight: 400; }
-        .item span { font-size: 12px; letter-spacing: 1px; color: #888; }
+        /* GRILLA ASIMÉTRICA */
+        .magazine-section { padding: 100px 6%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .mag-item { position: relative; }
+        .mag-item img { width: 100%; height: 450px; object-fit: cover; }
+        .mag-item.offset { margin-top: 80px; }
+        .mag-info { margin-top: 20px; text-align: center; }
+        .mag-info h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin: 0; font-weight: 400; }
+        .mag-info span { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Panel Admin Secreto (Solo tú sabes que existe) */
-        #admin-panel { display: none; position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: #fff; z-index: 1000; padding: 40px; box-shadow: -20px 0 50px rgba(0,0,0,0.05); border-left: 1px solid #eee; overflow-y: auto; }
-        #admin-panel h2 { font-family: 'Playfair Display', serif; border-bottom: 1px solid #000; padding-bottom: 10px; }
-        .field { margin-bottom: 20px; }
-        label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #eee; font-family: 'Inter'; }
-        .btn-save { background: #000; color: #fff; border: none; width: 100%; padding: 15px; cursor: pointer; margin-top: 20px; letter-spacing: 2px; }
+        /* FOOTER DE DATOS */
+        .details-grid { padding: 80px 6%; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .detail-card { text-align: center; }
+        .detail-card img { width: 100%; height: 250px; object-fit: cover; margin-bottom: 15px; }
+        .detail-card h4 { font-size: 12px; margin: 5px 0; }
 
-        #secret-trigger { position: fixed; bottom: 10px; right: 10px; width: 30px; height: 30px; cursor: pointer; opacity: 0; z-index: 9999; }
+        /* PANEL ADMIN (Invisible - Acceso 0110) */
+        #admin-panel { display: none; position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: #fff; z-index: 1000; padding: 40px; box-shadow: -10px 0 50px rgba(0,0,0,0.1); border-left: 1px solid #eee; overflow-y: auto; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #eee; font-family: 'Inter'; }
+        .btn-update { background: #000; color: #fff; border: none; width: 100%; padding: 15px; cursor: pointer; text-transform: uppercase; font-size: 10px; letter-spacing: 2px; }
+        
+        #secret-trigger { position: fixed; bottom: 10px; right: 10px; width: 20px; height: 20px; opacity: 0; cursor: pointer; z-index: 9999; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div>Colección 2026</div>
-        <div class="logo">INERCIA</div>
-        <div>Contacto</div>
+        <div>Colecciones</div>
+        <div class="brand">INERCIA</div>
+        <div>Shop / Info</div>
     </nav>
 
     <section class="hero">
         <div class="hero-text">
             <h1 id="h-title">Trendy colors<br>for the fall</h1>
-            <p id="h-desc">Explorando la relación entre el cuerpo humano y la inercia del movimiento a través de textiles orgánicos.</p>
+            <p id="h-desc">Inercia: Explorando el movimiento orgánico a través de textiles premium y cortes asimétricos.</p>
         </div>
-        <div class="hero-img-container">
-            <img id="h-img" src="https://unsplash.com" class="hero-img">
-        </div>
-    </section>
-
-    <section class="magazine-grid" id="catalog">
-        <!-- Los productos se verán como en una revista -->
-        <div class="item">
-            <img src="https://unsplash.com">
-            <h3>Silk Movement</h3>
-            <span>$120.00 — Stock: 5</span>
-        </div>
-        <div class="item">
-            <img src="https://unsplash.com">
-            <h3>Autumn Inertia</h3>
-            <span>$150.00 — Stock: 3</span>
-        </div>
-        <div class="item">
-            <img src="https://unsplash.com">
-            <h3>Minimal Flow</h3>
-            <span>$95.00 — Stock: 10</span>
+        <div class="hero-img-box">
+            <img id="h-img" src="https://unsplash.com" class="main-img">
+            <!-- Elemento decorativo tipo hoja para dar el estilo de tu imagen -->
+            <img src="https://pngimg.com" class="floating-leaf">
         </div>
     </section>
 
-    <!-- ACCESO 0110 TOTALMENTE INVISIBLE -->
-    <div id="secret-trigger" onclick="openAdmin()"></div>
+    <section class="magazine-section" id="catalog">
+        <div class="mag-item">
+            <img src="https://unsplash.com">
+            <div class="mag-info"><span>20% Sale</span><h3>Silk Motion</h3></div>
+        </div>
+        <div class="mag-item offset">
+            <img src="https://unsplash.com">
+            <div class="mag-info"><span>Nueva Colección</span><h3>Urban Flow</h3></div>
+        </div>
+        <div class="mag-item">
+            <img src="https://unsplash.com">
+            <div class="mag-info"><span>Limited</span><h3>Inertia Coat</h3></div>
+        </div>
+    </section>
 
+    <!-- ACCESO INVISIBLE -->
+    <div id="secret-trigger" onclick="checkCode()"></div>
+
+    <!-- ADMIN PANEL -->
     <div id="admin-panel">
-        <h2>Inercia Admin</h2>
-        <div class="field">
-            <label>Título Portada</label>
-            <input type="text" id="edit-title" placeholder="Trendy colors...">
-        </div>
-        <div class="field">
-            <label>Descripción</label>
-            <textarea id="edit-desc" rows="4"></textarea>
-        </div>
-        <div class="field">
-            <label>Foto Principal (Link o Archivo)</label>
-            <input type="file" id="edit-file" accept="image/*">
-        </div>
-        <hr>
-        <div class="field">
-            <label>Añadir Prenda al Catálogo</label>
-            <input type="file" id="p-file" accept="image/*">
-            <input type="text" id="p-name" placeholder="Nombre">
-            <input type="text" id="p-price" placeholder="Precio y Stock">
-        </div>
-        <button class="btn-save" onclick="applyChanges()">Guardar en Vista Previa</button>
-        <p style="font-size:9px; color:red; margin-top:20px; cursor:pointer;" onclick="location.reload()">Cerrar sin guardar</p>
+        <h2 style="font-family:'Playfair Display'">Panel Inercia</h2>
+        <label style="font-size:10px; color:gray;">TEXTOS PORTADA</label>
+        <input type="text" id="edit-title" placeholder="Título...">
+        <textarea id="edit-desc" placeholder="Descripción..."></textarea>
+        
+        <label style="font-size:10px; color:gray; margin-top:20px; display:block;">SUBIR PRODUCTO</label>
+        <input type="file" id="p-file" accept="image/*">
+        <input type="text" id="p-name" placeholder="Nombre de Prenda">
+        <input type="text" id="p-price" placeholder="Precio / Etiqueta">
+        
+        <button class="btn-update" onclick="applyChanges()">Actualizar Vista</button>
+        <p style="font-size:9px; color:red; margin-top:20px; text-align:center; cursor:pointer;" onclick="location.reload()">CERRAR SIN GUARDAR</p>
     </div>
 
     <script>
-        function openAdmin() {
-            if(prompt("Código:") === "0110") document.getElementById('admin-panel').style.display = 'block';
+        function checkCode() {
+            if(prompt("Acceso Inercia:") === "0110") document.getElementById('admin-panel').style.display = 'block';
         }
 
         async function applyChanges() {
             const title = document.getElementById('edit-title').value;
             const desc = document.getElementById('edit-desc').value;
-            const banner = document.getElementById('edit-file').files[0];
+            const pFile = document.getElementById('p-file').files[0];
+            const pName = document.getElementById('p-name').value;
+            const pPrice = document.getElementById('p-price').value;
 
             if(title) document.getElementById('h-title').innerText = title;
             if(desc) document.getElementById('h-desc').innerText = desc;
             
-            if(banner) {
+            if(pFile && pName) {
                 const reader = new FileReader();
-                reader.onload = (e) => document.getElementById('h-img').src = e.target.result;
-                reader.readAsDataURL(banner);
+                reader.onload = (e) => {
+                    const html = `
+                        <div class="mag-item">
+                            <img src="${e.target.result}">
+                            <div class="mag-info"><span>${pPrice}</span><h3>${pName}</h3></div>
+                        </div>
+                    `;
+                    document.getElementById('catalog').insertAdjacentHTML('beforeend', html);
+                };
+                reader.readAsDataURL(pFile);
             }
 
-            alert("Vista actualizada. Copia el código fuente para que sea permanente en GitHub.");
+            alert("Cambios aplicados. No olvides copiar el código fuente para guardar permanentemente en GitHub.");
             document.getElementById('admin-panel').style.display = 'none';
         }
     </script>
