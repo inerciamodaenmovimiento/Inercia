@@ -1,0 +1,19 @@
+backend:
+  name: github
+  repo: tu-usuario/nombre-del-repo # Cambia esto por el tuyo
+  branch: main
+
+media_folder: "images/uploads" # Donde se guardarán tus fotos de ropa
+public_folder: "/images/uploads"
+
+collections:
+  - name: "home"
+    label: "Página de Inicio"
+    files:
+      - file: "index.html"
+        label: "Contenido Principal"
+        name: "home_content"
+        fields:
+          - {label: "Título Principal", name: "title", widget: "string"}
+          - {label: "Imagen de Portada", name: "hero_image", widget: "image"}
+          - {label: "Descripción de Marca", name: "description", widget: "text"}
