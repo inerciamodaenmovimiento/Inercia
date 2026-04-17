@@ -3,22 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INERCIA | Admin</title>
+  <title>Inercia | Administrador</title>
+  <!-- Widget para iniciar sesión -->
   </script>
 </head>
 <body>
+  <!-- Panel de control visual -->
   <script src="https://unpkg.com@^3.1.2/dist/decap-cms.js"></script>
-  <script>
-    // Esto fuerza la apertura del login si el CMS no lo hace solo
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  </script>
 </body>
 </html>
