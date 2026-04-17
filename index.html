@@ -3,188 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Studio</title>
+    <title>INERCIA | Official Store</title>
+    <!-- Fuentes de Lujo: Serif para títulos y Sans para UI -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
+        :root { --bg: #ffffff; --text: #000000; --muted: #888888; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg: #f7f7f7; --txt: #1a1a1a; }
-        body { background: var(--bg); color: var(--txt); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
 
         /* HEADER */
-        header { padding: 40px 6%; display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
-        .logo { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; text-transform: lowercase; letter-spacing: -1px; }
-        nav { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #888; }
+        header { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; background: white; sticky top: 0; z-index: 100; border-bottom: 1px solid #f0f0f0; }
+        .nav-links { display: flex; gap: 30px; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; }
+        .logo { font-family: 'Bodoni Moda', serif; font-size: 32px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
 
-        /* HERO ASIMÉTRICO (ESTILO THOM MORISON) */
-        .hero { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; padding: 0 6% 100px; align-items: end; }
-        .hero-left img { width: 100%; height: 65vh; object-fit: cover; background: #eee; }
-        .hero-right { position: relative; }
-        .hero-right img { width: 100%; height: 80vh; object-fit: cover; background: #eee; }
-        .hero-tag { position: absolute; left: -60px; top: 40%; font-family: 'Cormorant Garamond', serif; font-size: 70px; font-style: italic; opacity: 0.6; transform: rotate(-90deg); }
+        /* HERO SECTION */
+        .hero { position: relative; height: 90vh; background: #f9f9f9; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 5%; }
+        .hero-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.95); }
+        .hero-title { position: absolute; font-family: 'Bodoni Moda', serif; font-size: 120px; color: white; text-transform: uppercase; letter-spacing: 15px; font-weight: 400; text-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        /* CATÁLOGO */
-        .catalog { padding: 100px 6%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .product { text-align: left; transition: 0.5s; cursor: pointer; }
-        .product:hover { opacity: 0.7; }
-        .product img { width: 100%; aspect-ratio: 4/5; object-fit: cover; background: #eee; margin-bottom: 20px; }
-        .p-info { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-        .p-price { color: #888; margin-top: 5px; }
+        /* SECCIÓN NEW IN */
+        .section-label { text-align: center; margin: 80px 0 40px; font-family: 'Bodoni Moda', serif; font-size: 24px; text-transform: uppercase; letter-spacing: 4px; }
+        .product-slider { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 5%; margin-bottom: 100px; }
+        .product-card { text-align: center; cursor: pointer; }
+        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 15px; transition: opacity 0.3s; }
+        .product-card:hover img { opacity: 0.8; }
+        .product-card p { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
 
-        /* PIE DE PÁGINA / FILOSOFÍA */
-        .footer-info { padding: 120px 6%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; border-top: 1px solid #e0e0e0; }
-        .f-text { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic; line-height: 1.4; color: #444; }
+        /* MOSAICO CATEGORÍAS */
+        .categories { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 5% 100px; }
+        .cat-box { position: relative; overflow: hidden; background: #eee; cursor: pointer; }
+        .cat-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s; }
+        .cat-box:hover img { transform: scale(1.05); }
+        .cat-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: white; font-family: 'Bodoni Moda', serif; font-size: 32px; text-transform: uppercase; letter-spacing: 8px; background: rgba(0,0,0,0.1); }
 
-        /* --- ADMINISTRADOR INVISIBLE --- */
-        /* Área secreta en la esquina inferior derecha */
-        .secret-trigger { 
-            position: fixed; bottom: 0; right: 0; width: 50px; height: 50px; 
-            background: transparent; z-index: 9999; cursor: default; 
-        }
+        /* FOOTER */
+        footer { padding: 80px 5%; border-top: 1px solid #f0f0f0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; font-size: 11px; color: var(--muted); }
+        footer h4 { color: black; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        .newsletter input { width: 100%; padding: 10px 0; border: none; border-bottom: 1px solid #ddd; outline: none; margin-bottom: 15px; }
+        .btn-sub { width: 100%; padding: 12px; background: none; border: 1px solid black; text-transform: uppercase; font-size: 10px; cursor: pointer; }
 
-        #admin-panel { 
-            position: fixed; right: -400px; top: 0; width: 400px; height: 100vh; 
-            background: #fff; border-left: 1px solid #eee; z-index: 10000; padding: 50px 30px; 
-            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -20px 0 60px rgba(0,0,0,0.05); 
-            overflow-y: auto; color: #000;
-        }
-        #admin-panel.open { right: 0; }
-        .admin-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 10px; text-transform: uppercase; color: #999; margin-bottom: 5px; }
-        .input-group input { width: 100%; padding: 12px 0; border: none; border-bottom: 1px solid #eee; outline: none; font-size: 14px; }
-        .btn-admin { width: 100%; padding: 18px; background: #000; color: #fff; border: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 10px; }
-        .stock-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f9f9f9; font-size: 11px; text-transform: uppercase; color: #666; }
+        /* --- ADMIN PANEL (INVISIBLE) --- */
+        .admin-trigger { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; background: transparent; z-index: 1000; cursor: default; }
+        #admin-panel { position: fixed; right: -420px; top: 0; width: 400px; height: 100vh; background: white; z-index: 10000; padding: 60px 40px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -20px 0 50px rgba(0,0,0,0.05); overflow-y: auto; }
+        #admin-panel.active { right: 0; }
+        .admin-field { margin-bottom: 30px; }
+        .admin-field label { display: block; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; color: var(--muted); }
+        .admin-field input { width: 100%; padding: 12px 0; border: none; border-bottom: 1px solid #eee; outline: none; font-size: 14px; }
+        .btn-admin { width: 100%; padding: 18px; background: black; color: white; border: none; text-transform: uppercase; font-size: 11px; letter-spacing: 2px; cursor: pointer; font-weight: bold; }
+        .stock-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #f9f9f9; font-size: 12px; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">inercia.</div>
-        <nav>Shop • Studio • Contact</nav>
+        <div class="nav-links"><span>Shop</span> <span>Colecciones</span></div>
+        <div class="logo">inercia</div>
+        <div class="nav-links"><span>Estudio</span> <span>Carrito (0)</span></div>
     </header>
 
     <main>
         <section class="hero">
-            <div class="hero-left">
-                <img src="https://unsplash.com" alt="Moda 1">
-            </div>
-            <div class="hero-right">
-                <div class="hero-tag">inercia</div>
-                <img src="https://unsplash.com" alt="Moda 2">
-            </div>
+            <img src="https://unsplash.com" class="hero-img">
+            <h1 class="hero-title" id="display-title">Inercia</h1>
         </section>
 
-        <section class="catalog" id="catalog-display">
+        <h2 class="section-label">New In</h2>
+        <div class="product-slider" id="product-grid">
             <!-- Los productos se cargan aquí -->
-        </section>
+        </div>
 
-        <section class="footer-info">
-            <div class="f-text">
-                "Inercia es la búsqueda de la belleza en lo simple. Cada prenda es un movimiento hacia la calidad duradera."
+        <section class="categories">
+            <div class="cat-box" style="grid-row: span 2;">
+                <img src="https://unsplash.com">
+                <div class="cat-label">Clothing</div>
             </div>
-            <div style="text-align: right;">
-                <img src="https://unsplash.com" style="width: 70%; filter: grayscale(1);">
+            <div class="cat-box">
+                <img src="https://unsplash.com">
+                <div class="cat-label">Bags</div>
+            </div>
+            <div class="cat-box">
+                <img src="https://unsplash.com">
+                <div class="cat-label">Accessories</div>
             </div>
         </section>
     </main>
 
-    <!-- ACCESO INVISIBLE PARA LA DUEÑA -->
-    <div class="secret-trigger" onclick="toggleAdmin()"></div>
+    <footer>
+        <div><h4>Shop</h4><p>New arrivals</p><p>Collections</p></div>
+        <div><h4>Explore</h4><p>About the brand</p><p>Lookbooks</p></div>
+        <div><h4>More</h4><p>Size guide</p><p>Contacts</p></div>
+        <div class="newsletter">
+            <h4>Newsletter</h4>
+            <input type="text" placeholder="Enter your email">
+            <button class="btn-sub">Subscribe</button>
+        </div>
+    </footer>
+
+    <!-- ACCESO DUEÑA -->
+    <div class="admin-trigger" onclick="toggleAdmin()"></div>
 
     <div id="admin-panel">
-        <div class="admin-title">Panel Inercia</div>
-        <div class="input-group">
-            <label>Nombre del Producto</label>
-            <input type="text" id="p-name" placeholder="Ej: Pantalón Sastre">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+            <h3 style="text-transform:uppercase; letter-spacing:2px; font-size:16px;">Configuración</h3>
+            <span onclick="toggleAdmin()" style="cursor:pointer; font-size:24px;">&times;</span>
         </div>
-        <div class="input-group">
-            <label>Precio</label>
-            <input type="text" id="p-price" placeholder="Ej: $22.500">
-        </div>
-        <div class="input-group">
-            <label>Link de Imagen</label>
-            <input type="text" id="p-img" placeholder="https://...">
-        </div>
-        <button class="btn-admin" onclick="addProduct()">Agregar a la tienda</button>
 
-        <div id="stock-list" style="margin-top: 40px;">
-            <p style="font-size: 10px; color: #ccc; margin-bottom: 15px;">GESTIÓN DE STOCK</p>
-            <!-- Lista de productos para borrar -->
+        <div class="admin-field">
+            <label>Título del Hero</label>
+            <input type="text" id="edit-title" oninput="updateHero()" placeholder="Inercia">
         </div>
-        <button class="btn-admin" style="background:#eee; color:#000; margin-top:20px;" onclick="toggleAdmin()">Cerrar</button>
+
+        <div style="margin-top: 50px; border-top: 1px solid #eee; padding-top: 30px;">
+            <label>Subir Producto</label>
+            <div class="admin-field"><input type="text" id="p-name" placeholder="Nombre de prenda"></div>
+            <div class="admin-field"><input type="text" id="p-price" placeholder="Precio (ej: $15.000)"></div>
+            <div class="admin-field"><input type="text" id="p-img" placeholder="Link de Foto"></div>
+            <button class="btn-admin" onclick="addProduct()">Publicar en Inercia</button>
+        </div>
+
+        <div id="admin-stock" style="margin-top: 40px;"></div>
     </div>
 
     <script>
-        // Datos con memoria en el navegador
-        let products = JSON.parse(localStorage.getItem('inercia_final_db')) || [
-            { name: "Suede Bomber Jacket", price: "$22.900", img: "https://unsplash.com" },
-            { name: "Minimal Silk Shirt", price: "$14.500", img: "https://unsplash.com" },
-            { name: "Luxury Leg Trousers", price: "$18.200", img: "https://unsplash.com" }
+        let db = JSON.parse(localStorage.getItem('inercia_lime_v1')) || [
+            { name: "Black Silk Dress", price: "$28.000", img: "https://unsplash.com" },
+            { name: "Suede Accessories", price: "$12.500", img: "https://unsplash.com" },
+            { name: "Minimal Lingerie", price: "$8.200", img: "https://unsplash.com" }
         ];
 
-        // Lógica de Código Secreto 0110
-        let buffer = "";
-        window.addEventListener('keydown', (e) => {
-            buffer += e.key;
-            if (buffer.includes("0110")) {
-                toggleAdmin();
-                buffer = "";
-            }
-            if (buffer.length > 5) buffer = "";
-        });
+        // Código 0110
+        let keys = "";
+        window.onkeydown = (e) => {
+            keys += e.key;
+            if(keys.includes("0110")) toggleAdmin();
+            if(keys.length > 5) keys = "";
+        }
 
-        function toggleAdmin() {
-            document.getElementById('admin-panel').classList.toggle('open');
+        function toggleAdmin() { document.getElementById('admin-panel').classList.toggle('active'); }
+
+        function updateHero() {
+            const val = document.getElementById('edit-title').value;
+            if(val) document.getElementById('display-title').innerText = val;
         }
 
         function render() {
-            const display = document.getElementById('catalog-display');
-            const list = document.getElementById('stock-list');
-            display.innerHTML = '';
-            list.innerHTML = '<p style="font-size: 10px; color: #ccc; margin-bottom: 15px;">GESTIÓN DE STOCK</p>';
+            const grid = document.getElementById('product-grid');
+            const stock = document.getElementById('admin-stock');
+            grid.innerHTML = '';
+            stock.innerHTML = '<label>Gestión de Stock</label>';
 
-            products.forEach((p, i) => {
-                display.innerHTML += `
-                    <div class="product">
-                        <img src="${p.img}" alt="${p.name}">
-                        <div class="p-info">
-                            <p>${p.name}</p>
-                            <p class="p-price">${p.price}</p>
-                        </div>
+            db.forEach((p, i) => {
+                grid.innerHTML += `
+                    <div class="product-card">
+                        <img src="${p.img}">
+                        <p>${p.name} — ${p.price}</p>
                     </div>
                 `;
-                list.innerHTML += `
+                stock.innerHTML += `
                     <div class="stock-item">
                         <span>${p.name}</span>
-                        <span onclick="deleteItem(${i})" style="color:red; cursor:pointer">Eliminar</span>
+                        <span onclick="deleteItem(${i})" style="color:red; cursor:pointer">X</span>
                     </div>
                 `;
             });
-            localStorage.setItem('inercia_final_db', JSON.stringify(products));
+            localStorage.setItem('inercia_lime_v1', JSON.stringify(db));
         }
 
         function addProduct() {
             const name = document.getElementById('p-name').value;
             const price = document.getElementById('p-price').value;
             const img = document.getElementById('p-img').value;
-            if (name && price && img) {
-                products.push({ name, price, img });
+            if(name && price && img) {
+                db.push({name, price, img});
                 render();
                 document.getElementById('p-name').value = '';
                 document.getElementById('p-price').value = '';
                 document.getElementById('p-img').value = '';
-            } else {
-                alert("Completa todos los campos");
             }
         }
 
-        function deleteItem(i) {
-            if(confirm("¿Eliminar este producto?")) {
-                products.splice(i, 1);
-                render();
-            }
-        }
-
+        function deleteItem(i) { db.splice(i, 1); render(); }
         render();
     </script>
 </body>
