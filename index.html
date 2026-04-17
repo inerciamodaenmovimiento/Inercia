@@ -4,50 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UKRAINIAN BRANDS | Marketplace</title>
-    <!-- Fuente elegante similar a la de la imagen -->
     <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
+        <div class="top-nav">DESKTOP</div>
         <nav>
-            <div class="logo">DESKTOP</div>
-            <ul class="nav-links">
-                <li>Menú</li>
-                <li>Marcas</li>
-                <li onclick="toggleCart()" style="cursor:pointer">Carrito (<span id="cart-count">0</span>)</li>
-            </ul>
+            <div class="menu-icon"><span></span><span></span></div>
+            <div class="nav-links">
+                <span>Marcas</span>
+                <span>Colecciones</span>
+                <span onclick="toggleCart()">Carrito (<span id="cart-count">0</span>)</span>
+            </div>
         </nav>
     </header>
 
     <main>
         <section class="hero">
-            <div class="hero-content">
-                <h1>UKRAINIAN <br> BRANDS:</h1>
-                <p class="subtitle">Diseñadores locales presentan piezas de calidad en un solo lugar.</p>
+            <div class="hero-text">
+                <h1>UKRAINÏS'KI <br> <i>BRENDY:</i></h1>
+                <p class="hero-sub">LOKAL'NI DYZAÏNERY PREZENTUYUT'</p>
             </div>
-            <div class="hero-image">
-                <img src="https://unsplash.com" alt="Featured">
+            <div class="hero-img-main">
+                <img src="https://unsplash.com" alt="">
+            </div>
+            <div class="hero-img-side">
+                <img src="https://unsplash.com" alt="">
             </div>
         </section>
 
-        <h2 class="section-title">COLECCIONES</h2>
-        <section id="catalog" class="product-grid">
-            <!-- JS cargará los productos aquí -->
+        <section class="section-container">
+            <h2 class="label">KOLEKTSÏYI</h2>
+            <div id="catalog" class="product-grid"></div>
         </section>
     </main>
 
-    <!-- Modal del Carrito -->
+    <!-- Panel Admin Invisible -->
+    <div id="admin-panel" class="admin-hidden">
+        <div class="admin-content">
+            <h3>Panel de Control</h3>
+            <p>Ventas totales: <span id="admin-total-sales">$0</span></p>
+            <p>Órdenes realizadas: <span id="admin-orders">0</span></p>
+            <button onclick="closeAdmin()">Cerrar Panel</button>
+        </div>
+    </div>
+
+    <!-- Carrito / Checkout -->
     <div id="cart-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="toggleCart()">&times;</span>
-            <h2>TU SELECCIÓN</h2>
+            <h2>TU ORDEN</h2>
             <div id="cart-items"></div>
-            <div class="cart-total">Total: $<span id="total-price">0</span></div>
+            <div class="total-line">TOTAL: $<span id="total-price">0</span></div>
             <form id="checkout-form">
-                <input type="text" placeholder="NOMBRE" required>
+                <input type="text" placeholder="NOMBRE COMPLETO" required>
                 <input type="text" placeholder="DIRECCIÓN" required>
-                <button type="submit" class="btn-checkout">FINALIZAR COMPRA</button>
+                <button type="submit" class="btn-order">FINALIZAR COMPRA</button>
             </form>
         </div>
     </div>
