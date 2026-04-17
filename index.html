@@ -231,6 +231,109 @@
 
         function save() { localStorage.setItem('inercia_v3', JSON.stringify(db)); }
         refresh();
-    </script>
+    </script><!-- COPIAR DESDE AQUÍ HACIA ABAJO Y PEGAR AL FINAL DE TU ARCHIVO -->
+
+<script>
+    /** 
+     * EXTENSIÓN DE CONTROL DE VENTAS DETALLADAS - INERCIA 
+     * Este código mejora el historial para que puedas ver QUÉ se vendió.
+     */
+
+    // 1. Mejoramos la función de Checkout para que guarde los nombres de los productos
+    const originalCheckout = window.checkout;
+    window.checkout = function() {
+        if(cart.length === 0) return;
+        
+        const total = cart.reduce((a, b) => a + b.p, 0);
+        const nombresProductos = cart.map(p => p.n).join(", ");
+        const fechaVenta = new Date().toLocaleString('es-AR');
+
+        // Guardamos la venta con lujo de detalle
+        db.sales.push({ 
+            d: fechaVenta, 
+            t: total, 
+            items: nombresProductos,
+            cantidad: cart.length 
+        });
+        
+        // Ejecutamos la función original que abre WhatsApp y descuenta stock
+        originalCheckout();
+        renderDetailedHistory(); // Actualizamos la tabla
+    };
+
+    // 2. Creamos una nueva sección visual para el historial detallado
+    function renderDetailedHistory() {
+        const historyContainer = document.getElementById('adm-history-detailed');
+        if (!historyContainer) {
+            // Si no existe el contenedor, lo creamos dinámicamente en el Admin
+            const adminPanel = document.getElementById('view-admin');
+            const historySection = document.createElement('div');
+            historySection.className = "mt-12 p-8 bg-white border border-black/5 rounded-sm shadow-sm";
+            historySection.innerHTML = `
+                <h3 class="serif text-2xl italic mb-6">Control de Ventas Detallado</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-[11px] uppercase tracking-wider">
+                        <thead>
+                            <tr class="border-b border-black">
+                                <th class="py-3 px-2 text-gray-400">Fecha</th>
+                                <th class="py-3 px-2 text-gray-400">Productos Vendidos</th>
+                                <th class="py-3 px-2 text-gray-400 text-right">Monto Total</th>
+                                <th class="py-3 px-2 text-center text-gray-400">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adm-history-rows"></tbody>
+                    </table>
+                </div>
+                <button onclick="clearAllSales()" class="mt-8 text-[9px] text-red-400 hover:text-red-600 font-bold uppercase tracking-widest underline">
+                    Limpiar todo el historial
+                </button>
+            `;
+            adminPanel.appendChild(historySection);
+        }
+
+        const rows = document.getElementById('adm-history-rows');
+        rows.innerHTML = db.sales.length === 0 ? '<tr><td colspan="4" class="py-10 text-center text-gray-300">No hay ventas registradas aún.</td></tr>' : 
+            db.sales.map((sale, index) => `
+            <tr class="border-b border-gray-50 hover:bg-stone-50">
+                <td class="py-4 px-2 font-medium">${sale.d}</td>
+                <td class="py-4 px-2 italic text-gray-500">${sale.items || 'Venta Express'}</td>
+                <td class="py-4 px-2 text-right font-bold">$${sale.t.toLocaleString()}</td>
+                <td class="py-4 px-2 text-center">
+                    <button onclick="deleteSale(${index})" class="text-gray-300 hover:text-red-500">×</button>
+                </td>
+            </tr>
+        `).reverse().join('');
+    }
+
+    // 3. Funciones para borrar registros individuales o todo el historial
+    window.deleteSale = function(index) {
+        if(confirm("¿Eliminar este registro de venta?")) {
+            db.sales.splice(index, 1);
+            localStorage.setItem('inercia_v3', JSON.stringify(db));
+            renderDetailedHistory();
+        }
+    }
+
+    window.clearAllSales = function() {
+        if(confirm("¿Seguro quieres borrar TODO el historial de ventas? Esto no se puede deshacer.")) {
+            db.sales = [];
+            localStorage.setItem('inercia_v3', JSON.stringify(db));
+            renderDetailedHistory();
+        }
+    }
+
+    // 4. Activamos el historial apenas cargue la página
+    const originalRefresh = window.refresh;
+    window.refresh = function() {
+        if(originalRefresh) originalRefresh();
+        renderDetailedHistory();
+    };
+
+    // Lanzar al cargar para asegurar que aparezca en el admin
+    setTimeout(renderDetailedHistory, 500);
+
+</script>
+<!-- FIN DEL PARCHE -->
+
 </body>
 </html>
