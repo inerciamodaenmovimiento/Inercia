@@ -3,14 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultra Fashion | Shop</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Fuente elegante similar a la imagen -->
+    <title>ULTRA | Tienda de Moda</title>
+    
+    <!-- Fuentes elegantes de Google Fonts -->
     <link href="https://googleapis.com" rel="stylesheet">
+
+    <style>
+        /* --- ESTILOS GLOBALES --- */
+        :root {
+            --negro: #1a1a1a;
+            --gris-claro: #f8f8f8;
+            --texto-suave: #666;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--negro);
+            line-height: 1.6;
+        }
+
+        /* --- NAVEGACIÓN --- */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: #fff;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--negro);
+            margin: 0 15px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+
+        /* --- SECCIÓN HERO (IMAGEN PRINCIPAL) --- */
+        .hero {
+            width: 100%;
+            height: 70vh;
+            background: #ddd url('https://unsplash.com') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- CUADRÍCULA DE PRODUCTOS --- */
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: red; /* El detalle de la línea roja de la imagen */
+            margin: 10px auto;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            background-color: var(--gris-claro);
+        }
+
+        .product-card h3 {
+            font-size: 0.85rem;
+            font-weight: 400;
+            margin: 15px 0 5px;
+            text-transform: capitalize;
+        }
+
+        .product-card p {
+            font-size: 0.8rem;
+            color: var(--texto-suave);
+            margin: 0;
+        }
+
+        /* --- SECCIÓN BANNER (COLLECTION) --- */
+        .collection-banner {
+            background-color: #ebebeb;
+            margin: 80px 0;
+            display: flex;
+            align-items: center;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .collection-text {
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .collection-text h2 {
+            font-size: 4rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            letter-spacing: 10px;
+            color: #fff;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* --- RESPONSIVO --- */
+        @media (max-width: 768px) {
+            nav { display: none; } /* Oculta menú en móvil para simplificar */
+            .collection-text h2 { font-size: 2.5rem; }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Header / Nav -->
+    <!-- Cabecera -->
     <header>
         <div class="logo">ULTRA</div>
         <nav>
@@ -22,104 +161,42 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <!-- Aquí iría tu imagen de fondo principal -->
-    </section>
+    <!-- Imagen Principal -->
+    <section class="hero"></section>
 
-    <!-- New Arrivals Grid -->
-    <section class="container">
+    <!-- Productos -->
+    <div class="container">
         <h2 class="section-title">New Arrivals</h2>
         <div class="product-grid">
-            <!-- Producto 1 -->
             <div class="product-card">
-                <img src="https://placeholder.com" alt="Producto">
+                <img src="https://unsplash.com" alt="Moda">
                 <h3>Brown Long Blouse</h3>
                 <p>NT$1299</p>
             </div>
-            <!-- Repetir para otros productos -->
+            <div class="product-card">
+                <img src="https://unsplash.com" alt="Moda">
+                <h3>Grey Check Long Coat</h3>
+                <p>NT$1299</p>
+            </div>
+            <div class="product-card">
+                <img src="https://unsplash.com" alt="Moda">
+                <h3>White Casual Suit</h3>
+                <p>NT$1299</p>
+            </div>
+            <div class="product-card">
+                <img src="https://unsplash.com" alt="Moda">
+                <h3>Beige Sweater</h3>
+                <p>NT$1299</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banner Central -->
+    <section class="collection-banner">
+        <div class="collection-text">
+            <h2>COLLECTION</h2>
         </div>
     </section>
 
 </body>
-</html>:root {
-    --black: #1a1a1a;
-    --gray: #f4f4f4;
-    --text-light: #666;
-}
-
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    color: var(--black);
-}
-
-/* Header */
-header {
-    padding: 2rem;
-    text-align: center;
-}
-
-.logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    letter-spacing: 5px;
-    margin-bottom: 1rem;
-}
-
-nav a {
-    text-decoration: none;
-    color: var(--black);
-    margin: 0 15px;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-}
-
-/* Hero Section */
-.hero {
-    height: 80vh;
-    background: url('tu-imagen-principal.jpg') center/cover no-repeat;
-    background-color: #ddd; /* Placeholder */
-}
-
-/* Grid de Productos */
-.container {
-    padding: 4rem 10%;
-    text-align: center;
-}
-
-.section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    margin-bottom: 3rem;
-}
-
-.product-grid {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.product-card {
-    flex: 1;
-    min-width: 200px;
-}
-
-.product-card img {
-    width: 100%;
-    height: auto;
-    filter: grayscale(20%); /* Efecto sutil de la imagen */
-}
-
-.product-card h3 {
-    font-size: 0.9rem;
-    font-weight: 400;
-    margin-top: 15px;
-}
-
-.product-card p {
-    color: var(--text-light);
-    font-size: 0.8rem;
-}
-
+</html>
