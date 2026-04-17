@@ -1,44 +1,49 @@
-    <!-- SECCIÓN DE COLECCIÓN (BANNER GRIS) -->
-    <section id="collection" style="background-color: #ebebeb; margin: 80px 0; padding: 100px 0; text-align: center; position: relative;">
-        <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-            <h2 style="font-size: clamp(3rem, 10vw, 6rem); font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: 20px; color: #fff; text-transform: uppercase; margin: 0;">
-                COLLECTION
-            </h2>
-            <a href="#" style="margin-top: -20px; padding: 10px 30px; border: 1px solid #1a1a1a; text-decoration: none; color: #1a1a1a; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; background: transparent; transition: 0.3s;" onmouseover="this.style.background='#1a1a1a'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='#1a1a1a'">
-                VER MÁS
-            </a>
-        </div>
-    </section>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inercia | Administrador</title>
+  <!-- Widget de Identidad para el Login -->
+  </script>
+</head>
+<body>
+  <!-- El script que genera la interfaz del Admin -->
+  <script src="https://unpkg.com@^3.0.0/dist/decap-cms.js"></script>
+</body>
+</html>
+backend:
+  name: git-gateway
+  branch: main # Asegúrate de que tu rama se llame main
 
-    <!-- FOOTER DETALLADO -->
-    <footer style="background: #fff; padding: 80px 10% 40px; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;">
-        <div style="font-size: 0.75rem;">
-            <h4 style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">Sobre Inercia</h4>
-            <ul style="list-style: none; padding: 0; line-height: 2; color: #666;">
-                <li>Nuestra Historia</li>
-                <li>Moda en Movimiento</li>
-                <li>Sustentabilidad</li>
-            </ul>
-        </div>
-        <div style="font-size: 0.75rem;">
-            <h4 style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">Servicio al Cliente</h4>
-            <ul style="list-style: none; padding: 0; line-height: 2; color: #666;">
-                <li>Métodos de Envío</li>
-                <li>Cambios y Devoluciones</li>
-                <li>Guía de Talles</li>
-            </ul>
-        </div>
-        <div style="font-size: 0.75rem;">
-            <h4 style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">Contacto</h4>
-            <ul style="list-style: none; padding: 0; line-height: 2; color: #666;">
-                <li>Email: contacto@inercia.com</li>
-                <li>Tel: +54 11 0000-0000</li>
-                <li>Buenos Aires, Argentina</li>
-            </ul>
-        </div>
-        
-        <!-- COPYRIGHT -->
-        <div style="grid-column: 1 / -1; text-align: center; border-top: 1px solid #eee; padding-top: 40px; margin-top: 40px; font-size: 0.65rem; color: #999; letter-spacing: 1px;">
-            PRIVACY POLICY | TERMS & CONDITIONS | 2024 © INERCIA MODA EN MOVIMIENTO
-        </div>
-    </footer>
+media_folder: "images/uploads" # Donde se guardarán tus fotos
+public_folder: "/images/uploads"
+
+collections:
+  - name: "productos"
+    label: "Productos"
+    folder: "content/productos"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nombre del Producto", name: "title", widget: "string"}
+      - {label: "Precio", name: "price", widget: "number"}
+      - {label: "Stock Disponible", name: "stock", widget: "number"}
+      - {label: "Descripción Detallada", name: "body", widget: "markdown"}
+      - {label: "Categoría", name: "category", widget: "select", options: ["New Arrival", "Jacket", "Clothes", "Sale"]}
+      - label: "Carrusel de Fotos"
+        name: "gallery"
+        widget: "list"
+        fields:
+          - {label: "Imagen", name: "image", widget: "image"}
+
+  - name: "configuracion"
+    label: "Configuración de Página"
+    files:
+      - label: "Banners y Textos"
+        name: "home"
+        file: "content/home.yml"
+        fields:
+          - {label: "Título Banner Principal", name: "hero_title", widget: "string"}
+          - {label: "Imagen Hero", name: "hero_image", widget: "image"}
+          - {label: "Texto Colección Central", name: "collection_text", widget: "string"}
