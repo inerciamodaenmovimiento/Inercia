@@ -3,194 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Brand Identity</title>
-    <!-- Tipografía de Lujo: Playfair Display y Montserrat -->
+    <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #f4f3f0; --text: #1a1a1a; --line: rgba(0,0,0,0.08); }
+        :root { --bg: #f4f3f0; --text: #1a1a1a; --line: rgba(0,0,0,0.08); --accent: #8b7355; }
         * { box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
 
-        /* --- NAV BEHANCE STYLE --- */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 40px 8%; border-bottom: 1px solid var(--line); }
-        .logo { font-family: 'Playfair Display', serif; font-size: 28px; letter-spacing: 6px; text-transform: uppercase; font-weight: 700; }
-        .nav-links { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; display: flex; gap: 40px; }
-        .cart-count { border-bottom: 1px solid #000; cursor: pointer; }
+        /* --- ESTÉTICA CORAL (BEHANCE) --- */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 40px 8%; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 1000; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 32px; letter-spacing: 8px; font-weight: 700; cursor: pointer; }
+        .nav-link { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; border-bottom: 1px solid transparent; transition: 0.3s; }
+        .nav-link:hover { border-bottom: 1px solid #000; }
 
-        /* --- HERO (SUPERPOSICIONES) --- */
-        .hero { display: grid; grid-template-columns: 1fr 1.2fr; height: 90vh; align-items: center; padding: 0 8%; gap: 50px; position: relative; }
-        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 6rem; line-height: 0.9; margin: 0; }
-        .hero-text p { font-size: 12px; line-height: 2; color: #666; max-width: 300px; margin-top: 40px; }
-        .hero-img-box { position: relative; height: 80%; }
-        .hero-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
-        .floating-label { position: absolute; bottom: -20px; left: -40px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 4rem; color: var(--bg); -webkit-text-stroke: 1px #000; opacity: 0.3; }
+        /* Grid Editorial */
+        .catalog-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 100px; padding: 120px 15%; }
+        .product-card { cursor: pointer; text-align: center; position: relative; }
+        .product-card img { width: 100%; height: 650px; object-fit: cover; filter: grayscale(1); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .product-card:hover img { filter: grayscale(0); transform: scale(1.02); }
+        .p-info { margin-top: 30px; }
+        .p-name { font-family: 'Playfair Display', serif; font-size: 18px; text-transform: uppercase; letter-spacing: 3px; }
+        .p-price { font-size: 12px; margin-top: 10px; color: #888; }
 
-        /* --- GRILLA DE PRODUCTOS (LIMPIEZA TOTAL) --- */
-        .catalog { display: grid; grid-template-columns: repeat(2, 1fr); gap: 100px; padding: 150px 15%; }
-        .product-card { cursor: pointer; position: relative; }
-        .product-card img { width: 100%; height: 650px; object-fit: cover; filter: grayscale(1); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
-        .product-card:hover img { filter: grayscale(0); }
-        .p-info { margin-top: 30px; text-align: center; }
-        .p-name { font-family: 'Playfair Display', serif; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
-        .p-price { font-size: 12px; margin-top: 10px; color: #888; letter-spacing: 1px; }
+        /* --- MODAL DE PRODUCTO (GUÍA AL CLIENTE) --- */
+        #product-modal { display: none; position: fixed; inset: 0; background: rgba(244,243,240,0.98); z-index: 2000; align-items: center; justify-content: center; padding: 40px; }
+        .modal-content { display: grid; grid-template-columns: 1fr 1fr; max-width: 1100px; background: #fff; box-shadow: 0 50px 100px rgba(0,0,0,0.05); }
+        .m-details { padding: 80px; display: flex; flex-direction: column; justify-content: center; }
+        .m-title { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin: 0; line-height: 1; }
+        .size-selector { display: flex; gap: 15px; margin: 30px 0; }
+        .size-btn { border: 1px solid #eee; padding: 10px 15px; font-size: 10px; cursor: pointer; transition: 0.3s; }
+        .size-btn.active { background: #000; color: #fff; border-color: #000; }
+        .btn-add { background: #000; color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; letter-spacing: 4px; font-size: 11px; text-transform: uppercase; margin-top: 20px; }
 
-        /* --- CARRITO & MODAL --- */
-        #cart-panel { position: fixed; top: 0; right: -100%; width: 450px; height: 100vh; background: #fff; z-index: 2000; box-shadow: -20px 0 60px rgba(0,0,0,0.05); transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1); padding: 60px; }
-        #p-modal { display: none; position: fixed; inset: 0; background: rgba(244,243,240,0.98); z-index: 1500; align-items: center; justify-content: center; padding: 40px; }
-        .modal-inner { display: grid; grid-template-columns: 1fr 1fr; max-width: 1100px; background: #fff; }
+        /* --- CARRITO ESTRUCTURADO --- */
+        #cart-panel { position: fixed; top: 0; right: -100%; width: 450px; height: 100vh; background: #fff; z-index: 3000; box-shadow: -20px 0 60px rgba(0,0,0,0.1); transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1); padding: 60px; overflow-y: auto; }
+        .cart-item { display: flex; gap: 20px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee; font-size: 12px; }
+        .cart-item img { width: 70px; height: 90px; object-fit: cover; }
+        .checkout-summary { margin-top: 40px; border-top: 2px solid #000; padding-top: 30px; font-size: 12px; }
 
-        /* --- ADMIN PRO SIDEBAR --- */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 450px; height: 100vh; background: #fff; z-index: 3000; border-right: 1px solid #000; padding: 40px; overflow-y: auto; font-size: 11px; }
-        .admin-sec { margin-bottom: 40px; }
-        input, textarea, select { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #eee; font-family: 'Montserrat'; background: #fafafa; }
-        .btn-black { background: #000; color: #fff; border: none; padding: 18px; width: 100%; cursor: pointer; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-top: 20px; }
-        
-        #secret-door { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; cursor: pointer; opacity: 0; z-index: 4000; }
+        /* --- ADMIN PRO (0110) --- */
+        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 500px; height: 100vh; background: #fff; z-index: 4000; border-right: 1px solid #000; padding: 40px; overflow-y: auto; }
+        .admin-nav { display: flex; gap: 20px; border-bottom: 1px solid #eee; margin-bottom: 30px; }
+        .admin-nav span { cursor: pointer; font-size: 10px; padding-bottom: 10px; opacity: 0.5; text-transform: uppercase; }
+        .admin-nav span.active { opacity: 1; border-bottom: 2px solid #000; }
+        .admin-tab { display: none; }
+        .admin-tab.active { display: block; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #eee; font-family: 'Montserrat'; background: #fafafa; font-size: 12px; }
+        .btn-black { background: #000; color: #fff; border: none; padding: 18px; width: 100%; cursor: pointer; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; }
+
+        #secret-door { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: pointer; opacity: 0; z-index: 5000; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="nav-links"><span>Collection</span><span>About</span></div>
-        <div class="logo">INERCIA</div>
-        <div class="nav-links"><span class="cart-count" onclick="toggleCart(true)">Cart (<span id="c-qty">0</span>)</span></div>
+        <div class="nav-link" onclick="location.href='#catalog'">Collection</div>
+        <div class="logo" onclick="window.scrollTo(0,0)">INERCIA</div>
+        <div class="nav-link" onclick="toggleCart(true)">Cart (<span id="cart-count">0</span>)</div>
     </nav>
 
-    <section class="hero">
-        <div class="hero-text">
-            <h1 id="h-title">Essence<br>Motion</h1>
-            <p id="h-desc">Una exploración visual de la inercia a través de cortes arquitectónicos y textiles de origen ético.</p>
-        </div>
-        <div class="hero-img-box">
-            <img id="h-img" src="https://unsplash.com" class="hero-img">
-            <div class="floating-label">Inercia</div>
-        </div>
-    </section>
+    <div class="catalog-container" id="catalog">
+        <!-- Los productos aparecerán aquí -->
+    </div>
 
-    <div class="catalog" id="main-grid">
-        <!-- Los productos aparecerán con el espaciado de Behance -->
+    <!-- MODAL DETALLE PRODUCTO -->
+    <div id="product-modal">
+        <div class="modal-content">
+            <img id="m-img" style="width:100%; height:750px; object-fit:cover;">
+            <div class="m-details">
+                <span onclick="closeModal()" style="align-self:flex-end; cursor:pointer; margin-bottom:40px;">&times; Close</span>
+                <h2 id="m-title" class="m-title">Producto</h2>
+                <div id="m-price" style="margin-top:20px; font-size:20px; color:#888; font-weight:300;">$0</div>
+                
+                <label style="font-size:10px; margin-top:40px; display:block; letter-spacing:2px;">SELECT SIZE</label>
+                <div class="size-selector" id="m-sizes">
+                    <!-- Talles dinámicos -->
+                </div>
+
+                <p id="m-desc" style="font-size:13px; line-height:2.2; color:#666; margin:40px 0;"></p>
+                <button class="btn-add" onclick="addToCart()">Add to Bag</button>
+            </div>
+        </div>
     </div>
 
     <!-- PANEL CARRITO -->
     <div id="cart-panel">
-        <h2 style="font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:50px;">Shopping Bag</h2>
-        <div id="cart-list" style="margin-bottom:50px;">El carrito está vacío.</div>
-        <div style="border-top:1px solid #eee; padding-top:30px;">
-            <div style="display:flex; justify-content:space-between; font-weight:400; font-size:20px;">
-                <span>Total</span> <span id="cart-total">$0</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:60px;">
+            <h2 style="font-family:'Playfair Display'; font-size:2.5rem; margin:0;">Shopping Bag</h2>
+            <span onclick="toggleCart(false)" style="cursor:pointer; font-size:20px;">&times;</span>
+        </div>
+        <div id="cart-list">Your bag is empty.</div>
+        
+        <div class="checkout-summary">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                <span>Subtotal</span> <span id="cart-total">$0</span>
             </div>
-            <button class="btn-black" onclick="alert('Checkout funcional registrado en Admin')">Complete Purchase</button>
-            <p onclick="toggleCart(false)" style="text-align:center; font-size:10px; cursor:pointer; margin-top:30px; letter-spacing:2px;">Back to Shop</p>
+            <div style="display:flex; justify-content:space-between; margin-bottom:30px; color:#888;">
+                <span>Shipping</span> <span id="ship-info">To be calculated</span>
+            </div>
+            <label style="font-size:9px; letter-spacing:1px;">PAYMENT METHODS:</label>
+            <p id="pay-info" style="font-size:11px; margin-top:10px; color:#888;">Configure in Admin</p>
+            <button class="btn-black" style="margin-top:30px;" onclick="checkout()">Complete Order</button>
         </div>
     </div>
 
-    <!-- MODAL PRODUCTO -->
-    <div id="p-modal">
-        <div class="modal-inner">
-            <img id="m-img" style="width:100%; height:750px; object-fit:cover;">
-            <div style="padding:80px; display:flex; flex-direction:column; justify-content:center; position:relative;">
-                <span onclick="closeModal()" style="position:absolute; top:40px; right:40px; cursor:pointer; font-size:20px;">&times;</span>
-                <h2 id="m-name" style="font-family:'Playfair Display'; font-size:3rem; margin:0;"></h2>
-                <div id="m-price" style="font-size:18px; margin:30px 0; font-weight:300; color:#888;"></div>
-                <p id="m-desc" style="font-size:13px; line-height:2.2; color:#666; margin-bottom:50px;"></p>
-                <button class="btn-black" onclick="addToCart()">Add to Bag</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ADMIN PRO (0110) -->
+    <!-- PANEL ADMIN (0110) -->
     <div id="secret-door" onclick="login()"></div>
     <div id="admin-panel">
-        <h2 style="font-family:'Playfair Display'; font-size:2rem; border-bottom:1px solid #000; padding-bottom:20px;">Inercia Control</h2>
-        
-        <div class="admin-sec">
-            <h4>Inventory Management</h4>
-            <label>Product Image:</label><input type="file" id="a-file" accept="image/*">
-            <label>Product Name:</label><input type="text" id="a-name">
-            <label>Price:</label><input type="number" id="a-price">
-            <label>Description:</label><textarea id="a-desc" rows="4"></textarea>
-            <button class="btn-black" onclick="publish()" style="background:#1a1a1a">Publish to Shop</button>
-            
-            <h5 style="margin-top:30px;">Active Checklist (Baja)</h5>
-            <div id="a-checklist" style="background:#f9f9f9; padding:15px;"></div>
+        <h2 style="font-family:'Playfair Display'; font-size:2.2rem; margin-bottom:10px;">Inercia Admin</h2>
+        <div class="admin-nav">
+            <span class="active" onclick="switchTab(0)">Inventory</span>
+            <span onclick="switchTab(1)">Orders</span>
+            <span onclick="switchTab(2)">Store Settings</span>
         </div>
 
-        <div class="admin-sec">
-            <h4>Order History</h4>
-            <div id="a-orders" style="background:#f4f4f4; padding:15px; font-family:monospace;">No orders yet.</div>
+        <!-- Tab 0: Inventario -->
+        <div class="admin-tab active">
+            <label>Image:</label><input type="file" id="p-file" accept="image/*">
+            <label>Name:</label><input type="text" id="p-name">
+            <label>Price:</label><input type="number" id="p-price">
+            <label>Sizes (Separated by comma):</label><input type="text" id="p-sizes" placeholder="S, M, L, XL">
+            <label>Description:</label><textarea id="p-desc" rows="4"></textarea>
+            <button class="btn-black" onclick="publish()">Publish Product</button>
+            <h4 style="margin-top:40px; font-size:10px; letter-spacing:2px;">ACTIVE PRODUCTS (BAJA)</h4>
+            <div id="admin-checklist" style="margin-top:20px;"></div>
         </div>
 
-        <button class="btn-black" onclick="exportHTML()" style="background:#8b7355">Export index.html</button>
-        <button onclick="location.reload()" style="width:100%; border:none; background:none; color:red; margin-top:40px; cursor:pointer; font-size:9px; letter-spacing:2px;">Close Session</button>
+        <!-- Tab 1: Pedidos -->
+        <div class="admin-tab">
+            <div id="admin-orders" style="background:#f9f9f9; padding:20px; font-size:11px;">No orders recorded.</div>
+        </div>
+
+        <!-- Tab 2: Configuración -->
+        <div class="admin-tab">
+            <label>Shipping Information:</label><input type="text" id="conf-ship" oninput="document.getElementById('ship-info').innerText=this.value">
+            <label>Payment Methods:</label><textarea id="conf-pay" oninput="document.getElementById('pay-info').innerText=this.value"></textarea>
+            <button class="btn-black" onclick="alert('Configuración guardada en vista previa')">Update Texts</button>
+        </div>
+
+        <button class="btn-black" onclick="exportHTML()" style="background:#8b7355; margin-top:40px;">Export index.html</button>
     </div>
 
     <script>
         let cart = [];
-        let tempProd = null;
+        let curProd = null;
+        let selectedSize = null;
 
-        function login() { if(prompt("Access:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
+        function login() { if(prompt("Access Code:") === "0110") document.getElementById('admin-panel').style.display = 'block'; }
+        
+        function switchTab(n) {
+            document.querySelectorAll('.admin-nav span').forEach((s, i) => s.className = i === n ? 'active' : '');
+            document.querySelectorAll('.admin-tab').forEach((t, i) => t.className = i === n ? 'admin-tab active' : 'admin-tab');
+        }
 
         async function publish() {
-            const f = document.getElementById('a-file').files;
-            const n = document.getElementById('a-name').value;
-            const p = document.getElementById('a-price').value;
-            const d = document.getElementById('a-desc').value;
+            const f = document.getElementById('p-file').files;
+            const n = document.getElementById('p-name').value;
+            const p = document.getElementById('p-price').value;
+            const s = document.getElementById('p-sizes').value;
+            const d = document.getElementById('p-desc').value;
 
-            if(!f[0] || !n) return alert("Missing data");
+            if(!f || !n) return alert("Data missing");
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 const id = "p" + Date.now();
                 const img = e.target.result;
                 const html = `
-                    <div class="product-card" id="${id}" onclick="openModal('${n}', ${p}, '${img}', '${d}')">
+                    <div class="product-card" id="${id}" onclick="openModal('${n}', ${p}, '${img}', '${d}', '${s}')">
                         <img src="${img}">
                         <div class="p-info"><div class="p-name">${n}</div><div class="p-price">$${p}</div></div>
                     </div>`;
-                document.getElementById('main-grid').insertAdjacentHTML('beforeend', html);
+                document.getElementById('catalog').insertAdjacentHTML('beforeend', html);
                 
-                // Baja Checklist
-                const check = `<div id="log-${id}" style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>${n}</span> <span onclick="baja('${id}')" style="color:red; cursor:pointer;">[X]</span></div>`;
-                document.getElementById('a-checklist').insertAdjacentHTML('beforeend', check);
+                // Checklist Admin
+                const check = `<div id="check-${id}" style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;"><span>${n}</span> <span onclick="baja('${id}')" style="color:red; cursor:pointer;">[BAJA]</span></div>`;
+                document.getElementById('admin-checklist').insertAdjacentHTML('beforeend', check);
             };
             reader.readAsDataURL(f[0]);
         }
 
         function baja(id) {
             document.getElementById(id).remove();
-            document.getElementById('log-' + id).remove();
+            document.getElementById('check-' + id).remove();
         }
 
-        function openModal(n, p, i, d) {
+        function openModal(n, p, i, d, s) {
             if(document.getElementById('admin-panel').style.display === 'block') return;
-            tempProd = { n, p, i, d };
-            document.getElementById('m-name').innerText = n;
+            curProd = { n, p, i, d, s };
+            selectedSize = null;
+            document.getElementById('m-title').innerText = n;
             document.getElementById('m-price').innerText = "$" + p;
             document.getElementById('m-img').src = i;
             document.getElementById('m-desc').innerText = d;
-            document.getElementById('p-modal').style.display = 'flex';
+            
+            const sizesDiv = document.getElementById('m-sizes');
+            sizesDiv.innerHTML = "";
+            s.split(',').forEach(size => {
+                const btn = document.createElement('div');
+                btn.className = 'size-btn';
+                btn.innerText = size.trim();
+                btn.onclick = function() {
+                    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedSize = this.innerText;
+                };
+                sizesDiv.appendChild(btn);
+            });
+            document.getElementById('product-modal').style.display = 'flex';
         }
 
-        function closeModal() { document.getElementById('p-modal').style.display = 'none'; }
+        function closeModal() { document.getElementById('product-modal').style.display = 'none'; }
         function toggleCart(s) { document.getElementById('cart-panel').style.right = s ? '0' : '-100%'; }
 
         function addToCart() {
-            cart.push(tempProd);
-            updateCart();
+            if(!selectedSize) return alert("Please select a size");
+            cart.push({ ...curProd, size: selectedSize });
+            updateCartUI();
             closeModal();
             toggleCart(true);
         }
 
-        function updateCart() {
+        function updateCartUI() {
             const list = document.getElementById('cart-list');
             list.innerHTML = "";
-            let t = 0;
-            cart.forEach((x, i) => {
-                t += parseInt(x.p);
-                list.innerHTML += `<div style="display:flex; gap:20px; margin-bottom:20px;"><img src="${x.i}" width="50"><div style="font-size:11px;"><b>${x.n}</b><br>$${x.p}</div></div>`;
+            let total = 0;
+            cart.forEach((item, i) => {
+                total += parseInt(item.p);
+                list.innerHTML += `<div class="cart-item"><img src="${item.i}"><div><b>${item.n}</b><br>Size: ${item.size}<br>$${item.p}<br><span onclick="removeCart(${i})" style="color:red; font-size:10px; cursor:pointer;">Remove</span></div></div>`;
             });
-            document.getElementById('c-qty').innerText = cart.length;
-            document.getElementById('cart-total').innerText = "$" + t;
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-total').innerText = "$" + total;
+        }
+
+        function removeCart(i) { cart.splice(i, 1); updateCartUI(); }
+
+        function checkout() {
+            if(cart.length === 0) return;
+            const orders = document.getElementById('admin-orders');
+            if(orders.innerText === "No orders recorded.") orders.innerHTML = "";
+            const id = Date.now();
+            const detail = cart.map(x => `${x.n} (${x.size})`).join(', ');
+            orders.innerHTML += `<div style="border-bottom:1px solid #ddd; padding:10px; margin-bottom:10px;"><b>Order #${id}</b><br>${detail}<br>Total: $${document.getElementById('cart-total').innerText}</div>`;
+            alert("Order completed. Check Admin History.");
+            cart = []; updateCartUI(); toggleCart(false);
         }
 
         function exportHTML() {
