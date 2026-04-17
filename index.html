@@ -6,160 +6,189 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #e8e6e1; --text: #1a1a1a; --border: rgba(0,0,0,0.1); }
+        :root { --bg: #e8e6e1; --text: #1a1a1a; --accent: #27ae60; }
         body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        /* Efecto de Grano Vintage */
-        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url(https://vercel.app); opacity: 0.05; pointer-events: none; z-index: 1000; }
-
-        /* Navegación */
-        nav { display: flex; justify-content: space-around; align-items: center; padding: 20px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+        /* ESTILO VINTAGE EDITORIAL */
+        nav { display: flex; justify-content: space-around; align-items: center; padding: 30px; border-bottom: 1px solid rgba(0,0,0,0.1); background: var(--bg); position: sticky; top: 0; z-index: 100; }
         .logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; letter-spacing: 10px; }
+        
+        .hero { height: 70vh; position: relative; background: #000; display: flex; align-items: center; justify-content: center; }
+        .hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.6; filter: sepia(20%); }
+        .hero-text { position: relative; color: #fff; text-align: center; z-index: 2; }
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin: 0; letter-spacing: 5px; }
 
-        /* Hero Section - Estilo Imagen */
-        .hero { height: 90vh; position: relative; background: #000; display: flex; align-items: flex-end; padding: 80px 10%; box-sizing: border-box; }
-        .hero img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.7; filter: sepia(30%) grayscale(20%); }
-        .hero-text { position: relative; color: #fff; z-index: 2; }
-        .hero-text h2 { font-family: 'Playfair Display', serif; font-size: 3rem; margin: 0; letter-spacing: 5px; }
-        .hero-text span { font-size: 12px; letter-spacing: 5px; text-transform: uppercase; opacity: 0.8; }
+        /* CATÁLOGO */
+        .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; padding: 80px 10%; }
+        .p-card { background: none; cursor: pointer; transition: 0.3s; position: relative; }
+        .p-card img { width: 100%; height: 400px; object-fit: cover; filter: grayscale(20%); transition: 0.5s; }
+        .p-card:hover img { filter: grayscale(0%); transform: scale(1.02); }
+        .p-info { margin-top: 15px; display: flex; justify-content: space-between; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-del { position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 5px 10px; cursor: pointer; z-index: 10; display: none; }
 
-        /* Sección Numérica 01 02 03 */
-        .categories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 100px 10%; text-align: center; }
-        .cat-item span { font-size: 10px; color: #888; display: block; margin-bottom: 20px; }
-        .cat-item img { width: 100%; height: 400px; object-fit: cover; filter: grayscale(100%); transition: 0.5s; }
-        .cat-item img:hover { filter: grayscale(0%); }
-        .cat-item h3 { font-family: 'Playfair Display', serif; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 5px; margin-top: 20px; }
+        /* VISTA DETALLADA (MODAL) */
+        #product-modal { display: none; position: fixed; inset: 0; background: rgba(232, 230, 225, 0.98); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { display: grid; grid-template-columns: 1fr 1fr; max-width: 1000px; background: white; box-shadow: 0 50px 100px rgba(0,0,0,0.1); position: relative; }
+        .modal-img { width: 100%; height: 600px; object-fit: cover; }
+        .modal-details { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .modal-details h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin: 0; }
+        .modal-details .price { font-size: 1.5rem; margin: 20px 0; font-weight: 300; }
+        .modal-details .desc { font-size: 0.9rem; line-height: 1.8; color: #666; margin-bottom: 30px; }
+        .btn-buy { background: black; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; letter-spacing: 2px; }
+        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 30px; cursor: pointer; }
 
-        /* Frase Mágica */
-        .quote-section { background: #dcd9d2; padding: 150px 10%; text-align: center; position: relative; }
-        .quote-section h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; line-height: 1.2; font-weight: 400; }
-        .quote-section h2 i { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; }
+        /* PANEL ADMIN */
+        #admin-panel { display: none; position: fixed; top: 0; right: 0; width: 420px; height: 100vh; background: white; z-index: 3000; box-shadow: -10px 0 50px rgba(0,0,0,0.1); padding: 30px; overflow-y: auto; }
+        .admin-sec { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        label { display: block; font-weight: 600; font-size: 11px; text-transform: uppercase; margin-top: 15px; color: #888; }
+        input, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; box-sizing: border-box; }
+        .btn-admin { background: black; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        #secret-trigger { position: fixed; bottom: 10px; right: 10px; width: 20px; height: 20px; opacity: 0; cursor: pointer; z-index: 4000; }
 
-        /* Catálogo de Productos */
-        .catalog { padding: 100px 10%; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; }
-        .product-card { border: 1px solid var(--border); padding: 15px; }
-        .product-card img { width: 100%; height: 350px; object-fit: cover; filter: sepia(20%); }
-        .p-info { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; font-size: 11px; }
-
-        /* Panel Admin Secreto (0110) */
-        #admin-panel { display: none; position: fixed; right: 0; top: 0; width: 380px; height: 100vh; background: #fff; z-index: 10001; padding: 30px; box-shadow: -10px 0 50px rgba(0,0,0,0.2); overflow-y: auto; font-size: 12px; }
-        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
-        .btn-black { background: #000; color: #fff; border: none; width: 100%; padding: 15px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
-        #secret-btn { position: fixed; bottom: 10px; right: 10px; width: 20px; height: 20px; opacity: 0; cursor: pointer; z-index: 10000; }
+        @media (max-width: 768px) { .modal-content { grid-template-columns: 1fr; } .modal-img { height: 300px; } .modal-details { padding: 30px; } }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div>Inercia</div>
-        <div class="logo">INERCIA</div>
-        <div>Contacto</div>
-    </nav>
+    <nav><div class="logo" id="txt-logo">INERCIA</div></nav>
 
     <section class="hero">
         <img id="h-img" src="https://unsplash.com">
         <div class="hero-text">
-            <span id="h-sub">Miracle Collection</span>
-            <h2 id="h-title">EXPLORE NOW</h2>
+            <h1 id="h-title">MODA EN MOVIMIENTO</h1>
+            <p id="h-sub">Colección Editorial 2026</p>
         </div>
     </section>
 
-    <section class="categories">
-        <div class="cat-item">
-            <span>01</span>
-            <img src="https://unsplash.com">
-            <h3>Nuestros Bestsellers</h3>
+    <div id="catalog" class="catalog">
+        <!-- Productos ejemplo -->
+    </div>
+
+    <!-- VISTA DETALLADA -->
+    <div id="product-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProduct()">&times;</span>
+            <img id="m-img" class="modal-img">
+            <div class="modal-details">
+                <h2 id="m-title">Producto</h2>
+                <div class="price" id="m-price">$0</div>
+                <p class="desc" id="m-desc">Descripción detallada aquí...</p>
+                <p style="font-size: 11px; margin-bottom: 10px;">STOCK DISPONIBLE: <span id="m-stock">0</span> UNIDADES</p>
+                <button class="btn-buy" onclick="alert('Funcionalidad de compra en desarrollo')">AÑADIR AL CARRITO</button>
+            </div>
         </div>
-        <div class="cat-item">
-            <span>02</span>
-            <img src="https://unsplash.com">
-            <h3>Productos Destacados</h3>
-        </div>
-        <div class="cat-item">
-            <span>03</span>
-            <img src="https://unsplash.com">
-            <h3>Todas las Colecciones</h3>
-        </div>
-    </section>
+    </div>
 
-    <section class="quote-section">
-        <h2 id="q-text">DONDE HAY <i>Movimiento</i>,<br>HAY MAGIA</h2>
-    </section>
+    <div id="secret-trigger" onclick="openAdmin()"></div>
 
-    <section class="catalog" id="main-catalog">
-        <!-- Productos aquí -->
-    </section>
-
-    <section style="padding: 100px 10%; border-top: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; text-align: center;">
-        <div id="info-e">Envíos a todo el país</div>
-        <div id="info-p" style="margin-top: 10px;">Pagos con tarjetas y transferencias</div>
-    </section>
-
-    <!-- ACCESO INVISIBLE -->
-    <div id="secret-btn" onclick="openAdmin()"></div>
-
+    <!-- PANEL ADMIN -->
     <div id="admin-panel">
-        <h2 style="font-family:'Playfair Display'">Inercia Admin</h2>
-        <hr>
-        <label>Banner Hero (Foto):</label><input type="file" id="in-h-img" accept="image/*">
-        <label>Título Hero:</label><input type="text" id="in-h-title">
-        <label>Frase Mágica:</label><textarea id="in-quote"></textarea>
+        <h2 style="font-family:'Playfair Display'">Inercia Manager</h2>
         
-        <hr>
-        <h4>SUBIR PRODUCTO</h4>
-        <input type="file" id="p-img" accept="image/*">
-        <input type="text" id="p-name" placeholder="Nombre">
-        <input type="text" id="p-price" placeholder="Precio ($)">
-        <input type="number" id="p-stock" placeholder="Stock">
-        <button class="btn-black" onclick="addProduct()" style="background:#27ae60">Añadir al Catálogo</button>
+        <div class="admin-sec">
+            <h4>CONTENIDO HOME</h4>
+            <label>Título:</label><input type="text" id="in-h-title">
+            <label>Banner Hero:</label><input type="file" id="in-h-file" accept="image/*">
+        </div>
 
-        <hr>
-        <button class="btn-black" onclick="saveAll()">Guardar Cambios</button>
-        <button onclick="document.getElementById('admin-panel').style.display='none'" style="width:100%; border:none; background:none; color:red; margin-top:20px; cursor:pointer;">Cerrar</button>
+        <div class="admin-sec">
+            <h4>NUEVA PRENDA</h4>
+            <label>Foto:</label><input type="file" id="p-img" accept="image/*">
+            <label>Nombre:</label><input type="text" id="p-name">
+            <label>Precio:</label><input type="number" id="p-price">
+            <label>Stock:</label><input type="number" id="p-stock">
+            <label>Descripción Detallada:</label>
+            <textarea id="p-desc" rows="4" placeholder="Habla sobre la tela, el corte, etc."></textarea>
+            <button class="btn-admin" onclick="addProduct()" style="background:#27ae60">SUBIR A LA WEB</button>
+        </div>
+
+        <div class="admin-sec">
+            <h4>LOGÍSTICA Y PAGOS</h4>
+            <label>Envíos:</label><textarea id="in-envio"></textarea>
+            <label>Pagos:</label><textarea id="in-pago"></textarea>
+        </div>
+
+        <button class="btn-admin" onclick="downloadNewIndex()">DESCARGAR CÓDIGO FINAL</button>
+        <button onclick="location.reload()" style="width:100%; border:none; background:none; color:red; cursor:pointer; margin-top:20px;">CERRAR PANEL</button>
     </div>
 
     <script>
+        let isEdit = false;
+
         function openAdmin() {
-            if(prompt("Inercia Security:") === "0110") document.getElementById('admin-panel').style.display='block';
+            if(prompt("Código Admin:") === "0110") {
+                document.getElementById('admin-panel').style.display = 'block';
+                isEdit = true;
+                document.querySelectorAll('.btn-del').forEach(b => b.style.display = 'block');
+            }
         }
 
-        async function toB64(file) {
+        async function toBase64(file) {
             return new Promise((res) => {
-                const reader = new FileReader();
-                reader.onload = () => res(reader.result);
-                reader.readAsDataURL(file);
+                const r = new FileReader();
+                r.onload = () => res(r.result);
+                r.readAsDataURL(file);
             });
         }
 
         async function addProduct() {
+            const imgFile = document.getElementById('p-img').files[0];
             const name = document.getElementById('p-name').value;
             const price = document.getElementById('p-price').value;
-            const file = document.getElementById('p-img').files[0];
-            if(!file || !name) return alert("Faltan datos");
-            
-            const img = await toB64(file);
-            const card = `
-                <div class="product-card">
-                    <img src="${img}">
+            const stock = document.getElementById('p-stock').value;
+            const desc = document.getElementById('p-desc').value;
+
+            if(!imgFile || !name) return alert("Faltan datos");
+
+            const imgB64 = await toBase64(imgFile);
+            const id = Date.now();
+
+            const cardHtml = `
+                <div class="p-card" id="pc-${id}" onclick="openProduct('${name}', '${price}', '${imgB64}', '${desc}', '${stock}')">
+                    <button class="btn-del" onclick="event.stopPropagation(); document.getElementById('pc-${id}').remove()">X</button>
+                    <img src="${imgB64}">
                     <div class="p-info">
                         <strong>${name}</strong>
                         <span>$${price}</span>
                     </div>
                 </div>
             `;
-            document.getElementById('main-catalog').insertAdjacentHTML('afterbegin', card);
+            document.getElementById('catalog').insertAdjacentHTML('beforeend', cardHtml);
             alert("Producto añadido.");
         }
 
-        async function saveAll() {
-            if(document.getElementById('in-h-title').value) document.getElementById('h-title').innerText = document.getElementById('in-h-title').value;
-            if(document.getElementById('in-quote').value) document.getElementById('q-text').innerHTML = document.getElementById('in-quote').value;
-            
-            const bFile = document.getElementById('in-h-img').files[0];
-            if(bFile) document.getElementById('h-img').src = await toB64(bFile);
+        function openProduct(name, price, img, desc, stock) {
+            if(isEdit) return; // No abrir modal si estamos editando
+            document.getElementById('m-title').innerText = name;
+            document.getElementById('m-price').innerText = "$" + price;
+            document.getElementById('m-img').src = img;
+            document.getElementById('m-desc').innerText = desc || "Sin descripción disponible.";
+            document.getElementById('m-stock').innerText = stock || "0";
+            document.getElementById('product-modal').style.display = 'flex';
+        }
 
-            alert("Vista actualizada.");
-            document.getElementById('admin-panel').style.display = 'none';
+        function closeProduct() {
+            document.getElementById('product-modal').style.display = 'none';
+        }
+
+        async function downloadNewIndex() {
+            // Actualizar textos básicos antes de descargar
+            const nt = document.getElementById('in-h-title').value;
+            if(nt) document.getElementById('h-title').innerText = nt;
+            
+            const bannerFile = document.getElementById('in-h-file').files[0];
+            if(bannerFile) document.getElementById('h-img').src = await toBase64(bannerFile);
+
+            // Limpiar botones de borrar antes de guardar el código
+            document.querySelectorAll('.btn-del').forEach(b => b.style.display = 'none');
+            
+            const html = document.documentElement.outerHTML;
+            const blob = new Blob([html], {type: 'text/html'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'index.html';
+            a.click();
+            alert("Sube el archivo descargado a tu GitHub.");
         }
     </script>
 </body>
