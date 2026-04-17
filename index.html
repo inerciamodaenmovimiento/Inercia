@@ -7,7 +7,7 @@
 .admin-tab.active { display: block; }
 .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .admin-table th, .admin-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
-.admin-input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
+.admin-input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; font-family: inherit; }
 </style>
 <div id="admin-screen">
     <div class="admin-nav">
@@ -18,42 +18,54 @@
         <span onclick="document.getElementById('admin-screen').style.display='none'" style="margin-left:auto;color:red">CERRAR</span>
     </div>
     <div id="tab0" class="admin-tab active">
-        <h3>Checklist de Pedidos</h3>
+        <h3>Checklist de Pedidos Activos</h3>
         <table class="admin-table">
             <thead><tr><th>ID</th><th>Comprador</th><th>Pago</th><th>Envío</th><th>Total</th></tr></thead>
             <tbody id="list-orders"></tbody>
         </table>
     </div>
     <div id="tab1" class="admin-tab">
-        <h3>Gestión de Secciones</h3>
+        <h3>Gestión de Secciones e Inventario</h3>
         <input id="new-n" class="admin-input" placeholder="Nombre del producto">
         <input id="new-p" class="admin-input" type="number" placeholder="Precio">
         <input id="new-i" class="admin-input" placeholder="URL Imagen">
         <button onclick="addP()" class="btn-black">Publicar Producto</button>
     </div>
     <div id="tab2" class="admin-tab">
-        <h3>Configuración de Métodos</h3>
-        <label>Métodos de Pago:</label><input id="set-pay" class="admin-input" value="Transferencia, Efectivo">
-        <label>Métodos de Envío:</label><input id="set-ship" class="admin-input" value="Correo Argentino, Retiro">
+        <h3>Métodos de Pago y Envío (Separar por coma)</h3>
+        <label>Métodos de Pago:</label>
+        <input id="set-pay" class="admin-input" value="Transferencia, Mercado Pago, Efectivo" onchange="saveMethods()">
+        <label>Métodos de Envío:</label>
+        <input id="set-ship" class="admin-input" value="Correo Argentino, Retiro en Local, Envío Express" onchange="saveMethods()">
     </div>
     <div id="tab3" class="admin-tab">
-        <h3>Historial de Pedidos</h3>
+        <h3>Historial de Pedidos Totales</h3>
         <table class="admin-table">
-            <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th></tr></thead>
+            <thead><tr><th>Fecha</th><th>Cliente</th><th>Monto Total</th></tr></thead>
             <tbody id="list-hist"></tbody>
         </table>
     </div>
 </div>
 <script>
 let ordersData = JSON.parse(localStorage.getItem('in_orders')) || [];
+let currentMethods = JSON.parse(localStorage.getItem('in_methods')) || { pay: "Transferencia, Mercado Pago", ship: "Correo Argentino, Retiro" };
 function tab(i) {
     document.querySelectorAll('.admin-tab').forEach((t, idx) => t.classList.toggle('active', i === idx));
     document.querySelectorAll('.t-btn').forEach((b, idx) => b.classList.toggle('active', i === idx));
 }
+function saveMethods() {
+    currentMethods.pay = document.getElementById('set-pay').value;
+    currentMethods.ship = document.getElementById('set-ship').value;
+    localStorage.setItem('in_methods', JSON.stringify(currentMethods));
+}
 window.addEventListener('keydown', e => {
     code += e.key;
-    if(code.includes("0110")) { document.getElementById('admin-screen').style.display='block'; renderAdmin(); code=""; }
-    if(code.length > 10) code = "";
+    if(code.includes("0110")) { 
+        document.getElementById('admin-screen').style.display='block'; 
+        document.getElementById('set-pay').value = currentMethods.pay;
+        document.getElementById('set-ship').value = currentMethods.ship;
+        renderAdmin(); code=""; 
+    }
 });
 function addP() {
     let n = document.getElementById('new-n').value, p = parseInt(document.getElementById('new-p').value), i = document.getElementById('new-i').value;
@@ -69,11 +81,16 @@ function renderAdmin() {
 }
 document.querySelector('.btn-black').addEventListener('click', () => {
     if(bag.length > 0) {
-        let c = prompt("Nombre Comprador:"), m = prompt("Método Pago:"), e = prompt("Método Envío:");
-        let order = { id: '#'+Date.now().toString().slice(-4), c, m, e, t: document.getElementById('cart-total').innerText, d: new Date().toLocaleDateString() };
-        ordersData.push(order);
-        localStorage.setItem('in_orders', JSON.stringify(ordersData));
-        bag = []; updateCart(); toggleCart(); renderAdmin();
+        let c = prompt("Nombre y Apellido:");
+        let m = prompt("Elija Pago: " + currentMethods.pay);
+        let e = prompt("Elija Envío: " + currentMethods.ship);
+        if(c && m && e) {
+            let order = { id: '#'+Date.now().toString().slice(-4), c, m, e, t: document.getElementById('cart-total').innerText, d: new Date().toLocaleDateString() };
+            ordersData.push(order);
+            localStorage.setItem('in_orders', JSON.stringify(ordersData));
+            bag = []; updateCart(); toggleCart(); renderAdmin();
+            alert("Orden registrada con éxito.");
+        }
     }
 });
 </script>
