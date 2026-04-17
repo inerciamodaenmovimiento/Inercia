@@ -1,96 +1,172 @@
-<style>
-#admin-screen { display: none; position: fixed; inset: 0; background: #fff; z-index: 9999; font-family: sans-serif; }
-.admin-nav { background: #000; color: #fff; padding: 20px; display: flex; gap: 20px; font-size: 12px; letter-spacing: 1px; }
-.admin-nav span { cursor: pointer; opacity: 0.6; }
-.admin-nav span.active { opacity: 1; text-decoration: underline; }
-.admin-tab { display: none; padding: 40px; }
-.admin-tab.active { display: block; }
-.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.admin-table th, .admin-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
-.admin-input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; font-family: inherit; }
-</style>
-<div id="admin-screen">
-    <div class="admin-nav">
-        <span onclick="tab(0)" class="t-btn active">PEDIDOS</span>
-        <span onclick="tab(1)" class="t-btn">PRODUCTOS</span>
-        <span onclick="tab(2)" class="t-btn">PAGOS/ENVÍOS</span>
-        <span onclick="tab(3)" class="t-btn">HISTORIAL</span>
-        <span onclick="document.getElementById('admin-screen').style.display='none'" style="margin-left:auto;color:red">CERRAR</span>
-    </div>
-    <div id="tab0" class="admin-tab active">
-        <h3>Checklist de Pedidos Activos</h3>
-        <table class="admin-table">
-            <thead><tr><th>ID</th><th>Comprador</th><th>Pago</th><th>Envío</th><th>Total</th></tr></thead>
-            <tbody id="list-orders"></tbody>
-        </table>
-    </div>
-    <div id="tab1" class="admin-tab">
-        <h3>Gestión de Secciones e Inventario</h3>
-        <input id="new-n" class="admin-input" placeholder="Nombre del producto">
-        <input id="new-p" class="admin-input" type="number" placeholder="Precio">
-        <input id="new-i" class="admin-input" placeholder="URL Imagen">
-        <button onclick="addP()" class="btn-black">Publicar Producto</button>
-    </div>
-    <div id="tab2" class="admin-tab">
-        <h3>Métodos de Pago y Envío (Separar por coma)</h3>
-        <label>Métodos de Pago:</label>
-        <input id="set-pay" class="admin-input" value="Transferencia, Mercado Pago, Efectivo" onchange="saveMethods()">
-        <label>Métodos de Envío:</label>
-        <input id="set-ship" class="admin-input" value="Correo Argentino, Retiro en Local, Envío Express" onchange="saveMethods()">
-    </div>
-    <div id="tab3" class="admin-tab">
-        <h3>Historial de Pedidos Totales</h3>
-        <table class="admin-table">
-            <thead><tr><th>Fecha</th><th>Cliente</th><th>Monto Total</th></tr></thead>
-            <tbody id="list-hist"></tbody>
-        </table>
-    </div>
-</div>
-<script>
-let ordersData = JSON.parse(localStorage.getItem('in_orders')) || [];
-let currentMethods = JSON.parse(localStorage.getItem('in_methods')) || { pay: "Transferencia, Mercado Pago", ship: "Correo Argentino, Retiro" };
-function tab(i) {
-    document.querySelectorAll('.admin-tab').forEach((t, idx) => t.classList.toggle('active', i === idx));
-    document.querySelectorAll('.t-btn').forEach((b, idx) => b.classList.toggle('active', i === idx));
-}
-function saveMethods() {
-    currentMethods.pay = document.getElementById('set-pay').value;
-    currentMethods.ship = document.getElementById('set-ship').value;
-    localStorage.setItem('in_methods', JSON.stringify(currentMethods));
-}
-window.addEventListener('keydown', e => {
-    code += e.key;
-    if(code.includes("0110")) { 
-        document.getElementById('admin-screen').style.display='block'; 
-        document.getElementById('set-pay').value = currentMethods.pay;
-        document.getElementById('set-ship').value = currentMethods.ship;
-        renderAdmin(); code=""; 
-    }
-});
-function addP() {
-    let n = document.getElementById('new-n').value, p = parseInt(document.getElementById('new-p').value), i = document.getElementById('new-i').value;
-    if(n && p) {
-        products.push({id: Date.now(), name: n, price: p, img: i});
-        localStorage.setItem('in_prods', JSON.stringify(products));
-        init(); tab(0);
-    }
-}
-function renderAdmin() {
-    document.getElementById('list-orders').innerHTML = ordersData.map(o => `<tr><td>${o.id}</td><td>${o.c}</td><td>${o.m}</td><td>${o.e}</td><td>${o.t}</td></tr>`).join('');
-    document.getElementById('list-hist').innerHTML = ordersData.map(o => `<tr><td>${o.d}</td><td>${o.c}</td><td>${o.t}</td></tr>`).join('');
-}
-document.querySelector('.btn-black').addEventListener('click', () => {
-    if(bag.length > 0) {
-        let c = prompt("Nombre y Apellido:");
-        let m = prompt("Elija Pago: " + currentMethods.pay);
-        let e = prompt("Elija Envío: " + currentMethods.ship);
-        if(c && m && e) {
-            let order = { id: '#'+Date.now().toString().slice(-4), c, m, e, t: document.getElementById('cart-total').innerText, d: new Date().toLocaleDateString() };
-            ordersData.push(order);
-            localStorage.setItem('in_orders', JSON.stringify(ordersData));
-            bag = []; updateCart(); toggleCart(); renderAdmin();
-            alert("Orden registrada con éxito.");
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INERCIA | Studio</title>
+    <style>
+        :root {
+            --bg-base: #f4f3f0;
+            --text-dark: #1a1a1a;
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
-    }
-});
-</script>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background: var(--bg-base); color: var(--text-dark); line-height: 1.5; }
+        
+        /* NAV */
+        .header { padding: 30px 6%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg-base); z-index: 1000; }
+        .logo { font-weight: 600; font-size: 1.3rem; letter-spacing: 6px; text-transform: uppercase; }
+        .nav-right { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+
+        /* HERO */
+        .hero { padding: 40px 6% 80px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; }
+        .hero-text h1 { font-size: 4rem; font-weight: 300; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
+        .hero-img { width: 100%; aspect-ratio: 16/9; background: url('https://unsplash.com') center/cover; }
+
+        /* GRID */
+        .container { padding: 0 6% 100px; }
+        .section-header { margin-bottom: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px; display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; }
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .product-card { cursor: pointer; transition: opacity 0.3s; }
+        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #e2e1de; margin-bottom: 15px; }
+        .product-info h3 { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .product-info p { font-size: 0.8rem; color: #666; margin-top: 5px; }
+
+        /* CART ASIDE */
+        .cart-aside { position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: #fff; z-index: 2000; padding: 40px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77,0,0.175,1); }
+        .cart-aside.active { transform: translateX(0); }
+        .cart-item { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 15px; border-bottom: 1px solid #f5f5f5; padding-bottom: 10px; }
+        .btn-black { width: 100%; padding: 15px; background: #000; color: #fff; border: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 20px; }
+
+        /* MODAL */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(244,243,240,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 6%; }
+        .modal-content { max-width: 1000px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+
+        /* ADMIN */
+        .admin-panel { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; background: #000; color: #fff; padding: 40px; z-index: 4000; }
+        .admin-panel input { width: 100%; padding: 12px; margin-bottom: 10px; background: #1a1a1a; border: 1px solid #333; color: #fff; }
+
+        @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, 1fr); } .hero { grid-template-columns: 1fr; } .modal-content { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">INERCIA</div>
+        <div class="nav-right" onclick="toggleCart()">BOLSA (<span id="cart-count">0</span>)</div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-text"><h1>INERCIA<br>STUDIO</h1><p style="font-size:0.7rem; color:#666; letter-spacing:1px; margin-top:20px;">MOVIMIENTO Y ESTILO EN CADA PRENDA.</p></div>
+        <div class="hero-img"></div>
+    </section>
+
+    <main class="container">
+        <div class="section-header"><span>Colecciones Propias</span><span>2026</span></div>
+        <div class="product-grid" id="grid">
+            <!-- Los productos se cargan aquí -->
+        </div>
+    </main>
+
+    <!-- UI -->
+    <aside class="cart-aside" id="cart-aside">
+        <h2 style="font-size:0.8rem; letter-spacing:2px; margin-bottom:30px;">TU BOLSA</h2>
+        <div id="cart-list"></div>
+        <div style="margin-top:auto; padding-top:20px; border-top:1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; font-weight:600;"><span>TOTAL</span><span id="cart-total">$0</span></div>
+            <button class="btn-black">Finalizar Compra</button>
+            <p onclick="toggleCart()" style="text-align:center; font-size:0.6rem; margin-top:15px; cursor:pointer; letter-spacing:1px;">CERRAR</p>
+        </div>
+    </aside>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <img id="m-img" src="" style="width:100%; aspect-ratio:3/4; object-fit:cover;">
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+                <h2 id="m-title" style="font-size:2.5rem; font-weight:300; margin-bottom:10px;"></h2>
+                <p id="m-price" style="font-size:1.2rem; margin-bottom:30px; color:#666;"></p>
+                <button id="m-add-btn" class="btn-black">Añadir a la bolsa</button>
+                <p onclick="closeModal()" style="margin-top:20px; cursor:pointer; font-size:0.7rem; letter-spacing:2px;">VOLVER</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-panel" id="admin">
+        <h2 style="font-size:0.7rem; letter-spacing:2px; margin-bottom:20px;">INERCIA ADMIN</h2>
+        <input type="text" id="a-name" placeholder="Nombre del Producto">
+        <input type="number" id="a-price" placeholder="Precio">
+        <input type="text" id="a-img" placeholder="URL de Imagen">
+        <button class="btn-black" style="background:#fff; color:#000" onclick="createProduct()">Guardar Cambios</button>
+    </div>
+
+    <script>
+        let bag = [];
+        let code = "";
+        // Base de datos inicial si el LocalStorage está vacío
+        let products = JSON.parse(localStorage.getItem('inercia_prods')) || [
+            {id: 1, name: 'Abrigo Estructura', price: 42000, img: 'https://unsplash.com'},
+            {id: 2, name: 'Puffer Inercia', price: 35000, img: 'https://unsplash.com'}
+        ];
+
+        function init() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => openModal(p.name, p.price, p.img);
+                card.innerHTML = `<img src="${p.img}"><div class="product-info"><h3>${p.name}</h3><p>$${p.price.toLocaleString()}</p></div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        function openModal(n, p, i) {
+            document.getElementById('m-img').src = i;
+            document.getElementById('m-title').innerText = n;
+            document.getElementById('m-price').innerText = `$${p.toLocaleString()}`;
+            document.getElementById('m-add-btn').onclick = () => { bag.push({n, p}); updateCart(); closeModal(); toggleCart(); };
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        function toggleCart() { document.getElementById('cart-aside').classList.toggle('active'); }
+
+        function updateCart() {
+            const list = document.getElementById('cart-list');
+            list.innerHTML = '';
+            let total = 0;
+            bag.forEach(item => {
+                list.innerHTML += `<div class="cart-item"><span>${item.n}</span><span>$${item.p.toLocaleString()}</span></div>`;
+                total += item.p;
+            });
+            document.getElementById('cart-count').innerText = bag.length;
+            document.getElementById('cart-total').innerText = `$${total.toLocaleString()}`;
+        }
+
+        // PERSISTENCIA ADMIN
+        window.onkeydown = (e) => {
+            code += e.key;
+            if(code.includes("0110")) { document.getElementById('admin').style.display = 'block'; code = ""; }
+            if(code.length > 10) code = "";
+        };
+
+        function createProduct() {
+            const name = document.getElementById('a-name').value;
+            const price = parseInt(document.getElementById('a-price').value);
+            const img = document.getElementById('a-img').value || 'https://unsplash.com';
+            
+            if(name && price) {
+                products.push({id: Date.now(), name, price, img});
+                localStorage.setItem('inercia_prods', JSON.stringify(products));
+                init();
+                document.getElementById('admin').style.display = 'none';
+                // Reset campos
+                document.getElementById('a-name').value = '';
+                document.getElementById('a-price').value = '';
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
