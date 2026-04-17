@@ -1,26 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>INERCIA — Movement Editorial</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root { --bg: #f8f8f8; --text: #1a1a1a; --accent: #000; --transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; line-height: 1.4; }
 
-<button onclick="showLogin()" style="position:fixed; bottom:10px; right:10px; border:none; background:none; cursor:help; opacity:0.1; font-size:10px;">ADMIN</button>
+        /* Estilo Revista: Grano */
+        body::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://vercel.app'); opacity: 0.05; pointer-events: none; z-index: 1000; }
 
-<!-- NUEVO PANEL DE LOGIN (Para no usar 'prompt') -->
-<div id="login-box" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px; border:1px solid black; z-index:10001; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
+        header { padding: 40px; display: flex; justify-content: space-between; position: absolute; width: 100%; z-index: 10; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; letter-spacing: -2px; }
+
+        /* Hero Editorial */
+        .hero { height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 0 5%; gap: 50px; }
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 14vw; line-height: 0.75; letter-spacing: -0.05em; }
+        .hero-img { height: 80vh; background: #e0e0e0; }
+        .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Catálogo Editorial */
+        .editorial-section { padding: 100px 5%; display: grid; grid-template-columns: repeat(12, 1fr); gap: 40px; }
+        .item-big { grid-column: 2 / span 6; }
+        .item-small { grid-column: 9 / span 3; margin-top: 200px; }
+        .image-wrapper { position: relative; overflow: hidden; background: #eee; margin-bottom: 25px; }
+        .image-wrapper img { width: 100%; transition: var(--transition); }
+        .image-wrapper:hover img { transform: scale(1.05); }
+        .item-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin: 10px 0; font-style: italic; }
+        .meta { text-transform: uppercase; font-size: 10px; letter-spacing: 3px; color: #666; }
+
+        /* --- SISTEMA DE ADMIN FUNCIONAL --- */
+        
+        /* Botón Invisible de Acceso */
+        .admin-trigger {
+            position: fixed; bottom: 20px; right: 20px; border: none; background: none; 
+            cursor: help; opacity: 0.03; font-size: 10px; z-index: 9999; transition: 0.3s;
+        }
+        .admin-trigger:hover { opacity: 0.5; }
+
+        /* Caja de Login Minimalista */
+        #login-box {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 40px; width: 320px; z-index: 10001;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1); border: 1px solid #eee; text-align: center;
+        }
+        #login-box p { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        #login-box input { 
+            width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #eee; 
+            text-align: center; font-family: inherit; outline: none;
+        }
+        #login-box button { 
+            background: black; color: white; width: 100%; padding: 15px; 
+            border: none; cursor: pointer; font-size: 10px; font-weight: bold; letter-spacing: 2px;
+        }
+
+        /* Panel Editor Lateral */
+        #admin-panel {
+            position: fixed; top: 0; right: -450px; width: 450px; height: 100%;
+            background: #fff; z-index: 10002; padding: 60px;
+            transition: var(--transition); box-shadow: -20px 0 50px rgba(0,0,0,0.05);
+        }
+        #admin-panel.active { right: 0; }
+        #admin-panel h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 40px; font-style: italic; }
+        #admin-panel input { width: 100%; padding: 15px 0; border: none; border-bottom: 1px solid #ddd; margin-bottom: 30px; font-family: inherit; outline: none; }
+
+        /* Overlay para desenfocar el fondo */
+        #overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); z-index: 10000;
+        }
+
+        @media (max-width: 1000px) {
+            .hero { grid-template-columns: 1fr; text-align: center; }
+            .hero-text h1 { font-size: 20vw; }
+            .item-big, .item-small { grid-column: 1 / span 12; margin-top: 50px; }
+            #admin-panel { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">INERCIA.</div>
+    <nav style="font-size: 10px; text-transform: uppercase; letter-spacing: 3px;">Collection — 001</nav>
+</header>
+
+<section class="hero">
+    <div class="hero-text">
+        <p style="text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px;">Moving Architecture</p>
+        <h1>Iner<br>cia.</h1>
+    </div>
+    <div class="hero-img">
+        <img src="https://unsplash.com" alt="Hero">
+    </div>
+</section>
+
+<main id="catalog">
+    <!-- Producto Ejemplo 1 -->
+    <section class="editorial-section">
+        <div class="item-big">
+            <div class="image-wrapper"><img src="https://unsplash.com"></div>
+            <div class="meta">Essential / Unique Piece</div>
+            <h2 class="item-title">Sculpted Mono-Coat</h2>
+            <p>$890.00</p>
+        </div>
+    </section>
+</main>
+
+<!-- ELEMENTOS DE ADMINISTRACIÓN -->
+<button class="admin-trigger" onclick="showLogin()">ADMIN</button>
+
+<div id="overlay"></div>
+
+<div id="login-box">
     <p>Acceso Restringido</p>
-    <input type="password" id="pass-input" placeholder="Código">
-    <button onclick="verify()" style="background:black; color:white; width:100%; padding:5px;">Entrar</button>
+    <input type="password" id="pass-input" placeholder="CÓDIGO DE ACCESO">
+    <button onclick="verify()">VERIFICAR</button>
+</div>
+
+<div id="admin-panel">
+    <h2>Editor.</h2>
+    <input type="text" id="p-name" placeholder="NOMBRE DE LA PRENDA">
+    <input type="text" id="p-price" placeholder="PRECIO (USD)">
+    <input type="text" id="p-img" placeholder="URL DE IMAGEN">
+    <button class="btn" style="background:black; color:white; border:none; padding:20px; width:100%; cursor:pointer; font-weight:bold; letter-spacing:2px;" onclick="publish()">PUBLICAR EN EDITORIAL</button>
+    <p style="margin-top: 30px; font-size: 10px; color: #999; cursor:pointer;" onclick="closeAll()">CERRAR PANEL</p>
 </div>
 
 <script>
+    const loginBox = document.getElementById('login-box');
+    const adminPanel = document.getElementById('admin-panel');
+    const overlay = document.getElementById('overlay');
+
     function showLogin() {
-        document.getElementById('login-box').style.display = 'block';
+        loginBox.style.display = 'block';
+        overlay.style.display = 'block';
+        document.getElementById('pass-input').focus();
     }
 
     function verify() {
         const pass = document.getElementById('pass-input').value;
         if(pass === "0110") {
-            document.getElementById('login-box').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'block';
+            loginBox.style.display = 'none';
+            adminPanel.classList.add('active');
+            document.getElementById('pass-input').value = "";
         } else {
-            alert("Error");
-            document.getElementById('login-box').style.display = 'none';
+            alert("Código Incorrecto");
+            closeAll();
         }
     }
+
+    function closeAll() {
+        loginBox.style.display = 'none';
+        adminPanel.classList.remove('active');
+        overlay.style.display = 'none';
+        document.getElementById('pass-input').value = "";
+    }
+
+    function publish() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const img = document.getElementById('p-img').value;
+
+        if(name && price && img) {
+            const html = `
+            <section class="editorial-section">
+                <div class="item-big" style="grid-column: 4 / span 6;">
+                    <div class="image-wrapper"><img src="${img}"></div>
+                    <div class="meta">Newly Curated / Archive</div>
+                    <h2 class="item-title">${name}</h2>
+                    <p>$${price}</p>
+                </div>
+            </section>`;
+            document.getElementById('catalog').insertAdjacentHTML('afterbegin', html);
+            closeAll();
+            // Limpiar inputs
+            document.getElementById('p-name').value = "";
+            document.getElementById('p-price').value = "";
+            document.getElementById('p-img').value = "";
+        }
+    }
+
+    // Cerrar con tecla Esc
+    window.addEventListener('keydown', (e) => { if(e.key === "Escape") closeAll(); });
 </script>
+
+</body>
+</html>
