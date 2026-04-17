@@ -1,0 +1,109 @@
+:root {
+    --black: #1a1a1a;
+    --grey: #f4f4f4;
+    --accent: #333;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    color: var(--black);
+    background-color: #fff;
+}
+
+header {
+    padding: 20px 5%;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo { font-size: 1.2rem; letter-spacing: 2px; }
+
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--grey);
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 40px 5%;
+}
+
+.product-card {
+    text-align: center;
+    transition: 0.3s;
+}
+
+.product-card img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    background: #eee;
+}
+
+.product-card h3 { font-size: 1rem; margin: 15px 0 5px; }
+
+.btn-add {
+    background: var(--black);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Carrito Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+#checkout-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+.btn-checkout {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+}
