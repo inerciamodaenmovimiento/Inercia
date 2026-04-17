@@ -4,43 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
+    <!-- Librerías con enlaces seguros y actualizados -->
     <script src="https://tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         @import url('https://googleapis.com');
-        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #1a1a1a; }
+        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #1a1a1a; margin: 0; }
         .serif { font-family: 'Playfair Display', serif; }
         .admin-view { display: none; }
         .transition-main { transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        input[type="file"]::file-selector-button {
-            background: #000; color: #fff; padding: 10px 20px; border: none; cursor: pointer; text-transform: uppercase; font-size: 10px; letter-spacing: 1px;
-        }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR ESTILO ULTRA -->
+    <!-- NAVBAR -->
     <header class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-50">
         <nav class="container mx-auto px-8 py-6 flex justify-between items-center">
-            <div class="text-3xl font-bold tracking-[0.4em] serif uppercase cursor-pointer" onclick="showView('home')">Inercia</div>
+            <div class="text-3xl font-bold tracking-[0.4em] serif uppercase cursor-pointer" onclick="scrollToSection('top')">Inercia</div>
             <ul class="hidden lg:flex space-x-12 text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">
-                <li><a href="#" onclick="showView('home')" class="hover:text-black transition">Home</a></li>
-                <li><a href="#new-arrivals" class="hover:text-black transition">New Arrivals</a></li>
-                <li><a href="#" onclick="showView('admin')" class="text-red-400 hover:text-red-600">Admin</a></li>
+                <li><a href="javascript:void(0)" onclick="scrollToSection('top')" class="hover:text-black transition">Home</a></li>
+                <li><a href="javascript:void(0)" onclick="scrollToSection('new-arrivals')" class="hover:text-black transition">Colección</a></li>
+                <li><a href="javascript:void(0)" onclick="showView('admin')" class="text-red-400 hover:text-red-600">Admin</a></li>
             </ul>
-            <div class="flex items-center space-x-8">
-                <button onclick="toggleCart()" class="relative hover:opacity-50 transition">
-                    <i class="fa-solid fa-bag-shopping text-xl"></i>
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
-                </button>
-            </div>
+            <button onclick="toggleCart()" class="relative hover:opacity-50 transition">
+                <i class="fa-solid fa-bag-shopping text-xl"></i>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
+            </button>
         </nav>
     </header>
 
     <!-- VISTA CLIENTE -->
     <main id="view-home">
-        <!-- HERO BANNER (Basado en la imagen) -->
-        <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <section id="top" class="relative h-screen flex items-center justify-center overflow-hidden">
             <img id="main-banner" src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/10"></div>
             <div class="relative z-10 text-center text-white">
@@ -49,208 +44,123 @@
             </div>
         </section>
 
-        <!-- SECCIÓN NEW ARRIVALS -->
         <section id="new-arrivals" class="container mx-auto px-8 py-32">
             <div class="text-center mb-20">
                 <h2 class="text-4xl serif mb-4">New Arrivals</h2>
                 <div class="h-[1px] w-20 bg-black mx-auto"></div>
             </div>
-
-            <!-- Categorías Dinámicas (Aparecen aquí) -->
-            <div id="home-categories" class="flex justify-center gap-10 mb-16 text-[10px] uppercase tracking-widest font-bold text-gray-400"></div>
-
             <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-20">
-                <!-- Se cargan por JavaScript -->
-            </div>
-        </section>
-
-        <!-- SECCIÓN COLLECTION (Imagen Secundaria) -->
-        <section class="relative h-[80vh] bg-stone-100 flex items-center">
-            <div class="container mx-auto px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
-                <div class="relative h-[60vh]">
-                    <img src="https://unsplash.com" class="w-full h-full object-cover grayscale">
-                </div>
-                <div class="text-center md:text-left">
-                    <h2 class="text-6xl md:text-8xl serif uppercase mb-6 tracking-tighter">Collection</h2>
-                    <button class="border border-black px-12 py-4 text-[10px] uppercase tracking-widest font-bold hover:bg-black hover:text-white transition">View</button>
-                </div>
+                <!-- Productos dinámicos -->
             </div>
         </section>
     </main>
 
-    <!-- VISTA ADMINISTRADOR -->
+    <!-- VISTA ADMIN -->
     <main id="view-admin" class="admin-view pt-40 container mx-auto px-8 pb-32">
-        <h2 class="serif text-4xl mb-12 border-b pb-6">Panel de Control</h2>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
-            <!-- Formulario de carga -->
-            <div class="lg:col-span-2 space-y-10">
-                <div class="bg-gray-50 p-10 rounded-sm border">
-                    <h3 class="text-xs font-bold uppercase tracking-widest mb-8 text-gray-400">Subida de Productos</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input id="in-nombre" type="text" placeholder="Nombre de prenda" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
-                        <input id="in-precio" type="number" placeholder="Precio ($)" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
-                        <input id="in-stock" type="number" placeholder="Stock" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
-                        <input id="in-cat" type="text" placeholder="Categoría (Ej: Jacket)" class="bg-transparent border-b border-gray-300 py-3 outline-none focus:border-black text-sm">
-                    </div>
-                    <div class="mt-10 p-12 border-2 border-dashed border-gray-200 text-center">
-                        <i class="fa-solid fa-cloud-arrow-up text-3xl mb-4 text-gray-300"></i>
-                        <p class="text-[10px] uppercase font-bold text-gray-400 mb-4">Fotos desde tu PC (Carrusel)</p>
-                        <input id="in-files" type="file" multiple class="block w-full text-xs text-gray-500">
-                    </div>
-                    <button onclick="saveProduct()" class="mt-10 w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-zinc-800 transition">Publicar en Inercia</button>
-                </div>
-            </div>
-
-            <!-- Banners y Ventas -->
-            <div class="space-y-12">
-                <div class="bg-white border p-8">
-                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-6">Modificar Banner Home</h3>
-                    <input id="in-banner" type="text" placeholder="URL de nueva imagen" class="w-full border-b py-2 text-xs mb-4 outline-none">
-                    <button onclick="updateBanner()" class="w-full bg-stone-100 py-3 text-[9px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition">Actualizar</button>
-                </div>
-                <div class="bg-white border p-8">
-                    <h3 class="text-[10px] font-bold uppercase tracking-widest mb-6">Historial de Ventas</h3>
-                    <div id="sales-log" class="text-[10px] space-y-4 max-h-60 overflow-y-auto"></div>
-                </div>
+        <div class="max-w-2xl mx-auto bg-gray-50 p-10 border rounded-sm">
+            <h2 class="serif text-3xl mb-8">Panel Administrador</h2>
+            <div class="space-y-4">
+                <input id="in-nombre" type="text" placeholder="Producto" class="w-full border-b p-3 outline-none focus:border-black">
+                <input id="in-precio" type="number" placeholder="Precio ($)" class="w-full border-b p-3 outline-none focus:border-black">
+                <input id="in-cat" type="text" placeholder="Categoría" class="w-full border-b p-3 outline-none focus:border-black">
+                <input id="in-file" type="file" class="w-full text-xs mt-4">
+                <button onclick="saveProduct()" class="w-full bg-black text-white py-4 mt-6 text-[10px] font-bold uppercase tracking-widest">Publicar Producto</button>
+                <button onclick="showView('home')" class="w-full text-gray-400 text-[10px] uppercase underline mt-4">Volver a la Tienda</button>
             </div>
         </div>
     </main>
 
-    <!-- CARRITO (SIDEBAR) -->
-    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white z-[60] shadow-2xl translate-x-full transition-main flex flex-col">
-        <div class="p-10 flex justify-between items-center border-b">
-            <span class="serif text-3xl italic">Tu Bolsa</span>
-            <button onclick="toggleCart()" class="text-4xl font-light hover:rotate-90 transition">&times;</button>
+    <!-- CARRITO -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-80 md:w-96 bg-white z-[100] shadow-2xl translate-x-full transition-main flex flex-col p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-4">
+            <span class="serif text-xl">Tu Bolsa</span>
+            <button onclick="toggleCart()" class="text-2xl">&times;</button>
         </div>
-        <div id="cart-content" class="flex-grow p-10 overflow-y-auto space-y-8"></div>
-        <div class="p-10 border-t bg-stone-50 space-y-6">
-            <div class="flex justify-between font-bold text-2xl tracking-tighter px-2"><span>Total</span><span id="cart-total">$0</span></div>
-            <button onclick="checkout()" class="w-full bg-black text-white py-6 text-[11px] font-bold uppercase tracking-[0.4em] hover:bg-zinc-800 transition">Finalizar Pedido</button>
-            <button onclick="alert('Arrepentimiento legal registrado')" class="w-full text-gray-400 text-[10px] uppercase underline tracking-widest">Botón de Arrepentimiento</button>
+        <div id="cart-content" class="flex-grow overflow-y-auto text-sm space-y-4"></div>
+        <div class="border-t pt-4">
+            <div class="flex justify-between font-bold mb-4"><span>Total</span><span id="cart-total">$0</span></div>
+            <button onclick="checkout()" class="w-full bg-black text-white py-4 text-[10px] font-bold uppercase tracking-widest">Pedir por WhatsApp</button>
         </div>
     </div>
 
-    <!-- CONTACTOS -->
-    <div class="fixed bottom-12 right-12 flex flex-col space-y-4 z-50">
-        <a href="https://wa.me" target="_blank" class="w-16 h-16 bg-white text-black border border-gray-100 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
-        <a href="https://instagram.com" target="_blank" class="w-16 h-16 bg-white text-black border border-gray-100 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition"><i class="fa-brands fa-instagram text-2xl"></i></a>
-    </div>
+    <!-- BOTÓN WHATSAPP -->
+    <a href="https://wa.me" target="_blank" class="fixed bottom-8 right-8 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-xl z-50">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+    </a>
 
     <script>
-        // BASE DE DATOS LOCAL
-        let prods = JSON.parse(localStorage.getItem('in_prods')) || [
-            { id: 1, nombre: 'Brown Long Blouse', precio: 12500, stock: 5, cat: 'Clothes', img: 'https://unsplash.com' },
-            { id: 2, nombre: 'Grey Check Coat', precio: 22900, stock: 3, cat: 'Jacket', img: 'https://unsplash.com' },
-            { id: 3, nombre: 'White Casual Suit', precio: 21000, stock: 4, cat: 'Clothes', img: 'https://unsplash.com' },
-            { id: 4, nombre: 'Beige Sweater', precio: 14500, stock: 8, cat: 'Clothes', img: 'https://unsplash.com' }
+        let prods = JSON.parse(localStorage.getItem('in_db')) || [
+            { id: 1, nombre: 'Blusa Brown', precio: 12500, cat: 'Clothes', img: 'https://unsplash.com' },
+            { id: 2, nombre: 'Grey Coat', precio: 22900, cat: 'Jacket', img: 'https://unsplash.com' }
         ];
-        let sales = JSON.parse(localStorage.getItem('in_sales')) || [];
         let cart = [];
+
+        function scrollToSection(id) {
+            showView('home');
+            const target = id === 'top' ? 0 : document.getElementById(id).offsetTop - 80;
+            window.scrollTo({ top: target, behavior: 'smooth' });
+            // Limpia la URL
+            window.history.pushState("", document.title, window.location.pathname);
+        }
 
         function showView(v) {
             document.getElementById('view-home').style.display = v === 'home' ? 'block' : 'none';
             document.getElementById('view-admin').style.display = v === 'admin' ? 'block' : 'none';
-            window.scrollTo(0,0);
+            window.history.pushState("", document.title, window.location.pathname);
         }
 
         function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('translate-x-full'); }
 
-        // ADMIN: GUARDAR
         function saveProduct() {
             const n = document.getElementById('in-nombre').value;
             const p = document.getElementById('in-precio').value;
-            const s = document.getElementById('in-stock').value;
-            const c = document.getElementById('in-cat').value;
-            const files = document.getElementById('in-files').files;
-
-            if (files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    prods.push({ id: Date.now(), nombre: n, precio: parseInt(p), stock: parseInt(s), cat: c, img: e.target.result });
-                    localStorage.setItem('in_prods', JSON.stringify(prods));
+            const f = document.getElementById('in-file').files[0];
+            if (f) {
+                const r = new FileReader();
+                r.onload = (e) => {
+                    prods.push({ id: Date.now(), nombre: n, precio: parseInt(p), img: e.target.result });
+                    localStorage.setItem('in_db', JSON.stringify(prods));
                     render();
                     showView('home');
                 };
-                reader.readAsDataURL(files[0]);
+                r.readAsDataURL(f);
             }
         }
 
-        function deleteProd(id) {
-            prods = prods.filter(x => x.id !== id);
-            localStorage.setItem('in_prods', JSON.stringify(prods));
-            render();
-        }
-
-        function updateBanner() {
-            const url = document.getElementById('in-banner').value;
-            if(url) { document.getElementById('main-banner').src = url; localStorage.setItem('in_banner_url', url); }
-        }
-
-        // RENDER TIENDA
         function render() {
             const grid = document.getElementById('grid-productos');
-            const cats = document.getElementById('home-categories');
-            const log = document.getElementById('sales-log');
-
             grid.innerHTML = prods.map(p => `
-                <div class="group text-center">
-                    <div class="aspect-[2/3] bg-stone-100 overflow-hidden mb-6 relative">
+                <div class="text-center group">
+                    <div class="aspect-[2/3] bg-gray-100 overflow-hidden mb-4 relative">
                         <img src="${p.img}" class="w-full h-full object-cover transition-main group-hover:scale-110">
-                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 w-full bg-black text-white py-5 text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">Add to Bag</button>
-                        <button onclick="deleteProd(${p.id})" class="absolute top-4 right-4 bg-white/90 text-red-500 w-8 h-8 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 w-full bg-black text-white py-4 text-[10px] uppercase opacity-0 group-hover:opacity-100 transition-all">Agregar</button>
                     </div>
-                    <h3 class="serif text-lg mb-1">${p.nombre}</h3>
-                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2">${p.cat}</p>
+                    <h3 class="serif text-lg">${p.nombre}</h3>
                     <p class="text-sm font-light">$${p.precio.toLocaleString()}</p>
-                    <p class="text-[9px] text-stone-300 mt-2">STOCK: ${p.stock}</p>
                 </div>
             `).join('');
-
-            const uniqueCats = [...new Set(prods.map(p => p.cat))];
-            cats.innerHTML = uniqueCats.map(c => `<button class="hover:text-black transition">${c}</button>`).join('');
-            
-            log.innerHTML = sales.map(s => `<div class="border-b pb-2"><b>${s.date}</b><br>${s.items} prendas - $${s.total}</div>`).reverse().join('');
         }
 
         function addToCart(id) {
-            const p = prods.find(x => x.id === id);
-            if(p.stock > 0) { cart.push(p); updateCart(); toggleCart(); }
-            else alert("Sin stock");
+            cart.push(prods.find(x => x.id === id));
+            updateCart();
+            toggleCart();
         }
 
         function updateCart() {
-            const cont = document.getElementById('cart-content');
-            cont.innerHTML = cart.map((item, i) => `
-                <div class="flex items-center gap-6 pb-6 border-b border-stone-100">
-                    <img src="${item.img}" class="w-20 h-24 object-cover">
-                    <div class="flex-grow"><h4 class="serif text-lg">${item.nombre}</h4><p class="text-sm text-gray-500">$${item.precio}</p></div>
-                    <button onclick="cart.splice(${i},1); updateCart();" class="text-stone-300 hover:text-black transition">&times;</button>
-                </div>
-            `).join('');
-            const total = cart.reduce((acc, p) => acc + p.precio, 0);
-            document.getElementById('cart-total').innerText = '$' + total.toLocaleString();
+            const c = document.getElementById('cart-content');
+            c.innerHTML = cart.map(i => `<div class="flex justify-between"><span>${i.nombre}</span><span>$${i.precio}</span></div>`).join('');
+            document.getElementById('cart-total').innerText = '$' + cart.reduce((acc, p) => acc + p.precio, 0).toLocaleString();
             document.getElementById('cart-count').innerText = cart.length;
         }
 
         function checkout() {
-            if(cart.length === 0) return;
-            const t = cart.reduce((acc, p) => acc + p.precio, 0);
-            const msg = `PEDIDO INERCIA:\n${cart.map(p => "- " + p.nombre).join("\n")}\nTOTAL: $${t}`;
-            
-            sales.push({ date: new Date().toLocaleDateString(), total: t, items: cart.length });
-            localStorage.setItem('in_sales', JSON.stringify(sales));
-            
-            cart.forEach(item => { const p = prods.find(x => x.id === item.id); if(p) p.stock--; });
-            localStorage.setItem('in_prods', JSON.stringify(prods));
-
+            const msg = `Pedido Inercia: ${cart.map(p => p.nombre).join(', ')}. Total: $${document.getElementById('cart-total').innerText}`;
             window.open(`https://wa.me?text=${encodeURIComponent(msg)}`);
-            cart = []; updateCart(); render(); toggleCart();
         }
 
         render();
-        const savedBanner = localStorage.getItem('in_banner_url');
-        if(savedBanner) document.getElementById('main-banner').src = savedBanner;
     </script>
 </body>
 </html>
+
