@@ -3,148 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>inercia — Panel de Gestión</title>
+    <title>inercia — Studio</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        :root { --bg: #ffffff; --admin-bg: #f4f4f4; --accent: #000000; }
+        :root { --bg: #f4f4f4; --white: #ffffff; --txt: #1a1a1a; --muted: #888; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); overflow-x: hidden; }
+        body { background: var(--bg); color: var(--txt); }
 
-        /* --- TIENDA --- */
-        #shop-view { display: block; }
-        nav { padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 100; }
-        .logo { font-family: 'Bodoni Moda', serif; font-size: 28px; font-weight: 700; font-style: italic; letter-spacing: -1px; }
-        .cart-btn { cursor: pointer; font-size: 20px; position: relative; }
-        .cart-badge { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-
-        .hero { padding: 60px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: #fafafa; }
-        .hero-img { width: 100%; height: 70vh; object-fit: cover; border-radius: 4px; }
+        /* --- VISTA TIENDA (ESTILO SOEASY) --- */
+        #shop-view { display: block; max-width: 1400px; margin: 0 auto; background: var(--white); min-height: 100vh; padding-bottom: 100px; }
         
-        .cat-nav { padding: 20px 5%; display: flex; gap: 15px; overflow-x: auto; background: #fff; border-bottom: 1px solid #eee; }
-        .cat-btn { padding: 10px 20px; border: 1px solid #eee; border-radius: 30px; background: #f9f9f9; font-size: 12px; cursor: pointer; white-space: nowrap; }
-        .cat-btn.active { background: #000; color: #fff; border-color: #000; }
+        header { padding: 40px 5%; display: flex; justify-content: space-between; align-items: center; background: #fff; }
+        .logo { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; text-transform: lowercase; }
+        .nav-links { display: flex; gap: 30px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+        .cart-trigger { cursor: pointer; font-size: 18px; position: relative; }
+        .cart-dot { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 9px; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-        .catalog { padding: 60px 5%; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-        .product { text-align: left; }
-        .product img { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 15px; }
-        .add-btn { width: 100%; padding: 15px; background: #000; color: #fff; border: none; font-size: 11px; text-transform: uppercase; cursor: pointer; }
-
-        /* --- ADMIN (PANTALLA COMPLETA) --- */
-        #admin-view { display: none; background: var(--admin-bg); min-height: 100vh; }
-        .admin-header { background: #fff; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; }
-        .admin-layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 75px); }
-        .admin-aside { background: #fff; border-right: 1px solid #ddd; padding: 30px 15px; }
-        .menu-link { width: 100%; padding: 15px; text-align: left; border: none; background: none; cursor: pointer; font-weight: 600; border-radius: 8px; margin-bottom: 5px; }
-        .menu-link.active { background: #000; color: #fff; }
+        /* Layout de Producto Editorial */
+        .product-page { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; padding: 40px 5%; }
         
-        .admin-main { padding: 50px; max-width: 1100px; }
-        .admin-card { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 30px; }
+        /* Galería asimétrica */
+        .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .img-large { grid-column: span 2; width: 100%; height: 80vh; object-fit: cover; background: #f9f9f9; }
+        .img-small { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #f9f9f9; }
+
+        /* Info de producto */
+        .product-details { position: sticky; top: 120px; height: fit-content; }
+        .p-title { font-size: 32px; font-weight: 400; margin-bottom: 10px; }
+        .p-price { font-size: 24px; color: var(--muted); margin-bottom: 40px; }
+        .p-description { font-size: 14px; line-height: 1.8; color: #555; margin-bottom: 40px; max-width: 400px; }
+        
+        .selector { margin-bottom: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+        .selector label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; color: var(--muted); }
+        .btn-bag { width: 100%; padding: 20px; background: #000; color: #fff; border: none; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
+        .btn-bag:hover { opacity: 0.8; }
+
+        /* Otros Productos */
+        .related { padding: 100px 5% 0; }
+        .related h2 { font-size: 18px; font-weight: 600; margin-bottom: 40px; }
+        .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .rel-card { cursor: pointer; text-align: left; }
+        .rel-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 15px; }
+
+        /* --- PANEL ADMIN (PANTALLA COMPLETA - INALTERADO) --- */
+        #admin-view { display: none; background: #f4f4f4; min-height: 100vh; color: #333; }
+        .admin-nav { background: #fff; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; }
+        .admin-container { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 80px); }
+        .admin-sidebar { background: #fff; border-right: 1px solid #ddd; padding: 40px 20px; }
+        .admin-menu-btn { width: 100%; padding: 15px; text-align: left; background: none; border: none; cursor: pointer; font-weight: 600; border-radius: 8px; margin-bottom: 10px; }
+        .admin-menu-btn.active { background: #000; color: #fff; }
+        .admin-content { padding: 60px; max-width: 1000px; }
         .admin-section { display: none; }
         .admin-section.active { display: block; }
-        
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: #555; }
+        .card { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 30px; }
+        .field { margin-bottom: 20px; }
+        label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; color: #666; }
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-        .save-btn { background: #000; color: #fff; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; }
+        .btn-save { background: #000; color: #fff; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; }
+        
+        /* VENTAS */
+        .sales-table { width: 100%; border-collapse: collapse; background: #fff; }
+        .sales-table th, .sales-table td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 13px; }
 
         /* CARRITO */
         #cart-modal { position: fixed; right: -100%; top: 0; width: 450px; height: 100vh; background: #fff; z-index: 2000; padding: 40px; transition: 0.5s; box-shadow: -10px 0 50px rgba(0,0,0,0.1); overflow-y: auto; }
         #cart-modal.open { right: 0; }
         .close-cart { float: right; font-size: 24px; cursor: pointer; }
-
-        /* TABLA VENTAS */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 15px; border-bottom: 1px solid #eee; text-align: left; font-size: 13px; }
     </style>
 </head>
 <body>
 
-    <!-- TIENDA -->
+    <!-- VISTA TIENDA -->
     <div id="shop-view">
-        <nav>
-            <div class="logo">inercia</div>
-            <div class="cart-btn" onclick="toggleCart()">
+        <header>
+            <div class="nav-links"><span>Colección</span> <span>Info</span></div>
+            <div class="logo" id="logo-display">inercia</div>
+            <div class="cart-trigger" onclick="toggleCart()">
                 <i class="fa-solid fa-bag-shopping"></i>
-                <span class="cart-badge" id="cart-count">0</span>
+                <div class="cart-dot" id="cart-count">0</div>
             </div>
-        </nav>
-        <div class="cat-nav" id="cat-filters"></div>
-        <div class="hero">
-            <div>
-                <h1 id="hero-title">Inercia</h1>
-                <p id="hero-desc">Moda en movimiento.</p>
-            </div>
-            <img src="" id="hero-img-web" class="hero-img">
-        </div>
-        <div class="catalog" id="shop-grid"></div>
-    </div>
+        </header>
 
-    <!-- PANEL ADMIN -->
-    <div id="admin-view">
-        <div class="admin-header">
-            <h2 style="font-family:'Bodoni Moda'">Admin Inercia</h2>
-            <button class="save-btn" onclick="toggleView()" style="background:#ff4b4b">Salir</button>
-        </div>
-        <div class="admin-layout">
-            <aside class="admin-aside">
-                <button class="menu-link active" onclick="showSection('general')">General</button>
-                <button class="menu-link" onclick="showSection('productos')">Productos</button>
-                <button class="menu-link" onclick="showSection('pagos')">Pagos y Envío</button>
-                <button class="menu-link" onclick="showSection('historial')">Historial Ventas</button>
-            </aside>
-            <main class="admin-main">
+        <div class="product-page">
+            <div class="gallery-grid">
+                <img src="" id="main-prod-img" class="img-large">
+                <img src="" id="sub-img-1" class="img-small">
+                <img src="" id="sub-img-2" class="img-small">
+            </div>
+
+            <div class="product-details">
+                <h1 class="p-title" id="p-display-title">Selecciona una prenda</h1>
+                <p class="p-price" id="p-display-price">$0</p>
+                <p class="p-description" id="p-display-desc">Diseño exclusivo de Inercia. Calidad superior y corte contemporáneo.</p>
                 
-                <!-- GENERAL -->
-                <div id="sec-general" class="admin-section active">
-                    <h3>Ajustes de Portada</h3><br>
-                    <div class="admin-card">
-                        <div class="form-group"><label>Título Banner</label><input type="text" id="adm-title"></div>
-                        <div class="form-group"><label>Imagen Portada</label><input type="file" id="adm-hero-file" accept="image/*"></div>
-                        <button class="save-btn" onclick="saveGeneral()">Guardar Cambios</button>
-                    </div>
+                <div class="selector">
+                    <label>Talle</label>
+                    <select id="p-size-select"><option>S</option><option>M</option><option>L</option></select>
                 </div>
 
+                <button class="btn-bag" onclick="addToBag()">Añadir al carrito</button>
+            </div>
+        </div>
+
+        <section class="related">
+            <h2>También te puede gustar</h2>
+            <div class="related-grid" id="catalog-grid"></div>
+        </section>
+    </div>
+
+    <!-- PANEL ADMIN (CECILÉ BOUTIQUE STYLE) -->
+    <div id="admin-view">
+        <div class="admin-nav">
+            <h2>Consola inercia</h2>
+            <button class="btn-save" onclick="closeAdmin()" style="background:#ff4b4b;">Salir</button>
+        </div>
+        <div class="admin-container">
+            <aside class="admin-sidebar">
+                <button class="admin-menu-btn active" onclick="switchSection('prod')">Productos</button>
+                <button class="admin-menu-btn" onclick="switchSection('bank')">Datos Bancarios</button>
+                <button class="admin-menu-btn" onclick="switchSection('log')">Logística</button>
+                <button class="admin-menu-btn" onclick="switchSection('sales')">Ventas</button>
+            </aside>
+            <main class="admin-content">
                 <!-- PRODUCTOS -->
-                <div id="sec-productos" class="admin-section">
-                    <h3>Gestión de Productos</h3><br>
-                    <div class="admin-card">
-                        <div class="form-group"><label>Nombre</label><input type="text" id="p-name"></div>
-                        <div class="form-group"><label>Precio</label><input type="number" id="p-price"></div>
-                        <div class="form-group"><label>Categoría</label><input type="text" id="p-cat" placeholder="Ej: Invierno"></div>
-                        <div class="form-group"><label>Foto</label><input type="file" id="p-file" accept="image/*"></div>
-                        <button class="save-btn" onclick="addProduct()">Agregar Producto</button>
+                <div id="sec-prod" class="admin-section active">
+                    <h3>Cargar Nueva Prenda</h3><br>
+                    <div class="card">
+                        <div class="field"><label>Nombre</label><input type="text" id="adm-p-name"></div>
+                        <div class="field"><label>Precio</label><input type="number" id="adm-p-price"></div>
+                        <div class="field"><label>Categoría</label><input type="text" id="adm-p-cat"></div>
+                        <div class="field"><label>Foto Principal</label><input type="file" id="adm-p-file"></div>
+                        <button class="btn-save" onclick="saveProduct()">Publicar</button>
                     </div>
                     <div id="admin-p-list"></div>
                 </div>
-
-                <!-- PAGOS Y ENVÍO -->
-                <div id="sec-pagos" class="admin-section">
-                    <h3>Logística y Cobros</h3><br>
-                    <div class="admin-card">
-                        <div class="form-group"><label>WhatsApp (549...)</label><input type="text" id="adm-wsp"></div>
-                        <div class="form-group"><label>Método de Envío</label><input type="text" id="adm-ship" placeholder="Ej: Correo Argentino"></div>
-                        <div style="border-top:1px solid #eee; padding-top:20px; margin-top:20px;">
-                            <label>Datos Bancarios</label>
-                            <input type="text" id="adm-bank" placeholder="Banco" style="margin-bottom:10px;">
-                            <input type="text" id="adm-alias" placeholder="Alias" style="margin-bottom:10px;">
-                            <input type="text" id="adm-cbu" placeholder="CBU">
-                        </div>
-                        <br><button class="save-btn" onclick="saveLogistics()">Guardar Configuración</button>
+                <!-- BANCO -->
+                <div id="sec-bank" class="admin-section">
+                    <h3>Datos para Cobros</h3><br>
+                    <div class="card">
+                        <div class="field"><label>Banco</label><input type="text" id="adm-bank"></div>
+                        <div class="field"><label>Alias</label><input type="text" id="adm-alias"></div>
+                        <div class="field"><label>CBU/CVU</label><input type="text" id="adm-cbu"></div>
+                        <button class="btn-save" onclick="saveSettings()">Guardar Cuenta</button>
                     </div>
                 </div>
-
-                <!-- HISTORIAL -->
-                <div id="sec-historial" class="admin-section">
-                    <h3>Historial de Ventas</h3><br>
-                    <div class="admin-card" style="padding:0; overflow:hidden;">
-                        <table>
-                            <thead><tr><th>Cliente</th><th>Pedido</th><th>Dirección</th><th>Pago</th><th>Total</th></tr></thead>
-                            <tbody id="history-table"></tbody>
-                        </table>
+                <!-- LOGISTICA -->
+                <div id="sec-log" class="admin-section">
+                    <h3>Contacto</h3><br>
+                    <div class="card">
+                        <div class="field"><label>WhatsApp (549...)</label><input type="text" id="adm-wsp"></div>
+                        <div class="field"><label>Método Envío</label><input type="text" id="adm-ship"></div>
+                        <button class="btn-save" onclick="saveSettings()">Guardar</button>
                     </div>
                 </div>
-
+                <!-- VENTAS -->
+                <div id="sec-sales" class="admin-section">
+                    <h3>Historial de Pedidos</h3><br>
+                    <table class="sales-table">
+                        <thead><tr><th>Cliente</th><th>Dirección</th><th>Pago</th><th>Total</th></tr></thead>
+                        <tbody id="admin-sales-list"></tbody>
+                    </table>
+                </div>
             </main>
         </div>
     </div>
@@ -152,200 +172,161 @@
     <!-- CARRITO -->
     <div id="cart-modal">
         <span class="close-cart" onclick="toggleCart()">&times;</span>
-        <h2 style="margin-bottom:20px;">Tu Pedido</h2>
-        <div id="cart-items"></div>
-        <div id="cart-total" style="font-weight:700; margin-top:20px; font-size:18px;">Total: $0</div>
+        <h2>Tu Bolsa</h2><br>
+        <div id="cart-items-list"></div>
+        <div id="cart-total-price" style="font-weight:700; margin-top:20px; font-size:20px;">Total: $0</div>
         
-        <div style="margin-top:30px; border-top:1px solid #eee; padding-top:20px;">
-            <div class="form-group"><input type="text" id="c-name" placeholder="Nombre completo"></div>
-            <div class="form-group"><input type="text" id="c-address" placeholder="Dirección de envío"></div>
-            <div class="form-group">
-                <label>Medio de Pago</label>
-                <select id="c-pay"><option value="Transferencia">Transferencia</option><option value="Efectivo">Efectivo</option></select>
-            </div>
-            <button class="add-btn" onclick="finalizeOrder()">Finalizar Compra</button>
+        <div style="margin-top:40px; border-top:1px solid #eee; padding-top:20px;">
+            <div class="field"><input type="text" id="cust-name" placeholder="Nombre"></div>
+            <div class="field"><input type="text" id="cust-dir" placeholder="Dirección"></div>
+            <div class="field"><select id="cust-pay"><option value="Transferencia">Transferencia</option><option value="Efectivo">Efectivo</option></select></div>
+            <button class="btn-bag" onclick="checkout()">Finalizar Compra</button>
         </div>
     </div>
 
     <script>
-        // Memoria
-        let state = JSON.parse(localStorage.getItem('in_state')) || {
-            title: "Inercia",
-            hero: "",
-            wsp: "",
-            ship: "Correo Argentino",
-            bank: "", alias: "", cbu: "",
-            products: [],
-            sales: []
-        };
-
+        let config = JSON.parse(localStorage.getItem('in_set')) || { wsp:"", bank:"", alias:"", cbu:"", ship:"" };
+        let products = JSON.parse(localStorage.getItem('in_prod')) || [];
+        let sales = JSON.parse(localStorage.getItem('in_sales')) || [];
         let cart = [];
-        let currentCat = "Todos";
+        let selectedProduct = null;
 
-        // Codigo 0110
-        let keys = "";
+        // Código 0110
+        let keyTrace = "";
         window.onkeydown = (e) => {
-            keys += e.key;
-            if(keys.includes("0110")) { toggleView(); keys = ""; }
-        }
-
-        function toggleView() {
-            const shop = document.getElementById('shop-view');
-            const admin = document.getElementById('admin-view');
-            if(shop.style.display === 'none') {
-                shop.style.display = 'block'; admin.style.display = 'none';
-            } else {
-                shop.style.display = 'none'; admin.style.display = 'block';
-                loadAdminFields();
+            keyTrace += e.key;
+            if(keyTrace.includes("0110")) {
+                document.getElementById('shop-view').style.display = 'none';
+                document.getElementById('admin-view').style.display = 'block';
+                keyTrace = ""; loadAdmin();
             }
         }
 
-        function showSection(id) {
+        function closeAdmin() { document.getElementById('admin-view').style.display = 'none'; document.getElementById('shop-view').style.display = 'block'; }
+        function toggleCart() { document.getElementById('cart-modal').classList.toggle('open'); }
+        function switchSection(sec) {
             document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('sec-'+id).classList.add('active');
+            document.querySelectorAll('.admin-menu-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('sec-' + sec).classList.add('active');
             event.target.classList.add('active');
         }
 
-        // Imagenes a Base64
-        function toBase64(file) {
-            return new Promise((res) => {
+        async function saveProduct() {
+            const name = document.getElementById('adm-p-name').value;
+            const price = document.getElementById('adm-p-price').value;
+            const file = document.getElementById('adm-p-file').files[0];
+            if(name && price && file) {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = () => res(reader.result);
-            });
-        }
-
-        async function saveGeneral() {
-            state.title = document.getElementById('adm-title').value;
-            const file = document.getElementById('adm-hero-file').files[0];
-            if(file) state.hero = await toBase64(file);
-            save();
-        }
-
-        async function addProduct() {
-            const n = document.getElementById('p-name').value;
-            const p = document.getElementById('p-price').value;
-            const c = document.getElementById('p-cat').value || "General";
-            const f = document.getElementById('p-file').files[0];
-            if(n && p && f) {
-                const img = await toBase64(f);
-                state.products.push({ id: Date.now(), name: n, price: parseInt(p), cat: c, img });
-                save();
-                document.getElementById('p-name').value = '';
-                document.getElementById('p-price').value = '';
+                reader.onload = () => {
+                    products.push({ id: Date.now(), name, price: parseInt(price), img: reader.result });
+                    saveState();
+                };
             }
         }
 
-        function saveLogistics() {
-            state.wsp = document.getElementById('adm-wsp').value;
-            state.ship = document.getElementById('adm-ship').value;
-            state.bank = document.getElementById('adm-bank').value;
-            state.alias = document.getElementById('adm-alias').value;
-            state.cbu = document.getElementById('adm-cbu').value;
-            save();
-        }
-
-        function save() {
-            localStorage.setItem('in_state', JSON.stringify(state));
+        function saveState() {
+            localStorage.setItem('in_prod', JSON.stringify(products));
+            localStorage.setItem('in_set', JSON.stringify(config));
+            localStorage.setItem('in_sales', JSON.stringify(sales));
             render();
-            alert("¡Guardado!");
         }
 
         function render() {
-            // Tienda
-            document.getElementById('hero-title').innerText = state.title;
-            document.getElementById('hero-img-web').src = state.hero;
-            
-            // Filtros
-            const cats = ["Todos", ...new Set(state.products.map(p => p.cat))];
-            document.getElementById('cat-filters').innerHTML = cats.map(c => 
-                `<button class="cat-btn ${currentCat===c?'active':''}" onclick="filterCat('${c}')">${c}</button>`
-            ).join('');
-
-            // Grid
-            const grid = document.getElementById('shop-grid');
+            const grid = document.getElementById('catalog-grid');
             grid.innerHTML = '';
-            state.products.filter(p => currentCat === "Todos" || p.cat === currentCat).forEach(p => {
+            products.forEach(p => {
                 grid.innerHTML += `
-                    <div class="product">
+                    <div class="rel-card" onclick="selectProduct(${p.id})">
                         <img src="${p.img}">
-                        <h3>${p.name}</h3>
-                        <p>$${p.price.toLocaleString()}</p>
-                        <button class="add-btn" onclick="addToCart(${p.id})">Agregar al carrito</button>
+                        <p style="font-size:12px;">${p.name}</p>
+                        <p style="font-size:12px; color:#888;">$${p.price.toLocaleString()}</p>
                     </div>
                 `;
             });
 
-            // Admin Listado
-            document.getElementById('admin-p-list').innerHTML = state.products.map(p => `
-                <div class="admin-card" style="display:flex; justify-content:space-between; align-items:center; padding:15px; margin-bottom:10px;">
-                    <span>${p.name} (${p.cat})</span>
-                    <button onclick="delProduct(${p.id})" style="color:red; background:none; border:none; cursor:pointer;">Borrar</button>
+            const adminList = document.getElementById('admin-p-list');
+            adminList.innerHTML = products.map((p, i) => `
+                <div class="card" style="display:flex; justify-content:space-between; padding:15px; margin-bottom:10px;">
+                    <span>${p.name}</span>
+                    <button onclick="delP(${i})" style="color:red; border:none; background:none; cursor:pointer;">Borrar</button>
                 </div>
             `).join('');
 
-            // Tabla Ventas
-            document.getElementById('history-table').innerHTML = state.sales.map(s => `
-                <tr><td>${s.name}</td><td>${s.items}</td><td>${s.address}</td><td>${s.pay}</td><td>$${s.total}</td></tr>
-            `).reverse().join('');
+            document.getElementById('admin-sales-list').innerHTML = sales.map(s => `
+                <tr><td>${s.name}</td><td>${s.dir}</td><td>${s.pay}</td><td>$${s.total}</td></tr>
+            `).join('');
+
+            if(products.length > 0 && !selectedProduct) selectProduct(products[0].id);
         }
 
-        function filterCat(c) { currentCat = c; render(); }
+        function selectProduct(id) {
+            selectedProduct = products.find(p => p.id === id);
+            document.getElementById('main-prod-img').src = selectedProduct.img;
+            document.getElementById('sub-img-1').src = selectedProduct.img;
+            document.getElementById('sub-img-2').src = selectedProduct.img;
+            document.getElementById('p-display-title').innerText = selectedProduct.name;
+            document.getElementById('p-display-price').innerText = `$${selectedProduct.price.toLocaleString()}`;
+        }
 
-        function addToCart(id) {
-            const p = state.products.find(x => x.id === id);
-            cart.push(p);
-            updateCart();
+        function addToBag() {
+            if(!selectedProduct) return;
+            cart.push({...selectedProduct, size: document.getElementById('p-size-select').value});
+            updateCartUI();
             toggleCart();
         }
 
-        function updateCart() {
+        function updateCartUI() {
+            const list = document.getElementById('cart-items-list');
+            let total = 0;
+            list.innerHTML = cart.map(item => {
+                total += item.price;
+                return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13px;">
+                            <span>${item.name} (${item.size})</span>
+                            <span>$${item.price}</span>
+                        </div>`;
+            }).join('');
+            document.getElementById('cart-total-price').innerText = "Total: $" + total.toLocaleString();
             document.getElementById('cart-count').innerText = cart.length;
-            const items = document.getElementById('cart-items');
-            items.innerHTML = cart.map(i => `<p style="font-size:13px; margin-bottom:5px;">${i.name} - $${i.price}</p>`).join('');
-            const total = cart.reduce((a, b) => a + b.price, 0);
-            document.getElementById('cart-total').innerText = "Total: $" + total.toLocaleString();
         }
 
-        function toggleCart() { document.getElementById('cart-modal').classList.toggle('open'); }
+        function checkout() {
+            const name = document.getElementById('cust-name').value;
+            const dir = document.getElementById('cust-dir').value;
+            const pay = document.getElementById('cust-pay').value;
+            const total = cart.reduce((a,b) => a + b.price, 0);
+            if(!name || !dir || cart.length === 0) return;
 
-        function finalizeOrder() {
-            const n = document.getElementById('c-name').value;
-            const a = document.getElementById('c-address').value;
-            const p = document.getElementById('c-pay').value;
-            if(!n || !a || cart.length === 0) return;
+            sales.push({ name, dir, pay, total: total.toLocaleString() });
+            saveState();
 
-            const total = cart.reduce((a, b) => a + b.price, 0);
-            const itemsName = cart.map(i => i.name).join(', ');
-
-            // Guardar en historial
-            state.sales.push({ name: n, items: itemsName, address: a, pay: p, total: total.toLocaleString() });
-            save();
-
-            // WhatsApp
-            let msg = `*NUEVO PEDIDO INERCIA*%0A*Cliente:* ${n}%0A*Dirección:* ${a}%0A*Pago:* ${p}%0A*Envío:* ${state.ship}%0A*Items:* ${itemsName}%0A*TOTAL:* $${total.toLocaleString()}`;
-            if(p === "Transferencia") {
-                msg += `%0A%0A*DATOS BANCARIOS:*%0ABanco: ${state.bank}%0AAlias: ${state.alias}%0ACBU: ${state.cbu}`;
-            }
-
-            window.open(`https://wa.me{state.wsp}?text=${msg}`);
-            cart = []; updateCart(); toggleCart();
+            let msg = `*NUEVO PEDIDO INERCIA*%0ACliente: ${name}%0ADirección: ${dir}%0APago: ${pay}%0ATotal: $${total}`;
+            if(pay === "Transferencia") msg += `%0ABanco: ${config.bank}%0AAlias: ${config.alias}%0ACBU: ${config.cbu}`;
+            
+            window.open(`https://wa.me{config.wsp}?text=${msg}`);
+            cart = []; updateCartUI(); toggleCart();
         }
 
-        function delProduct(id) {
-            state.products = state.products.filter(p => p.id !== id);
-            save();
+        function saveSettings() {
+            config.bank = document.getElementById('adm-bank').value;
+            config.alias = document.getElementById('adm-alias').value;
+            config.cbu = document.getElementById('adm-cbu').value;
+            config.wsp = document.getElementById('adm-wsp').value;
+            config.ship = document.getElementById('adm-ship').value;
+            saveState();
+            alert("Guardado");
         }
 
-        function loadAdminFields() {
-            document.getElementById('adm-title').value = state.title;
-            document.getElementById('adm-wsp').value = state.wsp;
-            document.getElementById('adm-ship').value = state.ship;
-            document.getElementById('adm-bank').value = state.bank;
-            document.getElementById('adm-alias').value = state.alias;
-            document.getElementById('adm-cbu').value = state.cbu;
+        function loadAdmin() {
+            document.getElementById('adm-bank').value = config.bank;
+            document.getElementById('adm-alias').value = config.alias;
+            document.getElementById('adm-cbu').value = config.cbu;
+            document.getElementById('adm-wsp').value = config.wsp;
+            document.getElementById('adm-ship').value = config.ship;
+            render();
         }
+
+        function delP(i) { products.splice(i, 1); saveState(); }
 
         render();
     </script>
