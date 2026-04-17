@@ -1,11 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <title>INERCIA Admin</title>
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INERCIA | Moda en Movimiento</title>
+    
+    <!-- Tipografía de lujo similar a la imagen -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <!-- Widget de Seguridad para el Admin -->
+    </script>
+
+    <style>
+        :root { --negro: #111; --gris-fondo: #f9f9f9; --acento: #d90429; }
+        body { margin: 0; font-family: 'Inter', sans-serif; color: var(--negro); background: #fff; line-height: 1.6; }
+        
+        /* CABECERA - ESTILO EDITORIAL */
+        header { padding: 50px 20px; text-align: center; background: #fff; border-bottom: 1px solid #eee; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 3rem; letter-spacing: 12px; text-transform: uppercase; margin-bottom: 20px; }
+        nav a { text-decoration: none; color: var(--negro); margin: 0 18px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 400; }
+
+        /* HERO - BANNER PRINCIPAL */
+        .hero { 
+            height: 80vh; 
+            background: #eee url('https://unsplash.com') center/cover no-repeat; 
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* SECCIÓN NEW ARRIVALS */
+        .container { max-width: 1100px; margin: 80px auto; padding: 0 20px; text-align: center; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 50px; position: relative; }
+        .section-title::after { content: ''; display: block; width: 40px; height: 1px; background: var(--acento); margin: 15px auto; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px; }
+        .product-card { transition: 0.3s; }
+        .product-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--gris-fondo); }
+        .product-card h3 { font-size: 0.85rem; font-weight: 400; text-transform: capitalize; margin: 15px 0 5px; }
+        .product-card .price { font-weight: 700; font-size: 0.8rem; color: #555; }
+
+        /* BANNER COLLECTION - CENTRAL */
+        .collection-banner { 
+            background: #ccc url('https://unsplash.com') center/cover no-repeat;
+            padding: 150px 0; color: #fff; text-align: center; margin: 100px 0;
+        }
+        .collection-banner h2 { font-size: 5rem; letter-spacing: 25px; font-weight: 900; margin: 0; text-transform: uppercase; }
+
+        /* FOOTER DETALLADO */
+        footer { padding: 80px 10% 40px; border-top: 1px solid #eee; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px; font-size: 0.75rem; }
+        footer h4 { text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; }
+        footer ul { list-style: none; padding: 0; line-height: 2.5; color: #666; }
+    </style>
 </head>
 <body>
-  <script src="https://unpkg.com@^3.1.2/dist/decap-cms.js"></script>
+
+    <header>
+        <div class="logo">INERCIA</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#new">New Arrival</a>
+            <a href="#">Clothes</a>
+            <a href="#">Jacket</a>
+            <a href="#">Sale</a>
+        </nav>
+    </header>
+
+    <div class="hero"></div>
+
+    <div class="container" id="new">
+        <h2 class="section-title">New Arrivals</h2>
+        <div class="product-grid">
+            <!-- Producto 1 -->
+            <div class="product-card">
+                <img src="https://unsplash.com">
+                <h3>Brown Long Blouse</h3>
+                <p class="price">NT$1299</p>
+            </div>
+            <!-- Producto 2 -->
+            <div class="product-card">
+                <img src="https://unsplash.com">
+                <h3>White Casual Suit</h3>
+                <p class="price">NT$1299</p>
+            </div>
+            <!-- Los demás productos se cargarán desde el Admin -->
+        </div>
+    </div>
+
+    <section class="collection-banner">
+        <h2>COLLECTION</h2>
+    </section>
+
+    <footer>
+        <div>
+            <h4>About Us</h4>
+            <ul><li>Our Story</li><li>Our Spirit</li><li>Our Member</li></ul>
+        </div>
+        <div>
+            <h4>Customer Service</h4>
+            <ul><li>Contact Us</li><li>Delivery Options</li><li>Payment Methods</li></ul>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <ul><li>Email: shop@inercia.com</li><li>Tel: +54 11 0000-0000</li></ul>
+        </div>
+    </footer>
+
+    <script>
+        // Sincronización con el Administrador
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>
