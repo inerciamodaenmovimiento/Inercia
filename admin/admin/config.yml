@@ -1,0 +1,24 @@
+backend:
+  name: git-gateway
+  branch: main # Revisa que tu rama en GitHub se llame main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "productos"
+    label: "Productos"
+    folder: "content/productos"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nombre del Producto", name: "title", widget: "string"}
+      - {label: "Precio", name: "price", widget: "number"}
+      - {label: "Stock Disponible", name: "stock", widget: "number"}
+      - {label: "Descripción", name: "body", widget: "markdown"}
+      - {label: "Categoría", name: "category", widget: "select", options: ["New Arrival", "Jacket", "Clothes", "Sale"]}
+      - label: "Galería de Fotos (Carrusel)"
+        name: "gallery"
+        widget: "list"
+        fields:
+          - {label: "Imagen", name: "image", widget: "image"}
