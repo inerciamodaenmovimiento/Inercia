@@ -3,176 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VICKY | Functional Apparel</title>
+    <title>INERCIA | Moda en Movimiento</title>
+    <!-- Cargamos Tailwind CSS -->
     <script src="https://tailwindcss.com"></script>
+    <!-- Iconos -->
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         @import url('https://googleapis.com');
-        
-        body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: #1a1a1a; }
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1a1a1a; margin: 0; }
         .mono { font-family: 'JetBrains Mono', monospace; }
-        .tracking-ultra { letter-spacing: 0.15em; }
+        .tracking-vicky { letter-spacing: 0.2em; }
     </style>
 </head>
 <body>
 
-    <!-- Header Estilo Referencia -->
-    <header class="border-b border-gray-100 sticky top-0 bg-white/90 backdrop-blur-sm z-50">
+    <!-- NAVEGACIÓN -->
+    <nav class="border-b border-gray-100 sticky top-0 bg-white/90 backdrop-blur-sm z-50">
         <div class="container mx-auto px-6 h-20 flex items-center justify-between">
             <button class="text-xl"><i class="fa-solid fa-bars-staggered"></i></button>
-            <h1 class="text-2xl font-bold tracking-tighter uppercase">VICKY</h1>
-            <div class="flex gap-5 text-sm">
+            <h1 class="text-2xl font-bold tracking-tighter uppercase">INERCIA</h1>
+            <div class="flex gap-6 text-sm">
                 <i class="fa-solid fa-magnifying-glass cursor-pointer"></i>
-                <i class="fa-solid fa-user cursor-pointer"></i>
-                <div class="relative">
-                    <i class="fa-solid fa-bag-shopping cursor-pointer"></i>
+                <div class="relative cursor-pointer">
+                    <i class="fa-solid fa-bag-shopping"></i>
                     <span class="absolute -top-2 -right-2 bg-black text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="container mx-auto px-6 py-12 text-center">
-            <h2 class="text-4xl md:text-5xl font-bold tracking-ultra uppercase mb-12">Dress here and be in style</h2>
-            
-            <div class="relative w-full max-w-5xl mx-auto aspect-[16/9] bg-[#E5E5E5] overflow-hidden group">
-                <img src="https://unsplash.com" 
-                     alt="New Collection" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/10">
-                    <div class="bg-white px-8 py-4 shadow-xl">
-                        <p class="text-xs tracking-widest font-bold uppercase mb-1">New Collection</p>
-                        <p class="text-[10px] text-gray-500 uppercase">Up to 20% Discount</p>
-                    </div>
+    <!-- HERO SECTION -->
+    <section class="container mx-auto px-6 py-12 text-center">
+        <h2 class="text-4xl md:text-6xl font-bold tracking-vicky uppercase mb-12">DRESS HERE AND BE IN STYLE</h2>
+        <div class="relative w-full max-w-6xl mx-auto aspect-[16/8] bg-gray-100 overflow-hidden">
+            <img src="https://unsplash.com" 
+                 class="w-full h-full object-cover grayscale-[30%]" alt="Nueva Colección">
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="bg-white/90 px-10 py-5 shadow-2xl">
+                    <p class="text-xs tracking-[0.3em] font-bold uppercase">New Collection</p>
                 </div>
-            </div>
-        </section>
-
-        <!-- New Collection Grid -->
-        <section class="container mx-auto px-6 py-16">
-            <div class="flex justify-between items-end mb-8">
-                <h3 class="text-sm font-bold tracking-widest uppercase">New Collection</h3>
-                <a href="#" class="text-[10px] uppercase border-b border-black pb-1">See more</a>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Producto 1 -->
-                <div class="space-y-4">
-                    <div class="aspect-[3/4] bg-gray-100 overflow-hidden">
-                        <img src="https://unsplash.com" class="w-full h-full object-cover hover:opacity-90 transition">
-                    </div>
-                    <div>
-                        <p class="text-xs uppercase font-bold">Body-cut out soft</p>
-                        <p class="mono text-[11px] text-gray-500">$45.000</p>
-                    </div>
-                </div>
-                <!-- Producto 2 -->
-                <div class="space-y-4">
-                    <div class="aspect-[3/4] bg-gray-100 overflow-hidden">
-                        <img src="https://unsplash.com" class="w-full h-full object-cover hover:opacity-90 transition">
-                    </div>
-                    <div>
-                        <p class="text-xs uppercase font-bold">Jeans grey oversize</p>
-                        <p class="mono text-[11px] text-gray-500">$62.500</p>
-                    </div>
-                </div>
-                <!-- Producto 3 -->
-                <div class="space-y-4">
-                    <div class="aspect-[3/4] bg-gray-100 overflow-hidden relative">
-                        <img src="https://unsplash.com" class="w-full h-full object-cover hover:opacity-90 transition">
-                        <span class="absolute top-4 right-4 bg-black text-white text-[9px] px-2 py-1 uppercase tracking-tighter">Tech-Shell</span>
-                    </div>
-                    <div>
-                        <p class="text-xs uppercase font-bold">Jacket Gorp-v1</p>
-                        <p class="mono text-[11px] text-gray-500">$128.000</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Us Section -->
-        <section class="bg-[#F9F9F9] py-20 px-6">
-            <div class="container mx-auto max-w-5xl">
-                <h3 class="text-sm font-bold tracking-widest uppercase mb-12">About Us</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <img src="https://unsplash.com" alt="Studio" class="w-full grayscale">
-                    <div class="space-y-6">
-                        <p class="text-sm leading-relaxed text-gray-600 italic">
-                            "VICKY is a premium equipment company that creates durable and technical solutions for the modern explorer."
-                        </p>
-                        <p class="text-xs text-gray-500 leading-relaxed uppercase tracking-wider">
-                            Diseñamos cada pieza pensando en la transición climática y la resistencia estructural. No es solo ropa, es arquitectura corporal.
-                        </p>
-                        <button class="text-[10px] font-bold uppercase border border-black px-6 py-3 hover:bg-black hover:text-white transition">Read more</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Categories (Visual Grid) -->
-        <section class="container mx-auto px-6 py-20">
-            <h3 class="text-sm font-bold tracking-widest uppercase mb-8">Product Categories</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="group relative aspect-square bg-gray-200 overflow-hidden cursor-pointer">
-                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-black/20 flex items-end p-4">
-                        <span class="text-white text-[10px] font-bold uppercase tracking-widest">Jackets & Coats</span>
-                    </div>
-                </div>
-                <div class="group relative aspect-square bg-gray-200 overflow-hidden cursor-pointer">
-                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-black/20 flex items-end p-4">
-                        <span class="text-white text-[10px] font-bold uppercase tracking-widest">Trousers</span>
-                    </div>
-                </div>
-                <div class="group relative aspect-square bg-gray-200 overflow-hidden cursor-pointer">
-                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-black/20 flex items-end p-4">
-                        <span class="text-white text-[10px] font-bold uppercase tracking-widest">Base Layers</span>
-                    </div>
-                </div>
-                <div class="group relative aspect-square bg-gray-200 overflow-hidden cursor-pointer">
-                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-black/20 flex items-end p-4">
-                        <span class="text-white text-[10px] font-bold uppercase tracking-widest">Gear</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer Estilo Referencia -->
-    <footer class="bg-[#F2F2F2] pt-16 pb-8 px-6">
-        <div class="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
-            <div>
-                <h4 class="text-xl font-bold mb-6">VICKY</h4>
-                <p class="text-[10px] text-gray-400 uppercase leading-loose">Built to endure the urban and natural wilderness.</p>
-            </div>
-            <div class="space-y-3">
-                <p class="text-[11px] font-bold uppercase tracking-widest">Catalog</p>
-                <ul class="text-[10px] text-gray-500 space-y-2 uppercase tracking-tighter">
-                    <li><a href="#" class="hover:text-black">New In</a></li>
-                    <li><a href="#" class="hover:text-black">Best Sellers</a></li>
-                    <li><a href="#" class="hover:text-black">All Products</a></li>
-                </ul>
-            </div>
-            <div class="space-y-3">
-                <p class="text-[11px] font-bold uppercase tracking-widest">Info</p>
-                <ul class="text-[10px] text-gray-500 space-y-2 uppercase tracking-tighter">
-                    <li><a href="#" class="hover:text-black">Shipping</a></li>
-                    <li><a href="#" class="hover:text-black">Sustainability</a></li>
-                    <li><a href="#" class="hover:text-black">Returns</a></li>
-                </ul>
-            </div>
-            <div class="space-y-3">
-                <p class="text-[11px] font-bold uppercase tracking-widest">Contacts</p>
-                <p class="text-[10px] text-gray-500 uppercase">studio@vicky.design</p>
-                <p class="text-[10px] text-gray-500 uppercase">+54 11 0000-0000</p>
             </div>
         </div>
-        <div class="text-center border-t border-gray-200 pt-8">
-            <p class="mono text-[9px] text-gray-400 uppercase tracking-widest">© 2024 VICKY SYSTEM LOGISTICS UNIT. ALL RIGHTS RESERVED.</p>
+    </section>
+
+    <!-- GRILLA DE PRODUCTOS -->
+    <section class="container mx-auto px-6 py-16">
+        <div class="flex justify-between items-end mb-12">
+            <h3 class="text-sm font-bold tracking-widest uppercase">Destacados</h3>
+            <a href="#" class="text-[10px] uppercase border-b border-black pb-1">Ver todo</a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Producto 1 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] bg-gray-50 overflow-hidden mb-4">
+                    <img src="https://unsplash.com" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                </div>
+                <h4 class="text-xs font-bold uppercase">Parka Técnica v1.0</h4>
+                <p class="mono text-xs text-gray-500 mt-1">$120.000</p>
+                <button class="mt-4 w-full border border-black py-3 text-[10px] uppercase font-bold hover:bg-black hover:text-white transition">Agregar al carrito</button>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] bg-gray-50 overflow-hidden mb-4">
+                    <img src="https://unsplash.com" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                </div>
+                <h4 class="text-xs font-bold uppercase">Pantalón Cargo "Ripstop"</h4>
+                <p class="mono text-xs text-gray-500 mt-1">$85.000</p>
+                <button class="mt-4 w-full border border-black py-3 text-[10px] uppercase font-bold hover:bg-black hover:text-white transition">Agregar al carrito</button>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] bg-gray-50 overflow-hidden mb-4">
+                    <img src="https://unsplash.com" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                </div>
+                <h4 class="text-xs font-bold uppercase">Shell Impermeable Carbon</h4>
+                <p class="mono text-xs text-gray-500 mt-1">$150.000</p>
+                <button class="mt-4 w-full border border-black py-3 text-[10px] uppercase font-bold hover:bg-black hover:text-white transition">Agregar al carrito</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-50 border-t border-gray-100 py-20 px-6">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div>
+                <h4 class="text-xl font-bold uppercase mb-4">INERCIA</h4>
+                <p class="text-[10px] text-gray-400 uppercase leading-loose tracking-widest">Equipamiento técnico para el movimiento constante.</p>
+            </div>
+            <div class="text-[10px] uppercase space-y-4 tracking-widest text-gray-600">
+                <p class="font-bold text-black">Catálogo</p>
+                <p><a href="#">Nuevos Ingresos</a></p>
+                <p><a href="#">Shells</a></p>
+                <p><a href="#">Accesorios</a></p>
+            </div>
+            <div class="text-[10px] uppercase space-y-4 tracking-widest text-gray-600">
+                <p class="font-bold text-black">Info</p>
+                <p><a href="#">Envíos</a></p>
+                <p><a href="#">Devoluciones</a></p>
+                <p><a href="#">Sustentabilidad</a></p>
+            </div>
+            <div class="text-[10px] uppercase space-y-4 tracking-widest text-gray-600">
+                <p class="font-bold text-black">Contacto</p>
+                <p>hola@inercia.design</p>
+                <p>Buenos Aires, AR</p>
+            </div>
+        </div>
+        <div class="mt-20 pt-8 border-t border-gray-200 text-center">
+            <p class="mono text-[9px] text-gray-400 uppercase">© 2024 INERCIA SYSTEM LOGISTICS UNIT</p>
         </div>
     </footer>
 
