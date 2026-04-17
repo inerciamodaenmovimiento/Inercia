@@ -1,143 +1,53 @@
-<!-- INTEGRACIÓN DE PANEL ADMIN SENIOR - INERCIA -->
+<!-- ADMIN BACKOFFICE INERCIA (0110) -->
 <style>
-    .admin-full-panel { display: none; position: fixed; inset: 0; background: #000; color: #fff; z-index: 5000; padding: 40px; overflow-y: auto; font-family: monospace; }
-    .admin-nav { display: flex; gap: 20px; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
-    .admin-nav span { cursor: pointer; color: #666; font-size: 0.8rem; }
-    .admin-nav span.active { color: #fff; text-decoration: underline; }
-    .admin-section { display: none; }
-    .admin-section.active { display: block; }
-    .order-card { background: #111; padding: 20px; margin-bottom: 10px; border: 1px solid #222; font-size: 0.8rem; }
-    .status-tag { padding: 2px 8px; border-radius: 3px; font-size: 0.7rem; }
-    .table-admin { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    .table-admin th { text-align: left; color: #666; font-size: 0.7rem; padding: 10px; border-bottom: 1px solid #222; }
-    .table-admin td { padding: 10px; border-bottom: 1px solid #111; font-size: 0.8rem; }
+#adm-root{display:none;position:fixed;inset:0;background:#fcfcfc;z-index:9999;font-family:sans-serif;color:#1a1a1a;overflow-y:auto}
+.adm-v{display:flex;height:100%}
+.adm-s{width:220px;background:#111;color:#fff;padding:40px 20px;flex-shrink:0}
+.adm-m{flex-grow:1;padding:60px 8%;background:#f4f3f0}
+.adm-t{cursor:pointer;display:block;margin-bottom:20px;font-size:11px;letter-spacing:2px;color:#666;text-transform:uppercase}
+.adm-t.act{color:#fff}
+.adm-box{display:none;background:#fff;padding:30px;border:1px solid #eee}
+.adm-box.act{display:block}
+.adm-tbl{width:100%;border-collapse:collapse;margin-top:20px;font-size:12px}
+.adm-tbl th{text-align:left;padding:12px;border-bottom:1px solid #eee;color:#999}
+.adm-tbl td{padding:12px;border-bottom:1px solid #f9f9f9}
+input,select{width:100%;padding:10px;margin:10px 0;border:1px solid #eee;background:#f9f9f9}
 </style>
-
-<div id="admin-full" class="admin-full-panel">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-        <h2 style="letter-spacing:4px;">INERCIA BACKOFFICE</h2>
-        <span onclick="document.getElementById('admin-full').style.display='none'" style="cursor:pointer;">[SALIR]</span>
-    </div>
-
-    <nav class="admin-nav">
-        <span class="a-tab active" onclick="switchTab('orders')">PEDIDOS RECIENTES</span>
-        <span class="a-tab" onclick="switchTab('inventory')">INVENTARIO</span>
-        <span class="a-tab" onclick="switchTab('settings')">PAGOS Y ENVÍOS</span>
-        <span class="a-tab" onclick="switchTab('history')">HISTORIAL</span>
-    </nav>
-
-    <!-- Módulo de Pedidos -->
-    <section id="orders" class="admin-section active">
-        <table class="table-admin">
-            <thead><tr><th>ID</th><th>CLIENTE</th><th>MÉTODO PAGO</th><th>ENVÍO</th><th>TOTAL</th><th>ESTADO</th></tr></thead>
-            <tbody id="orders-list"></tbody>
-        </table>
-    </section>
-
-    <!-- Módulo de Inventario -->
-    <section id="inventory" class="admin-section">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px;">
-            <div>
-                <h3>AÑADIR PRODUCTO</h3>
-                <input type="text" id="p-name" placeholder="Nombre" style="width:100%; padding:10px; margin-top:10px; background:#111; border:1px solid #333; color:#fff;">
-                <input type="number" id="p-price" placeholder="Precio" style="width:100%; padding:10px; margin-top:10px; background:#111; border:1px solid #333; color:#fff;">
-                <input type="text" id="p-img" placeholder="URL Imagen" style="width:100%; padding:10px; margin-top:10px; background:#111; border:1px solid #333; color:#fff;">
-                <button onclick="saveNewProd()" style="margin-top:20px; width:100%; padding:10px; background:#fff; color:#000; border:none; cursor:pointer;">PUBLICAR</button>
-            </div>
-            <div id="inventory-list"></div>
-        </div>
-    </section>
-
-    <!-- Configuración Pagos/Envíos -->
-    <section id="settings" class="admin-section">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px;">
-            <div>
-                <h3>MÉTODOS DE PAGO</h3>
-                <div id="pay-methods-config" style="margin-top:20px;"></div>
-            </div>
-            <div>
-                <h3>MÉTODOS DE ENVÍO</h3>
-                <div id="ship-methods-config" style="margin-top:20px;"></div>
-            </div>
-        </div>
-    </section>
+<div id="adm-root">
+<div class="adm-v">
+<aside class="adm-s">
+<h2 style="font-size:14px;letter-spacing:4px;margin-bottom:50px">INERCIA</h2>
+<span class="adm-t act" onclick="adT(0)">Pedidos</span>
+<span class="adm-t" onclick="adT(1)">Productos</span>
+<span class="adm-t" onclick="adT(2)">Pagos y Envíos</span>
+<span class="adm-t" onclick="adT(3)">Historial</span>
+<span class="adm-t" style="margin-top:100px;color:red" onclick="document.getElementById('adm-root').style.display='none'">Cerrar</span>
+</aside>
+<main class="adm-m">
+<div class="adm-box act" id="b0">
+<h3>Checklist de Pedidos</h3>
+<table class="adm-tbl"><thead><tr><th>ID</th><th>Comprador</th><th>Pago</th><th>Envío</th><th>Total</th></tr></thead><tbody id="p-list"></tbody></table>
 </div>
-
+<div class="adm-box" id="b1">
+<h3>Gestión de Inventario</h3>
+<input id="in-n" placeholder="Nombre"><input id="in-p" type="number" placeholder="Precio"><input id="in-i" placeholder="URL Imagen"><button class="btn-black" onclick="newP()">Publicar</button>
+</div>
+<div class="adm-box" id="b2">
+<h3>Métodos de Pago y Envío</h3>
+<label>Pagos Activos</label><input id="set-p" value="Transferencia, Mercado Pago, Efectivo"><label>Envíos Activos</label><input id="set-e" value="Correo Argentino, Local, Express">
+</div>
+<div class="adm-box" id="b3">
+<h3>Historial de Ventas</h3>
+<table class="adm-tbl"><thead><tr><th>Fecha</th><th>Cliente</th><th>Monto</th></tr></thead><tbody id="h-list"></tbody></table>
+</div>
+</main>
+</div>
+</div>
 <script>
-    // DATA CORE
-    let orders = JSON.parse(localStorage.getItem('inercia_orders')) || [];
-    let config = JSON.parse(localStorage.getItem('inercia_config')) || {
-        payments: ['Transferencia Bancaria', 'Mercado Pago', 'Efectivo'],
-        shipping: ['Correo Argentino', 'Retiro en Local', 'Envío Express']
-    };
-
-    // Sobrescribir función de finalizar compra para capturar datos
-    document.querySelector('.btn-black').onclick = function() {
-        if(bag.length === 0) return alert("Bolsa vacía");
-        const customer = prompt("Nombre del cliente:");
-        const pay = prompt("Método de pago (" + config.payments.join('/') + "):");
-        const ship = prompt("Método de envío (" + config.shipping.join('/') + "):");
-        
-        const newOrder = {
-            id: '#' + Math.floor(Math.random()*9000 + 1000),
-            customer,
-            pay,
-            ship,
-            total: document.getElementById('cart-total').innerText,
-            date: new Date().toLocaleDateString(),
-            items: [...bag]
-        };
-        
-        orders.push(newOrder);
-        localStorage.setItem('inercia_orders', JSON.stringify(orders));
-        bag = [];
-        updateCart();
-        toggleCart();
-        alert("Pedido procesado con éxito.");
-    };
-
-    function switchTab(tabId) {
-        document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.a-tab').forEach(t => t.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        event.target.classList.add('active');
-        if(tabId === 'orders') renderOrders();
-    }
-
-    function renderOrders() {
-        const list = document.getElementById('orders-list');
-        list.innerHTML = orders.map(o => `
-            <tr>
-                <td>${o.id}</td>
-                <td>${o.customer}</td>
-                <td>${o.pay}</td>
-                <td>${o.ship}</td>
-                <td>${o.total}</td>
-                <td><span class="status-tag" style="background:#222;">PROCESANDO</span></td>
-            </tr>
-        `).join('');
-    }
-
-    function saveNewProd() {
-        const n = document.getElementById('p-name').value;
-        const p = parseInt(document.getElementById('p-price').value);
-        const i = document.getElementById('p-img').value;
-        if(n && p) {
-            products.push({id: Date.now(), name: n, price: p, img: i});
-            localStorage.setItem('inercia_prods', JSON.stringify(products));
-            init();
-            alert("Producto añadido.");
-        }
-    }
-
-    // Listener para activar Dashboard 0110
-    let fullCode = "";
-    window.addEventListener('keydown', (e) => {
-        fullCode += e.key;
-        if(fullCode.includes("0110")) {
-            document.getElementById('admin-full').style.display = 'block';
-            renderOrders();
-            fullCode = "";
-        }
-    });
+let oData = JSON.parse(localStorage.getItem('in_orders')) || [];
+function adT(idx){document.querySelectorAll('.adm-box').forEach((b,i)=>{b.classList.toggle('act',i===idx)});document.querySelectorAll('.adm-t').forEach((t,i)=>{t.classList.toggle('act',i===idx)})}
+window.addEventListener('keydown',e=>{code+=e.key;if(code.includes("0110")){document.getElementById('adm-root').style.display='block';updP();code=""}});
+function newP(){let n=document.getElementById('in-n').value,p=parseInt(document.getElementById('in-p').value),i=document.getElementById('in-i').value;if(n&&p){products.push({id:Date.now(),name:n,price:p,img:i});localStorage.setItem('inercia_prods',JSON.stringify(products));init();adT(0)}}
+function updP(){document.getElementById('p-list').innerHTML=oData.map(o=>`<tr><td>${o.id}</td><td>${o.c}</td><td>${o.m}</td><td>${o.e}</td><td>${o.t}</td></tr>`).join('');document.getElementById('h-list').innerHTML=oData.map(o=>`<tr><td>${o.d}</td><td>${o.c}</td><td>${o.t}</td></tr>`).join('')}
+document.querySelector('.btn-black').addEventListener('click',()=>{if(bag.length>0){let c=prompt("Nombre:"),m=prompt("Pago:"),e=prompt("Envio:");let ord={id:'#'+Math.floor(Math.random()*999),c,m,e,t:document.getElementById('cart-total').innerText,d:new Date().toLocaleDateString()};oData.push(ord);localStorage.setItem('in_orders',JSON.stringify(oData));bag=[];updateCart();toggleCart();updP()}});
 </script>
