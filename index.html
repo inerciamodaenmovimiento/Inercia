@@ -3,23 +3,50 @@
 <head>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { background-color: #f5f2ed; color: #2d2926; font-family: 'Inter', sans-serif; margin: 0; }
-        h1 { font-family: 'Cormorant Garamond', serif; font-size: 4rem; text-transform: uppercase; letter-spacing: 2px; }
-        .hero-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 20px; }
-        .nav { text-align: center; padding: 40px; text-transform: uppercase; letter-spacing: 4px; }
-        .btn-buy { border: 1px solid #2d2926; padding: 10px 30px; background: transparent; cursor: pointer; transition: 0.3s; }
-        .btn-buy:hover { background: #2d2926; color: white; }
+        :root { --bg: #ffffff; --text: #1a1a1a; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        
+        /* Encabezado Estilo Revista */
+        header { padding: 40px; text-align: center; border-bottom: 1px solid #eee; }
+        .brand { font-family: 'Playfair Display', serif; font-size: 2.5rem; letter-spacing: -1px; }
+
+        /* Sección Hero (La portada) */
+        .hero { display: grid; grid-template-columns: 1fr 1fr; height: 80vh; align-items: center; padding: 0 5%; }
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 5rem; line-height: 1; margin: 0; }
+        .hero-img { height: 100%; object-fit: cover; width: 80%; justify-self: end; }
+
+        /* Lookbook Grid */
+        .lookbook { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 100px 5%; }
+        .item { position: relative; }
+        .item.tall { margin-top: -50px; } /* Asimetría */
+        .item img { width: 100%; filter: grayscale(20%); transition: 0.5s; }
+        .item img:hover { filter: grayscale(0%); }
     </style>
 </head>
 <body>
-    <nav class="nav">Inercia — Moda en Movimiento</nav>
-    <section class="hero-grid">
-        <img src="tu-foto-1.jpg" style="width:100%">
-        <div style="text-align:center">
-            <h1>Colección <br> Inercia</h1>
-            <button class="btn-buy">Explorar</button>
+    <header><div class="brand">INERCIA</div></header>
+    
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Colección<br>Otoño — 2026</h1>
+            <p>Moda en constante movimiento.</p>
         </div>
-        <img src="tu-foto-2.jpg" style="width:100%">
+        <img src="tu-imagen-principal.jpg" class="hero-img" alt="Inercia Look">
+    </section>
+
+    <section class="lookbook">
+        <div class="item">
+            <img src="foto1.jpg">
+            <p>20% SALE</p>
+        </div>
+        <div class="item tall">
+            <img src="foto2.jpg">
+            <p>NUEVA TEMPORADA</p>
+        </div>
+        <div class="item">
+            <img src="foto3.jpg">
+            <p>ACCESORIOS</p>
+        </div>
     </section>
 </body>
 </html>
