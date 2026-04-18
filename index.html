@@ -4,48 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INERCIA | Moda en Movimiento</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Forzamos la actualización con ?v=1.2 -->
+    <link rel="stylesheet" href="style.css?v=1.2">
+    <!-- Tipografías de lujo -->
     <link href="https://googleapis.com" rel="stylesheet">
 </head>
 <body>
 
-    <!-- Título de fondo tipo marca de agua -->
-    <div class="bg-watermark">INERCIA</div>
-
     <header class="main-header">
         <h1 class="logo">INERCIA</h1>
-        <nav>
+        <nav class="editorial-nav">
             <a href="#">COLECCIONES</a>
             <a href="#">MOVIMIENTO</a>
             <a href="#">CONTACTO</a>
         </nav>
     </header>
 
-    <main class="editorial-container">
+    <main class="magazine-layout">
         
-        <!-- Bloque Hero (Imagen + Título encimado) -->
-        <section class="hero-block">
-            <div class="main-img-wrapper">
-                <img src="https://unsplash.com" alt="Editorial 1">
+        <!-- SECCIÓN HERO -->
+        <section class="hero-section">
+            <div class="image-wrapper main-photo">
+                <img src="https://unsplash.com" alt="Editorial Principal">
             </div>
-            <div class="hero-text">
-                <span class="tag">EST. 2024 / BS AS</span>
-                <h2 class="main-title">MODA EN <br><em>MOVIMIENTO</em></h2>
+            <div class="hero-text-block">
+                <span class="editorial-tag">EST. 2024 / BS AS</span>
+                <h2 class="title-xl">MODA EN <br><em>MOVIMIENTO</em></h2>
             </div>
         </section>
 
-        <!-- Bloque Manifiesto (Asimétrico) -->
-        <section class="manifesto-block">
-            <div class="text-content">
-                <p class="curator">Curadores de estilo</p>
-                <h3 class="story-title">A Story That <br>Eye Witnessed</h3>
-                <p class="description">
+        <!-- SECCIÓN MANIFIESTO -->
+        <section class="manifesto-section">
+            <div class="manifesto-content">
+                <p class="small-title">Curadores de estilo</p>
+                <h3 class="title-lg">A Story That <br>Eye Witnessed</h3>
+                <p class="body-text">
                     La inercia no es solo física, es el impulso de quien no se detiene. 
                     Nuestras prendas están diseñadas para acompañar cada giro, cada paso.
                 </p>
             </div>
-            <div class="side-img-wrapper">
-                <img src="https://unsplash.com" alt="Editorial 2">
+            <div class="image-wrapper side-photo">
+                <img src="https://unsplash.com" alt="Editorial Detalle">
             </div>
         </section>
 
