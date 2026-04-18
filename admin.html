@@ -3,133 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myGESTIÓN PRO | INERCIA MODA</title>
-    <link href="https://googleapis.com" rel="stylesheet">
+    <title>Invercia Moda - Admin Privado</title>
+    <script src="https://tailwindcss.com"></script>
     <style>
-        :root { --black: #000; --white: #fff; --gray: #f4f4f4; --border: #e0e0e0; --safe: #2e7d32; --blue: #1565c0; --red: #c62828; --gold: #b8860b; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--gray); display: flex; min-height: 100vh; overflow-x: hidden; }
-
-        /* 1. PANTALLA DE ACCESO (ELIMINADO ERROR DE CARGA) */
-        #lock-screen { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        #lock-screen input { border: none; border-bottom: 2px solid var(--black); font-size: 2.5rem; text-align: center; outline: none; width: 220px; padding: 10px; }
-
-        /* 2. SIDEBAR */
-        sidebar { width: 260px; background: var(--black); color: #fff; padding: 40px 20px; position: fixed; height: 100vh; z-index: 1000; }
-        .brand-admin { font-size: 1.2rem; font-weight: 700; letter-spacing: 3px; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .nav-item { color: #888; text-decoration: none; font-size: 11px; margin-bottom: 20px; letter-spacing: 1.5px; cursor: pointer; display: block; text-transform: uppercase; }
-        .nav-item:hover, .nav-item.active { color: #fff; }
-
-        /* 3. MAIN CONTENT */
-        main { flex: 1; margin-left: 260px; padding: 50px; display: none; }
-        .card { background: #fff; padding: 30px; border: 1px solid var(--border); margin-bottom: 25px; }
-        h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid var(--gray); padding-bottom: 10px; }
-
-        /* 4. FORMULARIOS Y TABLAS */
-        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-        label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #999; }
-        input, select, textarea { padding: 12px; border: 1px solid var(--border); font-size: 13px; outline: none; background: #fff; width: 100%; }
-        .variant-row { display: grid; grid-template-columns: 1fr 1fr 80px 1fr; gap: 10px; margin-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; font-size: 9px; text-transform: uppercase; padding: 12px; border-bottom: 2px solid var(--black); }
-        td { padding: 15px 12px; font-size: 12px; border-bottom: 1px solid #eee; }
-
-        /* 5. MULTIMEDIA & ANALYTICS */
-        .preview-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 15px; }
-        .preview-box { aspect-ratio: 2/3; background: #eee; object-fit: cover; width: 100%; border: 1px solid var(--border); }
-        .stat-card { background: var(--black); color: #fff; padding: 20px; margin-bottom: 20px; }
-
-        /* 6. BOTONES */
-        .btn-black { background: var(--black); color: #fff; border: none; padding: 18px; width: 100%; font-weight: 600; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
-        .btn-outline { background: none; border: 1px dashed var(--black); padding: 10px; cursor: pointer; font-size: 10px; width: 100%; margin-top: 10px; }
+        /* Punto de acceso visualmente oculto pero presente */
+        #access-trigger {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            background: rgba(0,0,0,0.02); /* Casi invisible */
+            cursor: default;
+            z-index: 9999;
+        }
+        #admin-panel { display: none; } /* Oculto por defecto */
     </style>
 </head>
-<body>
+<body class="bg-gray-100 font-sans">
 
-    <div id="lock-screen">
-        <p style="font-size: 10px; letter-spacing: 5px; margin-bottom: 20px; color: #ccc;">INERCIA MODA | myGESTIÓN</p>
-        <input type="password" id="secret-key" placeholder="••••" autofocus>
+    <!-- Pantalla de Bloqueo Inicial -->
+    <div id="lock-screen" class="min-h-screen flex items-center justify-center bg-white">
+        <div class="text-center">
+            <h1 class="text-2xl font-bold text-gray-800">Invercia Moda</h1>
+            <p class="text-gray-400 text-sm mt-2 uppercase tracking-widest">Acceso Restringido</p>
+        </div>
     </div>
 
-    <sidebar>
-        <div class="brand-admin">myGESTIÓN</div>
-        <div class="nav-item active" onclick="showSec('dash')">Dashboard</div>
-        <div class="nav-item" onclick="showSec('nuevo')">Carga & Variantes</div>
-        <div class="nav-item" onclick="showSec('inventario')">Stock Live</div>
-        <div class="nav-item" onclick="showSec('pedidos')">Pedidos & Clientes</div>
-        <div class="nav-item" onclick="showSec('mkt')">Marketing & SEO</div>
-        <div class="nav-item" onclick="showSec('config')">Pagos & Seguridad</div>
-    </sidebar>
+    <!-- PANEL DE ADMINISTRACIÓN (TODO TU CONTENIDO) -->
+    <div id="admin-panel" class="min-h-screen flex flex-col">
+        <header class="bg-black text-white p-4 flex justify-between items-center shadow-lg">
+            <h1 class="text-xl font-bold tracking-widest uppercase">Invercia Moda Admin</h1>
+            <button onclick="location.reload()" class="text-xs bg-red-600 px-2 py-1 rounded">Cerrar Sesión</button>
+        </header>
 
-    <main id="admin-content">
-        <!-- 1. DASHBOARD -->
-        <section id="sec-dash" class="admin-sec">
-            <div class="stat-card"><h2>Ventas Hoy</h2><p style="font-size: 2rem;">$0.00</p></div>
-            <div class="card"><h2>Pedidos Abandonados</h2><p>No hay carritos abandonados hoy.</p></div>
-        </section>
+        <main class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 1. GESTIÓN DE PRODUCTOS -->
+            <section class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold mb-4 border-b pb-2">📦 Añadir Producto (Punto 1 & 2)</h2>
+                <form id="product-form" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="ref" placeholder="Referencia (Ref: 001)" class="border p-2 rounded" required>
+                        <input type="text" id="name" placeholder="Nombre de prenda" class="border p-2 rounded" required>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <select id="cat" class="border p-2 rounded">
+                            <option>Camisetas</option>
+                            <option>Pantalones</option>
+                            <option>Vestidos</option>
+                        </select>
+                        <input type="text" id="size" placeholder="Talla (S, M, L)" class="border p-2 rounded">
+                        <input type="number" id="stock" placeholder="Stock inicial" class="border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Fotos de alta calidad</label>
+                        <input type="file" id="images" multiple class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700">Guardar en Inventario</button>
+                </form>
+            </section>
 
-        <!-- 2. CARGA & VARIANTES -->
-        <section id="sec-nuevo" class="admin-sec" style="display:none;">
-            <div class="card">
-                <h2>Carga Editorial & Categorías</h2>
-                <div style="display:flex; gap:10px; margin-bottom:20px;">
-                    <input type="text" id="new-cat" placeholder="Nueva Categoría...">
-                    <button class="btn-black" style="width:100px; padding:10px;" onclick="addCat()">+ ADD</button>
-                </div>
-                <div class="grid-form">
-                    <div class="input-group"><label>Categoría</label><select id="p-cat"><option>General</option></select></div>
-                    <div class="input-group"><label>Nombre</label><input type="text" id="p-name"></div>
-                </div>
-                <div class="input-group"><label>Descripción</label><textarea id="p-desc" rows="3"></textarea></div>
-            </div>
-            <div class="card">
-                <h2>Variantes (Talla/Color/Material)</h2>
-                <div id="v-container"><div class="variant-row"><input type="text" placeholder="Talla"><input type="text" placeholder="Color"><input type="number" placeholder="Stock"><input type="text" placeholder="Material"></div></div>
-                <button class="btn-outline" onclick="addV()">+ AÑADIR VARIANTE</button>
-            </div>
-            <div class="card">
-                <h2>Carga Masiva de Imágenes</h2>
-                <input type="file" id="f-input" multiple onchange="preImg(event)">
-                <div id="p-grid" class="preview-grid"></div>
-            </div>
-            <button class="btn-black" id="btn-save">PUBLICAR EN FIREBASE</button>
-        </section>
+            <!-- 2. ALERTAS DE STOCK -->
+            <section class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold mb-4 border-b pb-2 text-red-600">⚠️ Alertas de Stock</h2>
+                <div id="stock-alerts" class="space-y-2 text-sm italic text-gray-500">Cargando...</div>
+            </section>
+        </main>
+    </div>
 
-        <!-- 3. PEDIDOS & CLIENTES (DNI/DIRECCIÓN) -->
-        <section id="sec-pedidos" class="admin-sec" style="display:none;">
-            <div class="card">
-                <h2>Base de Datos: Clientes & Envíos</h2>
-                <table>
-                    <thead><tr><th>Cliente</th><th>DNI / Tel</th><th>Dirección de Correo</th><th>Estado</th></tr></thead>
-                    <tbody>
-                        <tr><td>Martina Rossi</td><td>38.123.456 / 11-2233-4455</td><td>Av. Santa Fe 1234, CP 1425, CABA</td><td><span style="color:var(--blue)">PAGADO</span></td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+    <!-- Trigger invisible inferior derecho -->
+    <div id="access-trigger" title="Modo Admin"></div>
 
-        <!-- 4. MARKETING & SEO -->
-        <section id="sec-mkt" class="admin-sec" style="display:none;">
-            <div class="card">
-                <h2>SEO & Cupones</h2>
-                <div class="input-group"><label>Meta Título Google</label><input type="text"></div>
-                <div class="input-group"><label>Meta Descripción</label><textarea rows="2"></textarea></div>
-                <div class="grid-form" style="margin-top:20px;">
-                    <input type="text" placeholder="Código Cupón"><input type="number" placeholder="% Descuento">
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. PAGOS & SEGURIDAD -->
-        <section id="sec-config" class="admin-sec" style="display:none;">
-            <div class="card"><h2>Configuración de Cobros</h2><textarea placeholder="Info de CBU/Alias para clientes..."></textarea></div>
-        </section>
-    </main>
-
+    <!-- LOGICA FIREBASE Y ACCESO OCULTO -->
     <script type="module">
         import { initializeApp } from "https://gstatic.com";
-        import { getFirestore, collection, addDoc } from "https://gstatic.com";
+        import { getFirestore, collection, addDoc, onSnapshot } from "https://gstatic.com";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://gstatic.com";
 
         const firebaseConfig = {
@@ -138,54 +86,75 @@
             projectId: "incerciamoda",
             storageBucket: "incerciamoda.firebasestorage.app",
             messagingSenderId: "335158123341",
-            appId: "1:335158123341:web:2722e74538e808321a7504"
+            appId: "1:335158123341:web:2722e74538e808321a7504",
+            measurementId: "G-1NGJT0MRPB"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        // LOGIN 0110
-        document.getElementById('secret-key').addEventListener('input', (e) => {
-            if(e.target.value === '0110') {
+        // --- SISTEMA DE CÓDIGO OCULTO (0110) ---
+        let inputBuffer = "";
+        const secretCode = "0110";
+
+        window.addEventListener('keydown', (e) => {
+            inputBuffer += e.key;
+            if (inputBuffer.length > secretCode.length) {
+                inputBuffer = inputBuffer.substring(inputBuffer.length - secretCode.length);
+            }
+            if (inputBuffer === secretCode) {
                 document.getElementById('lock-screen').style.display = 'none';
-                document.getElementById('admin-content').style.display = 'block';
+                document.getElementById('admin-panel').style.display = 'flex';
+                alert("Acceso Autorizado");
+                inputBuffer = ""; 
             }
         });
 
-        // FUNCIONES GLOBALES
-        window.showSec = (id) => {
-            document.querySelectorAll('.admin-sec').forEach(s => s.style.display = 'none');
-            document.getElementById('sec-' + id).style.display = 'block';
-        };
+        // --- LOGICA DE FORMULARIO ---
+        const form = document.getElementById('product-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('images');
+            const files = fileInput.files;
+            let imageUrls = [];
 
-        window.addCat = () => {
-            const val = document.getElementById('new-cat').value;
-            if(val) {
-                const opt = document.createElement('option');
-                opt.text = val; document.getElementById('p-cat').add(opt);
-                document.getElementById('new-cat').value = '';
+            for (let file of files) {
+                const imgRef = ref(storage, `productos/${Date.now()}_${file.name}`);
+                await uploadBytes(imgRef, file);
+                const url = await getDownloadURL(imgRef);
+                imageUrls.push(url);
             }
-        };
 
-        window.addV = () => {
-            const row = document.querySelector('.variant-row').cloneNode(true);
-            row.querySelectorAll('input').forEach(i => i.value = '');
-            document.getElementById('v-container').appendChild(row);
-        };
-
-        window.preImg = (e) => {
-            const grid = document.getElementById('p-grid'); grid.innerHTML = '';
-            Array.from(e.target.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const img = document.createElement('img');
-                    img.src = ev.target.result; img.className = 'preview-box';
-                    grid.appendChild(img);
-                };
-                reader.readAsDataURL(file);
+            await addDoc(collection(db, "productos"), {
+                referencia: document.getElementById('ref').value,
+                nombre: document.getElementById('name').value,
+                categoria: document.getElementById('cat').value,
+                variantes: [{
+                    talla: document.getElementById('size').value,
+                    stock: parseInt(document.getElementById('stock').value)
+                }],
+                fotos: imageUrls,
+                timestamp: new Date()
             });
-        };
+
+            alert("Prenda cargada correctamente");
+            form.reset();
+        });
+
+        // --- ALERTAS DE STOCK ---
+        onSnapshot(collection(db, "productos"), (snapshot) => {
+            const alertDiv = document.getElementById('stock-alerts');
+            alertDiv.innerHTML = '';
+            snapshot.forEach(doc => {
+                const p = doc.data();
+                p.variantes.forEach(v => {
+                    if(v.stock < 5) {
+                        alertDiv.innerHTML += `<div class="p-2 bg-red-100 text-red-700 rounded mb-1">⚠️ ${p.nombre} (${v.talla}) - Stock: ${v.stock}</div>`;
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
