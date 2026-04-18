@@ -174,6 +174,124 @@
             products = products.filter(p => p.id !== id);
             updateGallery();
         }
-    </script>
+    </script><!-- INTEGRACIÓN FIREBASE + CONTROL DE STOCK (PUNTO 2) -->
+<script type="module">
+    // 1. IMPORTACIÓN DE FIREBASE (Versión CDN para que funcione en GitHub)
+    import { initializeApp } from "https://gstatic.com";
+    import { getDatabase, ref, set, onValue, update, remove } from "https://gstatic.com";
+
+    // 2. TUS CREDENCIALES (Reemplaza esto con los datos de tu consola de Firebase)
+    const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_://firebaseapp.com",
+        databaseURL: "https://TU_://firebaseio.com",
+        projectId: "TU_PROYECTO",
+        storageBucket: "TU_://appspot.com",
+        messagingSenderId: "ID",
+        appId: "APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 3. VINCULACIÓN CON TUS FUNCIONES EXISTENTES
+    // Sobrescribimos 'publishProduct' para que guarde en la nube y maneje stock
+    window.publishProduct = function() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const desc = document.getElementById('p-desc').value;
+        const vars = document.getElementById('p-vars').value;
+        const stockInput = prompt("Ingrese cantidad inicial de Stock:", "10"); // Pedimos stock al publicar
+        
+        if(!name || !price || !window.tempImg) return alert("Faltan datos o imagen.");
+
+        const productId = Date.now();
+        const productData = {
+            id: productId,
+            name: name,
+            price: price,
+            desc: desc,
+            vars: vars,
+            img: window.tempImg,
+            stock: parseInt(stockInput) || 0
+        };
+
+        // Guardar en Firebase
+        set(ref(db, 'productos/' + productId), productData)
+            .then(() => {
+                alert("Producto sincronizado con éxito.");
+                document.getElementById('p-name').value = "";
+                document.getElementById('p-price').value = "";
+                document.getElementById('p-desc').value = "";
+                window.tempImg = "";
+            });
+    };
+
+    // 4. FUNCIÓN DE VENTA (RESTA STOCK)
+    window.simularVenta = function(id, stockActual) {
+        if (stockActual <= 0) return;
+
+        const nuevoStock = stockActual - 1;
+        update(ref(db, 'productos/' + id), {
+            stock: nuevoStock
+        });
+    };
+
+    // 5. FUNCIÓN PARA ELIMINAR DESDE EL ADMIN
+    window.deleteProd = function(id) {
+        if(confirm("¿Seguro que deseas eliminar esta referencia?")) {
+            remove(ref(db, 'productos/' + id));
+        }
+    };
+
+    // 6. RENDERIZADO EN TIEMPO REAL (DISEÑO + LÓGICA DE BOTÓN AGOTADO)
+    onValue(ref(db, 'productos/'), (snapshot) => {
+        const grid = document.getElementById('shop-grid');
+        const adminList = document.getElementById('admin-list');
+        const data = snapshot.val();
+        
+        grid.innerHTML = "";
+        adminList.innerHTML = "";
+
+        if (data) {
+            Object.keys(data).forEach(key => {
+                const p = data[key];
+                const isOutOfStock = p.stock <= 0;
+
+                // Render en Galería de Cliente
+                grid.innerHTML += `
+                    <div class="product-card" style="opacity: ${isOutOfStock ? '0.6' : '1'}">
+                        <img src="${p.img}" class="product-img">
+                        <div class="product-info">
+                            <span>${p.name}</span>
+                            <span class="serif italic">$${p.price}</span>
+                        </div>
+                        <p class="product-desc">${p.desc}</p>
+                        <p style="font-size:9px; margin-top:5px; opacity:0.3;">Tallas: ${p.vars} | Stock: ${p.stock}</p>
+                        
+                        <button 
+                            onclick="simularVenta('${key}', ${p.stock})"
+                            ${isOutOfStock ? 'disabled' : ''}
+                            style="width:100%; margin-top:20px; padding:15px; font-size:10px; font-weight:900; letter-spacing:2px; transition: 0.3s;
+                            background: ${isOutOfStock ? '#E0E0E0' : '#000'}; 
+                            color: ${isOutOfStock ? '#A0A0A0' : '#FFF'}; 
+                            border: none; cursor: ${isOutOfStock ? 'not-allowed' : 'pointer'};">
+                            ${isOutOfStock ? 'SIN STOCK' : 'AÑADIR A CESTA'}
+                        </button>
+                    </div>
+                `;
+
+                // Render en Lista de Admin
+                adminList.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee; font-size:11px;">
+                        <span>${p.name} (${p.stock} unid.)</span>
+                        <button onclick="deleteProd('${key}')" style="color:red; font-weight:bold; background:none; border:none; cursor:pointer;">ELIMINAR</button>
+                    </div>
+                `;
+            });
+        }
+    });
+</script>
+
 </body>
 </html>
