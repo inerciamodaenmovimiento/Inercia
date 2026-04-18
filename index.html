@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTRA | Tienda de Moda Online</title>
-    <!-- Tailwind CSS para el diseño -->
+    <title>UTRA | Official Store</title>
+    <!-- Tailwind CSS CDN Directo -->
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         h1, h2, .brand { font-family: 'Playfair Display', serif; }
+        /* Imagen de respaldo si falla el link */
         .hero-bg {
-            background-image: url('https://unsplash.com');
+            background-color: #e5e7eb;
+            background-image: url('https://pexels.com');
             background-size: cover;
             background-position: center;
         }
@@ -20,129 +22,117 @@
 <body class="bg-white text-gray-900">
 
     <!-- Navegación -->
-    <nav class="py-6 px-10 flex flex-col items-center border-b border-gray-100">
-        <div class="brand text-4xl tracking-widest mb-4">UTRA</div>
-        <ul class="flex space-x-8 text-xs uppercase tracking-widest font-semibold text-gray-600">
-            <li><a href="#" class="hover:text-black">Home</a></li>
-            <li><a href="#" class="hover:text-black">New Arrival</a></li>
-            <li><a href="#" class="hover:text-black">Clothes</a></li>
-            <li><a href="#" class="hover:text-black">Jacket</a></li>
-            <li><a href="#" class="hover:text-black">Sale</a></li>
+    <nav class="py-8 px-10 flex flex-col items-center bg-white sticky top-0 z-50 shadow-sm">
+        <div class="brand text-5xl tracking-[0.3em] mb-6">UTRA</div>
+        <ul class="flex space-x-10 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">
+            <li><a href="#" class="hover:text-black transition">Home</a></li>
+            <li><a href="#" class="hover:text-black transition">New Arrival</a></li>
+            <li><a href="#" class="hover:text-black transition">Clothes</a></li>
+            <li><a href="#" class="hover:text-black transition">Jacket</a></li>
+            <li><a href="#" class="hover:text-black transition">Sale</a></li>
         </ul>
     </nav>
 
     <!-- Hero Section -->
-    <header class="hero-bg h-[70vh] w-full relative flex items-center justify-center">
-        <div class="absolute inset-0 bg-black/10"></div>
+    <header class="hero-bg h-[80vh] w-full relative flex items-center justify-center">
+        <div class="absolute inset-0 bg-black/5"></div>
+        <div class="relative text-center text-white">
+            <h1 class="text-6xl md:text-8xl mb-4 drop-shadow-lg">New Season</h1>
+            <p class="uppercase tracking-widest text-sm drop-shadow-md">Discover the collection</p>
+        </div>
     </header>
 
     <!-- New Arrivals Section -->
-    <section class="max-w-7xl mx-auto py-16 px-4">
-        <h2 class="text-center text-3xl mb-12 relative pb-4">
-            New Arrivals
-            <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-0.5 bg-red-400"></span>
-        </h2>
+    <section class="max-w-7xl mx-auto py-20 px-6">
+        <div class="flex flex-col items-center mb-16">
+            <h2 class="text-4xl mb-4">New Arrivals</h2>
+            <div class="w-12 h-[1px] bg-red-500"></div>
+        </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
             <!-- Producto 1 -->
-            <div class="text-center group">
-                <div class="bg-gray-100 mb-4 overflow-hidden">
-                    <img src="https://unsplash.com" alt="Brown Long Blouse" class="w-full h-80 object-cover group-hover:scale-105 transition duration-500">
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] mb-4 overflow-hidden bg-gray-100">
+                    <img src="https://pexels.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 </div>
-                <h3 class="text-xs uppercase tracking-tighter">Brown Long Blouse</h3>
-                <p class="text-xs text-red-500 mt-1">NT$1,299</p>
+                <h3 class="text-[11px] uppercase tracking-widest font-semibold">Brown Long Blouse</h3>
+                <p class="text-[11px] text-red-500 mt-2">NT$1,299</p>
             </div>
             <!-- Producto 2 -->
-            <div class="text-center group">
-                <div class="bg-gray-100 mb-4 overflow-hidden">
-                    <img src="https://unsplash.com" alt="Grey Check Long Coat" class="w-full h-80 object-cover group-hover:scale-105 transition duration-500">
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] mb-4 overflow-hidden bg-gray-100">
+                    <img src="https://pexels.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 </div>
-                <h3 class="text-xs uppercase tracking-tighter">Grey Check Long Coat</h3>
-                <p class="text-xs text-red-500 mt-1">NT$1,299</p>
+                <h3 class="text-[11px] uppercase tracking-widest font-semibold">Grey Check Long Coat</h3>
+                <p class="text-[11px] text-red-500 mt-2">NT$1,299</p>
             </div>
             <!-- Producto 3 -->
-            <div class="text-center group">
-                <div class="bg-gray-100 mb-4 overflow-hidden">
-                    <img src="https://unsplash.com" alt="White Casual Suit" class="w-full h-80 object-cover group-hover:scale-105 transition duration-500">
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] mb-4 overflow-hidden bg-gray-100">
+                    <img src="https://pexels.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 </div>
-                <h3 class="text-xs uppercase tracking-tighter">White Casual Suit</h3>
-                <p class="text-xs text-red-500 mt-1">NT$1,299</p>
+                <h3 class="text-[11px] uppercase tracking-widest font-semibold">White Casual Suit</h3>
+                <p class="text-[11px] text-red-500 mt-2">NT$1,299</p>
             </div>
             <!-- Producto 4 -->
-            <div class="text-center group">
-                <div class="bg-gray-100 mb-4 overflow-hidden">
-                    <img src="https://unsplash.com" alt="Beige Sweater" class="w-full h-80 object-cover group-hover:scale-105 transition duration-500">
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] mb-4 overflow-hidden bg-gray-100">
+                    <img src="https://pexels.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 </div>
-                <h3 class="text-xs uppercase tracking-tighter">Beige Sweater</h3>
-                <p class="text-xs text-red-500 mt-1">NT$1,299</p>
+                <h3 class="text-[11px] uppercase tracking-widest font-semibold">Beige Sweater</h3>
+                <p class="text-[11px] text-red-500 mt-2">NT$1,299</p>
             </div>
         </div>
     </section>
 
     <!-- Collection Banner -->
-    <section class="w-full h-[60vh] bg-gray-200 flex items-center justify-center relative overflow-hidden">
-        <img src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Collection Banner">
-        <div class="relative text-center">
-            <h2 class="text-6xl md:text-8xl text-white tracking-[0.2em] font-bold">COLLECTION</h2>
-            <button class="mt-8 px-10 py-2 border border-white text-white uppercase text-sm tracking-widest hover:bg-white hover:text-black transition">View</button>
-        </div>
-    </section>
-
-    <!-- Twice as Cozy Section -->
-    <section class="max-w-7xl mx-auto py-20 px-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-        <div class="grid grid-cols-2 gap-4">
-            <img src="https://unsplash.com" class="w-full h-64 object-cover" alt="Fashion 1">
-            <img src="https://unsplash.com" class="w-full h-64 object-cover" alt="Fashion 2">
-        </div>
-        <div>
-            <h2 class="text-2xl mb-4 italic">Twice as Cozy</h2>
-            <p class="text-gray-500 text-sm leading-relaxed mb-6">
-                Shop the latest fashion online at UTRA and discover new favorites in women's clothing. 
-                Find everything from casual day dresses to sharp office wear. 
-                We have jeans in every fit, premium quality items and the latest fashion essentials.
-            </p>
+    <section class="w-full h-[70vh] relative overflow-hidden bg-black">
+        <img src="https://pexels.com" class="absolute inset-0 w-full h-full object-cover opacity-60" alt="Collection">
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-4">
+            <h2 class="text-6xl md:text-9xl tracking-[0.3em] font-bold mb-8">COLLECTION</h2>
+            <button class="px-12 py-4 border border-white text-xs uppercase tracking-[0.3em] hover:bg-white hover:text-black transition duration-300">View All</button>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100 pt-16 pb-8 px-10">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-xs uppercase tracking-widest">
+    <footer class="bg-white border-t border-gray-100 pt-20 pb-10 px-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 text-[10px] uppercase tracking-widest">
             <div>
-                <h4 class="font-bold mb-4">About Us</h4>
-                <ul class="space-y-2 text-gray-500">
-                    <li><a href="#">Our Story</a></li>
-                    <li><a href="#">Our Spirit</a></li>
-                    <li><a href="#">Our Member</a></li>
+                <h4 class="font-bold mb-6 text-black">About Us</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="#" class="hover:text-black">Our Story</a></li>
+                    <li><a href="#" class="hover:text-black">Our Spirit</a></li>
+                    <li><a href="#" class="hover:text-black">Our Member</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold mb-4">Customer Service</h4>
-                <ul class="space-y-2 text-gray-500">
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Delivery Options</a></li>
-                    <li><a href="#">Payment Methods</a></li>
+                <h4 class="font-bold mb-6 text-black">Customer Service</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="#" class="hover:text-black">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-black">Delivery Options</a></li>
+                    <li><a href="#" class="hover:text-black">Payment Methods</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold mb-4">Call Us</h4>
-                <p class="text-gray-500">Tel / 02-1234-5678</p>
-                <p class="text-gray-500">Time / AM 09:00 - PM 18:00</p>
-                <p class="text-gray-500 lowercase">Email / utrashop@shopapp.com</p>
+                <h4 class="font-bold mb-6 text-black">Call Us</h4>
+                <p class="text-gray-400 mb-2">Tel / 02-1234-5678</p>
+                <p class="text-gray-400 mb-2">Time / AM 09:00 - PM 18:00</p>
+                <p class="text-gray-400 lowercase italic">Email / utra@support.com</p>
             </div>
         </div>
-        <div class="mt-16 text-center text-[10px] text-gray-400 uppercase tracking-widest">
-            Privacy Policy | Terms & Conditions | 2026 © Your Brand
+        <div class="mt-20 text-center text-[9px] text-gray-300 uppercase tracking-[0.4em]">
+            Privacy Policy | Terms & Conditions | 2026 © UTRA BRAND
         </div>
     </footer>
 
-    <!-- Firebase Integration -->
+    <!-- Firebase SDK (Tu configuración) -->
     <script type="module">
         import { initializeApp } from "https://gstatic.com";
         import { getAnalytics } from "https://gstatic.com";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
-            authDomain: "incerciamoda.firebaseapp.com",
+            authDomain: "://firebaseapp.com",
             projectId: "incerciamoda",
             storageBucket: "incerciamoda.firebasestorage.app",
             messagingSenderId: "335158123341",
@@ -152,7 +142,7 @@
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
-        console.log("Firebase conectado correctamente a UTRA");
+        console.log("Firebase activo en UTRA");
     </script>
 </body>
 </html>
