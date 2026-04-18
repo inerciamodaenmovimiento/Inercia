@@ -1,57 +1,30 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Moda en Movimiento</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Fuente Serif para Títulos y Sans para cuerpo -->
-    <link href="https://googleapis.com" rel="stylesheet">
-</head>
-<body>
+<main class="magazine-container">
+    <!-- Título Gigante de Fondo -->
+    <h1 class="bg-title">INERCIA</h1>
 
-    <header class="main-header">
-        <h1 class="logo">INERCIA</h1>
-        <nav>
-            <span>COLECCIONES</span>
-            <span>MOVIMIENTO</span>
-            <span>CONTACTO</span>
-        </nav>
-    </header>
-
-    <main class="editorial-grid">
-        <!-- Bloque Grande (Hero) -->
-        <section class="hero-section">
-            <div class="main-image">
-                <img src="tu-foto-principal.jpg" alt="Modelo en movimiento">
+    <section class="hero-editorial">
+        <div class="main-frame">
+            <img src="tu-foto-1.jpg" class="img-hero">
+            <!-- Texto que se encima a la imagen -->
+            <div class="overlay-text">
+                <span class="tag">EST. 2024</span>
+                <h2>MOVIMIENTO <br> <em>CONSTANTE</em></h2>
             </div>
-            <div class="hero-text">
-                <p class="born-in">EST. 2024 / BUENOS AIRES</p>
-                <h2 class="title-overlap">MODA EN<br><em>MOVIMIENTO</em></h2>
-            </div>
-        </section>
+        </div>
 
-        <!-- Bloque de Texto Lateral (Estilo Manifiesto) -->
-        <section class="manifesto">
-            <p class="curator">Curadores de estilo</p>
-            <h3 class="story-title">A Story That<br>Eye Witnessed</h3>
-            <p class="description">
-                La inercia no es solo física, es el impulso de quien no se detiene. 
-                Nuestras prendas están diseñadas para acompañar cada giro, cada paso, 
-                cada cambio de ritmo.
-            </p>
-        </section>
-
-        <!-- Galería Asimétrica -->
-        <section class="product-preview">
-            <div class="img-small">
-                <img src="foto2.jpg" alt="Detalle">
+        <div class="side-content">
+            <p class="vertical-text">NUEVA COLECCIÓN</p>
+            <div class="description-block">
+                <h3>A Story That<br>Eye Witnessed</h3>
+                <p>La inercia es el alma de nuestra marca. Prendas que capturan la esencia de lo que nunca se detiene.</p>
             </div>
-            <div class="img-medium">
-                <img src="foto3.jpg" alt="Prenda">
-            </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-</body>
-</html>
+    <!-- Sección de collage inferior -->
+    <section class="collage-section">
+        <div class="floating-img-wrapper">
+             <img src="tu-foto-2.jpg" class="img-float">
+        </div>
+    </section>
+</main>
