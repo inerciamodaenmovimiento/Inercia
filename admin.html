@@ -3,148 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTRA | Panel de Gestión (myGESTIÓN)</title>
+    <title>UTRA | Sistema de Gestión Interna</title>
+    <!-- Usamos una versión específica de Tailwind para evitar conflictos -->
     <script src="https://tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        .hidden-admin { display: none; }
-        .sidebar-link:hover { background: #374151; border-left: 4px solid #ef4444; }
-        .stat-card { transition: transform 0.2s; }
-        .stat-card:hover { transform: translateY(-5px); }
+        body { background-color: #0f172a; color: white; margin: 0; font-family: sans-serif; }
+        #unlock-screen {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .admin-content { display: none; }
+        input, input[type="number"], select { color: black; }
     </style>
 </head>
-<body class="bg-gray-100 font-sans">
+<body>
 
-    <!-- Acceso Oculto (Input Fantasma) -->
-    <div id="unlock-area" class="fixed inset-0 flex items-center justify-center bg-black text-white z-[9999]">
-        <div class="text-center">
-            <h1 class="text-xl tracking-widest opacity-20">SYSTEM_OFFLINE</h1>
-            <p class="text-xs mt-2 text-gray-500">Ingresa el código para acceder</p>
+    <!-- PANTALLA DE BLOQUEO (Escribe 0110 para entrar) -->
+    <div id="unlock-screen">
+        <div class="text-center animate-pulse">
+            <i class="fas fa-lock text-4xl mb-4 text-red-600"></i>
+            <h1 class="text-xl tracking-[0.5em] text-gray-500 uppercase">System Locked</h1>
+            <p class="text-[10px] mt-4 text-gray-700">Type the access code to continue...</p>
         </div>
     </div>
 
-    <!-- Panel de Administración -->
-    <div id="admin-panel" class="hidden-admin min-h-screen flex">
+    <!-- PANEL DE ADMINISTRACIÓN (Se activa con 0110) -->
+    <div id="main-admin" class="admin-content min-h-screen flex">
         
-        <!-- Sidebar -->
-        <aside class="w-64 bg-gray-900 text-white flex-shrink-0">
-            <div class="p-6 text-2xl font-bold border-b border-gray-800 text-red-500">myGESTIÓN</div>
-            <nav class="mt-6">
-                <a href="#" class="sidebar-link flex items-center p-4"><i class="fas fa-chart-line mr-3"></i> Dashboard</a>
-                <a href="#" class="sidebar-link flex items-center p-4"><i class="fas fa-tshirt mr-3"></i> Productos / Variantes</a>
-                <a href="#" class="sidebar-link flex items-center p-4"><i class="fas fa-boxes mr-3"></i> Stock Real Time</a>
-                <a href="#" class="sidebar-link flex items-center p-4"><i class="fas fa-shopping-bag mr-3"></i> Pedidos y Envíos</a>
-                <a href="#" class="sidebar-link flex items-center p-4"><i class="fas fa-bullhorn mr-3"></i> Marketing/Cupones</a>
-                <a href="#" class="sidebar-link flex items-center p-4 mt-10 text-red-400"><i class="fas fa-sign-out-alt mr-3"></i> Salir</a>
+        <!-- Sidebar Izquierda -->
+        <aside class="w-64 bg-gray-900 border-r border-gray-800 p-6 flex flex-col">
+            <div class="text-2xl font-bold tracking-tighter text-red-500 mb-10">myGESTIÓN <span class="text-xs text-white">v1.0</span></div>
+            <nav class="space-y-4 flex-1">
+                <a href="#" class="flex items-center p-3 rounded bg-red-600 text-white"><i class="fas fa-chart-pie mr-3"></i> Dashboard</a>
+                <a href="#" class="flex items-center p-3 rounded hover:bg-gray-800 text-gray-400"><i class="fas fa-tshirt mr-3"></i> Productos</a>
+                <a href="#" class="flex items-center p-3 rounded hover:bg-gray-800 text-gray-400"><i class="fas fa-boxes mr-3"></i> Stock Real Time</a>
+                <a href="#" class="flex items-center p-3 rounded hover:bg-gray-800 text-gray-400"><i class="fas fa-shipping-fast mr-3"></i> Pedidos</a>
             </nav>
+            <div class="pt-6 border-t border-gray-800 text-[10px] text-gray-500 uppercase tracking-widest">
+                Admin: Root_User
+            </div>
         </aside>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-8 overflow-y-auto">
+        <!-- Contenido Principal -->
+        <main class="flex-1 p-10 bg-slate-950 overflow-y-auto">
             <header class="flex justify-between items-center mb-10">
-                <h2 class="text-3xl font-bold text-gray-800">Cuadro de Mando</h2>
-                <div class="flex items-center space-x-4">
-                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">● ONLINE</span>
-                    <button class="bg-black text-white px-6 py-2 rounded text-sm">+ Carga Masiva</button>
+                <h2 class="text-4xl font-bold">Resumen de Tienda</h2>
+                <div class="bg-gray-900 p-2 rounded-lg border border-gray-800 flex items-center space-x-3">
+                    <span class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
+                    <span class="text-xs font-mono">Firebase: CONNECTED</span>
                 </div>
             </header>
 
-            <!-- 1. Dashboard (KPIs) -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-                <div class="stat-card bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
-                    <p class="text-gray-400 text-xs uppercase font-bold">Ventas Hoy</p>
-                    <h3 class="text-2xl font-bold mt-1">NT$ 45,200</h3>
+            <!-- KPIs -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-gray-900 p-6 rounded-2xl border border-gray-800">
+                    <p class="text-gray-500 text-xs uppercase mb-1">Ventas Hoy</p>
+                    <div class="text-3xl font-bold">NT$ 12,400</div>
                 </div>
-                <div class="stat-card bg-white p-6 rounded-xl shadow-sm border-l-4 border-yellow-500">
-                    <p class="text-gray-400 text-xs uppercase font-bold">Pedidos Pendientes</p>
-                    <h3 class="text-2xl font-bold mt-1">12</h3>
+                <div class="bg-gray-900 p-6 rounded-2xl border border-gray-800">
+                    <p class="text-gray-500 text-xs uppercase mb-1">Pedidos</p>
+                    <div class="text-3xl font-bold">08</div>
                 </div>
-                <div class="stat-card bg-white p-6 rounded-xl shadow-sm border-l-4 border-red-500">
-                    <p class="text-gray-400 text-xs uppercase font-bold">Bajo Stock</p>
-                    <h3 class="text-2xl font-bold mt-1 text-red-600">4 SKUs</h3>
+                <div class="bg-gray-900 p-6 rounded-2xl border border-gray-800">
+                    <p class="text-red-500 text-xs uppercase mb-1 italic">Alertas Stock</p>
+                    <div class="text-3xl font-bold">03</div>
                 </div>
-                <div class="stat-card bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500">
-                    <p class="text-gray-400 text-xs uppercase font-bold">Carritos Abandonados</p>
-                    <h3 class="text-2xl font-bold mt-1">28</h3>
+                <div class="bg-gray-900 p-6 rounded-2xl border border-gray-800">
+                    <p class="text-gray-500 text-xs uppercase mb-1">Marketing</p>
+                    <div class="text-3xl font-bold text-blue-400">4 Cupones</div>
                 </div>
             </div>
 
-            <!-- 2. Formulario de Productos y Variantes -->
-            <section class="bg-white rounded-xl shadow-sm p-8 mb-10">
-                <h3 class="text-xl font-bold mb-6 border-b pb-2">Gestión de Nueva Referencia</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Nombre del Producto</label>
-                        <input type="text" placeholder="Ej: Abrigo Camel Colección Invierno" class="w-full border p-3 rounded mb-4">
-                        
-                        <label class="block text-sm font-medium mb-2">Categorización</label>
-                        <select class="w-full border p-3 rounded mb-4">
-                            <option>Jackets</option>
-                            <option>Dresses</option>
-                            <option>Sales</option>
-                        </select>
+            <!-- Formulario de Producto y Variantes -->
+            <section class="bg-gray-900 rounded-3xl p-8 border border-gray-800">
+                <h3 class="text-xl font-bold mb-8 flex items-center">
+                    <i class="fas fa-plus-circle mr-3 text-red-500"></i> Carga de Producto y Variantes
+                </h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Datos Básicos -->
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-xs uppercase text-gray-500 mb-2">Nombre Referencia</label>
+                            <input type="text" class="w-full bg-slate-800 border-none rounded-lg p-4 text-white focus:ring-2 focus:ring-red-500" placeholder="Ej: UTRA-Jacket-2026">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs uppercase text-gray-500 mb-2">Categoría</label>
+                                <select class="w-full bg-slate-800 border-none rounded-lg p-4 text-white">
+                                    <option>Jackets</option>
+                                    <option>Clothes</option>
+                                    <option>New Arrivals</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase text-gray-500 mb-2">Precio NT$</label>
+                                <input type="number" class="w-full bg-slate-800 border-none rounded-lg p-4 text-white" placeholder="1299">
+                            </div>
+                        </div>
 
                         <!-- Gestión de Variantes -->
-                        <div class="bg-gray-50 p-4 rounded border border-dashed">
-                            <p class="font-bold text-sm mb-3">Variantes (Talla/Color)</p>
-                            <div class="flex space-x-2 mb-2">
-                                <input type="text" placeholder="Talla (M)" class="w-1/3 border p-2 text-sm">
-                                <input type="text" placeholder="Color" class="w-1/3 border p-2 text-sm">
-                                <input type="number" placeholder="Stock" class="w-1/3 border p-2 text-sm">
+                        <div class="bg-slate-800 p-6 rounded-xl">
+                            <p class="text-sm font-bold mb-4 italic">Variantes de Producto</p>
+                            <div class="flex space-x-2 mb-4">
+                                <input type="text" placeholder="Talla (S, M, L)" class="bg-slate-700 p-2 rounded text-xs w-full">
+                                <input type="text" placeholder="Color" class="bg-slate-700 p-2 rounded text-xs w-full">
+                                <input type="number" placeholder="Stock" class="bg-slate-700 p-2 rounded text-xs w-full text-white">
                             </div>
-                            <button class="text-blue-600 text-xs font-bold">+ Añadir Variante</button>
+                            <button class="w-full py-2 bg-gray-700 rounded text-[10px] uppercase font-bold hover:bg-gray-600 transition">Añadir otra variante</button>
                         </div>
                     </div>
 
-                    <!-- Carga Masiva de Imágenes -->
+                    <!-- Imágenes Multi-ángulo -->
                     <div>
-                        <label class="block text-sm font-medium mb-2">Carga Masiva de Imágenes (Alta Calidad)</label>
-                        <div class="border-2 border-dashed border-gray-300 rounded-xl h-48 flex flex-col items-center justify-center text-gray-400 hover:bg-gray-50 cursor-pointer">
-                            <i class="fas fa-cloud-upload-alt text-4xl mb-2"></i>
-                            <p class="text-sm">Arrastra las fotos aquí (Ángulos: Front, Back, Detail)</p>
-                        </div>
-                        <div class="mt-4 flex space-x-2">
-                            <div class="w-16 h-16 bg-gray-200 rounded animate-pulse"></div>
-                            <div class="w-16 h-16 bg-gray-200 rounded animate-pulse"></div>
+                        <label class="block text-xs uppercase text-gray-500 mb-2 text-center">Carga Masiva de Imágenes (Visual Store)</label>
+                        <div class="border-2 border-dashed border-gray-700 rounded-3xl h-64 flex flex-col items-center justify-center hover:border-red-500 transition cursor-pointer bg-slate-900">
+                            <i class="fas fa-images text-5xl text-gray-700 mb-4"></i>
+                            <p class="text-gray-500 text-sm">Suelte aquí: Frontal, Lateral y Detalle</p>
+                            <span class="text-[10px] text-gray-600 mt-2">Mínimo 3 ángulos recomendados</span>
                         </div>
                     </div>
                 </div>
-                <div class="mt-8 flex justify-end">
-                    <button class="bg-green-600 text-white px-10 py-3 rounded-lg font-bold shadow-lg hover:bg-green-700">PUBLICAR EN TIENDA</button>
+
+                <div class="mt-12 flex justify-end">
+                    <button class="bg-red-600 hover:bg-red-700 text-white px-12 py-4 rounded-full font-bold shadow-2xl transition-all transform hover:scale-105">
+                        SINCRONIZAR CON TIENDA
+                    </button>
                 </div>
             </section>
-
         </main>
     </div>
 
-    <!-- Firebase e Interactividad -->
-    <script type="module">
-        import { initializeApp } from "https://gstatic.com";
-        import { getFirestore, collection, addDoc } from "https://gstatic.com";
-
-        // Configuración idéntica a tu index.html
-        const firebaseConfig = {
-            apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
-            authDomain: "://firebaseapp.com",
-            projectId: "incerciamoda",
-            storageBucket: "incerciamoda.firebasestorage.app",
-            messagingSenderId: "335158123341",
-            appId: "1:335158123341:web:2722e74538e808321a7504"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Lógica de Desbloqueo Oculto (Escribe 0110)
-        let buffer = "";
+    <!-- LOGICA DE ACCESO (0110) -->
+    <script>
+        let code = "";
         window.addEventListener("keydown", (e) => {
-            buffer += e.key;
-            if (buffer.includes("0110")) {
-                document.getElementById("unlock-area").style.display = "none";
-                document.getElementById("admin-panel").classList.remove("hidden-admin");
-                buffer = "";
+            code += e.key;
+            // Si el usuario escribe 0110
+            if (code.includes("0110")) {
+                document.getElementById("unlock-screen").style.display = "none";
+                document.getElementById("main-admin").style.display = "flex";
+                code = "";
             }
-            if (buffer.length > 10) buffer = ""; // Reset buffer
+            // Limpia el código si se equivoca
+            if (code.length > 4) code = code.slice(-4);
         });
     </script>
 </body>
