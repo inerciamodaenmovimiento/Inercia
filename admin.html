@@ -3,158 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invercia Moda - Admin Privado</title>
-    <script src="https://tailwindcss.com"></script>
+    <title>Inercia Admin | Dashboard de Gestión</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        /* Punto de acceso visualmente oculto pero presente */
-        #access-trigger {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            width: 15px;
-            height: 15px;
-            background: rgba(0,0,0,0.02); /* Casi invisible */
-            cursor: default;
-            z-index: 9999;
+        :root {
+            --sidebar-bg: #111;
+            --main-bg: #f9f9f9;
+            --accent: #000;
+            --danger: #ff4d4d;
+            --success: #00c853;
         }
-        #admin-panel { display: none; } /* Oculto por defecto */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { font-family: 'Inter', sans-serif; display: flex; height: 100vh; background: var(--main-bg); }
+
+        /* SIDEBAR PRO */
+        aside {
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .admin-logo { font-weight: 600; letter-spacing: 3px; font-size: 18px; margin-bottom: 30px; }
+        
+        nav ul { list-style: none; }
+        nav li { padding: 12px 15px; cursor: pointer; border-radius: 6px; font-size: 14px; transition: 0.3s; }
+        nav li:hover, nav li.active { background: #333; }
+
+        /* MAIN CONTENT */
+        main { flex: 1; padding: 40px; overflow-y: auto; }
+
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+
+        /* DASHBOARD CARDS */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+        .card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #eee; }
+        .card h3 { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .card p { font-size: 24px; font-weight: 600; margin-top: 10px; }
+
+        /* GESTIÓN DE PRODUCTOS / VARIANTES */
+        .admin-section { background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; padding: 15px; border-bottom: 2px solid #f0f0f0; font-size: 13px; color: #888; }
+        td { padding: 15px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+
+        .stock-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .low-stock { background: #ffebee; color: var(--danger); }
+        .in-stock { background: #e8f5e9; color: var(--success); }
+
+        /* BOTONES */
+        .btn { padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { opacity: 0.8; }
+
+        /* TAGS DE VARIANTES */
+        .variant-tag { display: inline-block; padding: 2px 6px; border: 1px solid #ddd; border-radius: 3px; font-size: 11px; margin-right: 5px; }
+
     </style>
 </head>
-<body class="bg-gray-100 font-sans">
+<body>
 
-    <!-- Pantalla de Bloqueo Inicial -->
-    <div id="lock-screen" class="min-h-screen flex items-center justify-center bg-white">
-        <div class="text-center">
-            <h1 class="text-2xl font-bold text-gray-800">Invercia Moda</h1>
-            <p class="text-gray-400 text-sm mt-2 uppercase tracking-widest">Acceso Restringido</p>
-        </div>
-    </div>
+    <aside>
+        <div class="admin-logo">INERCIA ADMIN</div>
+        <nav>
+            <ul>
+                <li class="active">📊 Dashboard</li>
+                <li>📦 Productos y Variantes</li>
+                <li>🛒 Pedidos</li>
+                <li>👥 Equipo / Permisos</li>
+                <li>⚙️ Configuración</li>
+            </ul>
+        </nav>
+    </aside>
 
-    <!-- PANEL DE ADMINISTRACIÓN (TODO TU CONTENIDO) -->
-    <div id="admin-panel" class="min-h-screen flex flex-col">
-        <header class="bg-black text-white p-4 flex justify-between items-center shadow-lg">
-            <h1 class="text-xl font-bold tracking-widest uppercase">Invercia Moda Admin</h1>
-            <button onclick="location.reload()" class="text-xs bg-red-600 px-2 py-1 rounded">Cerrar Sesión</button>
+    <main>
+        <header>
+            <h2>Resumen General</h2>
+            <button class="btn btn-primary">+ Nuevo Producto</button>
         </header>
 
-        <main class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- 1. GESTIÓN DE PRODUCTOS -->
-            <section class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-lg font-semibold mb-4 border-b pb-2">📦 Añadir Producto (Punto 1 & 2)</h2>
-                <form id="product-form" class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" id="ref" placeholder="Referencia (Ref: 001)" class="border p-2 rounded" required>
-                        <input type="text" id="name" placeholder="Nombre de prenda" class="border p-2 rounded" required>
-                    </div>
-                    <div class="grid grid-cols-3 gap-4">
-                        <select id="cat" class="border p-2 rounded">
-                            <option>Camisetas</option>
-                            <option>Pantalones</option>
-                            <option>Vestidos</option>
-                        </select>
-                        <input type="text" id="size" placeholder="Talla (S, M, L)" class="border p-2 rounded">
-                        <input type="number" id="stock" placeholder="Stock inicial" class="border p-2 rounded">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Fotos de alta calidad</label>
-                        <input type="file" id="images" multiple class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white">
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700">Guardar en Inventario</button>
-                </form>
-            </section>
+        <section class="stats-grid">
+            <div class="card">
+                <h3>Ventas de Hoy</h3>
+                <p>12.450 €</p>
+            </div>
+            <div class="card">
+                <h3>Pedidos Pendientes</h3>
+                <p>24</p>
+            </div>
+            <div class="card">
+                <h3>Carritos Abandonados</h3>
+                <p>8</p>
+            </div>
+        </section>
 
-            <!-- 2. ALERTAS DE STOCK -->
-            <section class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-lg font-semibold mb-4 border-b pb-2 text-red-600">⚠️ Alertas de Stock</h2>
-                <div id="stock-alerts" class="space-y-2 text-sm italic text-gray-500">Cargando...</div>
-            </section>
-        </main>
-    </div>
+        <section class="admin-section">
+            <h3>Gestión de Inventario en Tiempo Real</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Variantes (Talla/Color)</th>
+                        <th>Stock Actual</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Valentino Crepe Dress</strong></td>
+                        <td>
+                            <span class="variant-tag">S / Black</span>
+                            <span class="variant-tag">M / Black</span>
+                            <span class="variant-tag">L / Black</span>
+                        </td>
+                        <td>3 unidades</td>
+                        <td><span class="stock-badge low-stock">ALERTA BAJA</span></td>
+                        <td><button class="btn">Editar</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rockstud Flair Boots</strong></td>
+                        <td>
+                            <span class="variant-tag">38 / Suede</span>
+                            <span class="variant-tag">39 / Suede</span>
+                        </td>
+                        <td>12 unidades</td>
+                        <td><span class="stock-badge in-stock">OK</span></td>
+                        <td><button class="btn">Editar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
 
-    <!-- Trigger invisible inferior derecho -->
-    <div id="access-trigger" title="Modo Admin"></div>
-
-    <!-- LOGICA FIREBASE Y ACCESO OCULTO -->
-    <script type="module">
-        import { initializeApp } from "https://gstatic.com";
-        import { getFirestore, collection, addDoc, onSnapshot } from "https://gstatic.com";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://gstatic.com";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
-            authDomain: "://firebaseapp.com",
-            projectId: "incerciamoda",
-            storageBucket: "incerciamoda.firebasestorage.app",
-            messagingSenderId: "335158123341",
-            appId: "1:335158123341:web:2722e74538e808321a7504",
-            measurementId: "G-1NGJT0MRPB"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
-
-        // --- SISTEMA DE CÓDIGO OCULTO (0110) ---
-        let inputBuffer = "";
-        const secretCode = "0110";
-
-        window.addEventListener('keydown', (e) => {
-            inputBuffer += e.key;
-            if (inputBuffer.length > secretCode.length) {
-                inputBuffer = inputBuffer.substring(inputBuffer.length - secretCode.length);
-            }
-            if (inputBuffer === secretCode) {
-                document.getElementById('lock-screen').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'flex';
-                alert("Acceso Autorizado");
-                inputBuffer = ""; 
-            }
-        });
-
-        // --- LOGICA DE FORMULARIO ---
-        const form = document.getElementById('product-form');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const fileInput = document.getElementById('images');
-            const files = fileInput.files;
-            let imageUrls = [];
-
-            for (let file of files) {
-                const imgRef = ref(storage, `productos/${Date.now()}_${file.name}`);
-                await uploadBytes(imgRef, file);
-                const url = await getDownloadURL(imgRef);
-                imageUrls.push(url);
-            }
-
-            await addDoc(collection(db, "productos"), {
-                referencia: document.getElementById('ref').value,
-                nombre: document.getElementById('name').value,
-                categoria: document.getElementById('cat').value,
-                variantes: [{
-                    talla: document.getElementById('size').value,
-                    stock: parseInt(document.getElementById('stock').value)
-                }],
-                fotos: imageUrls,
-                timestamp: new Date()
-            });
-
-            alert("Prenda cargada correctamente");
-            form.reset();
-        });
-
-        // --- ALERTAS DE STOCK ---
-        onSnapshot(collection(db, "productos"), (snapshot) => {
-            const alertDiv = document.getElementById('stock-alerts');
-            alertDiv.innerHTML = '';
-            snapshot.forEach(doc => {
-                const p = doc.data();
-                p.variantes.forEach(v => {
-                    if(v.stock < 5) {
-                        alertDiv.innerHTML += `<div class="p-2 bg-red-100 text-red-700 rounded mb-1">⚠️ ${p.nombre} (${v.talla}) - Stock: ${v.stock}</div>`;
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
