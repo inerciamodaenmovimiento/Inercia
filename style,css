@@ -1,68 +1,80 @@
-:root {
-    --black: #000000;
-    --white: #ffffff;
-    --gray: #f4f4f4;
-}
+/* 1. La fuente: Importante usar una con mucho peso visual */
+@import url('https://googleapis.com');
 
 body {
-    background-color: var(--white);
-    color: var(--black);
-    font-family: 'Inter', sans-serif;
+    background-color: #fff;
     margin: 0;
-    padding: 2vw; /* Margen tipo revista */
-    line-height: 1.2;
+    padding: 0;
+    overflow-x: hidden; /* Para que nada se corte */
 }
 
-/* Tipografía de Logo */
-.logo {
+/* 2. Título de fondo (Efecto revista) */
+.bg-title {
     font-family: 'Bodoni Moda', serif;
-    font-size: clamp(3rem, 10vw, 8rem); /* Se ajusta al tamaño de pantalla */
-    font-weight: 900;
-    text-align: center;
-    letter-spacing: -2px;
-    margin: 20px 0;
+    font-size: 20vw; /* Tamaño masivo */
+    color: #f0f0f0; /* Gris muy clarito */
+    position: absolute;
+    top: -5vw;
+    left: 5%;
+    z-index: -1; /* Se queda atrás de todo */
+    margin: 0;
 }
 
-/* Grid Editorial */
-.editorial-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 20px;
+/* 3. Contenedor principal */
+.magazine-container {
+    padding: 100px 5%;
+    max-width: 1400px;
+    margin: auto;
 }
 
-.hero-section {
-    grid-column: 1 / 9; /* Ocupa 8 columnas de 12 */
+/* 4. El efecto de encimar texto sobre imagen */
+.hero-editorial {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
     position: relative;
 }
 
-.hero-section img {
+.main-frame {
+    width: 60%;
+    position: relative;
+}
+
+.img-hero {
     width: 100%;
-    filter: grayscale(100%); /* Efecto blanco y negro de la imagen original */
-    transition: 0.5s;
+    filter: grayscale(100%) contrast(110%);
+    display: block;
 }
 
-.hero-section img:hover {
-    filter: grayscale(0%);
-}
-
-.manifesto {
-    grid-column: 9 / 13; /* Columna lateral de texto */
-    padding-top: 100px;
-}
-
-.story-title {
-    font-family: 'Bodoni Moda', serif;
-    font-size: 3rem;
-    font-style: italic;
-    line-height: 0.9;
-}
-
-/* Texto vertical o detalles pequeños */
-.born-in {
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-    writing-mode: vertical-rl;
+.overlay-text {
     position: absolute;
-    right: -30px;
-    top: 0;
+    bottom: -50px; /* Sale de la imagen hacia abajo */
+    right: -20px;
+    text-align: right;
+}
+
+.overlay-text h2 {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 5rem;
+    line-height: 0.8;
+    background: white; /* Recuadro blanco para tapar la foto */
+    padding: 20px;
+    margin: 0;
+}
+
+/* 5. Detalles de texto vertical */
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #888;
+}
+
+.description-block {
+    margin-top: 150px;
+    max-width: 300px;
+    border-left: 1px solid #000;
+    padding-left: 20px;
 }
