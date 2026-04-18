@@ -3,164 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | SMFK Style</title>
+    <title>INERCIA | Minimalist Shop</title>
+    <!-- Fuente Inter: perfecta para este estilo técnico y limpio -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --bg: #ffffff;
-            --black: #000000;
-            --grey: #f2f2f2;
-            --border: #1a1a1a;
+            --bg-main: #f8f8f8;
+            --bg-card: #f2f2f2;
+            --text-main: #000000;
+            --text-secondary: #888888;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--black);
-            text-transform: uppercase; /* Todo en mayúsculas como SMFK */
-        }
-
-        /* HEADER BRUTALISTA */
-        header {
+            background-color: var(--bg-main);
+            color: var(--text-main);
             padding: 40px;
+        }
+
+        /* HEADER AL ESTILO ALPINE */
+        header {
             text-align: center;
-            border-bottom: 1.5px solid var(--black);
+            margin-bottom: 80px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 500;
         }
 
-        .logo {
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: 12px;
-        }
-
-        /* HERO SECTION - LOOKBOOK */
-        .hero {
+        /* CUADRÍCULA DE PRODUCTOS */
+        .product-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            border-bottom: 1.5px solid var(--black);
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas exactas */
+            gap: 2px; /* Espacio mínimo entre productos */
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .hero-img {
-            width: 100%;
-            height: 80vh;
-            object-fit: cover;
-            border-right: 1.5px solid var(--black);
+        .product-card {
+            background-color: #fff; /* Fondo blanco para la tarjeta */
+            padding: 40px 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
         }
 
-        /* ICONO DE CRUZ (MARCA DE IDENTIDAD) */
-        .brand-cross {
+        /* CONTENEDOR DE IMAGEN (EL CUADRADO GRIS) */
+        .image-container {
+            background-color: var(--bg-card); /* El fondo gris suave de la imagen */
+            aspect-ratio: 1 / 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 60px 0;
+            margin-bottom: 20px;
+            padding: 30px;
         }
 
-        /* CUADRÍCULA DE PRODUCTOS TIPO SMFK */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            border-top: 1.5px solid var(--black);
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            /* Sombras suaves para que el producto "flote" */
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
         }
 
-        .product-item {
-            padding: 20px;
-            border-right: 1.5px solid var(--black);
-            border-bottom: 1.5px solid var(--black);
-            text-align: center;
-            transition: background 0.3s;
+        /* INFORMACIÓN DEL PRODUCTO */
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0 10px;
         }
 
-        .product-item:last-child { border-right: none; }
-
-        .product-item img {
-            width: 100%;
-            height: auto;
-            margin-bottom: 15px;
-            filter: grayscale(100%);
+        .product-name {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 400;
+            text-align: left;
         }
 
-        .product-item:hover { background-color: var(--grey); }
-        .product-item:hover img { filter: none; }
-
-        .prod-info {
-            font-size: 10px;
-            letter-spacing: 2px;
-            font-weight: 600;
+        .product-price {
+            font-size: 12px;
+            font-weight: 500;
         }
 
-        .add-icon {
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 18px;
+        .brand-tag {
+            display: block;
+            font-size: 9px;
+            color: var(--text-secondary);
+            text-align: left;
+            margin-top: 4px;
+            padding-left: 10px;
         }
 
-        /* SECCIÓN NEW ARRIVALS */
-        .arrivals-title {
-            padding: 20px;
-            font-size: 14px;
-            letter-spacing: 4px;
-            text-align: center;
-            background: var(--black);
-            color: var(--white);
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        @media (max-width: 768px) {
-            .hero { grid-template-columns: 1fr; }
-            .product-grid { grid-template-columns: 1fr 1fr; }
+        @media (max-width: 600px) {
+            .product-grid { grid-template-columns: 1fr; }
+            body { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">INERCIA</div>
-    </header>
-
-    <section class="hero">
-        <img src="https://unsplash.com" class="hero-img" alt="Look 1">
-        <img src="https://unsplash.com" class="hero-img" alt="Look 2">
-    </section>
-
-    <div class="brand-cross">
-        <!-- Cruz minimalista SVG -->
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="black">
-            <path d="M11 2h2v9h9v2h-9v9h-2v-9H2v-2h9V2z"/>
-        </svg>
-    </div>
-
-    <div class="arrivals-title" style="color: white;">New Arrivals / 新着</div>
+    <header>INERCIA / ACCESSORIES</header>
 
     <div class="product-grid">
-        <div class="product-item">
-            <img src="https://unsplash.com">
-            <div class="prod-info">SMFK JACKET<br>9.500 AED</div>
-            <div class="add-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        <!-- Producto 1 -->
+        <div class="product-card">
+            <div class="image-container">
+                <img src="https://unsplash.com" alt="Botas">
             </div>
-        </div>
-        <div class="product-item">
-            <img src="https://unsplash.com">
-            <div class="prod-info">B&W BEANIE<br>1.200 AED</div>
-            <div class="add-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            <div class="product-info">
+                <span class="product-name">Leather Boots</span>
+                <span class="product-price">5.200 €</span>
             </div>
+            <span class="brand-tag">Valentino</span>
         </div>
-        <div class="product-item">
-            <img src="https://unsplash.com">
-            <div class="prod-info">FLAIR BOOTS<br>5.200 AED</div>
-            <div class="add-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+
+        <!-- Producto 2 -->
+        <div class="product-card">
+            <div class="image-container">
+                <img src="https://unsplash.com" alt="Vestido">
             </div>
-        </div>
-        <div class="product-item">
-            <img src="https://unsplash.com">
-            <div class="prod-info">CREPE DRESS<br>7.210 AED</div>
-            <div class="add-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            <div class="product-info">
+                <span class="product-name">Crepe Dress</span>
+                <span class="product-price">7.210 €</span>
             </div>
+            <span class="brand-tag">Valentino</span>
         </div>
+
+        <!-- Producto 3 -->
+        <div class="product-card">
+            <div class="image-container">
+                <img src="https://unsplash.com" alt="Bolso">
+            </div>
+            <div class="product-info">
+                <span class="product-name">Leather Bag</span>
+                <span class="product-price">2.400 €</span>
+            </div>
+            <span class="brand-tag">Valentino</span>
+        </div>
+        
+        <!-- Repite este bloque para más productos -->
     </div>
 
 </body>
