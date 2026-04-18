@@ -3,183 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Tienda | Estilo Nube</title>
-    <script src="https://tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <title>Inercia | Moda en Movimiento</title>
     <style>
-        @import url('https://googleapis.com');
-        body { font-family: 'Montserrat', sans-serif; background-color: #fcfcfc; }
-        .admin-hidden { display: none; }
-        .cart-count { font-size: 0.7rem; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; color: #333; }
+        header { padding: 20px; text-align: center; border-bottom: 1px solid #eee; }
+        .logo { font-size: 24px; font-weight: bold; letter-spacing: 2px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .product-main { display: flex; gap: 40px; margin-bottom: 50px; }
+        .product-image { flex: 1; text-align: center; }
+        .product-image img { max-width: 100%; }
+        .product-info { flex: 1; }
+        .price { font-size: 20px; margin: 10px 0; }
+        button { background: #000; color: #fff; padding: 15px 30px; border: none; cursor: pointer; width: 100%; text-transform: uppercase; }
+        /* Admin Access Styles */
+        #admin-access { position: fixed; bottom: 10px; right: 10px; width: 5px; height: 5px; cursor: default; }
     </style>
 </head>
-<body class="text-gray-800">
-
-    <!-- Header / Navegación -->
-    <header class="bg-white border-b sticky top-0 z-50">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold tracking-tighter uppercase">Mi Marca</h1>
-            <div class="flex gap-6 items-center">
-                <a href="#" class="hover:text-gray-500">Inicio</a>
-                <a href="#" class="hover:text-gray-500">Productos</a>
-                <div class="relative cursor-pointer" onclick="toggleCart()">
-                    <i class="fa-solid fa-cart-shopping text-xl"></i>
-                    <span id="cart-counter" class="absolute -top-2 -right-2 bg-black text-white rounded-full h-5 w-5 flex items-center justify-center cart-count">0</span>
-                </div>
-            </div>
-        </nav>
+<body>
+    <header>
+        <div class="logo">INERCIA</div>
     </header>
 
-    <!-- Hero / Banner Principal -->
-    <section class="bg-gray-100 py-20 text-center border-b">
-        <h2 class="text-4xl font-light mb-4">Nueva Colección</h2>
-        <p class="text-gray-500 mb-8">Inspiración mínima para tu día a día.</p>
-        <button class="bg-black text-white px-8 py-3 uppercase text-sm tracking-widest hover:bg-gray-800 transition">Ver más</button>
-    </section>
-
-    <!-- Catálogo de Productos -->
-    <main class="container mx-auto px-4 py-12">
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <!-- Los productos se cargan aquí vía JS -->
-        </div>
-    </main>
-
-    <!-- Carrito Lateral (Drawer) -->
-    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-[60] p-6 border-l">
-        <div class="flex justify-between items-center mb-8">
-            <h3 class="text-xl font-bold">Tu Carrito</h3>
-            <button onclick="toggleCart()" class="text-2xl">&times;</button>
-        </div>
-        <div id="cart-items" class="space-y-4 mb-8 h-3/4 overflow-y-auto">
-            <!-- Items del carrito -->
-        </div>
-        <div class="border-t pt-4">
-            <div class="flex justify-between font-bold text-lg mb-4">
-                <span>Total:</span>
-                <span id="cart-total">$0.00</span>
+    <div class="container">
+        <section class="product-main">
+            <div class="product-image">
+                <img src="https://clothes.com" alt="Vestido Granaig">
             </div>
-            <button class="w-full bg-black text-white py-4 uppercase text-sm font-bold tracking-widest hover:bg-gray-800">Finalizar Compra</button>
-        </div>
-    </div>
-
-    <!-- Admin Panel (Oculto) -->
-    <div id="admin-button" class="fixed bottom-6 right-6 admin-hidden z-[100]">
-        <button onclick="toggleAdminPanel()" class="bg-red-600 text-white p-4 rounded-full shadow-lg hover:bg-red-700">
-            <i class="fa-solid fa-gear"></i> Admin
-        </button>
-    </div>
-
-    <div id="admin-panel" class="fixed inset-0 bg-black/50 z-[200] hidden items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-lg max-w-md w-full">
-            <h3 class="text-xl font-bold mb-6">Panel de Administración</h3>
-            <div class="space-y-4">
-                <input type="text" id="p-name" placeholder="Nombre del producto" class="w-full border p-2 rounded">
-                <input type="number" id="p-price" placeholder="Precio" class="w-full border p-2 rounded">
-                <input type="text" id="p-image" placeholder="URL Imagen (Unsplash p. ej.)" class="w-full border p-2 rounded">
-                <button onclick="addProduct()" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Agregar Producto</button>
-                <button onclick="toggleAdminPanel()" class="w-full bg-gray-200 py-2 rounded">Cerrar</button>
+            <div class="product-info">
+                <h1>GRANAIG</h1>
+                <p class="price">250 €</p>
+                <button>Añadir al Carrito</button>
+                <p style="margin-top: 20px;">Vestido de corte entallado, cuello redondo y falda metalizada con textura.</p>
             </div>
-        </div>
+        </section>
     </div>
+
+    <!-- Acceso oculto para Admin -->
+    <div id="admin-access" onclick="requestAdmin()"></div>
 
     <script>
-        // Configuración Inicial
-        let products = [
-            { id: 1, name: "Remera Minimal White", price: 4500, img: "https://unsplash.com" },
-            { id: 2, name: "Pantalón Chino Sand", price: 8900, img: "https://unsplash.com" }
-        ];
-        let cart = [];
-
-        // Renderizar Productos
-        function renderProducts() {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = products.map(p => `
-                <div class="group cursor-pointer">
-                    <div class="overflow-hidden mb-4 relative aspect-[3/4]">
-                        <img src="${p.img}" alt="${p.name}" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 left-0 w-full bg-black text-white py-3 opacity-0 group-hover:opacity-100 transition-opacity">AGREGAR AL CARRITO</button>
-                    </div>
-                    <h3 class="text-sm uppercase tracking-tight">${p.name}</h3>
-                    <p class="font-bold mt-1">$${p.price.toLocaleString()}</p>
-                </div>
-            `).join('');
-        }
-
-        // Carrito Functions
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('translate-x-full');
-        }
-
-        function addToCart(id) {
-            const product = products.find(p => p.id === id);
-            cart.push(product);
-            updateCart();
-            if (document.getElementById('cart-drawer').classList.contains('translate-x-full')) toggleCart();
-        }
-
-        function updateCart() {
-            const container = document.getElementById('cart-items');
-            const totalEl = document.getElementById('cart-total');
-            const counter = document.getElementById('cart-counter');
-            
-            container.innerHTML = cart.map((item, index) => `
-                <div class="flex gap-4 border-b pb-4">
-                    <img src="${item.img}" class="w-16 h-20 object-cover">
-                    <div class="flex-1">
-                        <p class="text-xs uppercase font-bold">${item.name}</p>
-                        <p class="text-sm">$${item.price.toLocaleString()}</p>
-                        <button onclick="removeItem(${index})" class="text-xs text-red-500 underline mt-2">Eliminar</button>
-                    </div>
-                </div>
-            `).join('');
-
-            const total = cart.reduce((acc, item) => acc + item.price, 0);
-            totalEl.innerText = `$${total.toLocaleString()}`;
-            counter.innerText = cart.length;
-        }
-
-        function removeItem(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
-
-        // --- SISTEMA DE ADMINISTRACIÓN OCULTO ---
-        let inputKeys = "";
-        window.addEventListener('keydown', (e) => {
-            inputKeys += e.key;
-            if (inputKeys.includes("0110")) {
-                document.getElementById('admin-button').classList.remove('admin-hidden');
-                inputKeys = ""; // Reset
-            }
-            if (inputKeys.length > 10) inputKeys = ""; // Evitar overflow
-        });
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('admin-panel');
-            panel.classList.toggle('hidden');
-            panel.classList.toggle('flex');
-        }
-
-        function addProduct() {
-            const name = document.getElementById('p-name').value;
-            const price = parseFloat(document.getElementById('p-price').value);
-            const img = document.getElementById('p-image').value || "https://placeholder.com";
-
-            if (name && price) {
-                const newProduct = { id: Date.now(), name, price, img };
-                products.push(newProduct);
-                renderProducts();
-                toggleAdminPanel();
-                // Limpiar inputs
-                document.getElementById('p-name').value = "";
-                document.getElementById('p-price').value = "";
-                document.getElementById('p-image').value = "";
+        function requestAdmin() {
+            let pass = prompt("Acceso Restringido:");
+            if (pass === "0110") {
+                window.location.href = "admin.html";
             }
         }
-
-        // Inicio
-        renderProducts();
     </script>
 </body>
 </html>
