@@ -1,150 +1,167 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>INERCIA — Movement Editorial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INERCIA — Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --bg: #f8f8f8; --text: #1a1a1a; --accent: #000; }
+        :root { --bg: #0e0e0e; --white: #ffffff; --gray: #1a1a1a; --font-editorial: 'Playfair Display', serif; }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg); color: var(--text); 
-            font-family: 'Inter', sans-serif; overflow-x: hidden; 
-            line-height: 1.4;
-        }
+        body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* Estilo Revista: Textura y Grano */
+        /* DAZE Noise Overlay */
         body::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://vercel.app');
-            opacity: 0.05; pointer-events: none; z-index: 1000;
+            opacity: 0.07; pointer-events: none; z-index: 9999;
         }
 
-        header {
-            padding: 40px; display: flex; justify-content: space-between;
-            position: absolute; width: 100%; z-index: 10;
-        }
-        .logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; }
+        /* Navigation */
+        nav { padding: 40px; display: flex; justify-content: space-between; position: fixed; width: 100%; z-index: 100; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; mix-blend-mode: difference; }
+        .logo { font-family: var(--font-editorial); font-style: italic; font-size: 1.8rem; letter-spacing: -1px; }
 
         /* Hero Editorial */
-        .hero {
-            height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
-            align-items: center; padding: 0 5%;
-        }
-        .hero-text h1 {
-            font-family: 'Playfair Display', serif; font-size: 15vw;
-            line-height: 0.75; letter-spacing: -0.05em;
-        }
-        .hero-img { height: 80vh; background: #e0e0e0; position: relative; }
-        .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
+        .hero h1 { font-family: var(--font-editorial); font-size: 25vw; line-height: 0.8; font-weight: 900; letter-spacing: -0.05em; }
+        .hero-sub { position: absolute; bottom: 10%; right: 5%; text-align: right; letter-spacing: 5px; opacity: 0.5; font-size: 10px; }
 
-        /* Secciones de Prendas Únicas */
-        .editorial-section {
-            padding: 100px 5%; display: grid; grid-template-columns: repeat(12, 1fr);
-            gap: 20px; align-items: start;
-        }
+        /* Asymmetrical Magazine Grid */
+        .magazine { padding: 100px 5%; display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
         
-        .item-big { grid-column: 1 / span 7; }
-        .item-small { grid-column: 9 / span 4; margin-top: 150px; }
+        .product { grid-column: span 12; margin-bottom: 150px; position: relative; }
+        .product.left { grid-column: 1 / span 7; }
+        .product.right { grid-column: 7 / span 5; margin-top: 100px; }
 
-        .image-wrapper { position: relative; overflow: hidden; background: #eee; }
-        .image-wrapper img { width: 100%; transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
-        .image-wrapper:hover img { transform: scale(1.08); }
+        .image-container { background: var(--gray); overflow: hidden; position: relative; width: 100%; }
+        .image-container img { width: 100%; display: block; filter: grayscale(1); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .product:hover img { filter: grayscale(0); transform: scale(1.05); }
 
-        .meta { margin-top: 20px; text-transform: uppercase; font-size: 11px; letter-spacing: 2px; }
-        .item-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin: 10px 0; }
+        .info { margin-top: 25px; }
+        .info h3 { font-family: var(--font-editorial); font-style: italic; font-size: 3rem; margin-bottom: 10px; }
+        .info p { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #888; }
 
-        /* Admin Panel (Oculto) */
-        #admin {
-            position: fixed; top: 0; right: -450px; width: 450px; height: 100%;
-            background: #fff; border-left: 1px solid #ddd; z-index: 2000;
-            padding: 60px; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        #admin.active { right: 0; }
-        #admin input { width: 100%; padding: 15px; border: none; border-bottom: 1px solid #000; margin-bottom: 30px; font-family: inherit; }
-        .btn { background: #000; color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; text-transform: uppercase; font-weight: bold; }
+        /* --- ADMIN SYSTEM --- */
+        .admin-trigger { position: fixed; bottom: 20px; right: 20px; opacity: 0.05; cursor: help; border: none; background: none; color: white; font-size: 9px; z-index: 10000; }
+        
+        #login-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10001; backdrop-filter: blur(20px); align-items: center; justify-content: center; }
+        .login-box { text-align: center; width: 300px; }
+        input { background: none; border: none; border-bottom: 1px solid #333; color: white; width: 100%; padding: 15px; margin-bottom: 20px; font-family: inherit; text-align: center; outline: none; }
+        
+        #admin-panel { position: fixed; top: 0; right: -100%; width: 450px; height: 100%; background: #fff; color: #000; z-index: 10002; padding: 60px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); }
+        #admin-panel.active { right: 0; }
+        #admin-panel input { border-bottom-color: #ccc; color: #000; font-size: 1.2rem; margin-bottom: 40px; }
+        .btn-black { background: #000; color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
 
-        @media (max-width: 900px) {
-            .hero { grid-template-columns: 1fr; }
-            .item-big, .item-small { grid-column: span 12; margin-top: 40px; }
+        .delete-btn { display: none; color: #ff4444; font-size: 10px; cursor: pointer; margin-top: 15px; letter-spacing: 2px; }
+        body.is-admin .delete-btn { display: block; }
+
+        @media (max-width: 768px) {
+            .product.left, .product.right { grid-column: span 12; margin-top: 50px; }
+            #admin-panel { width: 100%; }
         }
     </style>
 </head>
-<body>
+<body id="main">
 
-<header>
-    <div class="logo">INERCIA.</div>
-    <nav style="font-size: 10px; text-transform: uppercase; letter-spacing: 3px;">Issues / 001 — Movement</nav>
-</header>
+    <nav>
+        <div class="logo">INERCIA.</div>
+        <div>ARCHIVE / ISSUE 01</div>
+    </nav>
 
-<section class="hero">
-    <div class="hero-text">
-        <p style="text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px;">The New Era</p>
-        <h1>Moda en<br>Mov.</h1>
-    </div>
-    <div class="hero-img">
-        <img src="https://unsplash.com" alt="Hero">
-    </div>
-</section>
-
-<div id="catalog">
-    <section class="editorial-section">
-        <div class="item-big">
-            <div class="image-wrapper"><img src="https://unsplash.com"></div>
-            <div class="meta">Essential / Collection 01</div>
-            <h2 class="item-title">Ethereal Silk Gown</h2>
-            <p>$450.00</p>
-        </div>
-        <div class="item-small">
-            <div class="image-wrapper"><img src="https://unsplash.com"></div>
-            <div class="meta">Accessories / Unique</div>
-            <h2 class="item-title">Void Glass Ring</h2>
-            <p>$120.00</p>
-        </div>
+    <section class="hero">
+        <h1>Motion.</h1>
+        <div class="hero-sub">MODA EN MOVIMIENTO<br>EST. 2024</div>
     </section>
-</div>
 
-<div id="admin">
-    <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 40px;">Editor Mode</h2>
-    <input type="text" id="itemName" placeholder="NOMBRE DE LA PRENDA">
-    <input type="text" id="itemPrice" placeholder="PRECIO">
-    <input type="text" id="itemImg" placeholder="URL DE IMAGEN (VERTICAL)">
-    <button class="btn" onclick="saveItem()">Publicar en Editorial</button>
-    <p style="font-size: 11px; margin-top: 40px; color: #888;">Escribe 0110 de nuevo para cerrar.</p>
-</div>
+    <main class="magazine" id="content-grid">
+        <!-- Products load here -->
+    </main>
 
-<script>
-    let buffer = "";
-    window.addEventListener('keydown', e => {
-        buffer += e.key;
-        if (buffer.length > 4) buffer = buffer.slice(1);
-        if (buffer === "0110") {
-            document.getElementById('admin').classList.toggle('active');
-            buffer = "";
-        }
-    });
+    <!-- Hidden Admin UI -->
+    <button class="admin-trigger" onclick="openLogin()">ADMIN</button>
 
-    function saveItem() {
-        const name = document.getElementById('itemName').value;
-        const price = document.getElementById('itemPrice').value;
-        const img = document.getElementById('itemImg').value;
+    <div id="login-modal">
+        <div class="login-box">
+            <p style="font-size: 10px; letter-spacing: 5px; margin-bottom: 30px;">AUTH REQUIRED</p>
+            <input type="password" id="pass-field" placeholder="CODE">
+            <button class="btn-black" style="background:white; color:black;" onclick="validate()">ENTER</button>
+        </div>
+    </div>
 
-        if (name && price && img) {
-            const newItem = `
-            <section class="editorial-section">
-                <div class="item-big" style="grid-column: 3 / span 8;">
-                    <div class="image-wrapper"><img src="${img}"></div>
-                    <div class="meta">New Arrival / Issue 01</div>
-                    <h2 class="item-title">${name}</h2>
-                    <p>$${price}</p>
+    <div id="admin-panel">
+        <h2 style="font-family: var(--font-editorial); font-style: italic; font-size: 3rem; margin-bottom: 40px;">Editor.</h2>
+        <input type="text" id="p-title" placeholder="PRODUCT NAME">
+        <input type="text" id="p-price" placeholder="PRICE (USD)">
+        <input type="text" id="p-img" placeholder="IMAGE URL (VERTICAL)">
+        <button class="btn-black" onclick="publish()">ADD TO MAGAZINE</button>
+        <p onclick="closeAdmin()" style="margin-top: 40px; font-size: 10px; cursor: pointer; opacity: 0.5;">[ CLOSE PANEL ]</p>
+    </div>
+
+    <script>
+        // Database simulation with LocalStorage
+        let store = JSON.parse(localStorage.getItem('inercia_mag')) || [
+            { id: 1, title: "Abstract Coat", price: "1.200", img: "https://unsplash.com", pos: 'left' },
+            { id: 2, title: "Kinetic Pant", price: "650", img: "https://unsplash.com", pos: 'right' }
+        ];
+
+        function render() {
+            const grid = document.getElementById('content-grid');
+            grid.innerHTML = store.map((item, i) => `
+                <div class="product ${item.pos}">
+                    <div class="image-container"><img src="${item.img}"></div>
+                    <div class="info">
+                        <p>$${item.price} USD</p>
+                        <h3>${item.title}</h3>
+                        <span class="delete-btn" onclick="remove(${item.id})">[ REMOVE FROM ISSUE ]</span>
+                    </div>
                 </div>
-            </section>`;
-            document.getElementById('catalog').insertAdjacentHTML('afterbegin', newItem);
-            document.getElementById('admin').classList.remove('active');
+            `).join('');
         }
-    }
-</script>
 
+        // Admin Auth
+        function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
+        
+        function validate() {
+            if(document.getElementById('pass-field').value === "0110") {
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('admin-panel').classList.add('active');
+                document.body.classList.add('is-admin');
+            } else {
+                alert("Denied");
+                document.getElementById('login-modal').style.display = 'none';
+            }
+        }
+
+        function publish() {
+            const title = document.getElementById('p-title').value;
+            const price = document.getElementById('p-price').value;
+            const img = document.getElementById('p-img').value;
+            
+            if(title && price && img) {
+                const pos = store.length % 2 === 0 ? 'left' : 'right';
+                store.unshift({ id: Date.now(), title, price, img, pos });
+                localStorage.setItem('inercia_mag', JSON.stringify(store));
+                render();
+                closeAdmin();
+            }
+        }
+
+        function remove(id) {
+            if(confirm("Delete this piece?")) {
+                store = store.filter(i => i.id !== id);
+                localStorage.setItem('inercia_mag', JSON.stringify(store));
+                render();
+            }
+        }
+
+        function closeAdmin() {
+            document.getElementById('admin-panel').classList.remove('active');
+            document.getElementById('pass-field').value = "";
+        }
+
+        render();
+    </script>
 </body>
 </html>
