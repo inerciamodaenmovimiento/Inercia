@@ -2,98 +2,103 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Sistema de Gestión</title>
+    <title>INERCIA | Admin Panel</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --gold: #c5a059; --dark: #1a1a1a; --light: #f8f9fa; }
-        body { font-family: 'Raleway', sans-serif; background: var(--light); margin: 0; display: flex; }
+        :root { --dark: #111; --gold: #c5a059; --bg: #f8f9fa; }
+        body { font-family: 'Raleway', sans-serif; background: var(--bg); margin: 0; display: flex; }
         
-        /* Sidebar Estilo Pro */
-        .sidebar { width: 260px; background: var(--dark); height: 100vh; color: white; padding: 30px 20px; position: fixed; }
-        .sidebar h1 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 20px; }
-        .nav-link { color: #888; display: block; padding: 12px 0; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
-        .nav-link:hover, .active { color: white; padding-left: 10px; }
+        .sidebar { width: 280px; background: var(--dark); height: 100vh; color: white; padding: 40px 20px; position: fixed; }
+        .sidebar h2 { font-family: 'Playfair Display', serif; letter-spacing: 4px; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .nav-item { color: #777; display: block; padding: 15px 0; text-decoration: none; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+        .nav-item:hover, .active { color: #fff; padding-left: 10px; }
 
-        /* Contenido Principal */
-        .main-content { margin-left: 260px; width: calc(100% - 260px); padding: 40px; }
-        .header-admin { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .content { margin-left: 280px; width: 100%; padding: 60px; }
+        .card { background: white; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 40px; }
         
-        /* Dashboard Cards */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
-        .stat-card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .stat-card h3 { font-size: 0.8rem; color: #888; text-transform: uppercase; margin: 0; }
-        .stat-card p { font-size: 1.8rem; font-weight: 600; margin: 10px 0 0; }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
+        .stat-box { background: white; padding: 20px; border-left: 3px solid var(--gold); }
+        .stat-box small { text-transform: uppercase; color: #999; font-size: 0.7rem; letter-spacing: 1px; }
+        .stat-box p { font-size: 1.6rem; font-weight: 600; margin: 5px 0; }
 
-        /* Formulario y Tablas */
-        .admin-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; margin-top: 8px; }
-        .btn-save { background: var(--dark); color: white; padding: 15px 30px; border: none; cursor: pointer; margin-top: 20px; font-weight: 600; }
-
-        /* Estilos para el Acceso Invisible en index.html */
-        .hidden-trigger { 
-            position: fixed; bottom: 10px; right: 10px; 
-            font-size: 8px; color: #eee; cursor: pointer; 
-            text-decoration: none; user-select: none;
-        }
-        .hidden-trigger:hover { color: #ccc; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; color: #555; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; font-family: inherit; }
+        .btn-save { background: var(--dark); color: white; padding: 15px 40px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; padding: 15px; background: #f4f4f4; font-size: 0.8rem; text-transform: uppercase; }
+        td { padding: 15px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <h1>INERCIA Admin</h1>
-        <nav>
-            <a href="#" class="nav-link active">Dashboard</a>
-            <a href="#" class="nav-link">Catálogo & Variantes</a>
-            <a href="#" class="nav-link">Stock en Tiempo Real</a>
-            <a href="#" class="nav-link">Pedidos y Envíos</a>
-            <a href="#" class="nav-link">Marketing / Cupones</a>
-            <a href="#" class="nav-link">Usuarios y Permisos</a>
-        </nav>
-    </div>
+    <aside class="sidebar">
+        <h2>INERCIA</h2>
+        <a href="#" class="nav-item active">Dashboard</a>
+        <a href="#" class="nav-item">Productos & Variantes</a>
+        <a href="#" class="nav-item">Stock en Tiempo Real</a>
+        <a href="#" class="nav-item">Pedidos & Envíos</a>
+        <a href="#" class="nav-item">Marketing & SEO</a>
+        <a href="index.html" class="nav-item" style="margin-top: 40px; color: var(--gold);">Volver a Tienda</a>
+    </aside>
 
-    <main class="main-content">
-        <div class="header-admin">
-            <h2>Panel General de Control</h2>
-            <span>Bienvenido, Admin Inercia</span>
+    <main class="content">
+        <h1>Administración Inercia</h1>
+
+        <div class="stats">
+            <div class="stat-box"><small>Ventas Hoy</small><p>$185.000</p></div>
+            <div class="stat-box"><small>Stock Crítico</small><p style="color:red">5 SKUs</p></div>
+            <div class="stat-box"><small>Pedidos</small><p>12</p></div>
+            <div class="stat-box"><small>Abandonados</small><p>4</p></div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card"><h3>Ventas Hoy</h3><p>$125.400</p></div>
-            <div class="stat-card"><h3>Stock Bajo</h3><p style="color: #e74c3c;">5 Alertas</p></div>
-            <div class="stat-card"><h3>Pedidos Pendientes</h3><p>12</p></div>
-            <div class="stat-card"><h3>Carritos Abandonados</h3><p>8</p></div>
-        </div>
-
-        <div class="admin-section">
-            <h3>Carga de Producto & Variantes</h3>
-            <form id="productForm">
-                <div class="grid-form">
-                    <div>
-                        <label>Nombre de la Prenda</label>
-                        <input type="text" placeholder="Ej: Tapado Lana Invierno">
-                    </div>
-                    <div>
-                        <label>Categoría / Temporada</label>
-                        <select>
-                            <option>Invierno 2024</option>
-                            <option>Básicos Movimiento</option>
-                            <option>Accesorios</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Variantes (Tallas y Colores)</label>
-                        <input type="text" placeholder="S-Negro, M-Negro, L-Gris">
-                    </div>
-                    <div>
-                        <label>Carga Masiva de Imágenes (Múltiples ángulos)</label>
-                        <input type="file" multiple>
-                    </div>
+        <div class="card">
+            <h3>Gestión de Producto y Variantes</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                <div class="form-group">
+                    <label>Nombre de Referencia</label>
+                    <input type="text" placeholder="Ej: Blazer Movimiento Black">
                 </div>
-                <button type="button" class="btn-save">ACTUALIZAR INVENTARIO</button>
-            </form>
+                <div class="form-group">
+                    <label>Categoría / Temporada</label>
+                    <select><option>Invierno 2024</option><option>Básicos</option></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Variantes (Talla, Color, Material)</label>
+                <textarea rows="2" placeholder="S, M, L / Negro, Gris / Lana, Algodón"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Carga Masiva de Imágenes (Múltiples Ángulos)</label>
+                <input type="file" multiple>
+            </div>
+            <button class="btn-save">Actualizar Inventario</button>
+        </div>
+
+        <div class="card">
+            <h3>Control de Pedidos y Logística</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Estado de Envío</th>
+                        <th>Transportista</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#2045</td>
+                        <td>Laura Rossi</td>
+                        <td><span style="color: #c5a059;">Procesando</span></td>
+                        <td>Andreani</td>
+                        <td><button>Generar Etiqueta</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 
