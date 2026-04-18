@@ -77,4 +77,18 @@ body {
     max-width: 300px;
     border-left: 1px solid #000;
     padding-left: 20px;
+/* Agrega esto a tu style.css */
+.bg-title {
+    position: fixed; /* Se queda quieto mientras haces scroll */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bodoni Moda', serif;
+    font-size: 25vw; /* Ocupa casi toda la pantalla */
+    font-weight: 900;
+    color: rgba(0,0,0,0.03); /* Casi invisible, gris muy suave */
+    z-index: -1;
+    pointer-events: none; /* Para que no interfiera con los clics */
+    white-space: nowrap;
 }
+
