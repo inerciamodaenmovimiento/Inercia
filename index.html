@@ -4,80 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
-    <script src="https://tailwindcss.com"></script>
-    <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
-        .product-image { transition: transform 0.5s ease; }
-        .product-image:hover { transform: scale(1.05); }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-white text-gray-900">
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">INERCIA</div>
+            <button id="cart-btn">Carrito (<span id="cart-count">0</span>)</button>
+        </nav>
+    </header>
 
-    <!-- Navegación Estilo Minimalista -->
-    <nav class="flex justify-between items-center p-6 border-b border-gray-100">
-        <div class="text-2xl font-bold tracking-widest uppercase">INERCIA</div>
-        <ul class="hidden md:flex space-x-8 text-xs uppercase tracking-widest">
-            <li><a href="#" class="hover:underline">Colección</a></li>
-            <li><a href="#" class="hover:underline">Mujer</a></li>
-            <li><a href="#" class="hover:underline">Hombre</a></li>
-            <li><a href="#" class="hover:underline">Editorial</a></li>
-        </ul>
-        <div class="flex space-x-4">
-            <span class="cursor-pointer">🔍</span>
-            <span class="cursor-pointer">👜 (0)</span>
-        </div>
-    </nav>
+    <main class="container product-page">
+        <!-- Punto 1: Imagen Dinámica -->
+        <section class="product-gallery">
+            <img src="https://unsplash.com" alt="Producto" id="main-img">
+        </section>
 
-    <!-- Sección de Producto Principal -->
-    <main class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 p-10">
-        
-        <!-- Galería de Imagen (Izquierda) -->
-        <div class="overflow-hidden bg-gray-50">
-            <img src="https://unsplash.com" 
-                 alt="Falda Inercia" class="product-image w-full h-full object-cover">
-        </div>
+        <section class="product-details">
+            <p class="brand">NUEVA COLECCIÓN</p>
+            <h1>Falda Ruffle Inercia</h1>
+            <p class="price">$196.000</p>
 
-        <!-- Detalles de Producto (Derecha) -->
-        <div class="flex flex-col justify-center space-y-6 md:pl-10">
-            <div>
-                <h1 class="text-sm text-gray-500 uppercase tracking-tighter">Nueva Temporada</h1>
-                <h2 class="text-3xl font-light mt-2 uppercase tracking-wide">Falda Midi de Satén</h2>
-                <p class="text-xl mt-4">$12.500</p>
-            </div>
+            <div class="options">
+                <!-- Gestión de Variantes -->
+                <div class="option-group">
+                    <label>Color</label>
+                    <div class="color-selectors">
+                        <button class="color-dot active" data-color="Rosa" data-img="https://unsplash.com" style="background: #d4a3a3;"></button>
+                        <button class="color-dot" data-color="Negro" data-img="https://unsplash.com" style="background: #1a1a1a;"></button>
+                    </div>
+                </div>
 
-            <p class="text-gray-600 text-sm leading-relaxed">
-                Falda de tiro alto confeccionada en tejido satinado. Cierre lateral con cremallera oculta en costura. Un diseño fluido que captura el concepto de **Moda en Movimiento**.
-            </p>
-
-            <!-- Selector de Tallas -->
-            <div>
-                <label class="text-xs uppercase tracking-widest block mb-2">Talla</label>
-                <div class="flex space-x-2">
-                    <button class="border border-black px-4 py-2 text-xs hover:bg-black hover:text-white transition">S</button>
-                    <button class="border border-black px-4 py-2 text-xs hover:bg-black hover:text-white transition">M</button>
-                    <button class="border border-black px-4 py-2 text-xs hover:bg-black hover:text-white transition">L</button>
+                <div class="option-group">
+                    <label>Talla</label>
+                    <select id="size-select">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Botones de Acción -->
-            <div class="flex flex-col space-y-3 pt-4">
-                <button onclick="comprarWhatsApp()" class="bg-black text-white py-4 text-xs uppercase tracking-widest hover:opacity-90 transition">
-                    Añadir al Carrito
-                </button>
-                <button class="border border-gray-300 py-4 text-xs uppercase tracking-widest hover:bg-gray-50 transition">
-                    Lista de Deseos ♡
-                </button>
-            </div>
-        </div>
+            <!-- Punto 2: Control de Stock -->
+            <div class="stock-info" id="stock-status">En stock</div>
+            <button id="add-to-cart" class="btn-primary">AÑADIR AL CARRITO</button>
+        </section>
     </main>
 
-    <script>
-        function comprarWhatsApp() {
-            const mensaje = "Hola Inercia! Me interesa la Falda Midi de Satén en talle M.";
-            const numero = "5491122334455"; // Reemplaza con tu número real
-            window.open(`https://wa.me{numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
-        }
-    </script>
+    <!-- Modal del Carrito -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Tu Carrito</h2>
+            <div id="cart-items"></div>
+            <hr>
+            <div class="cart-total">Total: <span id="cart-total-price">$0</span></div>
+            <button class="btn-primary">FINALIZAR COMPRA</button>
+        </div>
+    </div>
 
+    <script src="script.js"></script>
 </body>
 </html>
