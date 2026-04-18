@@ -3,76 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VICKY | Tienda Online</title>
+    <title>Inercia | Moda en Movimiento</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Tipografía Elegante -->
+    <!-- Google Fonts para un look profesional -->
     <link href="https://googleapis.com" rel="stylesheet">
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="menu-icon">☰</div>
-        <div class="logo">VICKY</div>
-        <div class="cart-icon">🛒 <span id="cart-count">0</span></div>
+    <header>
+        <nav>
+            <div class="logo">INERCIA</div>
+            <ul>
+                <li><a href="#new">New Collection</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#categories">Catalog</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
+        <!-- Hero Section -->
         <section class="hero">
             <h1>DRESS HERE AND BE IN STYLE</h1>
             <div class="hero-image">
-                <img src="https://unsplash.com" alt="New Collection">
+                <img src="assets/hero-model.jpg" alt="Nueva Colección Inercia">
                 <div class="hero-label">NEW COLLECTION</div>
             </div>
         </section>
 
-        <section class="products" id="catalog">
-            <h2>NEW COLLECTION</h2>
-            <div class="grid">
-                <!-- Producto 1 -->
-                <div class="product-card">
-                    <img src="https://unsplash.com" alt="Chaqueta">
-                    <h3>Chaqueta Minimalista</h3>
-                    <p>$85.00</p>
-                    <button onclick="addToCart('Chaqueta Minimalista', 85)">Añadir al Carrito</button>
-                </div>
-                <!-- Producto 2 -->
-                <div class="product-card">
-                    <img src="https://unsplash.com" alt="Vestido">
-                    <h3>Vestido Elegance</h3>
-                    <p>$120.00</p>
-                    <button onclick="addToCart('Vestido Elegance', 120)">Añadir al Carrito</button>
-                </div>
+        <!-- New Collection Grid -->
+        <section id="new" class="product-grid">
+            <div class="product-card">
+                <img src="assets/item1.jpg" alt="Body cut out">
+                <p>Body cut out soft</p>
+                <span>$35.00</span>
+            </div>
+            <div class="product-card">
+                <img src="assets/item2.jpg" alt="Jacket oversize">
+                <p>Jacket oversize</p>
+                <span>$120.00</span>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <h2>ABOUT US</h2>
+            <div class="about-content">
+                <img src="assets/store.jpg" alt="Nuestra Tienda">
+                <p>Inercia es moda en constante movimiento. Desde 2023, creamos piezas que combinan elegancia urbana con la libertad del día a día.</p>
             </div>
         </section>
     </main>
 
-    <!-- Botón Flotante de Finalizar Compra -->
-    <div id="checkout-bar" class="checkout-bar" style="display:none;">
-        <p>Total en carrito: $<span id="total-price">0</span></p>
-        <button onclick="sendWhatsApp()">Finalizar Pedido por WhatsApp</button>
-    </div>
+    <footer>
+        <p>&copy; 2026 INERCIA - Moda en Movimiento</p>
+    </footer>
 
-    <script>
-        let cart = [];
-        let total = 0;
-
-        function addToCart(name, price) {
-            cart.push({name, price});
-            total += price;
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('total-price').innerText = total;
-            document.getElementById('checkout-bar').style.display = 'flex';
-        }
-
-        function sendWhatsApp() {
-            let message = "Hola VICKY, quiero realizar el siguiente pedido:%0A";
-            cart.forEach(item => {
-                message += `- ${item.name} ($${item.price})%0A`;
-            });
-            message += `%0ATotal: $${total}`;
-            // REEMPLAZA EL NÚMERO ABAJO CON EL TUYO (Incluye código de país sin el +)
-            window.open(`https://wa.me{message}`, '_blank');
-        }
-    </script>
 </body>
 </html>
