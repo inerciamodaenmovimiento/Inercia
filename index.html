@@ -4,435 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
+    <script src="https://tailwindcss.com"></script>
     <style>
-        :root {
-            --bg: #f2f2f2;
-            --white: #ffffff;
-            --black: #000000;
-            --text-muted: #666;
-            --border: #e0e0e0;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-            background-color: var(--bg);
-            color: var(--black);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* NAVEGACIÓN STICKY */
-        .navbar {
-            position: fixed; top: 0; width: 100%; height: 70px;
-            background: rgba(255,255,255,0.95); display: flex;
-            align-items: center; justify-content: space-between;
-            padding: 0 50px; z-index: 1000; border-bottom: 1px solid var(--border);
-        }
-        .logo { font-weight: 700; letter-spacing: 5px; font-size: 18px; }
-        .nav-links a { 
-            text-decoration: none; color: var(--black); font-size: 11px; 
-            text-transform: uppercase; letter-spacing: 2px; margin-left: 30px;
-        }
-
-        /* HERO SECTION - Inspirado en la imagen */
-        .hero {
-            display: grid; grid-template-columns: 1fr 1fr;
-            height: 100vh; padding-top: 70px; background: var(--white);
-        }
-        .hero-img {
-            background: #d9d9d9 url('https://unsplash.com') center/cover;
-            margin: 20px;
-        }
-        .hero-content {
-            display: flex; flex-direction: column; justify-content: center;
-            padding: 0 10%; border-left: 1px solid var(--border);
-        }
-        .hero-content h1 { font-size: 40px; font-weight: 300; letter-spacing: 8px; margin-bottom: 20px; }
-        .price { font-size: 24px; margin-bottom: 40px; font-weight: 300; }
-        .btn-cta {
-            background: var(--black); color: var(--white); border: none;
-            padding: 20px; width: 100%; cursor: pointer; letter-spacing: 3px;
-            font-size: 12px; transition: 0.3s;
-        }
-        .btn-cta:hover { opacity: 0.8; }
-
-        /* SERVICIOS */
-        .services {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            background: var(--white); border-top: 1px solid var(--border);
-        }
-        .service-card {
-            padding: 80px 40px; border-right: 1px solid var(--border); text-align: center;
-        }
-        .service-card h3 { font-size: 12px; letter-spacing: 4px; margin-bottom: 20px; }
-        .service-card p { font-size: 13px; color: var(--text-muted); line-height: 1.8; }
-
-        /* FOOTER */
-        footer {
-            padding: 60px 50px; background: var(--white); border-top: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: flex-end;
-        }
-        .footer-info { font-size: 10px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
-
-        /* ADMIN OCULTO */
-        #adminModal {
-            display: none; position: fixed; inset: 0; background: var(--white);
-            z-index: 2000; align-items: center; justify-content: center; text-align: center;
-        }
-        .admin-box { border: 1px solid var(--black); padding: 60px; }
-
-        /* RESPONSIVO */
-        @media (max-width: 768px) {
-            .hero { grid-template-columns: 1fr; }
-            .hero-content { border-left: none; padding: 40px 20px; }
-            .navbar { padding: 0 20px; }
-            .nav-links { display: none; }
-        }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+        .product-image { transition: transform 0.5s ease; }
+        .product-image:hover { transform: scale(1.05); }
     </style>
 </head>
-<body>
+<body class="bg-white text-gray-900">
 
-    <nav class="navbar">
-        <div class="logo">INERCIA</div>
-        <div class="nav-links">
-            <a href="#">Shop</a>
-            <a href="#">Archive</a>
-            <a href="#">Info</a>
+    <!-- Navegación Estilo Minimalista -->
+    <nav class="flex justify-between items-center p-6 border-b border-gray-100">
+        <div class="text-2xl font-bold tracking-widest uppercase">INERCIA</div>
+        <ul class="hidden md:flex space-x-8 text-xs uppercase tracking-widest">
+            <li><a href="#" class="hover:underline">Colección</a></li>
+            <li><a href="#" class="hover:underline">Mujer</a></li>
+            <li><a href="#" class="hover:underline">Hombre</a></li>
+            <li><a href="#" class="hover:underline">Editorial</a></li>
+        </ul>
+        <div class="flex space-x-4">
+            <span class="cursor-pointer">🔍</span>
+            <span class="cursor-pointer">👜 (0)</span>
         </div>
     </nav>
 
-    <main class="hero">
-        <div class="hero-img"></div>
-        <div class="hero-content">
-            <p style="font-size: 10px; letter-spacing: 3px; color: var(--text-muted);">PRODUCTO SELECCIONADO</p>
-            <h1>S/S SKIRT EDITION</h1>
-            <p class="price">196,000 ARS</p>
-            <button class="btn-cta">AÑADIR A LA CESTA</button>
-            <div style="margin-top: 40px; font-size: 11px; color: var(--text-muted); line-height: 2;">
-                • Diseño asimétrico<br>• Seda premium 100%<br>• Edición limitada
+    <!-- Sección de Producto Principal -->
+    <main class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 p-10">
+        
+        <!-- Galería de Imagen (Izquierda) -->
+        <div class="overflow-hidden bg-gray-50">
+            <img src="https://unsplash.com" 
+                 alt="Falda Inercia" class="product-image w-full h-full object-cover">
+        </div>
+
+        <!-- Detalles de Producto (Derecha) -->
+        <div class="flex flex-col justify-center space-y-6 md:pl-10">
+            <div>
+                <h1 class="text-sm text-gray-500 uppercase tracking-tighter">Nueva Temporada</h1>
+                <h2 class="text-3xl font-light mt-2 uppercase tracking-wide">Falda Midi de Satén</h2>
+                <p class="text-xl mt-4">$12.500</p>
+            </div>
+
+            <p class="text-gray-600 text-sm leading-relaxed">
+                Falda de tiro alto confeccionada en tejido satinado. Cierre lateral con cremallera oculta en costura. Un diseño fluido que captura el concepto de **Moda en Movimiento**.
+            </p>
+
+            <!-- Selector de Tallas -->
+            <div>
+                <label class="text-xs uppercase tracking-widest block mb-2">Talla</label>
+                <div class="flex space-x-2">
+                    <button class="border border-black px-4 py-2 text-xs hover:bg-black hover:text-white transition">S</button>
+                    <button class="border border-black px-4 py-2 text-xs hover:bg-black hover:text-white transition">M</button>
+                    <button class="border border-black px-4 py-2 text-xs hover:bg-black hover:text-white transition">L</button>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="flex flex-col space-y-3 pt-4">
+                <button onclick="comprarWhatsApp()" class="bg-black text-white py-4 text-xs uppercase tracking-widest hover:opacity-90 transition">
+                    Añadir al Carrito
+                </button>
+                <button class="border border-gray-300 py-4 text-xs uppercase tracking-widest hover:bg-gray-50 transition">
+                    Lista de Deseos ♡
+                </button>
             </div>
         </div>
     </main>
 
-    <section class="services">
-        <div class="service-card">
-            <h3>LOGÍSTICA</h3>
-            <p>Envíos prioritarios con seguimiento internacional.</p>
-        </div>
-        <div class="service-card">
-            <h3>CONSERJERÍA</h3>
-            <p>Atención personalizada vía canal privado 24/7.</p>
-        </div>
-        <div class="service-card">
-            <h3>CALIDAD</h3>
-            <p>Materiales con certificación de origen y sostenibilidad.</p>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-info">© 2026 INERCIA - MODA EN MOVIMIENTO</div>
-        <div class="footer-info">Privacidad / Términos</div>
-    </footer>
-
-    <!-- Panel de Administración -->
-    <div id="adminModal">
-        <div class="admin-box">
-            <h2 style="letter-spacing: 5px;">MODO ADMIN</h2>
-            <p style="margin: 20px 0; font-size: 12px;">Acceso verificado para el código 0110.</p>
-            <button onclick="closeAdmin()" class="btn-cta" style="width: auto; padding: 10px 40px;">SALIR</button>
-        </div>
-    </div>
-
     <script>
-        // LÓGICA DE ADMIN OCULTO (Teclea 0110 rápido)
-        let keys = "";
-        document.addEventListener('keydown', (e) => {
-            keys += e.key;
-            if (keys.length > 4) keys = keys.substring(keys.length - 4);
-            
-            if (keys === "0110") {
-                document.getElementById('adminModal').style.display = 'flex';
-                keys = ""; // Reset
-            }
-        });
-
-        function closeAdmin() {
-            document.getElementById('adminModal').style.display = 'none';
+        function comprarWhatsApp() {
+            const mensaje = "Hola Inercia! Me interesa la Falda Midi de Satén en talle M.";
+            const numero = "5491122334455"; // Reemplaza con tu número real
+            window.open(`https://wa.me{numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
         }
-
-        // Efecto scroll suave
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.navbar');
-            nav.style.background = window.scrollY > 50 ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.95)';
-        });
-    </script><!-- INTEGRACIÓN TOTAL: ADMIN + FIREBASE (SISTEMA INERCIA) -->
-<script type="module">
-    // 1. IMPORTACIÓN DE SDKs DESDE CDN (Sin instalaciones)
-    import { initializeApp } from "https://gstatic.com";
-    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc } from "https://gstatic.com";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://gstatic.com";
-
-    // 2. TU CONFIGURACIÓN DE FIREBASE
-    const firebaseConfig = {
-        apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
-        authDomain: "://firebaseapp.com",
-        projectId: "incerciamoda",
-        storageBucket: "incerciamoda.firebasestorage.app",
-        messagingSenderId: "335158123341",
-        appId: "1:335158123341:web:2722e74538e808321a7504",
-        measurementId: "G-1NGJT0MRPB"
-    };
-
-    // Inicializar Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    // 3. LÓGICA DE CONTROL DE ADMIN (ACCESO 0110)
-    let buffer = "";
-    document.addEventListener('keydown', (e) => {
-        buffer += e.key;
-        if (buffer.length > 4) buffer = buffer.substring(buffer.length - 4);
-        if (buffer === "0110") {
-            document.getElementById('adminModal').style.display = 'flex';
-            actualizarDashboard(); // Carga datos al entrar
-        }
-    });
-
-    // 4. FUNCIONES DE GESTIÓN (Tus 6 Requisitos)
-
-    // A. Carga Masiva de Imágenes y Variantes
-    window.subirProducto = async () => {
-        const file = document.getElementById('imgInput').files[0];
-        const nombre = document.getElementById('prodNombre').value;
-        const stock = document.getElementById('prodStock').value;
-        
-        if(!file || !nombre) return alert("Completa los datos básicos");
-
-        try {
-            // Subir imagen a Storage
-            const storageRef = ref(storage, `productos/${file.name}`);
-            const snapshot = await uploadBytes(storageRef, file);
-            const url = await getDownloadURL(snapshot.ref);
-
-            // Guardar en Firestore con Variantes y Stock
-            await addDoc(collection(db, "productos"), {
-                nombre: nombre,
-                url: url,
-                stock: parseInt(stock),
-                variantes: ["S", "M", "L"], // Por defecto
-                estado: "Disponible",
-                fecha: new Date()
-            });
-
-            alert("Inercia: Producto Sincronizado");
-            actualizarDashboard();
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    };
-
-    // B. Dashboard en Tiempo Real (Métricas y Alertas de Stock)
-    async function actualizarDashboard() {
-        const querySnapshot = await getDocs(collection(db, "productos"));
-        let stockBajo = 0;
-        
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            if(data.stock < 5) stockBajo++;
-        });
-
-        // Actualiza el contador visual de stock crítico
-        const alertaElem = document.getElementById('stockCritico');
-        if(alertaElem) {
-            alertaElem.innerText = stockBajo;
-            alertaElem.style.color = stockBajo > 0 ? "red" : "green";
-        }
-    }
-
-    // C. Gestión de Pedidos (Cambio de estado)
-    window.cambiarEstadoPedido = async (idPedido, nuevoEstado) => {
-        const pedidoRef = doc(db, "pedidos", idPedido);
-        await updateDoc(pedidoRef, { estado: nuevoEstado });
-        alert("Estado de envío actualizado");
-    };
-
-</script>
-
-<!-- CSS ADICIONAL PARA EL FORMULARIO ADMIN (Dentro del Modal) -->
-<style>
-    .admin-form {
-        display: grid;
-        gap: 15px;
-        text-align: left;
-        margin-top: 20px;
-    }
-    .admin-form input {
-        padding: 10px;
-        border: 1px solid #ccc;
-    }
-    #stockCritico { font-weight: bold; }
-</style>
-
-<!-- MODIFICACIÓN DEL MODAL EXISTENTE PARA QUE TENGA EL FORMULARIO -->
-<div id="adminModal" style="display:none; position:fixed; inset:0; background:white; z-index:9999; padding:50px; overflow-y:auto;">
-    <div style="max-width: 800px; margin: auto;">
-        <h1 style="letter-spacing: 5px;">MY GESTIÓN | INERCIA</h1>
-        <hr><br>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-            <!-- Columna 1: Carga -->
-            <div class="admin-form">
-                <h3>1. CARGA DE PRODUCTO</h3>
-                <input type="text" id="prodNombre" placeholder="Nombre de prenda">
-                <input type="number" id="prodStock" placeholder="Stock Inicial">
-                <label>Imágenes Alta Calidad:</label>
-                <input type="file" id="imgInput" accept="image/*">
-                <button onclick="subirProducto()" style="background:black; color:white; padding:15px; border:none; cursor:pointer;">SINCRONIZAR AHORA</button>
-            </div>
-
-            <!-- Columna 2: Dashboard/Stock -->
-            <div>
-                <h3>2. ESTADO DEL INVENTARIO</h3>
-                <p>Alertas de bajo stock: <span id="stockCritico">0</span></p>
-                <br>
-                <h3>3. MÉTRICAS DE VENTAS</h3>
-                <p>Ventas hoy: $0.00</p>
-                <p>Pedidos pendientes: 0</p>
-            </div>
-        </div>
-        
-        <br><br>
-        <button onclick="document.getElementById('adminModal').style.display='none'" style="border:1px solid black; background:none; padding:10px 20px; cursor:pointer;">CERRAR SISTEMA</button>
-    </div>
-</div>
-<!-- INTERFAZ ADMINISTRATIVA INERCIA (OCULTA) -->
-<div id="adminView" style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.98); z-index:10000; padding:40px; font-family: 'Helvetica Neue', Arial, sans-serif; overflow-y:auto;">
-    <div style="max-width:900px; margin:0 auto; border:1px solid #000; padding:40px; background:#fff;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-            <h2 style="letter-spacing:8px; font-size:18px;">MYGESTIÓN | INERCIA</h2>
-            <button onclick="document.getElementById('adminView').style.display='none'" style="background:none; border:1px solid #000; padding:8px 20px; cursor:pointer; font-size:10px; letter-spacing:2px;">CERRAR</button>
-        </div>
-
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:50px;">
-            <!-- Formulario de Carga -->
-            <div style="display:flex; flex-direction:column; gap:15px;">
-                <label style="font-size:10px; letter-spacing:2px;">DATOS DE PRENDA</label>
-                <input type="text" id="inNombre" placeholder="NOMBRE DEL PRODUCTO" style="padding:12px; border:1px solid #eee; outline:none; font-size:12px;">
-                <div style="display:flex; gap:10px;">
-                    <input type="number" id="inPrecio" placeholder="PRECIO ($)" style="flex:1; padding:12px; border:1px solid #eee; outline:none;">
-                    <input type="number" id="inStock" placeholder="STOCK" style="flex:1; padding:12px; border:1px solid #eee; outline:none;">
-                </div>
-                <input type="text" id="inVariantes" placeholder="VARIANTES (S, M, L / COLOR)" style="padding:12px; border:1px solid #eee; outline:none; font-size:12px;">
-                
-                <label style="font-size:10px; letter-spacing:2px; margin-top:10px;">IMAGEN PRINCIPAL</label>
-                <input type="file" id="inFile" style="font-size:11px;">
-                
-                <button id="btnSync" style="background:#000; color:#fff; padding:18px; border:none; margin-top:20px; cursor:pointer; letter-spacing:3px; font-size:11px; transition:0.3s;">SINCRONIZAR CON TIENDA</button>
-            </div>
-
-            <!-- Panel de Control / Dashboard -->
-            <div style="background:#fafafa; padding:30px; border:1px solid #f0f0f0;">
-                <h3 style="font-size:11px; letter-spacing:3px; margin-bottom:25px; border-bottom:1px solid #ddd; padding-bottom:10px;">DASHBOARD REAL-TIME</h3>
-                <div style="margin-bottom:20px;">
-                    <p style="font-size:10px; color:#888;">STOCK CRÍTICO</p>
-                    <p id="alertStock" style="font-size:20px; font-weight:300;">VERIFICANDO...</p>
-                </div>
-                <div style="margin-bottom:20px;">
-                    <p style="font-size:10px; color:#888;">VENTAS DEL MES</p>
-                    <p style="font-size:20px; font-weight:300;">$0.00</p>
-                </div>
-                <div style="margin-bottom:20px;">
-                    <p style="font-size:10px; color:#888;">PEDIDOS POR ENVIAR</p>
-                    <p style="font-size:20px; font-weight:300;">0</p>
-                </div>
-                <p style="font-size:9px; color:#bbb; margin-top:40px;">SISTEMA CONECTADO A FIREBASE CLOUD</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- LÓGICA DE CONEXIÓN FIREBASE -->
-<script type="module">
-    import { initializeApp } from "https://gstatic.com";
-    import { getFirestore, collection, addDoc, getDocs } from "https://gstatic.com";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://gstatic.com";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
-        authDomain: "://firebaseapp.com",
-        projectId: "incerciamoda",
-        storageBucket: "incerciamoda.firebasestorage.app",
-        messagingSenderId: "335158123341",
-        appId: "1:335158123341:web:2722e74538e808321a7504",
-        measurementId: "G-1NGJT0MRPB"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    // Activación por código 0110
-    let keys = "";
-    document.addEventListener('keydown', (e) => {
-        if (/^\d$/.test(e.key)) {
-            keys += e.key;
-            if (keys.endsWith("0110")) {
-                document.getElementById('adminView').style.display = 'block';
-                checkStock();
-                keys = "";
-            }
-        }
-    });
-
-    // Función de Sincronización (Subir Producto)
-    document.getElementById('btnSync').onclick = async () => {
-        const file = document.getElementById('inFile').files[0];
-        const nombre = document.getElementById('inNombre').value;
-        const precio = document.getElementById('inPrecio').value;
-        const stock = document.getElementById('inStock').value;
-        const btn = document.getElementById('btnSync');
-
-        if(!file || !nombre || !precio) return alert("Por favor, completa los campos básicos.");
-
-        btn.innerText = "SINCRONIZANDO...";
-        btn.style.opacity = "0.5";
-
-        try {
-            // 1. Subir imagen
-            const imgRef = ref(storage, `productos/${Date.now()}_${file.name}`);
-            await uploadBytes(imgRef, file);
-            const url = await getDownloadURL(imgRef);
-
-            // 2. Guardar datos
-            await addDoc(collection(db, "productos"), {
-                nombre, precio: parseFloat(precio), stock: parseInt(stock),
-                variantes: document.getElementById('inVariantes').value.split(','),
-                imagen: url,
-                fecha: new Date()
-            });
-
-            alert("Inercia: Producto actualizado con éxito.");
-            location.reload();
-        } catch (e) {
-            alert("Error al conectar. Revisa la consola.");
-            console.error(e);
-            btn.innerText = "REINTENTAR";
-            btn.style.opacity = "1";
-        }
-    };
-
-    // Alerta de Stock en tiempo real
-    async function checkStock() {
-        const snap = await getDocs(collection(db, "productos"));
-        let count = 0;
-        snap.forEach(doc => { if(doc.data().stock < 5) count++; });
-        const el = document.getElementById('alertStock');
-        el.innerText = count + " ARTÍCULOS";
-        el.style.color = count > 0 ? "#e74c3c" : "#2ecc71";
-    }
-</script>
+    </script>
 
 </body>
 </html>
