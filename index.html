@@ -160,6 +160,19 @@
 
 <!-- Referencia visual casi invisible (opcional) -->
 <div style="position: fixed; bottom: 5px; right: 5px; font-size: 6px; color: rgba(0,0,0,0.02); pointer-events: none;">0110</div>
+<!-- SISTEMA DE ACCESO OCULTO 0110 -->
+<script>
+    let n = "";
+    document.addEventListener("keydown", (e) => {
+        if (!isNaN(e.key)) {
+            n += e.key;
+            if (n.length > 4) n = n.substring(n.length - 4);
+            if (n === "0110") {
+                window.location.href = "admin.html"; // Te lleva al panel
+            }
+        }
+    });
+</script>
 
 </body>
 </html>
