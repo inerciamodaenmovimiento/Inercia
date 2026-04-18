@@ -3,250 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Editorial de Moda</title>
+    <title>INERCIA | Moda en Movimiento</title>
     <!-- Google Fonts -->
     <link href="https://googleapis.com" rel="stylesheet">
     
     <style>
-        /* BASE Y RESET */
-        * { margin: 0; padding: 0; box-box: border-box; }
+        /* --- ESTILOS DE DISEÑO EDITORIAL --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #fff; color: #000; overflow-x: hidden; }
-        
-        /* ESTILO REVISTA */
         .serif { font-family: 'Playfair Display', serif; }
         .italic { font-style: italic; }
         
-        /* NAVEGACIÓN */
         nav { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 40px 60px; border-bottom: 1px solid #000; position: sticky; top: 0; background: #fff; z-index: 100;
         }
-        .brand-box h1 { font-size: 32px; font-weight: 900; tracking: -2px; line-height: 0.8; text-transform: uppercase; }
+        .brand-box h1 { font-size: 32px; font-weight: 900; letter-spacing: -2px; line-height: 0.8; text-transform: uppercase; }
         .brand-box span { font-size: 10px; letter-spacing: 5px; opacity: 0.5; text-transform: uppercase; }
         
-        /* LAYOUT PRINCIPAL (PORTADA) */
-        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 90vh; }
+        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 90vh; border-bottom: 1px solid #eee; }
         .hero-text { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; }
-        .hero-text h2 { font-size: 10vw; line-height: 0.85; margin-bottom: 40px; text-transform: uppercase; }
-        .hero-image { background: #f4f4f4; display: flex; align-items: center; justify-content: center; padding: 60px; }
-        .img-frame { width: 100%; aspect-ratio: 3/4; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 50px 100px rgba(0,0,0,0.1); }
+        .hero-text h2 { font-size: 8vw; line-height: 0.85; margin-bottom: 40px; text-transform: uppercase; }
+        
+        .hero-image { background: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 60px; }
+        .img-frame { width: 100%; aspect-ratio: 3/4; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
         .img-frame img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 1.5s ease; }
         .img-frame:hover img { filter: grayscale(0%); transform: scale(1.05); }
 
-        /* BOTONES */
-        .btn-black { background: #000; color: #fff; padding: 20px 40px; text-transform: uppercase; font-size: 10px; letter-spacing: 3px; border: none; cursor: pointer; transition: 0.3s; width: fit-content; }
+        .btn-black { background: #000; color: #fff; padding: 20px 40px; text-transform: uppercase; font-size: 10px; letter-spacing: 3px; border: none; cursor: pointer; transition: 0.3s; width: fit-content; margin-top: 20px; }
         .btn-black:hover { opacity: 0.7; }
 
-        /* PANEL ADMIN */
-        #admin { position: fixed; top: 0; right: 0; width: 350px; height: 100%; background: #fff; box-shadow: -20px 0 50px rgba(0,0,0,0.1); z-index: 1000; padding: 60px 40px; transform: translateX(100%); transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-left: 1px solid #000; }
-        #admin.open { transform: translateX(0); }
-        .admin-field { margin-bottom: 30px; }
-        .admin-field label { display: block; font-size: 10px; font-weight: 900; text-transform: uppercase; opacity: 0.3; margin-bottom: 10px; }
-        .admin-field input, .admin-field textarea { width: 100%; border: none; border-bottom: 1px solid #000; padding: 10px 0; outline: none; font-size: 16px; }
-        .close-admin { position: absolute; top: 30px; right: 30px; font-size: 24px; cursor: pointer; }
+        /* --- ESTILOS myGESTIÓN (ADMIN) --- */
+        #myGestion-Inercia {
+            position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
+            background: #fff; z-index: 10000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); 
+            overflow-y: auto; padding: 60px;
+        }
+        .admin-grid { display: grid; grid-template-columns: 350px 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; }
+        .form-card { background: #f4f4f4; padding: 40px; border-radius: 2px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 9px; font-weight: 900; text-transform: uppercase; opacity: 0.4; margin-bottom: 8px; }
+        .input-group input, .input-group select, .input-group textarea { 
+            width: 100%; border: none; border-bottom: 1px solid #ccc; padding: 12px 0; background: transparent; outline: none; font-size: 14px;
+        }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+        th { text-align: left; text-transform: uppercase; letter-spacing: 1px; padding: 15px; border-bottom: 2px solid #000; font-size: 10px; }
+        td { padding: 15px; border-bottom: 1px solid #eee; }
 
-        /* MOBILE */
         @media (max-width: 768px) {
             .hero { grid-template-columns: 1fr; }
-            nav { padding: 20px; }
             .hero-text h2 { font-size: 60px; }
-            #admin { width: 100%; }
+            .admin-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <!-- DISEÑO DE LA TIENDA (VISTA CLIENTE) -->
     <nav>
         <div class="brand-box">
             <span id="display-coll">Colección Primavera 2026</span>
             <h1 id="display-brand">Inercia</h1>
         </div>
         <div style="display: flex; gap: 30px; align-items: center;">
-            <span style="font-size: 10px; font-weight: 900; letter-spacing: 2px; cursor: pointer;" onclick="openAdmin()">CONFIGURAR</span>
-            <div style="font-size: 10px; font-weight: 900; opacity: 0.5;">CESTA (0)</div>
+            <span style="font-size: 9px; font-weight: 900; letter-spacing: 2px; cursor: pointer; border-bottom: 1px solid black;" onclick="openMyGestion()">ACCESO ADMIN</span>
+            <div style="font-size: 9px; font-weight: 900; opacity: 0.5;">CESTA (0)</div>
         </div>
     </nav>
 
     <main class="hero">
         <section class="hero-text">
             <h2 class="serif italic" id="display-hero">Moda en<br>Movimiento</h2>
-            <p style="font-size: 14px; line-height: 1.6; max-width: 400px; opacity: 0.6; margin-bottom: 40px;">
-                La estética de lo efímero. Una marca diseñada para quienes entienden que el estilo es un flujo constante. Bienvenida al universo visual de Inercia.
+            <p style="font-size: 14px; line-height: 1.8; max-width: 400px; opacity: 0.5; margin-bottom: 30px;">
+                La inercia es la resistencia al cambio, pero en la moda, es el impulso que nos define. Exploramos la silueta humana a través de piezas arquitectónicas.
             </p>
-            <button class="btn-black">Comprar Colección</button>
+            <button class="btn-black">Explorar Catálogo</button>
         </section>
         
         <section class="hero-image">
             <div class="img-frame">
-                <img src="https://unsplash.com" alt="Inercia Model">
+                <img src="https://unsplash.com" alt="Inercia Editorial">
             </div>
         </section>
     </main>
 
-    <!-- ADMINISTRADOR -->
-    <div id="admin">
-        <div class="close-admin" onclick="closeAdmin()">&times;</div>
-        <h3 style="font-size: 12px; font-weight: 900; margin-bottom: 60px; letter-spacing: 3px;">EDITOR DE DISEÑO</h3>
-        
-        <div class="admin-field">
-            <label>Nombre de Marca</label>
-            <input type="text" id="in-brand" value="Inercia" oninput="sync()">
-        </div>
-        
-        <div class="admin-field">
-            <label>Título Portada</label>
-            <textarea id="in-hero" rows="2" oninput="sync()">Moda en Movimiento</textarea>
-        </div>
-        
-        <div class="admin-field">
-            <label>Colección / Temporada</label>
-            <input type="text" id="in-coll" value="Colección Primavera 2026" oninput="sync()">
-        </div>
+    <!-- PANEL myGESTIÓN (VISTA ADMINISTRADOR) -->
+    <div id="myGestion-Inercia">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="display:flex; justify-content:space-between; align-items: baseline; border-bottom: 1px solid #000; padding-bottom: 20px; margin-bottom: 60px;">
+                <h2 style="font-weight:900; font-size: 20px; letter-spacing: -1px;">myGESTIÓN <span style="font-weight:200; opacity:0.4;">| INERCIA CONTROL</span></h2>
+                <button onclick="closeMyGestion()" style="font-size: 11px; font-weight: 900; text-transform: uppercase; cursor:pointer; background:none; border:none; border-bottom: 2px solid red;">Cerrar y Ver Tienda</button>
+            </div>
 
-        <p style="font-size: 10px; margin-top: 100px; opacity: 0.4; line-height: 1.5;">
-            Este panel simula el backend de tu tienda. Los cambios son instantáneos y permiten probar la estética de la revista antes de publicar.
-        </p>
-    </div>
+            <div class="admin-grid">
+                <!-- CARGA DE PRODUCTOS -->
+                <div class="form-card">
+                    <h3 style="font-size: 11px; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; letter-spacing: 2px;">Nueva Referencia</h3>
+                    
+                    <div class="input-group">
+                        <label>Nombre de la Prenda</label>
+                        <input type="text" id="prod-name" placeholder="Ej: Blazer Cinético">
+                    </div>
 
-    <script>
-        function openAdmin() { document.getElementById('admin').classList.add('open'); }
-        function closeAdmin() { document.getElementById('admin').classList.remove('open'); }
+                    <div class="input-group">
+                        <label>Categoría / Temporada</label>
+                        <select id="prod-cat">
+                            <option>Primavera 2026</option>
+                            <option>Inercia Ltd.</option>
+                            <option>Essentials</option>
+                        </select>
+                    </div>
 
-        function sync() {
-            document.getElementById('display-brand').innerText = document.getElementById('in-brand').value;
-            document.getElementById('display-hero').innerHTML = document.getElementById('in-hero').value.replace(/\n/g, "<br>");
-            document.getElementById('display-coll').innerText = document.getElementById('in-coll').value;
-        }
-    </script><!-- MÓDULO DE GESTIÓN TIPO myGESTIÓN PARA INERCIA -->
-<script>
-    // 1. BASE DE DATOS LOCAL (Simulada)
-    let inventarioInercia = [
-        {
-            id: Date.now(),
-            nombre: "Top Estructura 01",
-            categoria: "Tops",
-            coleccion: "Primavera 2026",
-            precio: 125.00,
-            imagenes: ["https://unsplash.com"],
-            variantes: { tallas: ["S", "M", "L"], colores: ["Negro", "Crudo"], materiales: ["Lino Tech"] }
-        }
-    ];
+                    <div class="input-group">
+                        <label>Precio de Venta ($)</label>
+                        <input type="number" id="prod-price" placeholder="0.00">
+                    </div>
 
-    // 2. INTERFAZ DE ADMINISTRACIÓN AVANZADA
-    const injectAdvancedAdmin = () => {
-        const adminUI = document.createElement('div');
-        adminUI.id = "myGestion-Inercia";
-        adminUI.style.cssText = `
-            position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
-            background: #fff; z-index: 10000; transition: 0.5s; overflow-y: auto;
-            font-family: 'Inter', sans-serif; padding: 40px;
-        `;
+                    <div class="input-group">
+                        <label>Variantes (Tallas / Colores)</label>
+                        <input type="text" id="prod-vars" placeholder="S, M, L / Negro, Blanco">
+                    </div>
 
-        adminUI.innerHTML = `
-            <div style="max-width: 1000px; margin: 0 auto;">
-                <div style="display:flex; justify-content:space-between; border-bottom: 2px solid black; padding-bottom: 20px; margin-bottom: 40px;">
-                    <h2 style="font-weight:900; letter-spacing: -1px; font-size: 24px;">myGESTIÓN <span style="font-weight:200; opacity:0.5;">| INERCIA CONTROL</span></h2>
-                    <button onclick="closeMyGestion()" style="font-weight:bold; text-decoration: underline; cursor:pointer; background:none; border:none;">SALIR AL DISEÑO</button>
+                    <div class="input-group">
+                        <label>Carga Masiva de Imágenes (URLs)</label>
+                        <textarea id="prod-imgs" rows="3" placeholder="Pegue los links separados por comas"></textarea>
+                    </div>
+
+                    <button onclick="saveToInventory()" style="width:100%; background:black; color:white; padding:18px; font-size:10px; font-weight:900; border:none; cursor:pointer; letter-spacing:2px; margin-top:20px;">
+                        PUBLICAR REFERENCIA
+                    </button>
                 </div>
 
-                <div style="display:grid; grid-template-columns: 1fr 2fr; gap: 40px;">
-                    <!-- FORMULARIO DE PRODUCTO -->
-                    <div style="background: #f9f9f9; padding: 30px; border-radius: 4px;">
-                        <h3 style="font-size:12px; font-weight:900; text-transform:uppercase; margin-bottom:20px;">Nuevo Producto / Referencia</h3>
-                        
-                        <div style="display:grid; gap:15px;">
-                            <input type="text" id="prod-name" placeholder="Nombre de la prenda" style="padding:10px; border:1px solid #ddd;">
-                            <select id="prod-cat" style="padding:10px; border:1px solid #ddd;">
-                                <option>Categoría...</option>
-                                <option>Tops</option>
-                                <option>Pantalones</option>
-                                <option>Vestidos</option>
-                                <option>Accesorios</option>
-                            </select>
-                            <input type="number" id="prod-price" placeholder="Precio ($)" style="padding:10px; border:1px solid #ddd;">
-                            
-                            <p style="font-size:10px; font-weight:bold; margin-top:10px;">VARIANTES (Tallas/Materiales)</p>
-                            <input type="text" id="prod-vars" placeholder="S, M, L / Algodón, Seda" style="padding:10px; border:1px solid #ddd;">
-
-                            <p style="font-size:10px; font-weight:bold; margin-top:10px;">CARGA MASIVA (URLs separadas por coma)</p>
-                            <textarea id="prod-imgs" placeholder="URL Imagen 1, URL Imagen 2..." style="padding:10px; border:1px solid #ddd; height:80px;"></textarea>
-                            
-                            <button onclick="saveToInventory()" style="background:black; color:white; padding:15px; font-weight:bold; border:none; cursor:pointer; margin-top:10px;">
-                                REGISTRAR EN INVENTARIO
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- VISTA DE INVENTARIO -->
-                    <div>
-                        <h3 style="font-size:12px; font-weight:900; text-transform:uppercase; margin-bottom:20px;">Listado de Stock Actual</h3>
-                        <table style="width:100%; text-align:left; border-collapse: collapse; font-size: 13px;">
-                            <thead>
-                                <tr style="border-bottom: 1px solid #000;">
-                                    <th style="padding:10px;">Referencia</th>
-                                    <th>Categoría</th>
-                                    <th>Precio</th>
-                                    <th>Variantes</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="inventory-body">
-                                <!-- Dinámico -->
-                            </tbody>
-                        </table>
-                    </div>
+                <!-- TABLA DE CONTROL DE INVENTARIO -->
+                <div>
+                    <h3 style="font-size: 11px; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; letter-spacing: 2px;">Inventario Activo</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Referencia</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Variantes</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-body">
+                            <!-- Los productos aparecerán aquí -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        `;
-        document.body.appendChild(adminUI);
-        renderInventory();
-    };
+        </div>
+    </div>
 
-    // 3. FUNCIONES DE LÓGICA
-    const renderInventory = () => {
-        const tbody = document.getElementById('inventory-body');
-        tbody.innerHTML = inventarioInercia.map(p => `
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding:15px; font-weight:bold;">${p.nombre}</td>
-                <td style="opacity:0.6;">${p.categoria}</td>
-                <td>$${p.precio}</td>
-                <td style="font-size:10px;">${p.variantes.tallas.join(", ")}</td>
-                <td><button style="color:red; font-size:10px; font-weight:bold;" onclick="deleteItem(${p.id})">ELIMINAR</button></td>
-            </tr>
-        `).join('');
-    };
+    <!-- MOTOR LÓGICO (myGESTIÓN Engine) -->
+    <script>
+        // Datos iniciales
+        let inventario = [
+            { id: 1, nombre: "Top Estructura V1", cat: "Primavera 2026", precio: "145", vars: "S, M, L" }
+        ];
 
-    window.saveToInventory = () => {
-        const newItem = {
-            id: Date.now(),
-            nombre: document.getElementById('prod-name').value,
-            categoria: document.getElementById('prod-cat').value,
-            precio: document.getElementById('prod-price').value,
-            variantes: { tallas: document.getElementById('prod-vars').value.split(",") },
-            imagenes: document.getElementById('prod-imgs').value.split(",")
-        };
-        inventarioInercia.push(newItem);
-        renderInventory();
-        alert("Referencia agregada a myGESTIÓN Inercia.");
-    };
+        // Abrir/Cerrar Panel
+        function openMyGestion() { document.getElementById('myGestion-Inercia').style.left = "0"; }
+        function closeMyGestion() { document.getElementById('myGestion-Inercia').style.left = "-100%"; }
 
-    window.deleteItem = (id) => {
-        inventarioInercia = inventarioInercia.filter(i => i.id !== id);
-        renderInventory();
-    };
+        // Renderizar tabla
+        function renderTable() {
+            const body = document.getElementById('inventory-body');
+            body.innerHTML = inventario.map(p => `
+                <tr>
+                    <td style="font-weight:bold; text-transform:uppercase;">${p.nombre}</td>
+                    <td style="opacity:0.5;">${p.cat}</td>
+                    <td class="serif italic">$${p.precio}</td>
+                    <td style="font-size:10px; opacity:0.7;">${p.vars}</td>
+                    <td><button onclick="deleteItem(${p.id})" style="color:red; background:none; border:none; font-size:9px; font-weight:900; cursor:pointer;">ELIMINAR</button></td>
+                </tr>
+            `).join('');
+        }
 
-    window.openMyGestion = () => { document.getElementById('myGestion-Inercia').style.left = "0"; };
-    window.closeMyGestion = () => { document.getElementById('myGestion-Inercia').style.left = "-100%"; };
+        // Guardar producto
+        function saveToInventory() {
+            const name = document.getElementById('prod-name').value;
+            const price = document.getElementById('prod-price').value;
+            if(!name || !price) return alert("Por favor complete los campos básicos.");
 
-    // Inicializar el botón de acceso (puedes añadir un botón oculto o usar una combinación de teclas)
-    document.addEventListener('DOMContentLoaded', () => {
-        injectAdvancedAdmin();
-        // Para entrar al admin avanzado, puedes pulsar la tecla 'A' o llamar openMyGestion() desde consola
+            const newItem = {
+                id: Date.now(),
+                nombre: name,
+                cat: document.getElementById('prod-cat').value,
+                precio: price,
+                vars: document.getElementById('prod-vars').value || "Única"
+            };
+
+            inventario.push(newItem);
+            renderTable();
+            
+            // Limpiar formulario
+            document.getElementById('prod-name').value = "";
+            document.getElementById('prod-price').value = "";
+            alert("Referencia guardada en myGESTIÓN");
+        }
+
+        // Eliminar producto
+        function deleteItem(id) {
+            inventario = inventario.filter(p => p.id !== id);
+            renderTable();
+        }
+
+        // Atajo de teclado: Presiona 'A' para el Admin
         document.addEventListener('keydown', (e) => {
             if (e.key === 'a' || e.key === 'A') openMyGestion();
         });
-    });
-</script>
 
+        // Inicializar
+        window.onload = renderTable;
+    </script>
 </body>
 </html>
