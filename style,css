@@ -1,0 +1,68 @@
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --gray: #f4f4f4;
+}
+
+body {
+    background-color: var(--white);
+    color: var(--black);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 2vw; /* Margen tipo revista */
+    line-height: 1.2;
+}
+
+/* Tipografía de Logo */
+.logo {
+    font-family: 'Bodoni Moda', serif;
+    font-size: clamp(3rem, 10vw, 8rem); /* Se ajusta al tamaño de pantalla */
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: -2px;
+    margin: 20px 0;
+}
+
+/* Grid Editorial */
+.editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+}
+
+.hero-section {
+    grid-column: 1 / 9; /* Ocupa 8 columnas de 12 */
+    position: relative;
+}
+
+.hero-section img {
+    width: 100%;
+    filter: grayscale(100%); /* Efecto blanco y negro de la imagen original */
+    transition: 0.5s;
+}
+
+.hero-section img:hover {
+    filter: grayscale(0%);
+}
+
+.manifesto {
+    grid-column: 9 / 13; /* Columna lateral de texto */
+    padding-top: 100px;
+}
+
+.story-title {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 3rem;
+    font-style: italic;
+    line-height: 0.9;
+}
+
+/* Texto vertical o detalles pequeños */
+.born-in {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    writing-mode: vertical-rl;
+    position: absolute;
+    right: -30px;
+    top: 0;
+}
