@@ -3,102 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Tech-Essentials para la vida urbana y natural</title>
+    <title>INERCIA | Tech-Performance Studio</title>
     <script src="https://tailwindcss.com"></script>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        @import url('https://googleapis.com');
-        body { font-family: 'Inter', sans-serif; background-color: #f8f8f8; color: #1a1a1a; }
-        .hero-bg { background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://unsplash.com') center/cover; }
+        :root { --accent: #a1a1aa; }
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #ffffff; overflow-x: hidden; }
+        .font-title { font-family: 'Syncopate', sans-serif; }
+        
+        /* Efecto de cristal para el nav */
+        .glass-nav { background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        
+        /* Animación de entrada */
+        @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { animation: reveal 1s ease forwards; }
+
+        /* Estilo de los productos */
+        .product-card { transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1); }
+        .product-card:hover { transform: translateY(-10px); }
+        .product-image { filter: grayscale(40%) contrast(1.1); transition: all 0.6s ease; }
+        .product-card:hover .product-image { filter: grayscale(0%) contrast(1); transform: scale(1.05); }
     </style>
 </head>
 <body>
 
-    <!-- Navegación -->
-    <nav class="flex justify-between items-center px-8 py-6 sticky top-0 bg-white/80 backdrop-blur-md z-50">
-        <div class="text-2xl font-bold tracking-widest uppercase">Inercia</div>
-        <div class="hidden md:flex space-x-8 text-sm uppercase tracking-wider font-medium">
-            <a href="#" class="hover:text-gray-500 transition">Colección</a>
-            <a href="#" class="hover:text-gray-500 transition">Tecnología</a>
-            <a href="#" class="hover:text-gray-500 transition">Nosotros</a>
+    <!-- Header / Nav -->
+    <nav class="glass-nav fixed w-full z-[100] px-6 py-5 flex justify-between items-center tracking-tighter">
+        <div class="font-title text-xl font-bold tracking-[0.3em]">INERCIA</div>
+        <div class="hidden md:flex space-x-10 text-[10px] uppercase tracking-[0.2em] font-light">
+            <a href="#" class="hover:text-zinc-400 transition">Colección</a>
+            <a href="#" class="hover:text-zinc-400 transition">Materiales</a>
+            <a href="#" class="hover:text-zinc-400 transition">Filosofía</a>
         </div>
-        <div class="text-sm font-medium">CARRITO (0)</div>
+        <div class="text-[10px] font-bold border-b border-white pb-1 cursor-pointer">SHOP</div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="hero-bg h-[80vh] flex flex-col justify-center items-center text-center text-white px-4">
-        <h1 class="text-5xl md:text-7xl font-light mb-4 uppercase tracking-[0.2em]">Movimiento Constante</h1>
-        <p class="text-lg md:text-xl font-light max-w-2xl mb-8 opacity-90">Ropa de alto rendimiento diseñada para la oficina y el sendero. Sin fricción. Sin límites.</p>
-        <a href="#coleccion" class="border border-white px-10 py-3 hover:bg-white hover:text-black transition duration-300 uppercase text-xs tracking-widest">Explorar Colección</a>
-    </header>
-
-    <!-- Estética / Propuesta -->
-    <section class="py-24 px-8 max-w-4xl mx-auto text-center">
-        <h2 class="text-xs uppercase tracking-[0.4em] text-gray-500 mb-6">La Estética</h2>
-        <p class="text-2xl md:text-3xl leading-relaxed font-light italic text-gray-800">
-            "Ingeniería invisible en tonos piedra y obsidiana. Fluidez absoluta para quienes no separan el trabajo de la aventura."
-        </p>
+    <!-- Hero Section con Video/Imagen de alto impacto -->
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://unsplash.com" 
+                 class="w-full h-full object-cover opacity-50 scale-110" alt="Mountain Landscape">
+        </div>
+        <div class="relative z-10 text-center px-4 reveal">
+            <h2 class="text-[10px] uppercase tracking-[0.8em] text-zinc-400 mb-4 italic">Engineered for Movement</h2>
+            <h1 class="font-title text-5xl md:text-8xl font-bold mb-8 leading-tight">OFFICE <br> TO <span class="text-zinc-500">PEAK</span></h1>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button class="bg-white text-black px-12 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-200 transition">Ver Colección</button>
+                <button class="border border-zinc-700 px-12 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition">Tecnología</button>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-[0.5em] opacity-40 animate-bounce">Scroll para explorar</div>
     </section>
 
-    <!-- Colección de Productos -->
-    <section id="coleccion" class="py-12 px-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl mx-auto">
+    <!-- Section: Manifesto -->
+    <section class="py-32 px-6 bg-[#0f0f0f]">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+            <div class="reveal" style="animation-delay: 0.2s;">
+                <h3 class="font-title text-2xl mb-6">LA ESTÉTICA DE LA EFICIENCIA</h3>
+                <p class="text-zinc-400 font-light leading-relaxed text-lg">
+                    Inercia no es moda, es equipo. Diseñamos para el profesional que exige la misma tecnicidad en la sala de juntas que en el sendero. Tonos piedra, cortes láser y fibras que respiran contigo.
+                </p>
+            </div>
+            <div class="aspect-square bg-zinc-900 overflow-hidden reveal">
+                <img src="https://unsplash.com" class="w-full h-full object-cover mix-blend-luminosity hover:mix-blend-normal transition duration-700">
+            </div>
+        </div>
+    </section>
+
+    <!-- Grid de Productos (Cards de Lujo) -->
+    <section class="py-32 px-6 max-w-[1400px] mx-auto">
+        <div class="flex justify-between items-end mb-16">
+            <h2 class="font-title text-3xl tracking-tighter">EQUIPO CORE _01</h2>
+            <span class="text-zinc-500 text-[10px] tracking-widest">3 ARTÍCULOS</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             
-            <!-- Prenda 1 -->
-            <div class="group cursor-pointer">
-                <div class="aspect-[3/4] bg-gray-200 mb-4 overflow-hidden relative">
-                    <img src="https://unsplash.com" alt="Cinetoscopio" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                    <span class="absolute top-4 left-4 bg-white px-3 py-1 text-[10px] uppercase font-bold tracking-tighter">Hybrid Tech</span>
+            <!-- Item 1 -->
+            <div class="product-card group">
+                <div class="relative aspect-[4/5] bg-zinc-900 overflow-hidden mb-6">
+                    <img src="https://unsplash.com" class="product-image w-full h-full object-cover">
+                    <div class="absolute bottom-4 left-4 bg-white text-black px-4 py-1 text-[9px] font-bold uppercase tracking-widest">Inercia Shield</div>
                 </div>
-                <h3 class="text-lg font-semibold uppercase">Chaqueta "Cinetoscopio"</h3>
-                <p class="text-gray-500 text-sm mb-2">Softshell Estructurado / Impermeable</p>
-                <p class="font-medium">$249.00</p>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="font-title text-sm mb-1 uppercase tracking-tighter">Chaqueta Cinetoscopio</h4>
+                        <p class="text-zinc-500 text-[11px] font-light">Impermeable / Corte Sastre</p>
+                    </div>
+                    <span class="font-title text-xs">249€</span>
+                </div>
             </div>
 
-            <!-- Prenda 2 -->
-            <div class="group cursor-pointer">
-                <div class="aspect-[3/4] bg-gray-200 mb-4 overflow-hidden relative">
-                    <img src="https://unsplash.com" alt="Vector" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                    <span class="absolute top-4 left-4 bg-white px-3 py-1 text-[10px] uppercase font-bold tracking-tighter">Ripstop Durable</span>
+            <!-- Item 2 -->
+            <div class="product-card group">
+                <div class="relative aspect-[4/5] bg-zinc-900 overflow-hidden mb-6">
+                    <img src="https://unsplash.com" class="product-image w-full h-full object-cover">
+                    <div class="absolute bottom-4 left-4 bg-white text-black px-4 py-1 text-[9px] font-bold uppercase tracking-widest">Stretch Tech</div>
                 </div>
-                <h3 class="text-lg font-semibold uppercase">Pantalón "Vector"</h3>
-                <p class="text-gray-500 text-sm mb-2">Corte Slim / Rodillas Articuladas</p>
-                <p class="font-medium">$185.00</p>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="font-title text-sm mb-1 uppercase tracking-tighter">Pantalón Vector</h4>
+                        <p class="text-zinc-500 text-[11px] font-light">Nylon Ripstop / Articulado</p>
+                    </div>
+                    <span class="font-title text-xs">185€</span>
+                </div>
             </div>
 
-            <!-- Prenda 3 -->
-            <div class="group cursor-pointer">
-                <div class="aspect-[3/4] bg-gray-200 mb-4 overflow-hidden relative">
-                    <img src="https://unsplash.com" alt="Módulo" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                    <span class="absolute top-4 left-4 bg-white px-3 py-1 text-[10px] uppercase font-bold tracking-tighter">Graphene Tech</span>
+            <!-- Item 3 -->
+            <div class="product-card group">
+                <div class="relative aspect-[4/5] bg-zinc-900 overflow-hidden mb-6">
+                    <img src="https://unsplash.com" class="product-image w-full h-full object-cover">
+                    <div class="absolute bottom-4 left-4 bg-white text-black px-4 py-1 text-[9px] font-bold uppercase tracking-widest">Graphene Core</div>
                 </div>
-                <h3 class="text-lg font-semibold uppercase">Capa Base "Módulo"</h3>
-                <p class="text-gray-500 text-sm mb-2">Mezcla Merino / Termorregulador</p>
-                <p class="font-medium">$95.00</p>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="font-title text-sm mb-1 uppercase tracking-tighter">Base Módulo</h4>
+                        <p class="text-zinc-500 text-[11px] font-light">Merino / Control Térmico</p>
+                    </div>
+                    <span class="font-title text-xs">95€</span>
+                </div>
             </div>
 
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-white py-20 px-8 border-t border-gray-100">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10 text-sm">
-            <div class="max-w-xs">
-                <div class="text-xl font-bold uppercase mb-4">Inercia</div>
-                <p class="text-gray-500">Diseñando herramientas para el movimiento humano constante. Basado en el funcionalismo y la durabilidad.</p>
-            </div>
-            <div class="flex flex-col space-y-2 uppercase tracking-widest text-[11px] font-semibold text-gray-400">
-                <a href="#">Soporte</a>
-                <a href="#">Envíos y Retornos</a>
-                <a href="#">Guía de Tallas</a>
-            </div>
-            <div class="w-full md:w-auto">
-                <p class="uppercase text-[11px] font-bold mb-4 tracking-widest">Newsletter</p>
-                <input type="email" placeholder="Tu email" class="border-b border-black py-2 w-full md:w-64 focus:outline-none bg-transparent">
-            </div>
+    <footer class="py-20 px-6 border-t border-zinc-900 text-center">
+        <div class="font-title text-4xl mb-10 tracking-[0.5em] opacity-20 italic">INERCIA</div>
+        <div class="flex justify-center space-x-8 text-[10px] tracking-[0.3em] uppercase text-zinc-500 mb-10">
+            <a href="#">Instagram</a>
+            <a href="#">Journal</a>
+            <a href="#">Archive</a>
         </div>
-        <div class="text-center mt-20 text-[10px] text-gray-400 uppercase tracking-[0.3em]">
-            © 2024 INERCIA STUDIO / Todo movimiento cuenta.
-        </div>
+        <p class="text-[9px] text-zinc-700 tracking-[0.5em] uppercase">© 2026 INERCIA Performance Studio. Todos los derechos reservados.</p>
     </footer>
 
 </body>
