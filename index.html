@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Moda en Movimiento</title>
-    <!-- Fuente Inter: La favorita del diseño minimalista actual -->
+    <title>INERCIA | SMFK Style</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
-            --text: #000000;
-            --grey: #8a8a8a;
-            --line: #e2e2e2;
+            --black: #000000;
+            --grey: #f2f2f2;
+            --border: #1a1a1a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,181 +18,150 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
-            color: var(--text);
-            -webkit-font-smoothing: antialiased;
+            color: var(--black);
+            text-transform: uppercase; /* Todo en mayúsculas como SMFK */
         }
 
-        /* HEADER EDITORIAL */
+        /* HEADER BRUTALISTA */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 30px 4%;
-            border-bottom: 1px solid var(--line);
-            text-transform: uppercase;
-        }
-
-        .menu-icon { font-size: 20px; cursor: pointer; font-weight: 100; }
-        
-        .logo {
+            padding: 40px;
             text-align: center;
-            letter-spacing: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 1.2;
-        }
-        .logo span { font-weight: 200; font-size: 11px; display: block; }
-
-        .nav-tools { display: flex; gap: 20px; font-size: 18px; }
-
-        /* SECCIÓN PRINCIPAL */
-        main {
-            max-width: 1100px;
-            margin: 50px auto;
-            padding: 0 4%;
+            border-bottom: 1.5px solid var(--black);
         }
 
-        h1 {
-            font-weight: 300;
+        .logo {
             font-size: 32px;
-            margin-bottom: 40px;
-            letter-spacing: -0.5px;
+            font-weight: 800;
+            letter-spacing: 12px;
         }
 
-        .layout {
+        /* HERO SECTION - LOOKBOOK */
+        .hero {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 60px;
-            align-items: flex-start;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1.5px solid var(--black);
         }
 
-        /* IMAGEN CENTRAL */
         .hero-img {
-            background: #f7f7f7;
             width: 100%;
-        }
-        .hero-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-            mix-blend-mode: multiply; /* Para ese look de catálogo limpio */
-        }
-
-        /* LISTA DE PRODUCTOS */
-        .products {
-            display: flex;
-            flex-direction: column;
-            gap: 35px;
-        }
-
-        .product-card {
-            display: flex;
-            align-items: center;
-            padding-bottom: 25px;
-            border-bottom: 1px solid #f2f2f2;
-            position: relative;
-        }
-
-        .product-card img {
-            width: 90px;
-            height: 120px;
+            height: 80vh;
             object-fit: cover;
-            margin-right: 25px;
+            border-right: 1.5px solid var(--black);
         }
 
-        .info .brand {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        .info .name {
-            font-size: 13px;
-            color: var(--grey);
-            margin-bottom: 8px;
-            font-weight: 300;
-        }
-
-        .info .price {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        /* EL BOTÓN (+) DE LA IMAGEN */
-        .add-circle {
-            position: absolute;
-            right: 0;
-            width: 34px;
-            height: 34px;
-            border: 1px solid var(--text);
-            border-radius: 50%;
-            background: none;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: 300;
+        /* ICONO DE CRUZ (MARCA DE IDENTIDAD) */
+        .brand-cross {
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: 0.2s ease;
+            padding: 60px 0;
         }
 
-        .add-circle:hover {
-            background: var(--text);
-            color: white;
+        /* CUADRÍCULA DE PRODUCTOS TIPO SMFK */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1.5px solid var(--black);
+        }
+
+        .product-item {
+            padding: 20px;
+            border-right: 1.5px solid var(--black);
+            border-bottom: 1.5px solid var(--black);
+            text-align: center;
+            transition: background 0.3s;
+        }
+
+        .product-item:last-child { border-right: none; }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            filter: grayscale(100%);
+        }
+
+        .product-item:hover { background-color: var(--grey); }
+        .product-item:hover img { filter: none; }
+
+        .prod-info {
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .add-icon {
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* SECCIÓN NEW ARRIVALS */
+        .arrivals-title {
+            padding: 20px;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-align: center;
+            background: var(--black);
+            color: var(--white);
         }
 
         @media (max-width: 768px) {
-            .layout { grid-template-columns: 1fr; }
-            h1 { font-size: 26px; }
+            .hero { grid-template-columns: 1fr; }
+            .product-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="menu-icon">☰</div>
-        <div class="logo">INERCIA <span>ESTILE</span></div>
-        <div class="nav-tools">
-            <span>🔍</span>
-            <span>👜</span>
-        </div>
+        <div class="logo">INERCIA</div>
     </header>
 
-    <main>
-        <h1>Complete the look</h1>
+    <section class="hero">
+        <img src="https://unsplash.com" class="hero-img" alt="Look 1">
+        <img src="https://unsplash.com" class="hero-img" alt="Look 2">
+    </section>
 
-        <div class="layout">
-            <div class="hero-img">
-                <!-- Imagen de alta calidad para que no se vea feo -->
-                <img src="https://unsplash.com" alt="Inercia Model">
-            </div>
+    <div class="brand-cross">
+        <!-- Cruz minimalista SVG -->
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="black">
+            <path d="M11 2h2v9h9v2h-9v9h-2v-9H2v-2h9V2z"/>
+        </svg>
+    </div>
 
-            <div class="products">
-                <div class="product-card">
-                    <img src="https://unsplash.com">
-                    <div class="info">
-                        <span class="brand">Valentino</span>
-                        <p class="name">Short dress in crepe couture</p>
-                        <span class="price">7.210 AED</span>
-                    </div>
-                    <button class="add-circle">+</button>
-                </div>
+    <div class="arrivals-title" style="color: white;">New Arrivals / 新着</div>
 
-                <div class="product-card">
-                    <img src="https://unsplash.com">
-                    <div class="info">
-                        <span class="brand">Valentino</span>
-                        <p class="name">Rockstud flair suede boots</p>
-                        <span class="price">5.200 AED</span>
-                    </div>
-                    <button class="add-circle">+</button>
-                </div>
+    <div class="product-grid">
+        <div class="product-item">
+            <img src="https://unsplash.com">
+            <div class="prod-info">SMFK JACKET<br>9.500 AED</div>
+            <div class="add-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
             </div>
         </div>
-    </main>
+        <div class="product-item">
+            <img src="https://unsplash.com">
+            <div class="prod-info">B&W BEANIE<br>1.200 AED</div>
+            <div class="add-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            </div>
+        </div>
+        <div class="product-item">
+            <img src="https://unsplash.com">
+            <div class="prod-info">FLAIR BOOTS<br>5.200 AED</div>
+            <div class="add-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            </div>
+        </div>
+        <div class="product-item">
+            <img src="https://unsplash.com">
+            <div class="prod-info">CREPE DRESS<br>7.210 AED</div>
+            <div class="add-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
