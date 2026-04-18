@@ -6,64 +6,87 @@
     <title>myGESTIÓN PRO | INERCIA MODA</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --black: #000; --white: #fff; --gray: #f4f4f4; --border: #e0e0e0; --safe: #2e7d32; --red: #c62828; --gold: #b8860b; }
+        :root { --black: #000; --white: #fff; --gray: #f4f4f4; --border: #e0e0e0; --accent: #555; --safe: #2e7d32; --blue: #1565c0; --red: #c62828; --gold: #b8860b; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--gray); display: flex; min-height: 100vh; }
 
-        /* LOGIN */
+        /* SEGURIDAD */
         #lock-screen { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
         #lock-screen input { border: none; border-bottom: 2px solid var(--black); font-size: 2.5rem; text-align: center; outline: none; width: 220px; padding: 10px; }
 
         /* SIDEBAR */
         sidebar { width: 260px; background: var(--black); color: #fff; padding: 40px 20px; position: fixed; height: 100vh; z-index: 1000; }
-        .brand-admin { font-size: 1.2rem; font-weight: 700; letter-spacing: 3px; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .nav-item { color: #888; text-decoration: none; font-size: 11px; margin-bottom: 20px; letter-spacing: 1.5px; cursor: pointer; display: block; text-transform: uppercase; }
+        .brand-admin { font-size: 1.2rem; font-weight: 700; letter-spacing: 3px; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .nav-item { color: #888; text-decoration: none; font-size: 11px; margin-bottom: 22px; letter-spacing: 1.5px; cursor: pointer; display: block; text-transform: uppercase; }
         .nav-item:hover, .nav-item.active { color: #fff; }
 
         /* MAIN CONTENT */
-        main { flex: 1; margin-left: 260px; padding: 50px; display: none; }
-        .card { background: #fff; padding: 30px; border: 1px solid var(--border); margin-bottom: 25px; }
-        h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid var(--gray); padding-bottom: 10px; }
+        main { flex: 1; margin-left: 260px; padding: 60px; display: none; }
+        .card { background: #fff; padding: 35px; border: 1px solid var(--border); margin-bottom: 30px; position: relative; }
+        h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: var(--accent); border-bottom: 1px solid var(--gray); padding-bottom: 10px; }
 
-        /* FORMULARIOS */
+        /* FORMULARIOS & VARIANTES */
         .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #999; }
-        input, select, textarea { padding: 12px; border: 1px solid var(--border); font-size: 13px; outline: none; background: #fff; }
-        
+        input, select, textarea { padding: 12px; border: 1px solid var(--border); font-size: 13px; outline: none; width: 100%; background: #fff; }
         .variant-row { display: grid; grid-template-columns: 1fr 1fr 80px 1fr; gap: 10px; margin-bottom: 10px; }
+
+        /* TABLAS CLIENTES/PEDIDOS */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; font-size: 10px; text-transform: uppercase; padding: 12px; border-bottom: 2px solid var(--black); }
+        td { padding: 15px 12px; font-size: 12px; border-bottom: 1px solid #eee; }
+
+        /* MULTIMEDIA */
+        .dropzone { border: 2px dashed var(--border); padding: 30px; text-align: center; color: #aaa; cursor: pointer; font-size: 12px; }
         .preview-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 15px; }
         .preview-box { aspect-ratio: 2/3; background: #eee; object-fit: cover; width: 100%; border: 1px solid var(--border); }
 
+        /* BOTONES */
         .btn-black { background: var(--black); color: #fff; border: none; padding: 18px; width: 100%; font-weight: 600; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
-        .btn-black:disabled { background: #666; cursor: wait; }
+        .btn-outline { background: none; border: 1px dashed var(--black); padding: 10px; cursor: pointer; font-size: 10px; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
 
+    <!-- BLOQUEO ACCESO (CÓDIGO 0110) -->
     <div id="lock-screen">
+        <p style="font-size: 10px; letter-spacing: 5px; margin-bottom: 20px; color: #ccc;">INERCIA MODA | myGESTIÓN</p>
         <input type="password" id="secret-key" placeholder="••••">
     </div>
 
     <sidebar>
         <div class="brand-admin">myGESTIÓN</div>
         <div class="nav-item active" onclick="showSection('nuevo')">Carga & Variantes</div>
+        <div class="nav-item" onclick="showSection('inventario')">Inventario Live</div>
         <div class="nav-item" onclick="showSection('pedidos')">Pedidos & Clientes</div>
+        <div class="nav-item" onclick="showSection('config')">Pagos & Envíos</div>
     </sidebar>
 
     <main id="admin-content">
+        <!-- SECCIÓN: CARGA DE PRODUCTOS -->
         <section id="section-nuevo" class="admin-section">
             <div class="card">
-                <h2>Carga de Producto</h2>
-                <div class="grid-form">
-                    <div class="input-group"><label>Categoría</label><select id="p-cat"><option>General</option></select></div>
-                    <div class="input-group"><label>Nombre</label><input type="text" id="p-nombre"></div>
+                <h2>Categorías & Editorial</h2>
+                <div style="display:flex; gap:10px; margin-bottom:20px;">
+                    <input type="text" id="new-cat-input" placeholder="Nueva categoría personalizada...">
+                    <button class="btn-black" style="width:120px; padding:10px;" onclick="addNewCategory()">+ ADD</button>
                 </div>
-                <div class="input-group"><label>Descripción Editorial</label><textarea id="p-desc" rows="3"></textarea></div>
+                <div class="grid-form">
+                    <div class="input-group">
+                        <label>Categoría</label>
+                        <select id="p-category"><option>General</option></select>
+                    </div>
+                    <div class="input-group">
+                        <label>Nombre de Referencia</label>
+                        <input type="text" id="p-name" placeholder="Ej: Vestido Estructural">
+                    </div>
+                </div>
+                <div class="input-group"><label>Descripción / Historia</label><textarea id="p-desc" rows="3"></textarea></div>
             </div>
 
             <div class="card">
-                <h2>Variantes (Talla/Color/Stock)</h2>
+                <h2>Gestión de Variantes</h2>
                 <div id="v-container">
                     <div class="variant-row">
                         <input type="text" placeholder="Talla" class="v-talla">
@@ -72,25 +95,60 @@
                         <input type="text" placeholder="Material" class="v-material">
                     </div>
                 </div>
-                <button onclick="addVariantRow()" style="margin-bottom:20px; cursor:pointer;">+ Añadir Fila</button>
+                <button class="btn-outline" onclick="addVariantRow()">+ AÑADIR VARIANTE</button>
             </div>
 
             <div class="card">
-                <h2>Multimedia (Fotos de Campaña)</h2>
-                <input type="file" id="f-input" multiple onchange="previewImages(event)">
+                <h2>Multimedia (Carga Masiva)</h2>
+                <div class="dropzone" onclick="document.getElementById('f-input').click()">CLIC PARA SUBIR FOTOS</div>
+                <input type="file" id="f-input" multiple style="display:none;" onchange="handleFiles(event)">
                 <div id="p-grid" class="preview-grid"></div>
             </div>
-
             <button class="btn-black" id="btn-save">PUBLICAR EN INERCIA MODA</button>
+        </section>
+
+        <!-- SECCIÓN: PEDIDOS & CLIENTES (DNI/DIRECCION) -->
+        <section id="section-pedidos" class="admin-section" style="display:none;">
+            <div class="card">
+                <h2>Base de Datos de Clientes & Logística</h2>
+                <table>
+                    <thead>
+                        <tr><th>Cliente</th><th>Contacto & DNI</th><th>Dirección de Envío</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody id="orders-display">
+                        <!-- Ejemplo visual -->
+                        <tr>
+                            <td><strong>Martina Rossi</strong></td>
+                            <td>DNI: 38.123.456<br>11-5555-4444</td>
+                            <td>Av. Rivadavia 1234, CP 1406, CABA</td>
+                            <td><span style="color:var(--blue); font-size:10px; font-weight:700;">PAGADO</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: CONFIGURACIÓN PAGOS/ENVÍOS -->
+        <section id="section-config" class="admin-section" style="display:none;">
+            <div class="card">
+                <h2>Configuración de Cobros</h2>
+                <div class="input-group"><label>Info Transferencia (Alias/CBU)</label><textarea id="conf-pago" rows="3"></textarea></div>
+                <div class="input-group"><label>Link MercadoPago / Stripe</label><input type="text" id="conf-link"></div>
+            </div>
+            <div class="card">
+                <h2>Costos de Logística</h2>
+                <input type="number" id="conf-envio" placeholder="Costo fijo de envío ($)">
+                <button class="btn-black" style="margin-top:20px;">GUARDAR AJUSTES</button>
+            </div>
         </section>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://gstatic.com";
-        import { getFirestore, collection, addDoc } from "https://gstatic.com";
+        import { getFirestore, collection, addDoc, onSnapshot, query } from "https://gstatic.com";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://gstatic.com";
 
-        // CONFIGURACIÓN DE TU FIREBASE
+        // CONFIGURACIÓN DE TU FIREBASE (CONECTADO)
         const firebaseConfig = {
             apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
             authDomain: "://firebaseapp.com",
@@ -114,8 +172,33 @@
             }
         });
 
-        // PREVIEW DE IMÁGENES
-        window.previewImages = (e) => {
+        // NAVEGACIÓN
+        window.showSection = (id) => {
+            document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
+            document.getElementById('section-' + id).style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        };
+
+        // CATEGORÍAS
+        window.addNewCategory = () => {
+            const val = document.getElementById('new-cat-input').value;
+            if(val) {
+                const opt = document.createElement('option');
+                opt.text = val;
+                document.getElementById('p-category').add(opt);
+                document.getElementById('new-cat-input').value = "";
+            }
+        };
+
+        // VARIANTES
+        window.addVariantRow = () => {
+            const row = document.querySelector('.variant-row').cloneNode(true);
+            row.querySelectorAll('input').forEach(i => i.value = '');
+            document.getElementById('v-container').appendChild(row);
+        };
+
+        // IMÁGENES
+        window.handleFiles = (e) => {
             selectedFiles = Array.from(e.target.files);
             const grid = document.getElementById('p-grid');
             grid.innerHTML = '';
@@ -123,70 +206,47 @@
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     const img = document.createElement('img');
-                    img.src = ev.target.result;
-                    img.className = 'preview-box';
+                    img.src = ev.target.result; img.className = 'preview-box';
                     grid.appendChild(img);
                 };
                 reader.readAsDataURL(file);
             });
         };
 
-        // AÑADIR VARIANTE
-        window.addVariantRow = () => {
-            const container = document.getElementById('v-container');
-            const row = document.querySelector('.variant-row').cloneNode(true);
-            row.querySelectorAll('input').forEach(i => i.value = '');
-            container.appendChild(row);
-        };
-
-        // NAVEGACIÓN
-        window.showSection = (id) => {
-            document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
-            document.getElementById('section-' + id).style.display = 'block';
-        };
-
-        // --- ACCIÓN DE GUARDADO REAL ---
+        // GUARDADO REAL
         document.getElementById('btn-save').addEventListener('click', async () => {
             const btn = document.getElementById('btn-save');
-            if (selectedFiles.length === 0) return alert("Por favor, selecciona al menos una foto.");
-            
-            btn.disabled = true;
-            btn.innerText = "SUBIENDO... POR FAVOR NO CIERRES";
+            btn.disabled = true; btn.innerText = "SINCRO EN CURSO...";
 
             try {
-                // 1. Subir a Storage
-                const imageUrls = await Promise.all(selectedFiles.map(async (file) => {
-                    const sRef = ref(storage, `productos/${Date.now()}-${file.name}`);
-                    await uploadBytes(sRef, file);
+                const urls = await Promise.all(selectedFiles.map(async (f) => {
+                    const sRef = ref(storage, `productos/${Date.now()}-${f.name}`);
+                    await uploadBytes(sRef, f);
                     return getDownloadURL(sRef);
                 }));
 
-                // 2. Recoger Variantes
-                const variantes = Array.from(document.querySelectorAll('.variant-row')).map(row => ({
-                    talla: row.querySelector('.v-talla').value,
-                    color: row.querySelector('.v-color').value,
-                    stock: parseInt(row.querySelector('.v-stock').value) || 0,
-                    material: row.querySelector('.v-material').value
+                const variantes = Array.from(document.querySelectorAll('.variant-row')).map(r => ({
+                    talla: r.querySelector('.v-talla').value,
+                    color: r.querySelector('.v-color').value,
+                    stock: parseInt(r.querySelector('.v-stock').value),
+                    material: r.querySelector('.v-material').value
                 }));
 
-                // 3. Guardar en Firestore
                 await addDoc(collection(db, "productos"), {
-                    nombre: document.getElementById('p-nombre').value,
-                    categoria: document.getElementById('p-cat').value,
+                    nombre: document.getElementById('p-name').value,
+                    categoria: document.getElementById('p-category').value,
                     descripcion: document.getElementById('p-desc').value,
-                    imagenes: imageUrls,
+                    imagenes: urls,
                     variantes: variantes,
                     timestamp: new Date()
                 });
 
-                alert("¡EXITO! Producto publicado en INERCIA MODA.");
+                alert("PUBLISHED / EXITOSO");
                 location.reload();
-
             } catch (err) {
                 console.error(err);
-                alert("Error: " + err.message);
+                alert("Error de conexión.");
                 btn.disabled = false;
-                btn.innerText = "PUBLICAR EN INERCIA MODA";
             }
         });
     </script>
