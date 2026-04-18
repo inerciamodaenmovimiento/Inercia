@@ -3,120 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Shop</title>
+    <title>Inercia | Moda en Movimiento</title>
+    <!-- Google Fonts para ese look editorial -->
     <link href="https://googleapis.com" rel="stylesheet">
-    <style>
-        :root { --black: #000; --white: #fff; --gray: #f9f9f9; --border: #e2e2e2; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--black); }
-
-        /* HEADER ESTILO MODA ESTILE */
-        header { border-bottom: 1px solid var(--border); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #fff; z-index: 100; }
-        .logo { font-family: 'Bodoni Moda', serif; font-size: 2rem; font-weight: 900; letter-spacing: -2px; }
-        nav a { text-decoration: none; color: var(--black); font-size: 11px; letter-spacing: 2px; font-weight: 600; margin-left: 25px; }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 5%; }
-        
-        /* SECCIÓN "COMPLETE THE LOOK" (Referencia imagen 2) */
-        .section-title { font-family: 'Bodoni Moda', serif; font-size: 1.5rem; margin-bottom: 30px; border-bottom: 1px solid var(--black); padding-bottom: 10px; }
-        
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        
-        .product-card { border: 1px solid var(--border); padding: 15px; position: relative; transition: 0.3s; }
-        .product-card:hover { border-color: var(--black); }
-        .product-card img { width: 100%; filter: grayscale(100%); transition: 0.5s; }
-        .product-card:hover img { filter: grayscale(0%); }
-        
-        .product-info { margin-top: 15px; font-size: 12px; }
-        .brand { font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .price { color: #666; margin-top: 5px; }
-
-        /* TABLA DE CARRITO / PERFIL (Referencia imagen 4 y 5) */
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 40px; }
-        .data-table th { text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--black); padding: 10px; }
-        .data-table td { padding: 20px 10px; border-bottom: 1px solid var(--border); font-size: 13px; }
-
-        .btn-black { background: var(--black); color: var(--white); border: none; padding: 15px 30px; font-size: 12px; letter-spacing: 2px; cursor: pointer; width: 100%; margin-top: 20px; }
-        
-        /* FOOTER (Referencia imagen derecha) */
-        footer { background: var(--gray); padding: 60px 5%; margin-top: 100px; border-top: 1px solid var(--border); }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
-        .footer-col h4 { font-size: 11px; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
-        .footer-col p, .footer-col li { font-size: 12px; color: #555; list-style: none; margin-bottom: 10px; }
-
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <div class="logo">INERCIA</div>
-        <nav>
-            <a href="#">COLECCIONES</a>
-            <a href="#">CUENTA</a>
-            <a href="#">BOLSA (0)</a>
+    <!-- Header Minimalista -->
+    <header class="main-header">
+        <nav class="nav-container">
+            <div class="menu-toggle">☰</div>
+            <div class="logo">INERCIA</div>
+            <div class="nav-icons">
+                <span class="icon">🔍</span>
+                <span class="icon">👤</span>
+                <span class="icon">🛒 (0)</span>
+            </div>
         </nav>
     </header>
 
-    <div class="container">
-        <h2 class="section-title">Complete the look</h2>
-        
-        <div class="product-grid">
-            <!-- Producto 1 -->
-            <div class="product-card">
-                <img src="https://unsplash.com" alt="Prenda 1">
-                <div class="product-info">
-                    <p class="brand">Inercia Movement</p>
-                    <p>Vestido Estructural Negro</p>
-                    <p class="price">$120.00 USD</p>
+    <main>
+        <!-- Hero Section: Complete the Look -->
+        <section class="lookbook-container">
+            <h1 class="section-title">Complete the look</h1>
+            
+            <div class="look-grid">
+                <!-- Imagen Principal -->
+                <div class="main-model-img">
+                    <img src="https://unsplash.com" alt="Modelo Inercia">
+                </div>
+
+                <!-- Detalles de Productos -->
+                <div class="product-details">
+                    <div class="product-item">
+                        <div class="prod-thumb">
+                            <img src="https://unsplash.com" alt="Vestido Inercia">
+                        </div>
+                        <div class="prod-info">
+                            <h3>Valentino</h3>
+                            <p>Short dress in crepe couture</p>
+                            <span class="price">7.210 AED</span>
+                        </div>
+                        <button class="add-btn">+</button>
+                    </div>
+
+                    <div class="product-item">
+                        <div class="prod-thumb">
+                            <img src="https://unsplash.com" alt="Botas Inercia">
+                        </div>
+                        <div class="prod-info">
+                            <h3>Valentino</h3>
+                            <p>Rockstud flair suede boots</p>
+                            <span class="price">5.200 AED</span>
+                        </div>
+                        <button class="add-btn">+</button>
+                    </div>
                 </div>
             </div>
-            <!-- Producto 2 -->
-            <div class="product-card">
-                <img src="https://unsplash.com" alt="Prenda 2">
-                <div class="product-info">
-                    <p class="brand">Inercia Movement</p>
-                    <p>Botas de Cuero Minimal</p>
-                    <p class="price">$250.00 USD</p>
-                </div>
-            </div>
-        </div>
+        </section>
+    </main>
 
-        <h2 class="section-title" style="margin-top: 80px;">Tu Carrito</h2>
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Vestido Estructural</td>
-                    <td>1</td>
-                    <td>$120.00</td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="btn-black">PROCEDER AL PAGO</button>
-    </div>
-
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>Atención al Cliente</h4>
-                <p>Contacto</p>
-                <p>Envíos y Devoluciones</p>
-            </div>
-            <div class="footer-col">
-                <h4>Síguenos</h4>
-                <p>Instagram</p>
-                <p>TikTok</p>
-            </div>
-        </div>
+    <!-- Footer con Trust Badges -->
+    <footer class="trust-footer">
+        <div class="badge">🚚 Envío en 24h</div>
+        <div class="badge">💳 Pago Seguro</div>
+        <div class="badge">🌿 Eco-Friendly Packaging</div>
     </footer>
-<!-- Botón invisible para ir al admin -->
-<a href="admin.html" style="position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; background: transparent; z-index: 9999; cursor: default;"></a>
 
 </body>
 </html>
