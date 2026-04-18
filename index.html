@@ -3,189 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Moda en Movimiento</title>
-    <!-- Google Fonts: Serif para elegancia, Sans para modernidad -->
+    <title>UTRA | Tienda de Moda Online</title>
+    <!-- Tailwind CSS para el diseño -->
+    <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #f2f2f2;
-            --border-color: #d1d1d1;
-            --text-main: #1a1a1a;
-            --accent-serif: 'Playfair Display', serif;
-            --main-sans: 'Inter', sans-serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: var(--main-sans);
-            line-height: 1.6;
-        }
-
-        /* Líneas de cuadrícula globales */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            border-left: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
-        }
-
-        header {
-            padding: 40px 20px;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .logo {
-            font-family: var(--accent-serif);
-            font-size: clamp(3rem, 10vw, 8rem);
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            line-height: 0.8;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 20px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        /* Secciones Principales */
-        .hero {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .hero-image {
-            background: #e0e0e0; /* Placeholder */
-            min-height: 500px;
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero-text {
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .hero-text h2 {
-            font-family: var(--accent-serif);
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-
-        /* Grid de Productos */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .product-item {
-            padding: 40px;
-            text-align: center;
-            border-right: 1px solid var(--border-color);
-        }
-
-        .product-item:last-child { border-right: none; }
-
-        .product-placeholder {
-            width: 100%;
-            aspect-ratio: 1/1;
-            background: #ddd;
-            margin-bottom: 20px;
-        }
-
-        .price { font-weight: bold; margin-top: 10px; display: block; }
-
-        /* Cita Textual */
-        .quote-section {
-            padding: 100px 20px;
-            text-align: center;
-            font-family: var(--accent-serif);
-            font-size: 1.8rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        footer {
-            padding: 40px 20px;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 768px) {
-            .hero, .product-grid { grid-template-columns: 1fr; }
-            .product-item { border-right: none; border-bottom: 1px solid var(--border-color); }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, .brand { font-family: 'Playfair Display', serif; }
+        .hero-bg {
+            background-image: url('https://unsplash.com');
+            background-size: cover;
+            background-position: center;
         }
     </style>
 </head>
-<body>
+<body class="bg-white text-gray-900">
 
-<div class="container">
-    <nav>
-        <div>Blog / Colección</div>
-        <div style="font-weight: bold;">INERCIA</div>
-        <div>Contacto / Carrito</div>
+    <!-- Navegación -->
+    <nav class="py-6 px-10 flex flex-col items-center border-b border-gray-100">
+        <div class="brand text-4xl tracking-widest mb-4">UTRA</div>
+        <ul class="flex space-x-8 text-xs uppercase tracking-widest font-semibold text-gray-600">
+            <li><a href="#" class="hover:text-black">Home</a></li>
+            <li><a href="#" class="hover:text-black">New Arrival</a></li>
+            <li><a href="#" class="hover:text-black">Clothes</a></li>
+            <li><a href="#" class="hover:text-black">Jacket</a></li>
+            <li><a href="#" class="hover:text-black">Sale</a></li>
+        </ul>
     </nav>
 
-    <header>
-        <h1 class="logo">INERCIA</h1>
+    <!-- Hero Section -->
+    <header class="hero-bg h-[70vh] w-full relative flex items-center justify-center">
+        <div class="absolute inset-0 bg-black/10"></div>
     </header>
 
-    <section class="hero">
-        <div class="hero-image">
-            <!-- Reemplazar con <img src="tu-foto.jpg"> -->
-            <span>[ IMAGEN PRINCIPAL: MODA URBANA ]</span>
-        </div>
-        <div class="hero-text">
-            <h2>Nunca es tarde para ponerse en movimiento.</h2>
-            <p>Diseños técnicos pensados para el dinamismo de la vida moderna. Estética minimalista, rendimiento máximo.</p>
-            <br>
-            <a href="#" style="color: black; text-decoration: underline;">VER EDITORIAL</a>
+    <!-- New Arrivals Section -->
+    <section class="max-w-7xl mx-auto py-16 px-4">
+        <h2 class="text-center text-3xl mb-12 relative pb-4">
+            New Arrivals
+            <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-0.5 bg-red-400"></span>
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Producto 1 -->
+            <div class="text-center group">
+                <div class="bg-gray-100 mb-4 overflow-hidden">
+                    <img src="https://unsplash.com" alt="Brown Long Blouse" class="w-full h-80 object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-xs uppercase tracking-tighter">Brown Long Blouse</h3>
+                <p class="text-xs text-red-500 mt-1">NT$1,299</p>
+            </div>
+            <!-- Producto 2 -->
+            <div class="text-center group">
+                <div class="bg-gray-100 mb-4 overflow-hidden">
+                    <img src="https://unsplash.com" alt="Grey Check Long Coat" class="w-full h-80 object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-xs uppercase tracking-tighter">Grey Check Long Coat</h3>
+                <p class="text-xs text-red-500 mt-1">NT$1,299</p>
+            </div>
+            <!-- Producto 3 -->
+            <div class="text-center group">
+                <div class="bg-gray-100 mb-4 overflow-hidden">
+                    <img src="https://unsplash.com" alt="White Casual Suit" class="w-full h-80 object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-xs uppercase tracking-tighter">White Casual Suit</h3>
+                <p class="text-xs text-red-500 mt-1">NT$1,299</p>
+            </div>
+            <!-- Producto 4 -->
+            <div class="text-center group">
+                <div class="bg-gray-100 mb-4 overflow-hidden">
+                    <img src="https://unsplash.com" alt="Beige Sweater" class="w-full h-80 object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-xs uppercase tracking-tighter">Beige Sweater</h3>
+                <p class="text-xs text-red-500 mt-1">NT$1,299</p>
+            </div>
         </div>
     </section>
 
-    <section class="quote-section">
-        <p>"Tu piel cuenta tu historia, pero tu movimiento define tu futuro. Ropa diseñada para respirar."</p>
-    </section>
-
-    <section class="product-grid">
-        <div class="product-item">
-            <div class="product-placeholder"></div>
-            <h3>Legging Técnico 01</h3>
-            <span class="price">$45.00</span>
-        </div>
-        <div class="product-item">
-            <div class="product-placeholder"></div>
-            <h3>Sudadera Oversize</h3>
-            <span class="price">$65.00</span>
-        </div>
-        <div class="product-item">
-            <div class="product-placeholder"></div>
-            <h3>Top de Compresión</h3>
-            <span class="price">$35.00</span>
+    <!-- Collection Banner -->
+    <section class="w-full h-[60vh] bg-gray-200 flex items-center justify-center relative overflow-hidden">
+        <img src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="Collection Banner">
+        <div class="relative text-center">
+            <h2 class="text-6xl md:text-8xl text-white tracking-[0.2em] font-bold">COLLECTION</h2>
+            <button class="mt-8 px-10 py-2 border border-white text-white uppercase text-sm tracking-widest hover:bg-white hover:text-black transition">View</button>
         </div>
     </section>
 
-    <footer>
-        &copy; 2024 INERCIA MODA EN MOVIMIENTO. TODOS LOS DERECHOS RESERVADOS.
+    <!-- Twice as Cozy Section -->
+    <section class="max-w-7xl mx-auto py-20 px-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div class="grid grid-cols-2 gap-4">
+            <img src="https://unsplash.com" class="w-full h-64 object-cover" alt="Fashion 1">
+            <img src="https://unsplash.com" class="w-full h-64 object-cover" alt="Fashion 2">
+        </div>
+        <div>
+            <h2 class="text-2xl mb-4 italic">Twice as Cozy</h2>
+            <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                Shop the latest fashion online at UTRA and discover new favorites in women's clothing. 
+                Find everything from casual day dresses to sharp office wear. 
+                We have jeans in every fit, premium quality items and the latest fashion essentials.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 pt-16 pb-8 px-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-xs uppercase tracking-widest">
+            <div>
+                <h4 class="font-bold mb-4">About Us</h4>
+                <ul class="space-y-2 text-gray-500">
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Our Spirit</a></li>
+                    <li><a href="#">Our Member</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Customer Service</h4>
+                <ul class="space-y-2 text-gray-500">
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Delivery Options</a></li>
+                    <li><a href="#">Payment Methods</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Call Us</h4>
+                <p class="text-gray-500">Tel / 02-1234-5678</p>
+                <p class="text-gray-500">Time / AM 09:00 - PM 18:00</p>
+                <p class="text-gray-500 lowercase">Email / utrashop@shopapp.com</p>
+            </div>
+        </div>
+        <div class="mt-16 text-center text-[10px] text-gray-400 uppercase tracking-widest">
+            Privacy Policy | Terms & Conditions | 2026 © Your Brand
+        </div>
     </footer>
-</div>
 
+    <!-- Firebase Integration -->
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getAnalytics } from "https://gstatic.com";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
+            authDomain: "incerciamoda.firebaseapp.com",
+            projectId: "incerciamoda",
+            storageBucket: "incerciamoda.firebasestorage.app",
+            messagingSenderId: "335158123341",
+            appId: "1:335158123341:web:2722e74538e808321a7504",
+            measurementId: "G-1NGJT0MRPB"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        console.log("Firebase conectado correctamente a UTRA");
+    </script>
 </body>
 </html>
