@@ -3,62 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Moda en Movimiento</title>
-    <!-- Fuentes: Inter para texto y Playfair para ese toque de lujo -->
+    <title>INERCIA | Moda en Movimiento</title>
+    <!-- Fuente Inter: La favorita del diseño minimalista actual -->
     <link href="https://googleapis.com" rel="stylesheet">
-    <!-- Iconos vectoriales finos -->
-    <link rel="stylesheet" href="https://cloudflare.com">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --grey: #8a8a8a;
+            --line: #e2e2e2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* HEADER EDITORIAL */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 4%;
+            border-bottom: 1px solid var(--line);
+            text-transform: uppercase;
+        }
+
+        .menu-icon { font-size: 20px; cursor: pointer; font-weight: 100; }
+        
+        .logo {
+            text-align: center;
+            letter-spacing: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+        .logo span { font-weight: 200; font-size: 11px; display: block; }
+
+        .nav-tools { display: flex; gap: 20px; font-size: 18px; }
+
+        /* SECCIÓN PRINCIPAL */
+        main {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 4%;
+        }
+
+        h1 {
+            font-weight: 300;
+            font-size: 32px;
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: flex-start;
+        }
+
+        /* IMAGEN CENTRAL */
+        .hero-img {
+            background: #f7f7f7;
+            width: 100%;
+        }
+        .hero-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+            mix-blend-mode: multiply; /* Para ese look de catálogo limpio */
+        }
+
+        /* LISTA DE PRODUCTOS */
+        .products {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        .product-card {
+            display: flex;
+            align-items: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #f2f2f2;
+            position: relative;
+        }
+
+        .product-card img {
+            width: 90px;
+            height: 120px;
+            object-fit: cover;
+            margin-right: 25px;
+        }
+
+        .info .brand {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .info .name {
+            font-size: 13px;
+            color: var(--grey);
+            margin-bottom: 8px;
+            font-weight: 300;
+        }
+
+        .info .price {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* EL BOTÓN (+) DE LA IMAGEN */
+        .add-circle {
+            position: absolute;
+            right: 0;
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--text);
+            border-radius: 50%;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 300;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s ease;
+        }
+
+        .add-circle:hover {
+            background: var(--text);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .layout { grid-template-columns: 1fr; }
+            h1 { font-size: 26px; }
+        }
+    </style>
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="nav-left">
-            <i class="fa-solid fa-bars"></i>
-        </div>
-        <div class="logo">INERCIA</div>
-        <div class="nav-right">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <i class="fa-solid fa-bag-shopping"></i>
+    <header>
+        <div class="menu-icon">☰</div>
+        <div class="logo">INERCIA <span>ESTILE</span></div>
+        <div class="nav-tools">
+            <span>🔍</span>
+            <span>👜</span>
         </div>
     </header>
 
-    <main class="container">
-        <h1 class="section-title">Complete the look</h1>
-        
-        <section class="look-wrapper">
-            <!-- Imagen Principal -->
-            <div class="main-visual">
-                <img src="https://unsplash.com" alt="Look Principal">
+    <main>
+        <h1>Complete the look</h1>
+
+        <div class="layout">
+            <div class="hero-img">
+                <!-- Imagen de alta calidad para que no se vea feo -->
+                <img src="https://unsplash.com" alt="Inercia Model">
             </div>
 
-            <!-- Lista de Productos lateral -->
-            <div class="product-sidebar">
+            <div class="products">
                 <div class="product-card">
-                    <div class="thumb">
-                        <img src="https://unsplash.com" alt="Producto">
-                    </div>
-                    <div class="details">
-                        <span class="brand">VALENTINO</span>
-                        <p class="desc">Short dress in crepe couture</p>
+                    <img src="https://unsplash.com">
+                    <div class="info">
+                        <span class="brand">Valentino</span>
+                        <p class="name">Short dress in crepe couture</p>
                         <span class="price">7.210 AED</span>
                     </div>
                     <button class="add-circle">+</button>
                 </div>
 
                 <div class="product-card">
-                    <div class="thumb">
-                        <img src="https://unsplash.com" alt="Producto">
-                    </div>
-                    <div class="details">
-                        <span class="brand">VALENTINO</span>
-                        <p class="desc">Rockstud flair suede boots</p>
+                    <img src="https://unsplash.com">
+                    <div class="info">
+                        <span class="brand">Valentino</span>
+                        <p class="name">Rockstud flair suede boots</p>
                         <span class="price">5.200 AED</span>
                     </div>
                     <button class="add-circle">+</button>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
 </body>
