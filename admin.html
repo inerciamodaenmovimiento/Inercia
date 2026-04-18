@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INERCIA | Admin Panel</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root { --black: #000; --border: #e0e0e0; }
+        body { font-family: 'Inter', sans-serif; background: #fff; padding: 40px; }
+        
+        .admin-container { max-width: 800px; margin: 0 auto; display: none; } /* Oculto por defecto */
+        
+        h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid var(--black); padding-bottom: 10px; margin-bottom: 30px; }
+        
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--border); font-family: inherit; }
+        
+        .btn-save { background: var(--black); color: #fff; border: none; padding: 15px 30px; cursor: pointer; width: 100%; letter-spacing: 2px; font-weight: 600; margin-top: 10px; }
+
+        /* EL BOTÓN INVISIBLE */
+        #secret-trigger {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+            background: transparent; /* Invisible */
+            cursor: default;
+            z-index: 9999;
+        }
+
+        .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de entrada secreta -->
+    <div id="login-screen" class="login-overlay">
+        <div style="text-align: center;">
+            <p style="font-size: 10px; letter-spacing: 3px; color: #ccc;">SISTEMA INERCIA</p>
+            <input type="password" id="access-code" placeholder="Código de acceso" style="margin-top: 20px; text-align: center; border: none; border-bottom: 1px solid #eee;">
+        </div>
+    </div>
+
+    <!-- Panel de Administración -->
+    <div class="admin-container" id="admin-panel">
+        <h1>Gestión de Inventario</h1>
+        
+        <div class="form-group">
+            <label>Nombre del Producto</label>
+            <input type="text" placeholder="Ej: Vestido Estructural">
+        </div>
+        
+        <div class="form-group">
+            <label>Precio (USD)</label>
+            <input type="number" placeholder="0.00">
+        </div>
+
+        <div class="form-group">
+            <label>Categoría</label>
+            <select>
+                <option>Colecciones</option>
+                <option>Accesorios</option>
+                <option>Edición Limitada</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>URL de Imagen</label>
+            <input type="text" placeholder="Link de la foto">
+        </div>
+
+        <button class="btn-save">SUBIR A LA TIENDA</button>
+    </div>
+
+    <script>
+        const inputCode = document.getElementById('access-code');
+        const loginScreen = document.getElementById('login-screen');
+        const adminPanel = document.getElementById('admin-panel');
+
+        // Escuchar el código 0110
+        inputCode.addEventListener('input', (e) => {
+            if (e.target.value === '0110') {
+                loginScreen.style.display = 'none';
+                adminPanel.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
