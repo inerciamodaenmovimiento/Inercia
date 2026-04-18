@@ -5,321 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
     <style>
-        /* CSS REINICIO Y VARIABLES */
         :root {
-            --black: #000000;
+            --bg: #f2f2f2;
             --white: #ffffff;
-            --gray: #707072;
-            --light-gray: #f5f5f5;
-            --border: #e5e5e5;
+            --black: #000000;
+            --text-muted: #666;
+            --border: #e0e0e0;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--white);
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            background-color: var(--bg);
             color: var(--black);
-            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* NAVEGACIÓN PEGAJOSA */
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: var(--white);
-            z-index: 1000;
-            border-bottom: 1px solid var(--border);
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* NAVEGACIÓN STICKY */
+        .navbar {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            background: rgba(255,255,255,0.95); display: flex;
+            align-items: center; justify-content: space-between;
+            padding: 0 50px; z-index: 1000; border-bottom: 1px solid var(--border);
+        }
+        .logo { font-weight: 700; letter-spacing: 5px; font-size: 18px; }
+        .nav-links a { 
+            text-decoration: none; color: var(--black); font-size: 11px; 
+            text-transform: uppercase; letter-spacing: 2px; margin-left: 30px;
         }
 
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            letter-spacing: 6px;
-            text-decoration: none;
-            color: var(--black);
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-menu a {
-            text-decoration: none;
-            color: var(--black);
-            font-size: 12px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .nav-tools {
-            display: flex;
-            gap: 20px;
-            font-size: 11px;
-            letter-spacing: 1px;
-        }
-
-        /* HERO SECTION */
+        /* HERO SECTION - Inspirado en la imagen */
         .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background-color: var(--light-gray); /* Reemplazar con imagen real si se desea */
-            padding-top: 80px;
+            display: grid; grid-template-columns: 1fr 1fr;
+            height: 100vh; padding-top: 70px; background: var(--white);
         }
-
-        .hero-content h1 {
-            font-size: clamp(40px, 8vw, 80px);
-            font-weight: 200;
-            letter-spacing: 15px;
-            margin-bottom: 20px;
+        .hero-img {
+            background: #d9d9d9 url('https://unsplash.com') center/cover;
+            margin: 20px;
         }
-
-        .hero-content p {
-            font-size: 14px;
-            letter-spacing: 4px;
-            margin-bottom: 40px;
-            color: var(--gray);
+        .hero-content {
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 0 10%; border-left: 1px solid var(--border);
         }
-
+        .hero-content h1 { font-size: 40px; font-weight: 300; letter-spacing: 8px; margin-bottom: 20px; }
+        .price { font-size: 24px; margin-bottom: 40px; font-weight: 300; }
         .btn-cta {
-            padding: 18px 45px;
-            background: var(--black);
-            color: var(--white);
-            text-decoration: none;
-            font-size: 12px;
-            letter-spacing: 2px;
-            transition: 0.3s ease;
+            background: var(--black); color: var(--white); border: none;
+            padding: 20px; width: 100%; cursor: pointer; letter-spacing: 3px;
+            font-size: 12px; transition: 0.3s;
         }
-
-        .btn-cta:hover {
-            background: var(--gray);
-        }
+        .btn-cta:hover { opacity: 0.8; }
 
         /* SERVICIOS */
         .services {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            padding: 100px 40px;
-            gap: 2px;
-            background-color: var(--border);
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            background: var(--white); border-top: 1px solid var(--border);
         }
-
         .service-card {
-            background: var(--white);
-            padding: 60px 20px;
-            text-align: center;
+            padding: 80px 40px; border-right: 1px solid var(--border); text-align: center;
         }
-
-        .service-card h3 {
-            font-size: 13px;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-        }
-
-        .service-card p {
-            font-size: 12px;
-            color: var(--gray);
-            line-height: 1.6;
-        }
+        .service-card h3 { font-size: 12px; letter-spacing: 4px; margin-bottom: 20px; }
+        .service-card p { font-size: 13px; color: var(--text-muted); line-height: 1.8; }
 
         /* FOOTER */
         footer {
-            padding: 80px 40px;
-            border-top: 1px solid var(--border);
+            padding: 60px 50px; background: var(--white); border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: flex-end;
         }
+        .footer-info { font-size: 10px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 60px;
-        }
-
-        .footer-col h4 {
-            font-size: 11px;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-        }
-
-        .footer-col p {
-            font-size: 12px;
-            color: var(--gray);
-            margin-bottom: 12px;
-            cursor: pointer;
-        }
-
-        .copyright {
-            font-size: 10px;
-            letter-spacing: 1px;
-            color: var(--gray);
-            text-align: center;
-        }
-
-        /* ADMIN PANEL MODAL */
+        /* ADMIN OCULTO */
         #adminModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(255,255,255,0.98);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; inset: 0; background: var(--white);
+            z-index: 2000; align-items: center; justify-content: center; text-align: center;
         }
-
-        .admin-content {
-            border: 1px solid var(--black);
-            padding: 80px;
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .admin-content h2 {
-            letter-spacing: 5px;
-            margin-bottom: 20px;
-        }
+        .admin-box { border: 1px solid var(--black); padding: 60px; }
 
         /* RESPONSIVO */
         @media (max-width: 768px) {
-            .nav-menu { display: none; }
-            .services { grid-template-columns: 1fr; }
-            .header { padding: 15px 20px; }
+            .hero { grid-template-columns: 1fr; }
+            .hero-content { border-left: none; padding: 40px 20px; }
+            .navbar { padding: 0 20px; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <a href="#" class="logo">INERCIA</a>
-        <nav class="nav-menu">
-            <a href="#">Colección</a>
-            <a href="#">Editorial</a>
-            <a href="#">Nosotros</a>
-        </nav>
-        <div class="nav-tools">
-            <span>BUSCAR</span>
-            <span>CESTA(0)</span>
+    <nav class="navbar">
+        <div class="logo">INERCIA</div>
+        <div class="nav-links">
+            <a href="#">Shop</a>
+            <a href="#">Archive</a>
+            <a href="#">Info</a>
         </div>
-    </header>
+    </nav>
 
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <p>INERCIA MODA EN MOVIMIENTO</p>
-                <h1>NUEVA ERA</h1>
-                <a href="#explore" class="btn-cta">VER COLECCIÓN</a>
+    <main class="hero">
+        <div class="hero-img"></div>
+        <div class="hero-content">
+            <p style="font-size: 10px; letter-spacing: 3px; color: var(--text-muted);">PRODUCTO SELECCIONADO</p>
+            <h1>S/S SKIRT EDITION</h1>
+            <p class="price">196,000 ARS</p>
+            <button class="btn-cta">AÑADIR A LA CESTA</button>
+            <div style="margin-top: 40px; font-size: 11px; color: var(--text-muted); line-height: 2;">
+                • Diseño asimétrico<br>• Seda premium 100%<br>• Edición limitada
             </div>
-        </section>
-
-        <section id="explore" class="services">
-            <div class="service-card">
-                <h3>LOGÍSTICA</h3>
-                <p>Envíos prioritarios certificados a todo el mundo.</p>
-            </div>
-            <div class="service-card">
-                <h3>CALIDAD</h3>
-                <p>Tejidos técnicos seleccionados para el movimiento.</p>
-            </div>
-            <div class="service-card">
-                <h3>EXCLUSIVIDAD</h3>
-                <p>Ediciones limitadas diseñadas de forma ética.</p>
-            </div>
-        </section>
+        </div>
     </main>
 
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>CLIENTES</h4>
-                <p>Seguimiento de pedido</p>
-                <p>Devoluciones</p>
-                <p>Guía de tallas</p>
-            </div>
-            <div class="footer-col">
-                <h4>LEGAL</h4>
-                <p>Privacidad</p>
-                <p>Términos y condiciones</p>
-                <p>Cookies</p>
-            </div>
-            <div class="footer-col">
-                <h4>CONECTAR</h4>
-                <p>Instagram</p>
-                <p>Newsletter</p>
-            </div>
+    <section class="services">
+        <div class="service-card">
+            <h3>LOGÍSTICA</h3>
+            <p>Envíos prioritarios con seguimiento internacional.</p>
         </div>
-        <div class="copyright">© 2026 INERCIA - TODOS LOS DERECHOS RESERVADOS</div>
+        <div class="service-card">
+            <h3>CONSERJERÍA</h3>
+            <p>Atención personalizada vía canal privado 24/7.</p>
+        </div>
+        <div class="service-card">
+            <h3>CALIDAD</h3>
+            <p>Materiales con certificación de origen y sostenibilidad.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-info">© 2026 INERCIA - MODA EN MOVIMIENTO</div>
+        <div class="footer-info">Privacidad / Términos</div>
     </footer>
 
-    <!-- Panel de Administración Secreto -->
+    <!-- Panel de Administración -->
     <div id="adminModal">
-        <div class="admin-content">
-            <h2>ADMINISTRACIÓN</h2>
-            <p style="font-size: 11px; letter-spacing: 2px; margin-bottom: 30px;">ACCESO RESTRINGIDO - INERCIA SISTEMAS</p>
-            <button onclick="closeAdmin()" style="background:none; border: 1px solid #000; padding: 10px 20px; cursor: pointer; font-size: 10px;">SALIR</button>
+        <div class="admin-box">
+            <h2 style="letter-spacing: 5px;">MODO ADMIN</h2>
+            <p style="margin: 20px 0; font-size: 12px;">Acceso verificado para el código 0110.</p>
+            <button onclick="closeAdmin()" class="btn-cta" style="width: auto; padding: 10px 40px;">SALIR</button>
         </div>
     </div>
 
     <script>
-        // SISTEMA DE ACCESO ADMIN (CÓDIGO: 0110)
-        let buffer = "";
-        const secretCode = "0110";
-        let lastInputTime = Date.now();
-
+        // LÓGICA DE ADMIN OCULTO (Teclea 0110 rápido)
+        let keys = "";
         document.addEventListener('keydown', (e) => {
-            const currentTime = Date.now();
-
-            // Si el usuario tarda más de 1 segundo entre teclas, se reinicia el buffer
-            if (currentTime - lastInputTime > 1000) {
-                buffer = "";
-            }
-
-            // Solo aceptamos números
-            if (/^\d$/.test(e.key)) {
-                buffer += e.key;
-                lastInputTime = currentTime;
-
-                // Verificamos si el final del buffer coincide con el código secreto
-                if (buffer.endsWith(secretCode)) {
-                    openAdmin();
-                    buffer = ""; // Limpiar tras entrar
-                }
+            keys += e.key;
+            if (keys.length > 4) keys = keys.substring(keys.length - 4);
+            
+            if (keys === "0110") {
+                document.getElementById('adminModal').style.display = 'flex';
+                keys = ""; // Reset
             }
         });
 
-        function openAdmin() {
-            document.getElementById('adminModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Bloquear scroll
-        }
-
         function closeAdmin() {
             document.getElementById('adminModal').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Habilitar scroll
         }
 
-        // Efecto visual al hacer scroll en el header
-        window.onscroll = function() {
-            const header = document.querySelector('.header');
-            if (window.pageYOffset > 50) {
-                header.style.padding = "12px 40px";
-                header.style.boxShadow = "0 4px 15px rgba(0,0,0,0.05)";
-            } else {
-                header.style.padding = "20px 40px";
-                header.style.boxShadow = "none";
-            }
-        };
+        // Efecto scroll suave
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.navbar');
+            nav.style.background = window.scrollY > 50 ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.95)';
+        });
     </script>
 </body>
 </html>
