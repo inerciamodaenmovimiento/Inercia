@@ -1,4 +1,13 @@
-/* 1. RESET CRÍTICO */
+/* Variables para mantener la consistencia */
+:root {
+    --black: #1a1a1a;
+    --grey-light: #f4f4f4;
+    --grey-medium: #8d8d8d;
+    --white: #ffffff;
+    --font-main: 'Inter', sans-serif;
+    --font-title: 'Playfair Display', serif;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,124 +15,146 @@
 }
 
 body {
-    background-color: #ffffff;
-    color: #000;
-    font-family: 'Inter', sans-serif;
-    line-height: 1.4;
-    overflow-x: hidden;
+    font-family: var(--font-main);
+    background-color: var(--white);
+    color: var(--black);
+    line-height: 1.6;
 }
 
-/* 2. HEADER */
+/* Header Estilo Minimalista */
 .main-header {
-    padding: 60px 5%;
-    text-align: center;
+    padding: 20px 5%;
+    border-bottom: 1px solid var(--grey-light);
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo {
-    font-family: 'Bodoni Moda', serif;
-    font-size: clamp(3rem, 12vw, 9rem);
-    font-weight: 900;
-    letter-spacing: -6px;
-    line-height: 1;
-    margin-bottom: 20px;
-}
-
-.editorial-nav {
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
-    padding: 15px 0;
-}
-
-.editorial-nav a {
-    text-decoration: none;
-    color: #000;
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-family: var(--font-title);
+    font-size: 1.8rem;
     letter-spacing: 4px;
-    margin: 0 20px;
+    font-weight: 700;
 }
 
-/* 3. LAYOUT ASIMÉTRICO */
-.magazine-layout {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 5% 100px;
+.nav-icons .icon {
+    margin-left: 20px;
+    cursor: pointer;
+    font-size: 1.2rem;
 }
 
-.hero-section {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    margin-top: 50px;
+/* Sección Lookbook */
+.lookbook-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
-.image-wrapper img {
+.section-title {
+    font-family: var(--font-title);
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-weight: 400;
+}
+
+.look-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dividimos en dos columnas */
+    gap: 40px;
+    align-items: start;
+}
+
+.main-model-img img {
     width: 100%;
     height: auto;
-    filter: grayscale(100%);
     display: block;
 }
 
-.main-photo {
-    width: 75%;
-    z-index: 1;
-}
-
-/* El bloque de texto que pisa la foto */
-.hero-text-block {
-    background: #fff;
-    padding: 40px;
-    width: 50%;
-    align-self: flex-end;
-    margin-top: -150px; /* Sube para pisar la foto */
-    z-index: 2;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-}
-
-.title-xl {
-    font-family: 'Bodoni Moda', serif;
-    font-size: clamp(2rem, 5vw, 5rem);
-    line-height: 0.85;
-}
-
-.title-xl em { font-style: italic; font-weight: 400; }
-
-/* 4. SECCIÓN MANIFIESTO */
-.manifesto-section {
+/* Detalles de Productos al costado */
+.product-item {
     display: flex;
-    justify-content: space-between;
-    margin-top: 150px;
-    gap: 50px;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--grey-light);
+    position: relative;
 }
 
-.manifesto-content {
-    max-width: 450px;
-    padding-top: 80px;
+.prod-thumb {
+    width: 80px;
+    height: 100px;
+    background: var(--grey-light);
+    margin-right: 20px;
+    overflow: hidden;
 }
 
-.title-lg {
-    font-family: 'Bodoni Moda', serif;
-    font-size: 3.5rem;
-    line-height: 0.9;
-    margin: 20px 0;
+.prod-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.side-photo {
-    width: 40%;
+.prod-info h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.editorial-tag {
-    font-size: 0.65rem;
-    letter-spacing: 5px;
-    border-bottom: 1px solid #000;
-    padding-bottom: 5px;
+.prod-info p {
+    font-size: 0.85rem;
+    color: var(--grey-medium);
 }
 
-/* Responsivo para móviles */
+.prod-info .price {
+    display: block;
+    margin-top: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Botón de añadir (el círculo con el +) */
+.add-btn {
+    position: absolute;
+    right: 0;
+    background: var(--black);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.add-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Footer / Trust Badges */
+.trust-footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 5%;
+    background: var(--grey-light);
+    margin-top: 60px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
-    .main-photo, .hero-text-block, .side-photo {
-        width: 100%;
-        margin-top: 0;
+    .look-grid {
+        grid-template-columns: 1fr;
     }
-    .manifesto-section { flex-direction: column; }
+    
+    .logo {
+        font-size: 1.4rem;
+    }
 }
