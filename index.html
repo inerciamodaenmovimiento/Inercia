@@ -292,6 +292,123 @@
         }
     });
 </script>
+<!-- BLOQUE UNIFICADO: FIREBASE + CARRUSEL + CONTROL DE STOCK -->
+<script type="module">
+    // 1. IMPORTACIÓN DE MOTORES
+    import { initializeApp } from "https://gstatic.com";
+    import { getDatabase, ref, set, onValue, update, remove } from "https://gstatic.com";
+
+    // 2. CONFIGURACIÓN (RELLENA CON TUS DATOS DE FIREBASE)
+    const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_://firebaseapp.com",
+        databaseURL: "https://TU_://firebaseio.com",
+        projectId: "TU_PROYECTO",
+        storageBucket: "TU_://appspot.com",
+        messagingSenderId: "ID",
+        appId: "APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 3. FUNCIÓN PARA PUBLICAR (Se activa desde tu Admin)
+    window.publishProduct = function() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const desc = document.getElementById('p-desc').value;
+        const vars = document.getElementById('p-vars').value;
+        const stock = prompt("Cantidad de stock inicial:", "10");
+        
+        if(!name || !price || !window.tempImg) return alert("Faltan datos o imagen.");
+
+        const id = Date.now();
+        // Guardamos como array para permitir carrusel en el futuro
+        const productData = {
+            id, name, price, desc, vars,
+            img: [window.tempImg], 
+            stock: parseInt(stock) || 0
+        };
+
+        set(ref(db, 'productos/' + id), productData).then(() => {
+            alert("Sincronizado con éxito.");
+            document.getElementById('p-name').value = "";
+            document.getElementById('p-price').value = "";
+            document.getElementById('p-desc').value = "";
+        });
+    };
+
+    // 4. FUNCIÓN DE VENTA (RESTA STOCK)
+    window.simularVenta = function(id, stockActual) {
+        if (stockActual <= 0) return;
+        update(ref(db, 'productos/' + id), { stock: stockActual - 1 });
+    };
+
+    // 5. FUNCIÓN DE CARRUSEL
+    window.moveCarousel = function(id, direction) {
+        const container = document.querySelector(`#carousel-${id}`);
+        const scrollAmount = container.clientWidth;
+        container.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+    };
+
+    // 6. RENDERIZADO AUTOMÁTICO (ESCUCHA A FIREBASE)
+    onValue(ref(db, 'productos/'), (snapshot) => {
+        const grid = document.getElementById('shop-grid');
+        const adminList = document.getElementById('admin-list');
+        const data = snapshot.val();
+        
+        grid.innerHTML = "";
+        adminList.innerHTML = "";
+
+        if (data) {
+            Object.keys(data).forEach(key => {
+                const p = data[key];
+                const isOutOfStock = p.stock <= 0;
+                const imagenes = Array.isArray(p.img) ? p.img : [p.img];
+
+                // Render en la Tienda con Carrusel
+                grid.innerHTML += `
+                    <div class="product-card" style="opacity: ${isOutOfStock ? '0.6' : '1'}">
+                        <div style="position:relative; overflow:hidden; aspect-ratio:3/4;">
+                            <div id="carousel-${key}" style="display:flex; overflow-x:hidden; scroll-behavior:smooth;">
+                                ${imagenes.map(img => `<img src="${img}" style="min-width:100%; object-fit:cover;">`).join('')}
+                            </div>
+                            ${imagenes.length > 1 ? `
+                                <button onclick="moveCarousel('${key}', -1)" style="position:absolute; left:10px; top:50%; background:white; border:none; padding:5px; cursor:pointer;">&#10094;</button>
+                                <button onclick="moveCarousel('${key}', 1)" style="position:absolute; right:10px; top:50%; background:white; border:none; padding:5px; cursor:pointer;">&#10095;</button>
+                            ` : ''}
+                        </div>
+                        <div class="product-info" style="margin-top:15px; display:flex; justify-content:space-between; font-weight:900; text-transform:uppercase; font-size:12px;">
+                            <span>${p.name}</span>
+                            <span class="serif italic">$${p.price}</span>
+                        </div>
+                        <p style="font-size:11px; opacity:0.5; margin-top:5px;">${p.desc}</p>
+                        <p style="font-size:9px; margin-top:5px; opacity:0.3;">Tallas: ${p.vars} | Stock: ${p.stock}</p>
+                        
+                        <button 
+                            onclick="simularVenta('${key}', ${p.stock})"
+                            ${isOutOfStock ? 'disabled' : ''}
+                            style="width:100%; margin-top:15px; padding:15px; font-size:10px; font-weight:900; cursor:pointer;
+                            background: ${isOutOfStock ? '#E0E0E0' : '#000'}; 
+                            color: ${isOutOfStock ? '#A0A0A0' : '#FFF'}; border:none;">
+                            ${isOutOfStock ? 'SIN STOCK' : 'AÑADIR A CESTA'}
+                        </button>
+                    </div>
+                `;
+
+                // Render en el Admin
+                adminList.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee; font-size:11px;">
+                        <span>${p.name} (${p.stock})</span>
+                        <button onclick="window.removeProd('${key}')" style="color:red; border:none; background:none; cursor:pointer;">ELIMINAR</button>
+                    </div>
+                `;
+            });
+        }
+    });
+
+    window.removeProd = (id) => { if(confirm("¿Eliminar?")) remove(ref(db, 'productos/' + id)); };
+</script>
 
 </body>
 </html>
