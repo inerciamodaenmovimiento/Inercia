@@ -1,68 +1,58 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Moda en Movimiento</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <nav class="container">
-            <div class="logo">INERCIA</div>
-            <button id="cart-btn">Carrito (<span id="cart-count">0</span>)</button>
-        </nav>
-    </header>
+:root {
+    --black: #1a1a1a;
+    --grey: #f4f4f4;
+    --white: #ffffff;
+    --accent: #d4a3a3;
+}
 
-    <main class="container product-page">
-        <!-- Punto 1: Imagen Dinámica -->
-        <section class="product-gallery">
-            <img src="https://unsplash.com" alt="Producto" id="main-img">
-        </section>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
-        <section class="product-details">
-            <p class="brand">NUEVA COLECCIÓN</p>
-            <h1>Falda Ruffle Inercia</h1>
-            <p class="price">$196.000</p>
+body { color: var(--black); background: var(--white); }
 
-            <div class="options">
-                <!-- Gestión de Variantes -->
-                <div class="option-group">
-                    <label>Color</label>
-                    <div class="color-selectors">
-                        <button class="color-dot active" data-color="Rosa" data-img="https://unsplash.com" style="background: #d4a3a3;"></button>
-                        <button class="color-dot" data-color="Negro" data-img="https://unsplash.com" style="background: #1a1a1a;"></button>
-                    </div>
-                </div>
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
-                <div class="option-group">
-                    <label>Talla</label>
-                    <select id="size-select">
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                    </select>
-                </div>
-            </div>
+/* Header */
+header { border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 10; }
+nav { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; }
 
-            <!-- Punto 2: Control de Stock -->
-            <div class="stock-info" id="stock-status">En stock</div>
-            <button id="add-to-cart" class="btn-primary">AÑADIR AL CARRITO</button>
-        </section>
-    </main>
+/* Product Grid */
+.product-page { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 40px; }
 
-    <!-- Modal del Carrito -->
-    <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Tu Carrito</h2>
-            <div id="cart-items"></div>
-            <hr>
-            <div class="cart-total">Total: <span id="cart-total-price">$0</span></div>
-            <button class="btn-primary">FINALIZAR COMPRA</button>
-        </div>
-    </div>
+@media (max-width: 768px) {
+    .product-page { grid-template-columns: 1fr; }
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+.product-gallery img {
+    width: 100%; height: auto; transition: transform 0.5s ease;
+}
+
+.product-gallery:hover img { transform: scale(1.02); }
+
+/* Details */
+.brand { color: #888; font-size: 0.8rem; margin-bottom: 10px; }
+h1 { font-size: 2.5rem; margin-bottom: 20px; }
+.price { font-size: 1.5rem; margin-bottom: 30px; }
+
+.option-group { margin-bottom: 20px; }
+.color-selectors { display: flex; gap: 10px; margin-top: 10px; }
+.color-dot { 
+    width: 30px; height: 30px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; 
+}
+.color-dot.active { outline: 2px solid var(--black); outline-offset: 3px; }
+
+/* Punto 2: Botón Agotado */
+.btn-primary {
+    width: 100%; padding: 18px; background: var(--black); color: white; border: none;
+    cursor: pointer; transition: 0.3s; font-weight: bold;
+}
+.btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+
+/* Modal */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+.modal-content { 
+    background: white; width: 90%; max-width: 400px; margin: 50px auto; padding: 30px; 
+    position: relative; animation: slideDown 0.3s ease;
+}
+@keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.close-modal { position: absolute; right: 20px; top: 20px; cursor: pointer; font-size: 1.5rem; }
