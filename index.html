@@ -7,81 +7,114 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Raleway', sans-serif; color: #1a1a1a; line-height: 1.6; background: #fff; }
-        header { padding: 30px 0; text-align: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 100; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 2.2rem; letter-spacing: 8px; text-transform: uppercase; margin-bottom: 15px; }
-        nav ul { display: flex; justify-content: center; gap: 30px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; list-style: none; }
-        nav a { text-decoration: none; color: #666; transition: 0.3s; }
-        nav a:hover { color: #000; }
+        body { font-family: 'Raleway', sans-serif; background: #fff; overflow-x: hidden; }
         
-        .hero { height: 70vh; background: url('https://unsplash.com') center/cover; margin-bottom: 60px; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .section-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 3px; }
-        
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .product-card { text-align: center; margin-bottom: 40px; }
-        .product-img { width: 100%; height: 400px; background: #f4f4f4; object-fit: cover; margin-bottom: 15px; }
-        .product-card h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .price { color: #888; font-weight: 600; }
+        /* Header & Nav */
+        header { padding: 30px 0; text-align: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 1000; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 2.2rem; letter-spacing: 10px; text-transform: uppercase; }
+        nav ul { display: flex; justify-content: center; gap: 30px; list-style: none; margin-top: 15px; }
+        nav a { text-decoration: none; color: #666; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; }
 
-        .banner-collection { background: #1a1a1a; color: #fff; padding: 100px 0; text-align: center; margin: 60px 0; }
-        .banner-collection h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; letter-spacing: 10px; margin-bottom: 20px; }
-        .btn { border: 1px solid #fff; padding: 12px 35px; color: #fff; text-decoration: none; font-size: 0.8rem; letter-spacing: 2px; transition: 0.4s; }
-        .btn:hover { background: #fff; color: #000; }
+        /* Cart UI */
+        .cart-icon { position: fixed; top: 35px; right: 40px; cursor: pointer; z-index: 1100; background: #000; color: #fff; padding: 8px 15px; border-radius: 50px; font-size: 0.8rem; }
+        
+        /* Hero & Grid */
+        .hero { height: 80vh; background: url('https://unsplash.com') center/cover; margin-bottom: 60px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-title { text-align: center; font-family: 'Playfair Display'; font-size: 2.5rem; margin: 60px 0; letter-spacing: 3px; }
+        
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; }
+        .product-card { text-align: center; }
+        .product-img { width: 100%; height: 450px; object-fit: cover; background: #f9f9f9; margin-bottom: 15px; }
+        .btn-buy { background: #000; color: #fff; padding: 12px 25px; border: none; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; margin-top: 10px; width: 100%; }
+
+        /* Modal Carrito */
+        #cart-modal { position: fixed; right: -100%; top: 0; width: 350px; height: 100%; background: #fff; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: 0.4s; z-index: 2000; padding: 40px 20px; }
+        #cart-modal.active { right: 0; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
+    <div class="cart-icon" onclick="toggleCart()">CARRITO (<span id="cart-count">0</span>)</div>
+
     <header>
         <div class="logo">Inercia</div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">New Arrival</a></li>
-                <li><a href="#">Prendas</a></li>
-                <li><a href="#" style="color: #c5a059;">Sale</a></li>
-            </ul>
-        </nav>
+        <nav><ul><li><a href="#">Home</a></li><li><a href="#">New Arrival</a></li><li><a href="#">Clothes</a></li><li><a href="#" style="color:#c5a059">Sale</a></li></ul></nav>
     </header>
 
     <div class="hero"></div>
 
-    <section class="container">
+    <div class="container">
         <h2 class="section-title">New Arrivals</h2>
-        <div class="product-grid">
-            <div class="product-card">
-                <img src="https://unsplash.com" class="product-img">
-                <h3>Blusa Essential</h3>
-                <p class="price">$45.000</p>
-            </div>
-            <div class="product-card">
-                <img src="https://unsplash.com" class="product-img">
-                <h3>Tapado Inercia</h3>
-                <p class="price">$120.000</p>
-            </div>
-            <div class="product-card">
-                <img src="https://unsplash.com" class="product-img">
-                <h3>Conjunto White</h3>
-                <p class="price">$85.000</p>
-            </div>
-        </div>
-    </section>
-
-    <div class="banner-collection">
-        <h2>COLLECTION</h2>
-        <a href="#" class="btn">VER MÁS</a>
+        <div class="product-grid" id="main-grid"></div>
     </div>
 
-    <!-- ACCESO OCULTO 0110 -->
+    <!-- Carrito -->
+    <div id="cart-modal">
+        <h2 style="font-family:'Playfair Display'; margin-bottom:30px">Tu Pedido</h2>
+        <div id="cart-items"></div>
+        <div style="margin-top:20px; font-weight:600">TOTAL: $<span id="cart-total">0</span></div>
+        <button onclick="checkout()" class="btn-buy" style="margin-top:30px">FINALIZAR COMPRA (WHATSAPP)</button>
+        <p onclick="toggleCart()" style="text-align:center; cursor:pointer; margin-top:20px; font-size:0.7rem">CERRAR</p>
+    </div>
+
     <script>
-        let input = "";
+        let cart = [];
+        const products = JSON.parse(localStorage.getItem('inercia_db')) || [];
+
+        function renderShop() {
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = products.map((p, index) => `
+                <div class="product-card">
+                    <img src="${p.img}" class="product-img">
+                    <h3 style="font-size:0.9rem; text-transform:uppercase">${p.name}</h3>
+                    <p style="color:#888; font-size:0.8rem">${p.variants}</p>
+                    <p style="font-weight:600">$${p.price}</p>
+                    <button class="btn-buy" onclick="addToCart(${index})">Añadir al Carrito</button>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(i) {
+            cart.push(products[i]);
+            updateCart();
+            toggleCart(true);
+        }
+
+        function updateCart() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const container = document.getElementById('cart-items');
+            let total = 0;
+            container.innerHTML = cart.map(item => {
+                total += parseFloat(item.price);
+                return `<div class="cart-item"><span>${item.name}</span><span>$${item.price}</span></div>`;
+            }).join('');
+            document.getElementById('cart-total').innerText = total;
+        }
+
+        function toggleCart(force) {
+            document.getElementById('cart-modal').classList.toggle('active', force);
+        }
+
+        function checkout() {
+            let msg = "Hola Inercia, quiero comprar: %0A";
+            cart.forEach(i => msg += `- ${i.name} ($${i.price})%0A`);
+            msg += `%0ATotal: $${document.getElementById('cart-total').innerText}`;
+            window.open(`https://wa.me{msg}`);
+        }
+
+        // ACCESO 0110
+        let code = "";
         document.addEventListener("keydown", (e) => {
-            if (!isNaN(e.key)) {
-                input += e.key;
-                if (input.length > 4) input = input.substring(input.length - 4);
-                if (input === "0110") window.location.href = "admin.html";
+            if(!isNaN(e.key)) {
+                code += e.key;
+                if(code.length > 4) code = code.substring(code.length - 4);
+                if(code === "0110") window.location.href = "admin.html";
             }
         });
+
+        renderShop();
     </script>
 </body>
 </html>
