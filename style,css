@@ -1,83 +1,119 @@
-/* Importar fuentes de lujo */
-@import url('https://googleapis.com');
-
 body {
     background-color: #fff;
     color: #000;
     margin: 0;
-    padding: 0;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
 
-/* Contenedor principal con márgenes de revista */
-.editorial-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 20px;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr); /* Sistema de 12 columnas */
-    gap: 20px;
+/* Marca de agua gigante de fondo */
+.bg-watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bodoni Moda', serif;
+    font-size: 25vw;
+    font-weight: 900;
+    color: rgba(0,0,0,0.03);
+    z-index: -1;
+    pointer-events: none;
 }
 
-/* Encabezado */
+/* Header Editorial */
 .main-header {
-    grid-column: 1 / 13;
+    padding: 40px 5%;
     text-align: center;
-    margin-bottom: 80px;
 }
 
 .logo {
     font-family: 'Bodoni Moda', serif;
-    font-size: 8rem;
+    font-size: clamp(3rem, 10vw, 8rem);
     font-weight: 900;
-    margin: 0;
     letter-spacing: -5px;
-    text-transform: uppercase;
+    margin-bottom: 20px;
 }
 
-nav {
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
-    padding: 10px 0;
-    word-spacing: 30px;
-    font-size: 0.8rem;
+nav a {
+    text-decoration: none;
+    color: #000;
+    margin: 0 15px;
+    font-size: 0.7rem;
     letter-spacing: 3px;
+    font-weight: 600;
 }
 
-/* Sección Hero con solapamiento */
-.hero-section {
-    grid-column: 1 / 9; /* Ocupa la parte izquierda */
+/* Layout de Revista */
+.editorial-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5% 100px;
+}
+
+.hero-block {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: center;
     position: relative;
-    background: #f0f0f0; /* Fondo gris temporal por si no carga la imagen */
-    min-height: 500px;
 }
 
+.main-img-wrapper {
+    grid-column: 1 / 9;
+}
+
+.main-img-wrapper img {
+    width: 100%;
+    filter: grayscale(100%);
+}
+
+/* Texto que pisa la imagen */
 .hero-text {
-    grid-column: 7 / 13; /* Empieza antes de que termine la imagen */
-    grid-row: 1;
-    z-index: 10;
-    padding-top: 100px;
+    grid-column: 7 / 13;
+    background: #fff;
+    padding: 40px;
+    z-index: 2;
+    margin-left: -50px; /* Aquí sucede el efecto de la foto de Jennie */
 }
 
-.title-overlap {
+.main-title {
     font-family: 'Bodoni Moda', serif;
-    font-size: 5rem;
+    font-size: 4rem;
     line-height: 0.8;
-    background: white; /* Esto crea el efecto de recorte */
-    padding: 20px;
+    margin: 0;
 }
 
-/* El manifiesto lateral */
-.manifesto {
-    grid-column: 2 / 6;
-    margin-top: 50px;
-    border-left: 1px solid #000;
-    padding-left: 20px;
+.main-title em { font-style: italic; font-weight: 400; }
+
+.tag {
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* Bloque Manifiesto Asimétrico */
+.manifesto-block {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 100px;
+}
+
+.text-content {
+    max-width: 400px;
+    padding-top: 100px;
 }
 
 .story-title {
     font-family: 'Bodoni Moda', serif;
-    font-size: 3rem;
-    font-style: italic;
+    font-size: 3.5rem;
+    line-height: 0.9;
+}
+
+.side-img-wrapper {
+    width: 40%;
+}
+
+.side-img-wrapper img {
+    width: 100%;
+    filter: grayscale(100%);
 }
