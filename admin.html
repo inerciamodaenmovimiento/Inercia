@@ -6,220 +6,120 @@
     <title>myGESTIÓN PRO | INERCIA MODA</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --black: #000; --white: #fff; --gray: #f4f4f4; --border: #e0e0e0; --accent: #555; --safe: #2e7d32; --warn: #ef6c00; --red: #c62828; --blue: #1565c0; --gold: #b8860b; }
+        :root { --black: #000; --white: #fff; --gray: #f4f4f4; --border: #e0e0e0; --safe: #2e7d32; --red: #c62828; --gold: #b8860b; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--gray); display: flex; min-height: 100vh; color: var(--black); }
+        body { font-family: 'Inter', sans-serif; background: var(--gray); display: flex; min-height: 100vh; }
 
-        /* 1. SEGURIDAD Y ACCESO */
+        /* LOGIN */
         #lock-screen { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        .ssl-badge { font-size: 9px; color: var(--safe); letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; }
         #lock-screen input { border: none; border-bottom: 2px solid var(--black); font-size: 2.5rem; text-align: center; outline: none; width: 220px; padding: 10px; }
 
-        /* 2. SIDEBAR */
+        /* SIDEBAR */
         sidebar { width: 260px; background: var(--black); color: #fff; padding: 40px 20px; position: fixed; height: 100vh; z-index: 1000; }
         .brand-admin { font-size: 1.2rem; font-weight: 700; letter-spacing: 3px; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .role-badge { font-size: 9px; color: var(--safe); letter-spacing: 1px; margin-bottom: 30px; display: block; border: 1px solid var(--safe); padding: 4px; width: fit-content; }
-        .nav-item { color: #888; text-decoration: none; font-size: 11px; margin-bottom: 20px; letter-spacing: 1.5px; cursor: pointer; display: block; text-transform: uppercase; transition: 0.3s; }
+        .nav-item { color: #888; text-decoration: none; font-size: 11px; margin-bottom: 20px; letter-spacing: 1.5px; cursor: pointer; display: block; text-transform: uppercase; }
         .nav-item:hover, .nav-item.active { color: #fff; }
 
-        /* 3. CONTENEDOR PRINCIPAL */
+        /* MAIN CONTENT */
         main { flex: 1; margin-left: 260px; padding: 50px; display: none; }
-        .card { background: #fff; padding: 30px; border: 1px solid var(--border); margin-bottom: 25px; position: relative; }
-        h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: var(--accent); border-bottom: 1px solid var(--gray); padding-bottom: 10px; }
+        .card { background: #fff; padding: 30px; border: 1px solid var(--border); margin-bottom: 25px; }
+        h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid var(--gray); padding-bottom: 10px; }
 
-        /* 4. FORMULARIOS Y VARIANTES */
+        /* FORMULARIOS */
         .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #999; }
         input, select, textarea { padding: 12px; border: 1px solid var(--border); font-size: 13px; outline: none; background: #fff; }
+        
         .variant-row { display: grid; grid-template-columns: 1fr 1fr 80px 1fr; gap: 10px; margin-bottom: 10px; }
-
-        /* 5. MULTIMEDIA (Carga Masiva) */
-        .dropzone { border: 2px dashed var(--border); padding: 30px; text-align: center; color: #aaa; cursor: pointer; font-size: 11px; }
         .preview-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 15px; }
         .preview-box { aspect-ratio: 2/3; background: #eee; object-fit: cover; width: 100%; border: 1px solid var(--border); }
 
-        /* 6. TABLAS (Pedidos, Clientes, Inventario) */
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; font-size: 9px; text-transform: uppercase; padding: 12px; border-bottom: 2px solid var(--black); }
-        td { padding: 15px 12px; font-size: 12px; border-bottom: 1px solid #eee; line-height: 1.4; }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase; }
-        .st-low { background: #ffebee; color: var(--red); }
-        .st-ok { background: #e8f5e9; color: var(--safe); }
-
-        /* 7. DASHBOARD & ANALYTICS */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: var(--black); color: #fff; padding: 20px; }
-        .stat-val { font-size: 1.5rem; font-weight: 700; margin-top: 5px; }
-
-        /* 8. BOTONES */
         .btn-black { background: var(--black); color: #fff; border: none; padding: 18px; width: 100%; font-weight: 600; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
-        .btn-outline { background: none; border: 1px dashed var(--black); padding: 10px; cursor: pointer; font-size: 10px; width: 100%; margin-top: 10px; }
+        .btn-black:disabled { background: #666; cursor: wait; }
     </style>
 </head>
 <body>
 
-    <!-- BLOQUEO / ROLES -->
     <div id="lock-screen">
-        <span class="ssl-badge">🔒 AES-256 BIT ENCRYPTED / RGPD COMPLIANT</span>
         <input type="password" id="secret-key" placeholder="••••">
     </div>
 
-    <!-- SIDEBAR -->
     <sidebar>
         <div class="brand-admin">myGESTIÓN</div>
-        <div id="role-display" class="role-badge">MODO: RESTRINGIDO</div>
-        
-        <div class="nav-item role-admin" onclick="showSection('dash')">Cuadro de Mando</div>
-        <div class="nav-item role-admin role-editor" onclick="showSection('nuevo')">Carga & Variantes</div>
-        <div class="nav-item role-admin role-logistica" onclick="showSection('inventario')">Control Stock Live</div>
-        <div class="nav-item role-admin role-logistica" onclick="showSection('pedidos')">Pedidos & Envíos</div>
-        <div class="nav-item role-admin" onclick="showSection('mkt')">Marketing & SEO</div>
-        <div class="nav-item role-admin" onclick="showSection('config')">Pagos & Seguridad</div>
+        <div class="nav-item active" onclick="showSection('nuevo')">Carga & Variantes</div>
+        <div class="nav-item" onclick="showSection('pedidos')">Pedidos & Clientes</div>
     </sidebar>
 
     <main id="admin-content">
-        <!-- SECCIÓN 1: DASHBOARD -->
-        <section id="section-dash" class="admin-section">
-            <div class="stats-grid">
-                <div class="stat-card"><p>Ventas Hoy</p><div class="stat-val">$45.200</div></div>
-                <div class="stat-card"><p>Pedidos</p><div class="stat-val">12</div></div>
-                <div class="stat-card"><p>Margen Bruto</p><div class="stat-val">68%</div></div>
-                <div class="stat-card" style="background:var(--red);"><p>Abandonados</p><div class="stat-val">4</div></div>
-            </div>
-            <div class="card"><h2>Tendencias de Moda: Más Vendidos</h2><p style="font-size:12px; color:#777;">Blazer Movimiento Negro (Talla M) - 45 unidades este mes.</p></div>
-        </section>
-
-        <!-- SECCIÓN 2: CARGA EDITORIAL, VARIANTES Y MULTIMEDIA -->
-        <section id="section-nuevo" class="admin-section" style="display:none;">
+        <section id="section-nuevo" class="admin-section">
             <div class="card">
-                <h2>1. Clasificación & Categorización</h2>
-                <div style="display:flex; gap:10px; margin-bottom:20px;">
-                    <input type="text" id="new-cat" placeholder="Nueva Categoría Personalizada...">
-                    <button class="btn-black" style="width:120px; padding:10px;" onclick="addCategory()">+ ADD</button>
-                </div>
+                <h2>Carga de Producto</h2>
                 <div class="grid-form">
-                    <div class="input-group"><label>Categoría</label><select id="p-cat"><option>Nueva Temporada</option></select></div>
-                    <div class="input-group"><label>Colección / Temporada</label><input type="text" placeholder="Ej: Invierno 2026"></div>
+                    <div class="input-group"><label>Categoría</label><select id="p-cat"><option>General</option></select></div>
+                    <div class="input-group"><label>Nombre</label><input type="text" id="p-nombre"></div>
                 </div>
-                <div class="input-group"><label>Historia de la Prenda (Editorial)</label><textarea rows="3" placeholder="Escribe el alma de este diseño..."></textarea></div>
+                <div class="input-group"><label>Descripción Editorial</label><textarea id="p-desc" rows="3"></textarea></div>
             </div>
+
             <div class="card">
-                <h2>2. Variantes & Stock</h2>
+                <h2>Variantes (Talla/Color/Stock)</h2>
                 <div id="v-container">
                     <div class="variant-row">
-                        <input type="text" placeholder="Talla"><input type="text" placeholder="Color"><input type="number" placeholder="Stock"><input type="text" placeholder="Material">
+                        <input type="text" placeholder="Talla" class="v-talla">
+                        <input type="text" placeholder="Color" class="v-color">
+                        <input type="number" placeholder="Stock" class="v-stock">
+                        <input type="text" placeholder="Material" class="v-material">
                     </div>
                 </div>
-                <button class="btn-outline" onclick="addVariantRow()">+ AÑADIR VARIANTE</button>
+                <button onclick="addVariantRow()" style="margin-bottom:20px; cursor:pointer;">+ Añadir Fila</button>
             </div>
+
             <div class="card">
-                <h2>3. Carga Masiva Multimedia (Múltiples Ángulos)</h2>
-                <div class="dropzone" onclick="document.getElementById('f-input').click()">CLIC PARA CARGA MASIVA DE ALTA CALIDAD</div>
-                <input type="file" id="f-input" multiple style="display:none;" onchange="previewImages(event)">
+                <h2>Multimedia (Fotos de Campaña)</h2>
+                <input type="file" id="f-input" multiple onchange="previewImages(event)">
                 <div id="p-grid" class="preview-grid"></div>
             </div>
-            <button class="btn-black">PUBLICAR EN INERCIA MODA</button>
-        </section>
 
-        <!-- SECCIÓN 3: PEDIDOS & DATOS DE CLIENTES (DNI/Dirección) -->
-        <section id="section-pedidos" class="admin-section" style="display:none;">
-            <div class="card">
-                <h2>Gestión de Pedidos & Logística</h2>
-                <table>
-                    <thead><tr><th>ID</th><th>Cliente & DNI</th><th>Dirección de Envío</th><th>Estado</th></tr></thead>
-                    <tbody>
-                        <tr>
-                            <td>#IN-4592</td>
-                            <td><strong>Martina Rossi</strong><br>DNI: 38.123.456<br>Tel: 11-2233-4455</td>
-                            <td>Av. Rivadavia 1234, 5to C, CP 1406, CABA</td>
-                            <td><span class="badge" style="background:#fff3e0; color:#ef6c00;">PENDIENTE</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 4: MARKETING & SEO -->
-        <section id="section-mkt" class="admin-section" style="display:none;">
-            <div class="card">
-                <h2>SEO (Google Optimization)</h2>
-                <div class="input-group"><label>Meta Título</label><input type="text" id="seo-t" oninput="updateSEO()"></div>
-                <div class="input-group"><label>Meta Descripción</label><textarea rows="2" id="seo-d" oninput="updateSEO()"></textarea></div>
-                <div style="background:#f9f9f9; padding:15px; border:1px solid #eee; margin-top:10px;">
-                    <p style="color:#1a0dab;" id="pre-t">Título SEO</p>
-                    <p style="color:#006621; font-size:11px;">https://inercia.moda</p>
-                    <p style="color:#545454; font-size:12px;" id="pre-d">Descripción...</p>
-                </div>
-            </div>
-            <div class="card" style="border-left:4px solid var(--gold);">
-                <h2>Cupones & Rebajas</h2>
-                <div class="grid-form"><input type="text" placeholder="Código (EJ: INERCIA20)"><input type="number" placeholder="% Descuento"></div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 5: PAGOS & SEGURIDAD -->
-        <section id="section-config" class="admin-section" style="display:none;">
-            <div class="card">
-                <h2>Configuración Financiera</h2>
-                <div class="input-group"><label>Alias / CBU para Transferencias</label><textarea rows="2"></textarea></div>
-                <div class="input-group"><label>API Key (Stripe / MercadoPago)</label><input type="password"></div>
-            </div>
-            <div class="card"><h2>Protección de Datos</h2><p style="font-size:11px; color:var(--safe);">SSL 256-bit y cumplimiento de RGPD activos.</p></div>
+            <button class="btn-black" id="btn-save">PUBLICAR EN INERCIA MODA</button>
         </section>
     </main>
 
-    <script>
-        // SEGURIDAD & ROLES (0110: Admin | 2222: Logística | 3333: Editor)
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getFirestore, collection, addDoc } from "https://gstatic.com";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://gstatic.com";
+
+        // CONFIGURACIÓN DE TU FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
+            authDomain: "://firebaseapp.com",
+            projectId: "incerciamoda",
+            storageBucket: "incerciamoda.firebasestorage.app",
+            messagingSenderId: "335158123341",
+            appId: "1:335158123341:web:2722e74538e808321a7504"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        let selectedFiles = [];
+
+        // ACCESO 0110
         document.getElementById('secret-key').addEventListener('input', (e) => {
-            const key = e.target.value;
-            const role = document.getElementById('role-display');
-            if(['0110', '2222', '3333'].includes(key)) {
+            if(e.target.value === '0110') {
                 document.getElementById('lock-screen').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
-                role.innerText = key === '0110' ? "ROL: ADMINISTRADOR" : (key === '2222' ? "ROL: LOGÍSTICA" : "ROL: EDITOR");
-                if(key !== '0110') applyPermissions(key);
             }
         });
 
-        function applyPermissions(key) {
-            const items = document.querySelectorAll('.nav-item');
-            items.forEach(i => {
-                if(key === '2222' && !i.classList.contains('role-logistica')) i.style.display = 'none';
-                if(key === '3333' && !i.classList.contains('role-editor')) i.style.display = 'none';
-            });
-        }
-
-        // NAVEGACIÓN
-        window.showSection = (id) => {
-            document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
-            document.getElementById('section-' + id).style.display = 'block';
-        };
-
-        // CATEGORÍAS
-        window.addCategory = () => {
-            const val = document.getElementById('new-cat').value;
-            if(val) {
-                const opt = document.createElement('option');
-                opt.text = val;
-                document.getElementById('p-cat').add(opt);
-                document.getElementById('new-cat').value = '';
-            }
-        };
-
-        // VARIANTES
-        window.addVariantRow = () => {
-            const row = document.querySelector('.variant-row').cloneNode(true);
-            row.querySelectorAll('input').forEach(i => i.value = '');
-            document.getElementById('v-container').appendChild(row);
-        };
-
-        // MULTIMEDIA PREVIEW
+        // PREVIEW DE IMÁGENES
         window.previewImages = (e) => {
+            selectedFiles = Array.from(e.target.files);
             const grid = document.getElementById('p-grid');
-            const files = e.target.files;
             grid.innerHTML = '';
-            Array.from(files).forEach(file => {
+            selectedFiles.forEach(file => {
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     const img = document.createElement('img');
@@ -231,11 +131,64 @@
             });
         };
 
-        // SEO PREVIEW
-        window.updateSEO = () => {
-            document.getElementById('pre-t').innerText = document.getElementById('seo-t').value || "Título SEO";
-            document.getElementById('pre-d').innerText = document.getElementById('seo-d').value || "Descripción...";
+        // AÑADIR VARIANTE
+        window.addVariantRow = () => {
+            const container = document.getElementById('v-container');
+            const row = document.querySelector('.variant-row').cloneNode(true);
+            row.querySelectorAll('input').forEach(i => i.value = '');
+            container.appendChild(row);
         };
+
+        // NAVEGACIÓN
+        window.showSection = (id) => {
+            document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
+            document.getElementById('section-' + id).style.display = 'block';
+        };
+
+        // --- ACCIÓN DE GUARDADO REAL ---
+        document.getElementById('btn-save').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-save');
+            if (selectedFiles.length === 0) return alert("Por favor, selecciona al menos una foto.");
+            
+            btn.disabled = true;
+            btn.innerText = "SUBIENDO... POR FAVOR NO CIERRES";
+
+            try {
+                // 1. Subir a Storage
+                const imageUrls = await Promise.all(selectedFiles.map(async (file) => {
+                    const sRef = ref(storage, `productos/${Date.now()}-${file.name}`);
+                    await uploadBytes(sRef, file);
+                    return getDownloadURL(sRef);
+                }));
+
+                // 2. Recoger Variantes
+                const variantes = Array.from(document.querySelectorAll('.variant-row')).map(row => ({
+                    talla: row.querySelector('.v-talla').value,
+                    color: row.querySelector('.v-color').value,
+                    stock: parseInt(row.querySelector('.v-stock').value) || 0,
+                    material: row.querySelector('.v-material').value
+                }));
+
+                // 3. Guardar en Firestore
+                await addDoc(collection(db, "productos"), {
+                    nombre: document.getElementById('p-nombre').value,
+                    categoria: document.getElementById('p-cat').value,
+                    descripcion: document.getElementById('p-desc').value,
+                    imagenes: imageUrls,
+                    variantes: variantes,
+                    timestamp: new Date()
+                });
+
+                alert("¡EXITO! Producto publicado en INERCIA MODA.");
+                location.reload();
+
+            } catch (err) {
+                console.error(err);
+                alert("Error: " + err.message);
+                btn.disabled = false;
+                btn.innerText = "PUBLICAR EN INERCIA MODA";
+            }
+        });
     </script>
 </body>
 </html>
