@@ -117,6 +117,136 @@
             document.getElementById('display-hero').innerHTML = document.getElementById('in-hero').value.replace(/\n/g, "<br>");
             document.getElementById('display-coll').innerText = document.getElementById('in-coll').value;
         }
-    </script>
+    </script><!-- MÓDULO DE GESTIÓN TIPO myGESTIÓN PARA INERCIA -->
+<script>
+    // 1. BASE DE DATOS LOCAL (Simulada)
+    let inventarioInercia = [
+        {
+            id: Date.now(),
+            nombre: "Top Estructura 01",
+            categoria: "Tops",
+            coleccion: "Primavera 2026",
+            precio: 125.00,
+            imagenes: ["https://unsplash.com"],
+            variantes: { tallas: ["S", "M", "L"], colores: ["Negro", "Crudo"], materiales: ["Lino Tech"] }
+        }
+    ];
+
+    // 2. INTERFAZ DE ADMINISTRACIÓN AVANZADA
+    const injectAdvancedAdmin = () => {
+        const adminUI = document.createElement('div');
+        adminUI.id = "myGestion-Inercia";
+        adminUI.style.cssText = `
+            position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
+            background: #fff; z-index: 10000; transition: 0.5s; overflow-y: auto;
+            font-family: 'Inter', sans-serif; padding: 40px;
+        `;
+
+        adminUI.innerHTML = `
+            <div style="max-width: 1000px; margin: 0 auto;">
+                <div style="display:flex; justify-content:space-between; border-bottom: 2px solid black; padding-bottom: 20px; margin-bottom: 40px;">
+                    <h2 style="font-weight:900; letter-spacing: -1px; font-size: 24px;">myGESTIÓN <span style="font-weight:200; opacity:0.5;">| INERCIA CONTROL</span></h2>
+                    <button onclick="closeMyGestion()" style="font-weight:bold; text-decoration: underline; cursor:pointer; background:none; border:none;">SALIR AL DISEÑO</button>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 2fr; gap: 40px;">
+                    <!-- FORMULARIO DE PRODUCTO -->
+                    <div style="background: #f9f9f9; padding: 30px; border-radius: 4px;">
+                        <h3 style="font-size:12px; font-weight:900; text-transform:uppercase; margin-bottom:20px;">Nuevo Producto / Referencia</h3>
+                        
+                        <div style="display:grid; gap:15px;">
+                            <input type="text" id="prod-name" placeholder="Nombre de la prenda" style="padding:10px; border:1px solid #ddd;">
+                            <select id="prod-cat" style="padding:10px; border:1px solid #ddd;">
+                                <option>Categoría...</option>
+                                <option>Tops</option>
+                                <option>Pantalones</option>
+                                <option>Vestidos</option>
+                                <option>Accesorios</option>
+                            </select>
+                            <input type="number" id="prod-price" placeholder="Precio ($)" style="padding:10px; border:1px solid #ddd;">
+                            
+                            <p style="font-size:10px; font-weight:bold; margin-top:10px;">VARIANTES (Tallas/Materiales)</p>
+                            <input type="text" id="prod-vars" placeholder="S, M, L / Algodón, Seda" style="padding:10px; border:1px solid #ddd;">
+
+                            <p style="font-size:10px; font-weight:bold; margin-top:10px;">CARGA MASIVA (URLs separadas por coma)</p>
+                            <textarea id="prod-imgs" placeholder="URL Imagen 1, URL Imagen 2..." style="padding:10px; border:1px solid #ddd; height:80px;"></textarea>
+                            
+                            <button onclick="saveToInventory()" style="background:black; color:white; padding:15px; font-weight:bold; border:none; cursor:pointer; margin-top:10px;">
+                                REGISTRAR EN INVENTARIO
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- VISTA DE INVENTARIO -->
+                    <div>
+                        <h3 style="font-size:12px; font-weight:900; text-transform:uppercase; margin-bottom:20px;">Listado de Stock Actual</h3>
+                        <table style="width:100%; text-align:left; border-collapse: collapse; font-size: 13px;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #000;">
+                                    <th style="padding:10px;">Referencia</th>
+                                    <th>Categoría</th>
+                                    <th>Precio</th>
+                                    <th>Variantes</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-body">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(adminUI);
+        renderInventory();
+    };
+
+    // 3. FUNCIONES DE LÓGICA
+    const renderInventory = () => {
+        const tbody = document.getElementById('inventory-body');
+        tbody.innerHTML = inventarioInercia.map(p => `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding:15px; font-weight:bold;">${p.nombre}</td>
+                <td style="opacity:0.6;">${p.categoria}</td>
+                <td>$${p.precio}</td>
+                <td style="font-size:10px;">${p.variantes.tallas.join(", ")}</td>
+                <td><button style="color:red; font-size:10px; font-weight:bold;" onclick="deleteItem(${p.id})">ELIMINAR</button></td>
+            </tr>
+        `).join('');
+    };
+
+    window.saveToInventory = () => {
+        const newItem = {
+            id: Date.now(),
+            nombre: document.getElementById('prod-name').value,
+            categoria: document.getElementById('prod-cat').value,
+            precio: document.getElementById('prod-price').value,
+            variantes: { tallas: document.getElementById('prod-vars').value.split(",") },
+            imagenes: document.getElementById('prod-imgs').value.split(",")
+        };
+        inventarioInercia.push(newItem);
+        renderInventory();
+        alert("Referencia agregada a myGESTIÓN Inercia.");
+    };
+
+    window.deleteItem = (id) => {
+        inventarioInercia = inventarioInercia.filter(i => i.id !== id);
+        renderInventory();
+    };
+
+    window.openMyGestion = () => { document.getElementById('myGestion-Inercia').style.left = "0"; };
+    window.closeMyGestion = () => { document.getElementById('myGestion-Inercia').style.left = "-100%"; };
+
+    // Inicializar el botón de acceso (puedes añadir un botón oculto o usar una combinación de teclas)
+    document.addEventListener('DOMContentLoaded', () => {
+        injectAdvancedAdmin();
+        // Para entrar al admin avanzado, puedes pulsar la tecla 'A' o llamar openMyGestion() desde consola
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'a' || e.key === 'A') openMyGestion();
+        });
+    });
+</script>
+
 </body>
 </html>
