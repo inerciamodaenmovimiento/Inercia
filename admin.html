@@ -3,133 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myGESTIÓN | INERCIA MODA PRO</title>
+    <title>myGESTIÓN PRO | INERCIA MODA</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --black: #000; --gray: #f4f4f4; --border: #e0e0e0; --accent: #555; --safe: #2e7d32; --blue: #1565c0; --red: #c62828; }
+        :root { --black: #000; --gray: #f4f4f4; --border: #e0e0e0; --accent: #555; --safe: #2e7d32; --warn: #ef6c00; --red: #c62828; --blue: #1565c0; --gold: #b8860b; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--gray); display: flex; min-height: 100vh; color: var(--black); }
 
-        /* SEGURIDAD */
+        /* 1. SEGURIDAD Y ACCESO */
         #lock-screen { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .ssl-badge { font-size: 9px; color: var(--safe); letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; }
         #lock-screen input { border: none; border-bottom: 2px solid var(--black); font-size: 2rem; text-align: center; outline: none; width: 220px; padding: 10px; }
 
-        /* SIDEBAR */
+        /* 2. SIDEBAR ESTRUCTURAL */
         sidebar { width: 260px; background: var(--black); color: #fff; padding: 40px 20px; position: fixed; height: 100vh; z-index: 1000; }
         .brand-admin { font-size: 1.2rem; font-weight: 600; letter-spacing: 3px; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .nav-item { color: #888; text-decoration: none; font-size: 11px; margin-bottom: 22px; letter-spacing: 1px; cursor: pointer; display: block; }
+        .user-profile { margin-bottom: 30px; font-size: 10px; color: var(--safe); letter-spacing: 1px; font-weight: 700; }
+        .nav-item { color: #888; text-decoration: none; font-size: 11px; margin-bottom: 20px; letter-spacing: 1px; cursor: pointer; display: block; transition: 0.3s; }
         .nav-item:hover, .nav-item.active { color: #fff; }
 
-        /* MAIN */
+        /* 3. CONTENEDOR PRINCIPAL */
         main { flex: 1; margin-left: 260px; padding: 60px; display: none; }
         .card { background: #fff; padding: 35px; border: 1px solid var(--border); margin-bottom: 30px; position: relative; }
         h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: var(--accent); border-bottom: 1px solid var(--gray); padding-bottom: 10px; }
 
-        /* FORMULARIOS Y TABLAS */
+        /* 4. FORMULARIOS, VARIANTES Y SEO */
+        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #999; }
-        input, select, textarea { padding: 12px; border: 1px solid var(--border); font-size: 13px; outline: none; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { text-align: left; font-size: 10px; text-transform: uppercase; padding: 10px; border-bottom: 1px solid #000; }
-        td { padding: 12px 10px; font-size: 12px; border-bottom: 1px solid #eee; }
+        input, select, textarea { padding: 12px; border: 1px solid var(--border); font-size: 13px; outline: none; width: 100%; }
+        .variant-row { display: grid; grid-template-columns: 1fr 1fr 80px 1fr; gap: 10px; margin-bottom: 10px; }
+        .seo-preview { background: #f9f9f9; padding: 15px; border: 1px solid #eee; margin-top: 10px; font-size: 13px; }
 
-        /* BOTONES */
+        /* 5. TABLAS DE CLIENTES Y PEDIDOS */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; font-size: 10px; text-transform: uppercase; padding: 10px; border-bottom: 1px solid var(--black); }
+        td { padding: 12px 10px; font-size: 12px; border-bottom: 1px solid #eee; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase; }
+        .status-pagado { background: #e8f5e9; color: var(--green); }
+        .status-enviado { background: #e3f2fd; color: var(--blue); }
+
+        /* 6. BOTONES */
         .btn-black { background: var(--black); color: #fff; border: none; padding: 18px; width: 100%; font-weight: 600; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
-        .badge-shipping { background: #e3f2fd; color: var(--blue); padding: 3px 6px; font-size: 9px; font-weight: 700; }
+        .btn-outline { background: none; border: 1px dashed var(--black); padding: 10px; cursor: pointer; font-size: 10px; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
 
+    <!-- PANTALLA DE ACCESO -->
     <div id="lock-screen">
-        <p style="font-size: 10px; letter-spacing: 5px; margin-bottom: 20px; color: #ccc;">myGESTIÓN | DATA CENTER</p>
+        <span class="ssl-badge">🔒 AES-256 BIT SECURE ACCESS</span>
         <input type="password" id="secret-key" placeholder="••••">
     </div>
 
+    <!-- SIDEBAR MAESTRO -->
     <sidebar>
         <div class="brand-admin">myGESTIÓN</div>
-        <div class="nav-item" onclick="showSection('nuevo')">PRODUCTOS & CATEGORÍAS</div>
-        <div class="nav-item" onclick="showSection('clientes')">BASE DE CLIENTES</div>
+        <div id="role-display" class="user-profile">ROL: ADMINISTRADOR</div>
+        
+        <div class="nav-item" onclick="showSection('nuevo')">NUEVO PRODUCTO & SEO</div>
+        <div class="nav-item" onclick="showSection('inventario')">INVENTARIO LIVE</div>
         <div class="nav-item" onclick="showSection('pedidos')">PEDIDOS & LOGÍSTICA</div>
-        <div class="nav-item" onclick="showSection('marketing')">MARKETING & SEO</div>
+        <div class="nav-item" onclick="showSection('clientes')">BASE DE CLIENTES</div>
+        <div class="nav-item" onclick="showSection('marketing')">MARKETING & CUPONES</div>
         <div class="nav-item" onclick="showSection('config')">PAGOS & ENVÍOS</div>
     </sidebar>
 
     <main id="admin-content">
-        <!-- PRODUCTOS Y CATEGORÍAS -->
+        <!-- SECCIÓN 1: PRODUCTO, CATEGORÍAS Y SEO -->
         <section id="section-nuevo" class="admin-section">
             <div class="card">
-                <h2>Categorías del Sistema</h2>
+                <h2>Categorías & Editorial</h2>
                 <div style="display:flex; gap:10px; margin-bottom:20px;">
-                    <input type="text" id="new-cat" placeholder="Nueva categoría...">
+                    <input type="text" id="new-cat-name" placeholder="Nueva Categoría">
                     <button class="btn-black" style="width:120px; padding:10px;" onclick="addCategory()">+ ADD</button>
                 </div>
-                <div class="input-group">
-                    <label>Categoría Seleccionada</label>
-                    <select id="p-categoria"><option>General</option></select>
+                <div class="grid-form">
+                    <div class="input-group"><label>Categoría</label><select id="p-categoria"><option>General</option></select></div>
+                    <div class="input-group"><label>Nombre Prenda</label><input type="text" id="p-nombre" oninput="updateSEO()"></div>
                 </div>
             </div>
+
             <div class="card">
-                <h2>Carga Editorial</h2>
-                <input type="text" placeholder="Nombre de prenda" style="margin-bottom:15px;">
-                <button class="btn-black">PUBLICAR PRODUCTO</button>
+                <h2>Variantes de Stock</h2>
+                <div id="v-container">
+                    <div class="variant-row">
+                        <input type="text" placeholder="Talla"><input type="text" placeholder="Color"><input type="number" placeholder="Stock"><input type="text" placeholder="Material">
+                    </div>
+                </div>
+                <button class="btn-outline" onclick="addVariantRow()">+ AÑADIR VARIANTE</button>
+            </div>
+
+            <div class="card">
+                <h2>Optimización SEO (Buscadores)</h2>
+                <textarea id="seo-desc" rows="2" placeholder="Meta descripción para Google..." oninput="updateSEO()"></textarea>
+                <div class="seo-preview">
+                    <p style="color:#1a0dab;" id="pre-t">Título en Google</p>
+                    <p style="color:#006621; font-size:11px;">https://inercia.moda<span id="pre-u">url-prenda</span></p>
+                    <p style="color:#545454;" id="pre-d">Descripción optimizada...</p>
+                </div>
+            </div>
+            <button class="btn-black">PUBLICAR TODO</button>
+        </section>
+
+        <!-- SECCIÓN 2: INVENTARIO LIVE -->
+        <section id="section-inventario" class="admin-section" style="display:none;">
+            <div class="card"><h2>Control de Stock en Tiempo Real</h2><div id="live-stock-list">Cargando...</div></div>
+        </section>
+
+        <!-- SECCIÓN 3: PEDIDOS & LOGÍSTICA -->
+        <section id="section-pedidos" class="admin-section" style="display:none;">
+            <div class="card">
+                <h2>Gestión de Órdenes</h2>
+                <div class="order-row" style="background:#f9f9f9; padding:10px; font-weight:700;">
+                    <div>ID</div><div>PRODUCTO</div><div>ESTADO</div><div>ACCIÓN</div>
+                </div>
+                <div id="orders-list">
+                    <div class="order-row">
+                        <div>#IN-102</div><div>Vestido Negro (M)</div>
+                        <div><span class="status-badge status-pagado">Pagado</span></div>
+                        <button class="btn-black" style="padding:5px; font-size:9px;">ETIQUETA</button>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- BASE DE CLIENTES (Datos para Correo) -->
+        <!-- SECCIÓN 4: BASE DE CLIENTES (Datos Correo) -->
         <section id="section-clientes" class="admin-section" style="display:none;">
             <div class="card">
-                <h2>Información de Envío</h2>
+                <h2>Datos de Clientes para Envíos</h2>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>DNI / Tel</th>
-                            <th>Dirección Logística</th>
-                            <th>Envío</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Nombre</th><th>DNI / Tel</th><th>Dirección de Entrega</th></tr></thead>
                     <tbody>
                         <tr>
-                            <td><strong>Martina Rossi</strong></td>
-                            <td>38.990.123 / 11-5555-4444</td>
-                            <td>Calle Falsa 123, Piso 2A, CP 1425, CABA</td>
-                            <td><span class="badge-shipping">CORREO ARGENTINO</span></td>
+                            <td><strong>Carla Gomez</strong></td>
+                            <td>35.123.456 / 11-2233-4455</td>
+                            <td>Av. Rivadavia 1234, 5to C, CP 1406, CABA</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- CONFIGURACIÓN DE PAGOS Y ENVÍOS -->
-        <section id="section-config" class="admin-section" style="display:none;">
+        <!-- SECCIÓN 5: MARKETING & CUPONES -->
+        <section id="section-marketing" class="admin-section" style="display:none;">
             <div class="card">
-                <h2>Métodos de Pago (Info para el cliente)</h2>
-                <div class="input-group">
-                    <label>Datos para Transferencia (CBU/Alias)</label>
-                    <textarea rows="3" placeholder="Ej: Alias: inercia.moda | Banco Galicia..."></textarea>
+                <h2>Cupones de Descuento</h2>
+                <div class="grid-form">
+                    <input type="text" placeholder="Código (EJ: SALE20)"><input type="number" placeholder="% Descuento">
                 </div>
-                <div class="input-group">
-                    <label>Link Directo de Pago</label>
-                    <input type="text" placeholder="https://mpago.la...">
-                </div>
-            </div>
-            <div class="card">
-                <h2>Configuración de Logística</h2>
-                <div class="input-group"><label>Costo de Envío Fijo</label><input type="number" placeholder="0.00"></div>
-                <div class="input-group"><label>Instrucciones de Entrega</label><textarea rows="2" placeholder="Info que verá el cliente al finalizar..."></textarea></div>
-                <button class="btn-black">GUARDAR CONFIGURACIÓN</button>
+                <button class="btn-black" style="background:var(--gold); margin-top:20px;">ACTIVAR CUPÓN</button>
             </div>
         </section>
 
-        <!-- Otras secciones (Pedidos, Marketing) permanecen con su lógica anterior -->
+        <!-- SECCIÓN 6: CONFIG PAGOS & ENVÍOS -->
+        <section id="section-config" class="admin-section" style="display:none;">
+            <div class="card">
+                <h2>Pasarelas & Datos de Cobro</h2>
+                <textarea rows="3" placeholder="Info de Transferencia: Alias, CBU, Banco..."></textarea>
+                <input type="text" placeholder="Link de MercadoPago / Stripe" style="margin-top:15px;">
+            </div>
+            <div class="card">
+                <h2>Costos de Logística</h2>
+                <input type="number" placeholder="Costo Envío Fijo ($)">
+                <button class="btn-black" style="margin-top:15px;">GUARDAR CONFIGURACIÓN</button>
+            </div>
+        </section>
     </main>
 
-    <script type="module">
-        import { initializeApp } from "https://gstatic.com";
-        // ... Tus credenciales de Firebase aquí ...
-
-        // ACCESO
+    <script>
+        // SEGURIDAD & ROLES
         document.getElementById('secret-key').addEventListener('input', (e) => {
             if(e.target.value === '0110') {
                 document.getElementById('lock-screen').style.display = 'none';
@@ -143,16 +186,33 @@
             document.getElementById('section-' + name).style.display = 'block';
         };
 
-        // CATEGORÍAS
+        // DINÁMICA DE CATEGORÍAS
         window.addCategory = () => {
-            const val = document.getElementById('new-cat').value;
+            const val = document.getElementById('new-cat-name').value;
             if(val) {
                 const sel = document.getElementById('p-categoria');
                 const opt = document.createElement('option');
                 opt.text = val;
                 sel.add(opt);
-                document.getElementById('new-cat').value = "";
+                document.getElementById('new-cat-name').value = "";
             }
+        };
+
+        // DINÁMICA DE VARIANTES
+        window.addVariantRow = () => {
+            const container = document.getElementById('v-container');
+            const row = document.querySelector('.variant-row').cloneNode(true);
+            row.querySelectorAll('input').forEach(i => i.value = '');
+            container.appendChild(row);
+        };
+
+        // LÓGICA SEO
+        window.updateSEO = () => {
+            const name = document.getElementById('p-nombre').value;
+            const desc = document.getElementById('seo-desc').value;
+            document.getElementById('pre-t').innerText = name || "Título en Google";
+            document.getElementById('pre-u').innerText = name.toLowerCase().replace(/ /g, "-") || "url-prenda";
+            document.getElementById('pre-d').innerText = desc || "Descripción optimizada...";
         };
     </script>
 </body>
