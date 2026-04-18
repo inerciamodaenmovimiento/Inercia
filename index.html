@@ -3,147 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Shop Editorial</title>
-    <!-- Tailwind CSS -->
+    <title>INERCIA | Moda en Movimiento</title>
     <script src="https://tailwindcss.com"></script>
-    <!-- React y Babel (Carga Segura) -->
-    <script src="https://cloudflare.com"></script>
-    <script src="https://cloudflare.com"></script>
-    <script src="https://cloudflare.com"></script>
-    <!-- Google Fonts -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #000; margin: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #000; overflow-x: hidden; }
         .serif { font-family: 'Playfair Display', serif; }
-        .magazine-line { height: 1px; background-color: #000; width: 100%; transform: scaleY(0.5); }
-        .product-card:hover img { transform: scale(1.05); }
-        /* Animación simple para que no cargue en blanco */
-        #root:empty { background: white; width: 100vw; height: 100vh; }
+        .line { height: 1px; background: black; width: 100%; opacity: 0.1; }
+        /* Panel Admin */
+        #adminPanel { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        #adminPanel.open { transform: translateX(0); }
+        .img-container:hover img { transform: scale(1.05); }
     </style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState } = React;
+    <!-- NAVEGACIÓN -->
+    <nav class="flex justify-between items-center px-6 md:px-12 py-10 sticky top-0 bg-white z-40">
+        <div class="flex flex-col">
+            <span id="label_collection" class="text-[9px] tracking-[0.5em] font-bold uppercase opacity-50">Colección 2026</span>
+            <h1 id="label_brand" class="text-3xl font-black tracking-tighter leading-none">INERCIA</h1>
+        </div>
+        <div class="flex items-center gap-8 text-[11px] uppercase tracking-widest font-semibold">
+            <a href="#" class="hover:opacity-40 transition">Colecciones</a>
+            <a href="#" class="hover:opacity-40 transition">Inercia World</a>
+            <button onclick="toggleAdmin()" class="bg-black text-white px-4 py-2 text-[9px] hover:bg-gray-800 transition">Configurar</button>
+            <div class="relative cursor-pointer">Cesta (0)</div>
+        </div>
+    </nav>
 
-        const App = () => {
-            const [isAdmin, setIsAdmin] = useState(false);
-            const [config, setConfig] = useState({
-                brand: "INERCIA",
-                collection: "COLECCIÓN 2026",
-                heroTitle: "Moda en Movimiento",
-                theme: "Minimalismo Cinético"
-            });
+    <div class="line mx-6 md:mx-12"></div>
 
-            const products = [
-                { id: 1, name: "Top Estructura 01", price: "120€", img: "https://unsplash.com" },
-                { id: 2, name: "Pantalón Fluidez", price: "185€", img: "https://unsplash.com" },
-                { id: 3, name: "Vestido Inercia", price: "240€", img: "https://unsplash.com" },
-                { id: 4, name: "Abrigo Editorial", price: "450€", img: "https://unsplash.com" }
-            ];
+    <!-- HERO / PORTADA REVISTA -->
+    <header class="grid grid-cols-1 md:grid-cols-12 gap-10 p-6 md:p-12 items-center">
+        <div class="md:col-span-5 order-2 md:order-1">
+            <h2 id="label_hero" class="serif italic text-6xl md:text-[100px] leading-[0.9] mb-8">Moda en Movimiento</h2>
+            <p class="text-sm leading-relaxed max-w-xs opacity-60 mb-10">
+                La estética de la velocidad capturada en telas premium. Inercia no es solo ropa, es el impulso constante del diseño contemporáneo.
+            </p>
+            <button class="border border-black px-12 py-4 text-[10px] uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-all duration-500">
+                Ver Lookbook
+            </button>
+        </div>
+        <div class="md:col-span-7 order-1 md:order-2">
+            <div class="aspect-[16/9] overflow-hidden bg-gray-100">
+                <img src="https://unsplash.com" class="w-full h-full object-cover grayscale" alt="Inercia Hero">
+            </div>
+        </div>
+    </header>
 
-            return (
-                <div className="min-h-screen">
-                    {/* NAV ESTILO REVISTA */}
-                    <nav className="p-6 md:p-10 flex justify-between items-center bg-white sticky top-0 z-40">
-                        <div className="flex flex-col">
-                            <span className="text-[10px] tracking-[0.4em] font-bold uppercase">{config.collection}</span>
-                            <h1 className="text-3xl font-black tracking-tighter leading-none">{config.brand}</h1>
-                        </div>
-                        <div className="flex items-center gap-8 text-[11px] uppercase tracking-widest font-semibold">
-                            <a href="#" className="hidden md:block hover:opacity-50">Tienda</a>
-                            <a href="#" className="hidden md:block hover:opacity-50">Editorial</a>
-                            <button onClick={() => setIsAdmin(!isAdmin)} className="bg-black text-white px-4 py-2 text-[9px]">Admin</button>
-                            <div className="relative">
-                                <span>Cesta (0)</span>
-                            </div>
-                        </div>
-                    </nav>
+    <!-- GRILLA EDITORIAL DE PRODUCTOS -->
+    <section class="p-6 md:p-12 mt-20">
+        <div class="flex justify-between items-baseline mb-16">
+            <h3 class="serif text-4xl italic">Piezas Seleccionadas</h3>
+            <span class="text-[10px] tracking-widest opacity-40 uppercase">Inercia Ltd. Ed.</span>
+        </div>
 
-                    <div className="magazine-line mx-6 md:mx-10"></div>
-
-                    {/* HERO / PORTADA */}
-                    <header className="p-6 md:p-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-                        <div className="md:col-span-5 order-2 md:order-1">
-                            <h2 className="serif italic text-6xl md:text-8xl leading-none mb-6">
-                                {config.heroTitle}
-                            </h2>
-                            <p className="text-sm leading-relaxed max-w-xs opacity-70 mb-8">
-                                Una exploración táctil sobre el cuerpo y la tela. Diseñado para perdurar, creado para moverse.
-                            </p>
-                            <button className="border-b-2 border-black pb-1 text-xs font-bold uppercase tracking-widest hover:opacity-50 transition">
-                                Comprar la Edición
-                            </button>
-                        </div>
-                        <div className="md:col-span-7 order-1 md:order-2">
-                            <div className="aspect-[16/9] bg-gray-100 overflow-hidden">
-                                <img src="https://unsplash.com" className="w-full h-full object-cover grayscale" />
-                            </div>
-                        </div>
-                    </header>
-
-                    {/* GRILLA DE PRODUCTOS - ESTILO LOOKBOOK */}
-                    <section className="p-6 md:p-10 mt-10">
-                        <div className="flex justify-between items-end mb-12">
-                            <h3 className="serif text-3xl italic">Catálogo de Movimiento</h3>
-                            <span className="text-[10px] opacity-50 uppercase tracking-widest">Desliza para explorar</span>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-                            {products.map((p, index) => (
-                                <div key={p.id} className={`product-card group cursor-pointer ${index % 2 !== 0 ? 'md:mt-20' : ''}`}>
-                                    <div className="aspect-[3/4] bg-gray-50 overflow-hidden mb-4 relative border border-black/5">
-                                        <img src={p.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out" />
-                                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <span className="text-white text-[10px] tracking-widest uppercase font-bold border border-white p-3">Añadir</span>
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <h4 className="text-[11px] uppercase font-bold tracking-widest">{p.name}</h4>
-                                            <p className="text-[10px] opacity-50 uppercase mt-1">Pre-order</p>
-                                        </div>
-                                        <span className="serif italic text-sm">{p.price}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
-                    {/* ADMINISTRADOR (SIDEBAR) */}
-                    {isAdmin && (
-                        <div className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-50 p-10 border-l border-black animate-in slide-in-from-right">
-                            <div className="flex justify-between items-center mb-12">
-                                <h5 className="font-bold text-[10px] uppercase tracking-widest">Configuración CMS</h5>
-                                <button onClick={() => setIsAdmin(false)} className="text-2xl">&times;</button>
-                            </div>
-                            <div className="space-y-8">
-                                <div>
-                                    <label className="text-[9px] uppercase opacity-40 block mb-2 font-bold">Marca</label>
-                                    <input className="w-full border-b border-black py-2 outline-none text-sm" value={config.brand} onChange={(e) => setConfig({...config, brand: e.target.value.toUpperCase()})} />
-                                </div>
-                                <div>
-                                    <label className="text-[9px] uppercase opacity-40 block mb-2 font-bold">Colección</label>
-                                    <input className="w-full border-b border-black py-2 outline-none text-sm" value={config.collection} onChange={(e) => setConfig({...config, collection: e.target.value.toUpperCase()})} />
-                                </div>
-                                <div>
-                                    <label className="text-[9px] uppercase opacity-40 block mb-2 font-bold">Título Portada</label>
-                                    <input className="w-full border-b border-black py-2 outline-none text-sm serif italic" value={config.heroTitle} onChange={(e) => setConfig({...config, heroTitle: e.target.value})} />
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    <footer className="p-10 mt-20 border-t border-black text-center">
-                        <p className="text-[10px] tracking-[0.5em] uppercase opacity-50">© 2026 INERCIA - Hecho para durar</p>
-                    </footer>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-24">
+            <!-- Producto 1 -->
+            <div class="group cursor-pointer">
+                <div class="img-container aspect-[3/4] overflow-hidden mb-6 bg-gray-50 border border-black/5">
+                    <img src="https://unsplash.com" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000">
                 </div>
-            );
-        };
+                <div class="flex justify-between items-start">
+                    <h4 class="text-[11px] uppercase font-bold tracking-tighter">Top Cinético V1</h4>
+                    <span class="serif italic text-sm">$145.00</span>
+                </div>
+            </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+            <!-- Producto 2 (Desplazado para efecto revista) -->
+            <div class="group cursor-pointer md:mt-24">
+                <div class="img-container aspect-[3/4] overflow-hidden mb-6 bg-gray-50 border border-black/5">
+                    <img src="https://unsplash.com" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000">
+                </div>
+                <div class="flex justify-between items-start">
+                    <h4 class="text-[11px] uppercase font-bold tracking-tighter">Pantalón de Vuelo</h4>
+                    <span class="serif italic text-sm">$210.00</span>
+                </div>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="group cursor-pointer">
+                <div class="img-container aspect-[3/4] overflow-hidden mb-6 bg-gray-50 border border-black/5">
+                    <img src="https://unsplash.com" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000">
+                </div>
+                <div class="flex justify-between items-start">
+                    <h4 class="text-[11px] uppercase font-bold tracking-tighter">Vestido Inercia Black</h4>
+                    <span class="serif italic text-sm">$320.00</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANEL DE ADMINISTRADOR (LATERAL) -->
+    <div id="adminPanel" class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-50 p-10 border-l border-black">
+        <div class="flex justify-between items-center mb-16">
+            <h5 class="font-black text-[12px] uppercase tracking-widest text-gray-400">Editor de Marca</h5>
+            <button onclick="toggleAdmin()" class="text-3xl">&times;</button>
+        </div>
+        
+        <div class="space-y-10">
+            <div>
+                <label class="text-[9px] uppercase font-bold opacity-30 block mb-3">Nombre de la Marca</label>
+                <input id="input_brand" type="text" class="w-full border-b border-black py-2 outline-none text-sm font-bold" value="INERCIA" oninput="updateConfig()">
+            </div>
+            <div>
+                <label class="text-[9px] uppercase font-bold opacity-30 block mb-3">Título Principal</label>
+                <textarea id="input_hero" class="w-full border-b border-black py-2 outline-none text-sm serif italic" rows="2" oninput="updateConfig()">Moda en Movimiento</textarea>
+            </div>
+            <div>
+                <label class="text-[9px] uppercase font-bold opacity-30 block mb-3">Colección</label>
+                <input id="input_collection" type="text" class="w-full border-b border-black py-2 outline-none text-sm" value="Colección 2026" oninput="updateConfig()">
+            </div>
+        </div>
+
+        <div class="mt-20 p-6 bg-gray-50 rounded text-[9px] uppercase leading-relaxed opacity-50 border border-black/5">
+            Los cambios se reflejan en tiempo real en el diseño de tu revista digital.
+        </div>
+    </div>
+
+    <footer class="p-12 mt-40 border-t border-black/5 text-center">
+        <p class="text-[10px] tracking-[0.6em] uppercase opacity-30">© 2026 INERCIA MODA - Editorial Online</p>
+    </footer>
+
+    <script>
+        function toggleAdmin() {
+            document.getElementById('adminPanel').classList.toggle('open');
+        }
+
+        function updateConfig() {
+            // Actualizar textos en tiempo real
+            const brand = document.getElementById('input_brand').value;
+            const hero = document.getElementById('input_hero').value;
+            const collection = document.getElementById('input_collection').value;
+
+            document.getElementById('label_brand').innerText = brand;
+            document.getElementById('label_hero').innerText = hero;
+            document.getElementById('label_collection').innerText = collection;
+        }
     </script>
 </body>
 </html>
