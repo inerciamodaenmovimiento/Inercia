@@ -1,119 +1,129 @@
-body {
-    background-color: #fff;
-    color: #000;
+/* 1. RESET CRÍTICO */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000;
     font-family: 'Inter', sans-serif;
+    line-height: 1.4;
     overflow-x: hidden;
 }
 
-/* Marca de agua gigante de fondo */
-.bg-watermark {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Bodoni Moda', serif;
-    font-size: 25vw;
-    font-weight: 900;
-    color: rgba(0,0,0,0.03);
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* Header Editorial */
+/* 2. HEADER */
 .main-header {
-    padding: 40px 5%;
+    padding: 60px 5%;
     text-align: center;
 }
 
 .logo {
     font-family: 'Bodoni Moda', serif;
-    font-size: clamp(3rem, 10vw, 8rem);
+    font-size: clamp(3rem, 12vw, 9rem);
     font-weight: 900;
-    letter-spacing: -5px;
+    letter-spacing: -6px;
+    line-height: 1;
     margin-bottom: 20px;
 }
 
-nav a {
-    text-decoration: none;
-    color: #000;
-    margin: 0 15px;
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-    font-weight: 600;
+.editorial-nav {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 15px 0;
 }
 
-/* Layout de Revista */
-.editorial-container {
+.editorial-nav a {
+    text-decoration: none;
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    margin: 0 20px;
+}
+
+/* 3. LAYOUT ASIMÉTRICO */
+.magazine-layout {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 5% 100px;
 }
 
-.hero-block {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    align-items: center;
+.hero-section {
+    display: flex;
+    flex-direction: column;
     position: relative;
+    margin-top: 50px;
 }
 
-.main-img-wrapper {
-    grid-column: 1 / 9;
-}
-
-.main-img-wrapper img {
+.image-wrapper img {
     width: 100%;
+    height: auto;
     filter: grayscale(100%);
+    display: block;
 }
 
-/* Texto que pisa la imagen */
-.hero-text {
-    grid-column: 7 / 13;
+.main-photo {
+    width: 75%;
+    z-index: 1;
+}
+
+/* El bloque de texto que pisa la foto */
+.hero-text-block {
     background: #fff;
     padding: 40px;
+    width: 50%;
+    align-self: flex-end;
+    margin-top: -150px; /* Sube para pisar la foto */
     z-index: 2;
-    margin-left: -50px; /* Aquí sucede el efecto de la foto de Jennie */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
 }
 
-.main-title {
+.title-xl {
     font-family: 'Bodoni Moda', serif;
-    font-size: 4rem;
-    line-height: 0.8;
-    margin: 0;
+    font-size: clamp(2rem, 5vw, 5rem);
+    line-height: 0.85;
 }
 
-.main-title em { font-style: italic; font-weight: 400; }
+.title-xl em { font-style: italic; font-weight: 400; }
 
-.tag {
-    font-size: 0.7rem;
-    letter-spacing: 5px;
-    display: block;
-    margin-bottom: 15px;
-}
-
-/* Bloque Manifiesto Asimétrico */
-.manifesto-block {
+/* 4. SECCIÓN MANIFIESTO */
+.manifesto-section {
     display: flex;
     justify-content: space-between;
-    margin-top: 100px;
+    margin-top: 150px;
+    gap: 50px;
 }
 
-.text-content {
-    max-width: 400px;
-    padding-top: 100px;
+.manifesto-content {
+    max-width: 450px;
+    padding-top: 80px;
 }
 
-.story-title {
+.title-lg {
     font-family: 'Bodoni Moda', serif;
     font-size: 3.5rem;
     line-height: 0.9;
+    margin: 20px 0;
 }
 
-.side-img-wrapper {
+.side-photo {
     width: 40%;
 }
 
-.side-img-wrapper img {
-    width: 100%;
-    filter: grayscale(100%);
+.editorial-tag {
+    font-size: 0.65rem;
+    letter-spacing: 5px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+}
+
+/* Responsivo para móviles */
+@media (max-width: 768px) {
+    .main-photo, .hero-text-block, .side-photo {
+        width: 100%;
+        margin-top: 0;
+    }
+    .manifesto-section { flex-direction: column; }
 }
