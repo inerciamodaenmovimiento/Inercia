@@ -4,72 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
-    <!-- Google Fonts para ese look editorial -->
+    <!-- Fuentes: Inter para texto y Playfair para ese toque de lujo -->
     <link href="https://googleapis.com" rel="stylesheet">
+    <!-- Iconos vectoriales finos -->
+    <link rel="stylesheet" href="https://cloudflare.com">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Header Minimalista -->
     <header class="main-header">
-        <nav class="nav-container">
-            <div class="menu-toggle">☰</div>
-            <div class="logo">INERCIA</div>
-            <div class="nav-icons">
-                <span class="icon">🔍</span>
-                <span class="icon">👤</span>
-                <span class="icon">🛒 (0)</span>
-            </div>
-        </nav>
+        <div class="nav-left">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <div class="logo">INERCIA</div>
+        <div class="nav-right">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <i class="fa-solid fa-bag-shopping"></i>
+        </div>
     </header>
 
-    <main>
-        <!-- Hero Section: Complete the Look -->
-        <section class="lookbook-container">
-            <h1 class="section-title">Complete the look</h1>
-            
-            <div class="look-grid">
-                <!-- Imagen Principal -->
-                <div class="main-model-img">
-                    <img src="https://unsplash.com" alt="Modelo Inercia">
+    <main class="container">
+        <h1 class="section-title">Complete the look</h1>
+        
+        <section class="look-wrapper">
+            <!-- Imagen Principal -->
+            <div class="main-visual">
+                <img src="https://unsplash.com" alt="Look Principal">
+            </div>
+
+            <!-- Lista de Productos lateral -->
+            <div class="product-sidebar">
+                <div class="product-card">
+                    <div class="thumb">
+                        <img src="https://unsplash.com" alt="Producto">
+                    </div>
+                    <div class="details">
+                        <span class="brand">VALENTINO</span>
+                        <p class="desc">Short dress in crepe couture</p>
+                        <span class="price">7.210 AED</span>
+                    </div>
+                    <button class="add-circle">+</button>
                 </div>
 
-                <!-- Detalles de Productos -->
-                <div class="product-details">
-                    <div class="product-item">
-                        <div class="prod-thumb">
-                            <img src="https://unsplash.com" alt="Vestido Inercia">
-                        </div>
-                        <div class="prod-info">
-                            <h3>Valentino</h3>
-                            <p>Short dress in crepe couture</p>
-                            <span class="price">7.210 AED</span>
-                        </div>
-                        <button class="add-btn">+</button>
+                <div class="product-card">
+                    <div class="thumb">
+                        <img src="https://unsplash.com" alt="Producto">
                     </div>
-
-                    <div class="product-item">
-                        <div class="prod-thumb">
-                            <img src="https://unsplash.com" alt="Botas Inercia">
-                        </div>
-                        <div class="prod-info">
-                            <h3>Valentino</h3>
-                            <p>Rockstud flair suede boots</p>
-                            <span class="price">5.200 AED</span>
-                        </div>
-                        <button class="add-btn">+</button>
+                    <div class="details">
+                        <span class="brand">VALENTINO</span>
+                        <p class="desc">Rockstud flair suede boots</p>
+                        <span class="price">5.200 AED</span>
                     </div>
+                    <button class="add-circle">+</button>
                 </div>
             </div>
         </section>
     </main>
-
-    <!-- Footer con Trust Badges -->
-    <footer class="trust-footer">
-        <div class="badge">🚚 Envío en 24h</div>
-        <div class="badge">💳 Pago Seguro</div>
-        <div class="badge">🌿 Eco-Friendly Packaging</div>
-    </footer>
 
 </body>
 </html>
