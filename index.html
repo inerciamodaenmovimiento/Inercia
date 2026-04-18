@@ -1,109 +1,179 @@
-<!-- INTEGRACIÓN FINAL: INERCIA + TU FIREBASE + STOCK -->
-<script type="module">
-    import { initializeApp } from "https://gstatic.com";
-    import { getDatabase, ref, set, onValue, update, remove } from "https://gstatic.com";
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INERCIA | Moda en Movimiento</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fff; color: #000; overflow-x: hidden; }
+        .serif { font-family: 'Playfair Display', serif; }
+        .italic { font-style: italic; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 40px 60px; border-bottom: 1px solid #000; position: sticky; top: 0; background: #fff; z-index: 100; }
+        .brand-box { cursor: default; user-select: none; }
+        .brand-box h1 { font-size: 32px; font-weight: 900; letter-spacing: -2px; line-height: 0.8; text-transform: uppercase; }
+        .brand-box span { font-size: 10px; letter-spacing: 5px; opacity: 0.5; text-transform: uppercase; }
+        .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 80vh; border-bottom: 1px solid #eee; }
+        .hero-text { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .hero-text h2 { font-size: 8vw; line-height: 0.85; margin-bottom: 30px; text-transform: uppercase; }
+        .hero-image { background: #f9f9f9; display: flex; align-items: center; justify-content: center; padding: 40px; }
+        .img-frame { width: 100%; aspect-ratio: 3/4; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); }
+        .img-frame img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 1s ease; }
+        #shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; padding: 60px; }
+        .product-card { margin-bottom: 40px; transition: 0.3s; }
+        .product-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #f4f4f4; margin-bottom: 15px; filter: grayscale(100%); transition: 0.5s; }
+        .product-card:hover .product-img { filter: grayscale(0%); }
+        .product-info { display: flex; justify-content: space-between; font-size: 12px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; }
+        .product-desc { font-size: 11px; opacity: 0.5; margin-top: 5px; line-height: 1.4; }
+        #myGestion-Inercia { position: fixed; top: 0; left: -100%; width: 100%; height: 100vh; background: #fff; z-index: 10000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); overflow-y: auto; padding: 60px; }
+        .admin-grid { display: grid; grid-template-columns: 380px 1fr; gap: 60px; max-width: 1300px; margin: 0 auto; }
+        .form-card { background: #f8f8f8; padding: 40px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 9px; font-weight: 900; text-transform: uppercase; opacity: 0.4; margin-bottom: 8px; }
+        .input-group input, .input-group textarea { width: 100%; border: none; border-bottom: 1px solid #ccc; padding: 10px 0; background: transparent; outline: none; font-size: 13px; }
+        .file-box { border: 1px dashed #000; padding: 20px; text-align: center; font-size: 10px; cursor: pointer; text-transform: uppercase; font-weight: bold; }
+        #hidden-admin-trigger { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; background: transparent; z-index: 9999; cursor: default; }
+    </style>
+</head>
+<body>
 
-    // TUS CREDENCIALES REALES
-    const firebaseConfig = {
-        apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
-        authDomain: "incerciamoda.firebaseapp.com",
-        projectId: "incerciamoda",
-        storageBucket: "incerciamoda.firebasestorage.app",
-        messagingSenderId: "335158123341",
-        appId: "1:335158123341:web:2722e74538e808321a7504",
-        measurementId: "G-1NGJT0MRPB",
-        databaseURL: "https://firebaseio.com" // URL estándar de Firebase
-    };
+    <nav>
+        <div class="brand-box">
+            <span>Edición Limitada</span>
+            <h1 id="main-brand">Inercia</h1>
+        </div>
+        <div style="font-size: 10px; font-weight: 900; letter-spacing: 2px;">CESTA (0)</div>
+    </nav>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    <main class="hero">
+        <section class="hero-text">
+            <h2 class="serif italic">Moda en<br>Movimiento</h2>
+            <p style="font-size: 13px; opacity: 0.4; max-width: 350px;">Curaduría de prendas minimalistas diseñadas para la fluidez del día a día.</p>
+        </section>
+        <section class="hero-image">
+            <div class="img-frame"><img src="https://unsplash.com"></div>
+        </section>
+    </main>
 
-    // FUNCIÓN PARA PUBLICAR
-    window.publishProduct = function() {
-        const name = document.getElementById('p-name').value;
-        const price = document.getElementById('p-price').value;
-        const desc = document.getElementById('p-desc').value;
-        const vars = document.getElementById('p-vars').value;
-        const stock = prompt("Cantidad inicial de Stock:", "10");
-        
-        if(!name || !price || !window.tempImg) return alert("Faltan datos o imagen.");
+    <div id="shop-grid"></div>
+    <div id="hidden-admin-trigger" id="trigger-admin"></div>
 
-        const id = Date.now();
-        const productData = {
-            id, name, price, desc, vars,
-            img: [window.tempImg], 
-            stock: parseInt(stock) || 0
+    <div id="myGestion-Inercia">
+        <div style="display:flex; justify-content:space-between; align-items: baseline; border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 40px;">
+            <h2 style="font-weight:900; font-size: 22px; letter-spacing:-1px;">myGESTIÓN <span style="font-weight:200; opacity:0.5;">| INERCIA</span></h2>
+            <button id="btn-close-admin" style="font-size: 10px; font-weight:900; color:red; cursor:pointer; background:none; border:none;">CERRAR PANEL</button>
+        </div>
+        <div class="admin-grid">
+            <div class="form-card">
+                <div class="input-group"><label>Nombre del Producto</label><input type="text" id="p-name"></div>
+                <div class="input-group"><label>Precio ($)</label><input type="number" id="p-price"></div>
+                <div class="input-group"><label>Descripción Detallada</label><textarea id="p-desc" rows="3"></textarea></div>
+                <div class="input-group"><label>Variantes (Tallas/Colores)</label><input type="text" id="p-vars"></div>
+                <div class="input-group">
+                    <label>Imagen</label>
+                    <div class="file-box" id="file-trigger">Subir desde PC</div>
+                    <input type="file" id="p-file" style="display:none" accept="image/*">
+                </div>
+                <button id="btn-publish" style="width:100%; background:#000; color:#fff; padding:20px; font-weight:900; font-size:10px; border:none; cursor:pointer; letter-spacing:2px;">PUBLICAR EN TIENDA</button>
+            </div>
+            <div>
+                <h3 style="font-size:10px; font-weight:900; margin-bottom:20px; opacity:0.4;">REFERENCIAS ACTIVAS</h3>
+                <div id="admin-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getDatabase, ref, set, onValue, update, remove } from "https://gstatic.com";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
+            authDomain: "://firebaseapp.com",
+            projectId: "incerciamoda",
+            storageBucket: "incerciamoda.firebasestorage.app",
+            messagingSenderId: "335158123341",
+            appId: "1:335158123341:web:2722e74538e808321a7504",
+            measurementId: "G-1NGJT0MRPB",
+            databaseURL: "https://firebaseio.com"
         };
 
-        set(ref(db, 'productos/' + id), productData).then(() => {
-            alert("Sincronizado con Firebase con éxito.");
-            document.getElementById('p-name').value = "";
-            document.getElementById('p-price').value = "";
-            document.getElementById('p-desc').value = "";
-        });
-    };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        let tempImg = "";
 
-    // RESTAR STOCK
-    window.simularVenta = function(id, stockActual) {
-        if (stockActual <= 0) return;
-        update(ref(db, 'productos/' + id), { stock: stockActual - 1 });
-    };
+        // --- LÓGICA DE INTERFAZ ---
+        document.getElementById('trigger-admin').onclick = () => {
+            if (prompt("Código:") === "0110") document.getElementById('myGestion-Inercia').style.left = "0";
+        };
+        document.getElementById('btn-close-admin').onclick = () => document.getElementById('myGestion-Inercia').style.left = "-100%";
+        document.getElementById('file-trigger').onclick = () => document.getElementById('p-file').click();
+        
+        document.getElementById('p-file').onchange = (e) => {
+            const reader = new FileReader();
+            reader.onload = (event) => { tempImg = event.target.result; alert("Imagen cargada"); };
+            reader.readAsDataURL(e.target.files[0]);
+        };
 
-    // CARRUSEL
-    window.moveCarousel = function(id, direction) {
-        const container = document.querySelector(`#carousel-${id}`);
-        const scrollAmount = container.clientWidth;
-        container.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
-    };
+        // --- FUNCIONES FIREBASE ---
+        window.publishProduct = () => {
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const stock = prompt("Stock inicial:", "10");
+            if(!name || !price || !tempImg) return alert("Faltan datos");
 
-    // RENDERIZADO EN TIEMPO REAL
-    onValue(ref(db, 'productos/'), (snapshot) => {
-        const grid = document.getElementById('shop-grid');
-        const adminList = document.getElementById('admin-list');
-        const data = snapshot.val();
-        grid.innerHTML = "";
-        adminList.innerHTML = "";
-
-        if (data) {
-            Object.keys(data).forEach(key => {
-                const p = data[key];
-                const isOutOfStock = p.stock <= 0;
-                const imagenes = Array.isArray(p.img) ? p.img : [p.img];
-
-                grid.innerHTML += `
-                    <div class="product-card" style="opacity: ${isOutOfStock ? '0.6' : '1'}">
-                        <div style="position:relative; overflow:hidden; aspect-ratio:3/4;">
-                            <div id="carousel-${key}" style="display:flex; overflow-x:hidden; scroll-behavior:smooth;">
-                                ${imagenes.map(img => `<img src="${img}" style="min-width:100%; object-fit:cover;">`).join('')}
-                            </div>
-                            ${imagenes.length > 1 ? `
-                                <button onclick="moveCarousel('${key}', -1)" style="position:absolute; left:10px; top:50%; background:white; border:none; padding:5px; cursor:pointer;">&#10094;</button>
-                                <button onclick="moveCarousel('${key}', 1)" style="position:absolute; right:10px; top:50%; background:white; border:none; padding:5px; cursor:pointer;">&#10095;</button>
-                            ` : ''}
-                        </div>
-                        <div class="product-info" style="margin-top:15px; display:flex; justify-content:space-between; font-weight:900; text-transform:uppercase; font-size:12px;">
-                            <span>${p.name}</span>
-                            <span class="serif italic">$${p.price}</span>
-                        </div>
-                        <p style="font-size:11px; opacity:0.5; margin-top:5px;">${p.desc}</p>
-                        <p style="font-size:9px; margin-top:5px; opacity:0.3;">Stock: ${p.stock}</p>
-                        <button onclick="simularVenta('${key}', ${p.stock})" ${isOutOfStock ? 'disabled' : ''}
-                            style="width:100%; margin-top:15px; padding:15px; font-size:10px; font-weight:900; cursor:pointer;
-                            background: ${isOutOfStock ? '#E0E0E0' : '#000'}; color: ${isOutOfStock ? '#A0A0A0' : '#FFF'}; border:none;">
-                            ${isOutOfStock ? 'SIN STOCK' : 'AÑADIR A CESTA'}
-                        </button>
-                    </div>
-                `;
-
-                adminList.innerHTML += `
-                    <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee; font-size:11px;">
-                        <span>${p.name} (${p.stock})</span>
-                        <button onclick="window.removeProd('${key}')" style="color:red; border:none; background:none; cursor:pointer;">ELIMINAR</button>
-                    </div>
-                `;
+            const id = Date.now();
+            set(ref(db, 'productos/' + id), {
+                id, name, price, 
+                desc: document.getElementById('p-desc').value,
+                vars: document.getElementById('p-vars').value,
+                img: [tempImg],
+                stock: parseInt(stock) || 0
+            }).then(() => {
+                alert("Publicado");
+                tempImg = "";
+                document.querySelectorAll('input').forEach(i => i.value = "");
             });
-        }
-    });
+        };
+        document.getElementById('btn-publish').onclick = window.publishProduct;
 
-    window.removeProd = (id) => { if(confirm("¿Eliminar?")) remove(ref(db, 'productos/' + id)); };
-</script>
+        window.simularVenta = (id, currentStock) => {
+            if (currentStock > 0) update(ref(db, 'productos/' + id), { stock: currentStock - 1 });
+        };
+
+        window.removeProd = (id) => { if(confirm("¿Eliminar?")) remove(ref(db, 'productos/' + id)); };
+
+        // --- RENDERIZADO ---
+        onValue(ref(db, 'productos/'), (snapshot) => {
+            const grid = document.getElementById('shop-grid');
+            const adminList = document.getElementById('admin-list');
+            const data = snapshot.val();
+            grid.innerHTML = ""; adminList.innerHTML = "";
+
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    const p = data[key];
+                    const isOut = p.stock <= 0;
+                    grid.innerHTML += `
+                        <div class="product-card" style="opacity: ${isOut ? '0.5' : '1'}">
+                            <img src="${p.img[0]}" class="product-img">
+                            <div class="product-info"><span>${p.name}</span><span class="serif italic">$${p.price}</span></div>
+                            <p class="product-desc">${p.desc}</p>
+                            <p style="font-size:9px; margin-top:5px; opacity:0.3;">Stock: ${p.stock}</p>
+                            <button onclick="simularVenta('${key}', ${p.stock})" ${isOut ? 'disabled' : ''} 
+                                style="width:100%; margin-top:15px; padding:15px; font-size:10px; font-weight:900; cursor:pointer; background: ${isOut ? '#EEE' : '#000'}; color: ${isOut ? '#AAA' : '#FFF'}; border:none;">
+                                ${isOut ? 'SIN STOCK' : 'AÑADIR A CESTA'}
+                            </button>
+                        </div>`;
+                    adminList.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee; font-size:11px;">
+                            <span>${p.name} (${p.stock})</span>
+                            <button onclick="removeProd('${key}')" style="color:red; background:none; border:none; cursor:pointer;">ELIMINAR</button>
+                        </div>`;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
