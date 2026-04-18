@@ -4,50 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
-    <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; color: #333; }
-        header { padding: 20px; text-align: center; border-bottom: 1px solid #eee; }
-        .logo { font-size: 24px; font-weight: bold; letter-spacing: 2px; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .product-main { display: flex; gap: 40px; margin-bottom: 50px; }
-        .product-image { flex: 1; text-align: center; }
-        .product-image img { max-width: 100%; }
-        .product-info { flex: 1; }
-        .price { font-size: 20px; margin: 10px 0; }
-        button { background: #000; color: #fff; padding: 15px 30px; border: none; cursor: pointer; width: 100%; text-transform: uppercase; }
-        /* Admin Access Styles */
-        #admin-access { position: fixed; bottom: 10px; right: 10px; width: 5px; height: 5px; cursor: default; }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <!-- Carga de la librería de seguridad de Stripe -->
+    <script src="https://stripe.com"></script>
 </head>
 <body>
+
     <header>
-        <div class="logo">INERCIA</div>
+        <nav class="nav-container">
+            <div class="logo">INERCIA</div>
+            <div class="cart-icon">
+                CESTA (<span id="cart-count">0</span>)
+            </div>
+        </nav>
     </header>
 
-    <div class="container">
-        <section class="product-main">
-            <div class="product-image">
-                <img src="https://clothes.com" alt="Vestido Granaig">
+    <main class="main-content">
+        <section class="product-view">
+            <!-- Galería -->
+            <div class="gallery">
+                <img src="https://unsplash.com" alt="Producto Inercia" class="img-hero">
             </div>
-            <div class="product-info">
-                <h1>GRANAIG</h1>
-                <p class="price">250 €</p>
-                <button>Añadir al Carrito</button>
-                <p style="margin-top: 20px;">Vestido de corte entallado, cuello redondo y falda metalizada con textura.</p>
+
+            <!-- Detalles del Producto -->
+            <div class="details">
+                <p class="brand">INERCIA COLLECTION</p>
+                <h1>VESTIDO GRANAIG - NOCHE</h1>
+                <p class="price">250.00 €</p>
+
+                <div class="options">
+                    <label>SELECCIONAR TALLA</label>
+                    <select id="size-selector">
+                        <option value="36">Talla 36</option>
+                        <option value="38">Talla 38</option>
+                        <option value="40">Talla 40</option>
+                        <option value="42">Talla 42</option>
+                    </select>
+                </div>
+
+                <button id="checkout-button" class="btn-primary">COMPRAR AHORA</button>
+                
+                <div class="trust-badges">
+                    <p>✓ Pago seguro cifrado SSL</p>
+                    <p>✓ Envío premium 24/48h</p>
+                </div>
             </div>
         </section>
-    </div>
-
-    <!-- Acceso oculto para Admin -->
-    <div id="admin-access" onclick="requestAdmin()"></div>
+    </main>
 
     <script>
-        function requestAdmin() {
-            let pass = prompt("Acceso Restringido:");
-            if (pass === "0110") {
-                window.location.href = "admin.html";
-            }
-        }
+        // Configuración de Stripe
+        const stripe = Stripe('TU_CLAVE_PUBLICA_STRIPE'); 
+
+        document.getElementById('checkout-button').addEventListener('click', function () {
+            const size = document.getElementById('size-selector').value;
+            
+            // Llamada al Checkout de Stripe
+            // En un entorno real, 'lineItems' vendría de tu catálogo de Stripe
+            stripe.redirectToCheckout({
+                lineItems: [{
+                    price: 'ID_DE_PRECIO_STRIPE', // Se crea en tu panel de Stripe
+                    quantity: 1,
+                }],
+                mode: 'payment',
+                successUrl: window.location.origin + '/exito.html',
+                cancelUrl: window.location.origin + '/error.html',
+            }).then(function (result) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            });
+        });
     </script>
 </body>
 </html>
