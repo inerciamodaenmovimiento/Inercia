@@ -4,127 +4,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
+    <!-- Google Fonts: Serif para elegancia, Sans para modernidad -->
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #cbd2d6; /* Tono grisáceo de la imagen */
-            --text-black: #000000;
-            --accent-gray: #b0b8bc;
+            --bg-color: #f2f2f2;
+            --border-color: #d1d1d1;
+            --text-main: #1a1a1a;
+            --accent-serif: 'Playfair Display', serif;
+            --main-sans: 'Inter', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica', Arial, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body { background-color: var(--bg-color); color: var(--text-black); line-height: 1.4; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--main-sans);
+            line-height: 1.6;
+        }
 
-        .container { max-width: 600px; margin: 0 auto; background: var(--bg-color); padding: 20px; }
+        /* Líneas de cuadrícula globales */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+        }
 
-        /* HEADER / HERO */
-        header { position: relative; margin-bottom: 40px; }
-        .hero-img { width: 100%; display: block; filter: grayscale(100%); }
-        .header-text { position: absolute; bottom: 20px; left: 20px; color: white; }
-        .header-text h1 { font-size: 2.5rem; text-transform: uppercase; line-height: 0.9; }
-        .header-text p { font-size: 0.8rem; letter-spacing: 1px; }
+        header {
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-        /* SECCIONES COMUNES */
-        section { margin-bottom: 60px; }
-        h2 { font-size: 2rem; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 30px; text-align: left; }
-        
-        .btn-pill {
-            border: 1px solid var(--text-black);
-            padding: 8px 25px;
-            border-radius: 50px;
-            text-transform: lowercase;
+        .logo {
+            font-family: var(--accent-serif);
+            font-size: clamp(3rem, 10vw, 8rem);
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            line-height: 0.8;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
             font-size: 0.8rem;
-            background: transparent;
-            cursor: pointer;
-            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        /* SERVICES */
-        .service-item { display: flex; gap: 20px; margin-bottom: 40px; align-items: flex-start; }
-        .service-img { width: 45%; filter: grayscale(100%); }
-        .service-info { width: 55%; }
-        .service-info h3 { font-size: 1.2rem; text-transform: uppercase; margin-bottom: 10px; }
-        .service-info p { font-size: 0.75rem; color: #333; margin-bottom: 10px; }
-        .price { font-weight: bold; font-size: 0.9rem; }
+        /* Secciones Principales */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-        /* PORTFOLIO GRID */
-        .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .portfolio-grid img { width: 100%; filter: grayscale(100%); border-radius: 5px; }
+        .hero-image {
+            background: #e0e0e0; /* Placeholder */
+            min-height: 500px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        /* CONTACTS */
-        .contact-links { list-style: none; margin-top: 20px; }
-        .contact-links li { margin-bottom: 10px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
-        
-        .footer-banner { background: #000; color: #fff; padding: 10px; text-align: center; font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; margin: 20px -20px; }
+        .hero-text {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
+        .hero-text h2 {
+            font-family: var(--accent-serif);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* Grid de Productos */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .product-item {
+            padding: 40px;
+            text-align: center;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .product-item:last-child { border-right: none; }
+
+        .product-placeholder {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .price { font-weight: bold; margin-top: 10px; display: block; }
+
+        /* Cita Textual */
+        .quote-section {
+            padding: 100px 20px;
+            text-align: center;
+            font-family: var(--accent-serif);
+            font-size: 1.8rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        footer {
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .hero, .product-grid { grid-template-columns: 1fr; }
+            .product-item { border-right: none; border-bottom: 1px solid var(--border-color); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Hero Section -->
-        <header>
-            <img src="https://unsplash.com" alt="Inercia Hero" class="hero-img">
-            <div class="header-text">
-                <p>moda en movimiento</p>
-                <h1>INERCIA<br>MODA</h1>
-            </div>
-        </header>
+<div class="container">
+    <nav>
+        <div>Blog / Colección</div>
+        <div style="font-weight: bold;">INERCIA</div>
+        <div>Contacto / Carrito</div>
+    </nav>
 
-        <!-- About / Intro -->
-        <section>
-            <button class="btn-pill">sobre nosotros</button>
-            <p style="font-size: 0.9rem; margin-top: 10px;">Elevando el movimiento a través de texturas y formas vanguardistas. Nuestra colección define la inercia del estilo contemporáneo.</p>
-        </section>
+    <header>
+        <h1 class="logo">INERCIA</h1>
+    </header>
 
-        <!-- Services -->
-        <section>
-            <h2>Servicios</h2>
-            
-            <div class="service-item">
-                <img src="https://unsplash.com" class="service-img">
-                <div class="service-info">
-                    <h3>Retrato Editorial</h3>
-                    <p>Capturamos la esencia de tu marca con una estética de alta costura y movimiento fluido.</p>
-                    <span class="price">DESDE $12.000</span>
-                </div>
-            </div>
-
-            <div class="service-item" style="flex-direction: row-reverse;">
-                <img src="https://unsplash.com" class="service-img">
-                <div class="service-info">
-                    <h3>Studio Shooting</h3>
-                    <p>Sesiones técnicas controladas con enfoque en la caída de las prendas y dinamismo visual.</p>
-                    <span class="price">DESDE $15.000</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Portfolio -->
-        <section>
-            <h2>Portfolio</h2>
-            <div class="portfolio-grid">
-                <img src="https://unsplash.com">
-                <img src="https://unsplash.com">
-                <img src="https://unsplash.com">
-            </div>
-            <center><button class="btn-pill" style="margin-top: 20px;">ver más</button></center>
-        </section>
-
-        <!-- Contacts -->
-        <section>
-            <h2>Contactos</h2>
-            <ul class="contact-links">
-                <li>Instagram / @inerciamoda</li>
-                <li>Telegram / inercia_studio</li>
-                <li>WhatsApp / +54 123 456 789</li>
-            </ul>
-        </section>
-
-        <div class="footer-banner">
-            INERCIA MODA INERCIA MODA INERCIA
+    <section class="hero">
+        <div class="hero-image">
+            <!-- Reemplazar con <img src="tu-foto.jpg"> -->
+            <span>[ IMAGEN PRINCIPAL: MODA URBANA ]</span>
         </div>
-    </div>
+        <div class="hero-text">
+            <h2>Nunca es tarde para ponerse en movimiento.</h2>
+            <p>Diseños técnicos pensados para el dinamismo de la vida moderna. Estética minimalista, rendimiento máximo.</p>
+            <br>
+            <a href="#" style="color: black; text-decoration: underline;">VER EDITORIAL</a>
+        </div>
+    </section>
+
+    <section class="quote-section">
+        <p>"Tu piel cuenta tu historia, pero tu movimiento define tu futuro. Ropa diseñada para respirar."</p>
+    </section>
+
+    <section class="product-grid">
+        <div class="product-item">
+            <div class="product-placeholder"></div>
+            <h3>Legging Técnico 01</h3>
+            <span class="price">$45.00</span>
+        </div>
+        <div class="product-item">
+            <div class="product-placeholder"></div>
+            <h3>Sudadera Oversize</h3>
+            <span class="price">$65.00</span>
+        </div>
+        <div class="product-item">
+            <div class="product-placeholder"></div>
+            <h3>Top de Compresión</h3>
+            <span class="price">$35.00</span>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2024 INERCIA MODA EN MOVIMIENTO. TODOS LOS DERECHOS RESERVADOS.
+    </footer>
+</div>
 
 </body>
 </html>
