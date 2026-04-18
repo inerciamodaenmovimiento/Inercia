@@ -3,70 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Moda en Movimiento</title>
-    <link rel="stylesheet" href="style.css">
+    <title>E-Commerce Editorial | Dresses</title>
+    <script src="https://tailwindcss.com"></script>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; letter-spacing: 0.05em; }
+        h1 { font-family: 'Bodoni Moda', serif; text-transform: uppercase; letter-spacing: 0.3em; }
+    </style>
 </head>
-<body>
-    <header class="navbar">
-        <div class="container nav-content">
-            <h1 class="logo">fashions/ash</h1>
-            <nav class="menu-links">
-                <a href="#">JEANS</a><a href="#">MEN</a><a href="#">WOMEN</a><a href="#">KIDS</a>
-            </nav>
-            <div class="nav-icons">
-                <button id="cart-icon">🛒 <span id="cart-count">0</span></button>
-            </div>
+<body class="bg-[#f9f9f9] text-gray-800">
+
+    <!-- Header / Nav -->
+    <header class="p-8 flex justify-between items-center bg-white border-b border-gray-100">
+        <span class="text-[10px] uppercase text-gray-400 tracking-[0.3em] font-bold">Categories</span>
+        <nav class="hidden md:flex space-x-12 text-[11px] uppercase tracking-widest font-medium">
+            <a href="#" class="border-b border-black pb-1">Woman</a>
+            <a href="#" class="text-gray-400 hover:text-black">Man</a>
+            <a href="#" class="text-gray-400 hover:text-black">Kids</a>
+        </nav>
+        <div class="flex gap-4">
+            <span class="text-[10px]">01/05</span>
         </div>
     </header>
 
-    <main class="container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-text">
-                <p>DAILY DEALS</p>
-                <h2>CASUAL ESSENTIALS</h2>
-                <button class="btn-outline">SHOP NOW</button>
-            </div>
-            <div class="hero-img">
-                <img src="https://unsplash.com" alt="Hero">
-            </div>
-        </section>
+    <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row min-h-screen">
+        
+        <!-- Sidebar Menu -->
+        <aside class="w-full md:w-64 p-12 text-[10px] uppercase space-y-3 tracking-widest text-gray-400">
+            <p class="flex items-center text-black mb-6"><span class="mr-2">☰</span> Outerwear</p>
+            <p class="hover:text-black cursor-pointer">Jackets & Suits</p>
+            <p class="hover:text-black cursor-pointer">Blazers</p>
+            <p class="text-black font-bold border-l-2 border-black pl-4">Dresses</p>
+            <p class="hover:text-black cursor-pointer">Jumpsuits</p>
+            <p class="hover:text-black cursor-pointer">Tops</p>
+            <p class="hover:text-black cursor-pointer">Trousers</p>
+        </aside>
 
-        <!-- Categories & Stock Control -->
-        <section class="grid-categories">
-            <div class="cat-card large">
-                <span class="vertical-text">LINGERIE</span>
-                <img src="https://unsplash.com" alt="Lingerie">
+        <!-- Main Content -->
+        <main class="flex-1 bg-white p-8 md:p-20 shadow-sm">
+            <!-- Hero Category Title -->
+            <div class="relative mb-20">
+                <img id="cat-img" src="https://unsplash.com" class="w-full h-[400px] object-cover grayscale opacity-20" alt="">
+                <h1 id="cat-title" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-9xl text-gray-200">Dresses</h1>
             </div>
-            <div class="cat-list">
-                <div class="cat-item" data-type="TOPS">TOPS</div>
-                <div class="cat-item" data-type="PANTS">PANTS</div>
-                <div class="cat-item" data-type="SHOES">SHOES</div>
-            </div>
-        </section>
 
-        <!-- Featured Products (Funcional) -->
-        <section class="products">
-            <h3>FEATURED PRODUCTS</h3>
-            <div class="product-grid" id="product-container">
-                <!-- Inyectado por JS -->
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-y-16 gap-x-8">
+                <!-- Se llena dinámicamente con Firebase -->
             </div>
-        </section>
-    </main>
-
-    <!-- Modal Carrito -->
-    <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Tu Selección</h2>
-            <div id="cart-items-list"></div>
-            <div class="cart-footer">
-                <p>Total: <span id="total-price">$0</span></p>
-                <button class="btn-black">FINALIZAR COMPRA</button>
-            </div>
-        </div>
+        </main>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getFirestore, collection, onSnapshot } from "https://gstatic.com";
+
+        const firebaseConfig = { /* PEGA AQUÍ TU CONFIG */ };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Renderizado de productos
+        onSnapshot(collection(db, "productos"), (snapshot) => {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            snapshot.forEach((doc) => {
+                const p = doc.data();
+                grid.innerHTML += `
+                    <div class="group cursor-pointer">
+                        <div class="overflow-hidden bg-[#f3f3f3] mb-4">
+                            <img src="${p.imagen}" class="w-full aspect-[3/4] object-cover mix-blend-multiply group-hover:scale-105 transition duration-700">
+                        </div>
+                        <div class="flex justify-between items-start text-[10px] uppercase tracking-tighter">
+                            <div>
+                                <p class="font-bold text-gray-900">${p.nombre}</p>
+                                <p class="text-gray-400 mt-1">${p.subtitulo || ''}</p>
+                            </div>
+                            <span class="font-medium">$${p.precio}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    </script>
 </body>
 </html>
