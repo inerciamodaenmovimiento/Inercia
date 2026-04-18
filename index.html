@@ -3,136 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INERCIA | Moda en Movimiento</title>
-    <!-- Tailwind CSS - Carga Garantizada -->
+    <title>INERCIA | Tech-Essentials para la vida urbana y natural</title>
     <script src="https://tailwindcss.com"></script>
-    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; }
-        h1, h2, .brand { font-family: 'Playfair Display', serif; }
-        .hero-bg {
-            background-image: url('https://unsplash.com');
-            background-size: cover;
-            background-position: center;
-        }
+        @import url('https://googleapis.com');
+        body { font-family: 'Inter', sans-serif; background-color: #f8f8f8; color: #1a1a1a; }
+        .hero-bg { background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://unsplash.com') center/cover; }
     </style>
 </head>
-<body class="bg-white text-gray-900">
+<body>
 
-    <!-- Navegación Estilo Referencia (Centrada) -->
-    <nav class="py-12 px-10 flex flex-col items-center border-b border-gray-50 bg-white sticky top-0 z-50">
-        <div class="brand text-5xl tracking-[0.3em] mb-6 font-bold">INERCIA</div>
-        <ul class="flex space-x-10 text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">
-            <li><a href="#" class="hover:text-black transition">Home</a></li>
-            <li><a href="#" class="hover:text-black transition">New Arrival</a></li>
-            <li><a href="#" class="hover:text-black transition">Clothes</a></li>
-            <li><a href="#" class="hover:text-black transition">Jacket</a></li>
-            <li><a href="#" class="hover:text-black transition text-red-600">Sale</a></li>
-        </ul>
+    <!-- Navegación -->
+    <nav class="flex justify-between items-center px-8 py-6 sticky top-0 bg-white/80 backdrop-blur-md z-50">
+        <div class="text-2xl font-bold tracking-widest uppercase">Inercia</div>
+        <div class="hidden md:flex space-x-8 text-sm uppercase tracking-wider font-medium">
+            <a href="#" class="hover:text-gray-500 transition">Colección</a>
+            <a href="#" class="hover:text-gray-500 transition">Tecnología</a>
+            <a href="#" class="hover:text-gray-500 transition">Nosotros</a>
+        </div>
+        <div class="text-sm font-medium">CARRITO (0)</div>
     </nav>
 
-    <!-- Hero Section (Imagen de portada) -->
-    <header class="hero-bg h-[85vh] w-full relative">
-        <div class="absolute inset-0 bg-black/5"></div>
+    <!-- Hero Section -->
+    <header class="hero-bg h-[80vh] flex flex-col justify-center items-center text-center text-white px-4">
+        <h1 class="text-5xl md:text-7xl font-light mb-4 uppercase tracking-[0.2em]">Movimiento Constante</h1>
+        <p class="text-lg md:text-xl font-light max-w-2xl mb-8 opacity-90">Ropa de alto rendimiento diseñada para la oficina y el sendero. Sin fricción. Sin límites.</p>
+        <a href="#coleccion" class="border border-white px-10 py-3 hover:bg-white hover:text-black transition duration-300 uppercase text-xs tracking-widest">Explorar Colección</a>
     </header>
 
-    <!-- New Arrivals Section -->
-    <section class="max-w-7xl mx-auto py-24 px-6">
-        <h2 class="text-center text-4xl mb-20 relative pb-6 uppercase tracking-[0.2em] font-light">
-            New Arrivals
-            <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-[1px] bg-red-500"></span>
-        </h2>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
-            <!-- Producto 1 -->
-            <div class="text-center group cursor-pointer">
-                <div class="aspect-[3/4] mb-6 overflow-hidden bg-gray-50">
-                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
-                </div>
-                <h3 class="text-[11px] uppercase tracking-widest font-bold">Brown Long Blouse</h3>
-                <p class="text-[11px] text-red-500 mt-2 font-bold tracking-tighter">NT$1,299</p>
-            </div>
-            <!-- Producto 2 -->
-            <div class="text-center group cursor-pointer">
-                <div class="aspect-[3/4] mb-6 overflow-hidden bg-gray-50">
-                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
-                </div>
-                <h3 class="text-[11px] uppercase tracking-widest font-bold">Grey Check Long Coat</h3>
-                <p class="text-[11px] text-red-500 mt-2 font-bold tracking-tighter">NT$1,299</p>
-            </div>
-            <!-- Producto 3 -->
-            <div class="text-center group cursor-pointer">
-                <div class="aspect-[3/4] mb-6 overflow-hidden bg-gray-50">
-                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
-                </div>
-                <h3 class="text-[11px] uppercase tracking-widest font-bold">White Casual Suit</h3>
-                <p class="text-[11px] text-red-500 mt-2 font-bold tracking-tighter">NT$1,299</p>
-            </div>
-            <!-- Producto 4 -->
-            <div class="text-center group cursor-pointer">
-                <div class="aspect-[3/4] mb-6 overflow-hidden bg-gray-50">
-                    <img src="https://unsplash.com" class="w-full h-full object-cover group-hover:scale-105 transition duration-1000">
-                </div>
-                <h3 class="text-[11px] uppercase tracking-widest font-bold">Beige Sweater</h3>
-                <p class="text-[11px] text-red-500 mt-2 font-bold tracking-tighter">NT$1,299</p>
-            </div>
-        </div>
+    <!-- Estética / Propuesta -->
+    <section class="py-24 px-8 max-w-4xl mx-auto text-center">
+        <h2 class="text-xs uppercase tracking-[0.4em] text-gray-500 mb-6">La Estética</h2>
+        <p class="text-2xl md:text-3xl leading-relaxed font-light italic text-gray-800">
+            "Ingeniería invisible en tonos piedra y obsidiana. Fluidez absoluta para quienes no separan el trabajo de la aventura."
+        </p>
     </section>
 
-    <!-- Collection Banner (Inercia) -->
-    <section class="w-full h-[75vh] bg-gray-100 relative overflow-hidden flex items-center justify-center">
-        <img src="https://unsplash.com" class="absolute inset-0 w-full h-full object-cover opacity-90" alt="Inercia Collection">
-        <div class="relative text-center">
-            <h2 class="text-7xl md:text-9xl text-white tracking-[0.3em] font-bold drop-shadow-2xl">COLLECTION</h2>
-            <button class="mt-12 px-14 py-4 border border-white text-white uppercase text-[10px] tracking-[0.5em] hover:bg-white hover:text-black transition duration-500">Explorar</button>
+    <!-- Colección de Productos -->
+    <section id="coleccion" class="py-12 px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl mx-auto">
+            
+            <!-- Prenda 1 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] bg-gray-200 mb-4 overflow-hidden relative">
+                    <img src="https://unsplash.com" alt="Cinetoscopio" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                    <span class="absolute top-4 left-4 bg-white px-3 py-1 text-[10px] uppercase font-bold tracking-tighter">Hybrid Tech</span>
+                </div>
+                <h3 class="text-lg font-semibold uppercase">Chaqueta "Cinetoscopio"</h3>
+                <p class="text-gray-500 text-sm mb-2">Softshell Estructurado / Impermeable</p>
+                <p class="font-medium">$249.00</p>
+            </div>
+
+            <!-- Prenda 2 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] bg-gray-200 mb-4 overflow-hidden relative">
+                    <img src="https://unsplash.com" alt="Vector" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                    <span class="absolute top-4 left-4 bg-white px-3 py-1 text-[10px] uppercase font-bold tracking-tighter">Ripstop Durable</span>
+                </div>
+                <h3 class="text-lg font-semibold uppercase">Pantalón "Vector"</h3>
+                <p class="text-gray-500 text-sm mb-2">Corte Slim / Rodillas Articuladas</p>
+                <p class="font-medium">$185.00</p>
+            </div>
+
+            <!-- Prenda 3 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] bg-gray-200 mb-4 overflow-hidden relative">
+                    <img src="https://unsplash.com" alt="Módulo" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                    <span class="absolute top-4 left-4 bg-white px-3 py-1 text-[10px] uppercase font-bold tracking-tighter">Graphene Tech</span>
+                </div>
+                <h3 class="text-lg font-semibold uppercase">Capa Base "Módulo"</h3>
+                <p class="text-gray-500 text-sm mb-2">Mezcla Merino / Termorregulador</p>
+                <p class="font-medium">$95.00</p>
+            </div>
+
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-white pt-24 pb-12 px-10 border-t border-gray-50">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-20 text-[10px] uppercase tracking-[0.3em] text-gray-400">
-            <div>
-                <h4 class="font-bold text-black mb-8">About Us</h4>
-                <ul class="space-y-4">
-                    <li><a href="#" class="hover:text-black transition">Our Story</a></li>
-                    <li><a href="#" class="hover:text-black transition">Our Spirit</a></li>
-                </ul>
+    <footer class="bg-white py-20 px-8 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10 text-sm">
+            <div class="max-w-xs">
+                <div class="text-xl font-bold uppercase mb-4">Inercia</div>
+                <p class="text-gray-500">Diseñando herramientas para el movimiento humano constante. Basado en el funcionalismo y la durabilidad.</p>
             </div>
-            <div>
-                <h4 class="font-bold text-black mb-8">Customer Service</h4>
-                <ul class="space-y-4">
-                    <li><a href="#" class="hover:text-black transition">Contact Us</a></li>
-                    <li><a href="#" class="hover:text-black transition">Shipping</a></li>
-                </ul>
+            <div class="flex flex-col space-y-2 uppercase tracking-widest text-[11px] font-semibold text-gray-400">
+                <a href="#">Soporte</a>
+                <a href="#">Envíos y Retornos</a>
+                <a href="#">Guía de Tallas</a>
             </div>
-            <div>
-                <h4 class="font-bold text-black mb-8">Inercia Moda</h4>
-                <p class="mb-2">Argentina - Envíos a todo el país</p>
-                <p class="lowercase italic">info@inerciamoda.com</p>
+            <div class="w-full md:w-auto">
+                <p class="uppercase text-[11px] font-bold mb-4 tracking-widest">Newsletter</p>
+                <input type="email" placeholder="Tu email" class="border-b border-black py-2 w-full md:w-64 focus:outline-none bg-transparent">
             </div>
         </div>
-        <div class="mt-24 text-center text-[9px] text-gray-300 uppercase tracking-[0.6em]">
-            2026 © INERCIA MODA EN MOVIMIENTO
+        <div class="text-center mt-20 text-[10px] text-gray-400 uppercase tracking-[0.3em]">
+            © 2024 INERCIA STUDIO / Todo movimiento cuenta.
         </div>
     </footer>
 
-    <!-- Firebase SDK (Tu configuración exacta) -->
-    <script type="module">
-        import { initializeApp } from "https://gstatic.com";
-        import { getAnalytics } from "https://gstatic.com";
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
-          authDomain: "://firebaseapp.com",
-          projectId: "incerciamoda",
-          storageBucket: "incerciamoda.firebasestorage.app",
-          messagingSenderId: "335158123341",
-          appId: "1:335158123341:web:2722e74538e808321a7504",
-          measurementId: "G-1NGJT0MRPB"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-    </script>
 </body>
 </html>
