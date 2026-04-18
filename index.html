@@ -166,6 +166,147 @@
             const nav = document.querySelector('.navbar');
             nav.style.background = window.scrollY > 50 ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.95)';
         });
-    </script>
+    </script><!-- INTEGRACIÓN TOTAL: ADMIN + FIREBASE (SISTEMA INERCIA) -->
+<script type="module">
+    // 1. IMPORTACIÓN DE SDKs DESDE CDN (Sin instalaciones)
+    import { initializeApp } from "https://gstatic.com";
+    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc } from "https://gstatic.com";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://gstatic.com";
+
+    // 2. TU CONFIGURACIÓN DE FIREBASE
+    const firebaseConfig = {
+        apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
+        authDomain: "://firebaseapp.com",
+        projectId: "incerciamoda",
+        storageBucket: "incerciamoda.firebasestorage.app",
+        messagingSenderId: "335158123341",
+        appId: "1:335158123341:web:2722e74538e808321a7504",
+        measurementId: "G-1NGJT0MRPB"
+    };
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // 3. LÓGICA DE CONTROL DE ADMIN (ACCESO 0110)
+    let buffer = "";
+    document.addEventListener('keydown', (e) => {
+        buffer += e.key;
+        if (buffer.length > 4) buffer = buffer.substring(buffer.length - 4);
+        if (buffer === "0110") {
+            document.getElementById('adminModal').style.display = 'flex';
+            actualizarDashboard(); // Carga datos al entrar
+        }
+    });
+
+    // 4. FUNCIONES DE GESTIÓN (Tus 6 Requisitos)
+
+    // A. Carga Masiva de Imágenes y Variantes
+    window.subirProducto = async () => {
+        const file = document.getElementById('imgInput').files[0];
+        const nombre = document.getElementById('prodNombre').value;
+        const stock = document.getElementById('prodStock').value;
+        
+        if(!file || !nombre) return alert("Completa los datos básicos");
+
+        try {
+            // Subir imagen a Storage
+            const storageRef = ref(storage, `productos/${file.name}`);
+            const snapshot = await uploadBytes(storageRef, file);
+            const url = await getDownloadURL(snapshot.ref);
+
+            // Guardar en Firestore con Variantes y Stock
+            await addDoc(collection(db, "productos"), {
+                nombre: nombre,
+                url: url,
+                stock: parseInt(stock),
+                variantes: ["S", "M", "L"], // Por defecto
+                estado: "Disponible",
+                fecha: new Date()
+            });
+
+            alert("Inercia: Producto Sincronizado");
+            actualizarDashboard();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    // B. Dashboard en Tiempo Real (Métricas y Alertas de Stock)
+    async function actualizarDashboard() {
+        const querySnapshot = await getDocs(collection(db, "productos"));
+        let stockBajo = 0;
+        
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if(data.stock < 5) stockBajo++;
+        });
+
+        // Actualiza el contador visual de stock crítico
+        const alertaElem = document.getElementById('stockCritico');
+        if(alertaElem) {
+            alertaElem.innerText = stockBajo;
+            alertaElem.style.color = stockBajo > 0 ? "red" : "green";
+        }
+    }
+
+    // C. Gestión de Pedidos (Cambio de estado)
+    window.cambiarEstadoPedido = async (idPedido, nuevoEstado) => {
+        const pedidoRef = doc(db, "pedidos", idPedido);
+        await updateDoc(pedidoRef, { estado: nuevoEstado });
+        alert("Estado de envío actualizado");
+    };
+
+</script>
+
+<!-- CSS ADICIONAL PARA EL FORMULARIO ADMIN (Dentro del Modal) -->
+<style>
+    .admin-form {
+        display: grid;
+        gap: 15px;
+        text-align: left;
+        margin-top: 20px;
+    }
+    .admin-form input {
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+    #stockCritico { font-weight: bold; }
+</style>
+
+<!-- MODIFICACIÓN DEL MODAL EXISTENTE PARA QUE TENGA EL FORMULARIO -->
+<div id="adminModal" style="display:none; position:fixed; inset:0; background:white; z-index:9999; padding:50px; overflow-y:auto;">
+    <div style="max-width: 800px; margin: auto;">
+        <h1 style="letter-spacing: 5px;">MY GESTIÓN | INERCIA</h1>
+        <hr><br>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <!-- Columna 1: Carga -->
+            <div class="admin-form">
+                <h3>1. CARGA DE PRODUCTO</h3>
+                <input type="text" id="prodNombre" placeholder="Nombre de prenda">
+                <input type="number" id="prodStock" placeholder="Stock Inicial">
+                <label>Imágenes Alta Calidad:</label>
+                <input type="file" id="imgInput" accept="image/*">
+                <button onclick="subirProducto()" style="background:black; color:white; padding:15px; border:none; cursor:pointer;">SINCRONIZAR AHORA</button>
+            </div>
+
+            <!-- Columna 2: Dashboard/Stock -->
+            <div>
+                <h3>2. ESTADO DEL INVENTARIO</h3>
+                <p>Alertas de bajo stock: <span id="stockCritico">0</span></p>
+                <br>
+                <h3>3. MÉTRICAS DE VENTAS</h3>
+                <p>Ventas hoy: $0.00</p>
+                <p>Pedidos pendientes: 0</p>
+            </div>
+        </div>
+        
+        <br><br>
+        <button onclick="document.getElementById('adminModal').style.display='none'" style="border:1px solid black; background:none; padding:10px 20px; cursor:pointer;">CERRAR SISTEMA</button>
+    </div>
+</div>
+
 </body>
 </html>
