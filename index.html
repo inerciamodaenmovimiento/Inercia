@@ -6,47 +6,28 @@
     <title>Inercia | Moda en Movimiento</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        /* Estilos Generales */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Raleway', sans-serif; color: #333; line-height: 1.6; }
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        ul { list-style: none; }
-
-        /* Navegación */
-        header { padding: 20px 0; text-align: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 1000; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 2.5rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 15px; }
-        nav ul { display: flex; justify-content: center; gap: 30px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
-        nav ul li a:hover { color: #c5a059; }
-
-        /* Hero Section */
-        .hero { height: 80vh; background: #f4f4f4 url('https://unsplash.com') no-repeat center/cover; display: flex; align-items: center; justify-content: center; }
-
-        /* Sección de Productos */
-        .section-title { text-align: center; margin: 60px 0 40px; }
-        .section-title h2 { font-family: 'Playfair Display', serif; font-size: 2rem; border-bottom: 2px solid #333; display: inline-block; padding-bottom: 10px; }
+        body { font-family: 'Raleway', sans-serif; color: #1a1a1a; line-height: 1.6; background: #fff; }
+        header { padding: 30px 0; text-align: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 100; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 2.2rem; letter-spacing: 8px; text-transform: uppercase; margin-bottom: 15px; }
+        nav ul { display: flex; justify-content: center; gap: 30px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; list-style: none; }
+        nav a { text-decoration: none; color: #666; transition: 0.3s; }
+        nav a:hover { color: #000; }
         
+        .hero { height: 70vh; background: url('https://unsplash.com') center/cover; margin-bottom: 60px; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 60px; }
+        .section-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 3px; }
         
-        .product-card { text-align: center; }
-        .product-img { width: 100%; height: 400px; background-color: #eee; margin-bottom: 15px; overflow: hidden; }
-        .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .product-img:hover img { transform: scale(1.05); }
-        .product-info h3 { font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .product-card { text-align: center; margin-bottom: 40px; }
+        .product-img { width: 100%; height: 400px; background: #f4f4f4; object-fit: cover; margin-bottom: 15px; }
+        .product-card h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .price { color: #888; font-weight: 600; }
 
-        /* Banner Colección */
-        .collection-banner { background: #333; color: #fff; padding: 100px 0; text-align: center; position: relative; }
-        .collection-banner h2 { font-family: 'Playfair Display', serif; font-size: 4rem; letter-spacing: 10px; margin-bottom: 20px; }
-        .btn-view { border: 1px solid #fff; padding: 12px 40px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
-        .btn-view:hover { background: #fff; color: #333; }
-
-        /* Footer */
-        footer { background: #fafafa; padding: 60px 0 20px; border-top: 1px solid #eee; margin-top: 60px; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
-        .footer-col h4 { margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; }
-        .footer-col p, .footer-col li { font-size: 0.85rem; color: #666; margin-bottom: 10px; }
-        .copy { text-align: center; font-size: 0.75rem; color: #999; border-top: 1px solid #eee; padding-top: 20px; }
+        .banner-collection { background: #1a1a1a; color: #fff; padding: 100px 0; text-align: center; margin: 60px 0; }
+        .banner-collection h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; letter-spacing: 10px; margin-bottom: 20px; }
+        .btn { border: 1px solid #fff; padding: 12px 35px; color: #fff; text-decoration: none; font-size: 0.8rem; letter-spacing: 2px; transition: 0.4s; }
+        .btn:hover { background: #fff; color: #000; }
     </style>
 </head>
 <body>
@@ -55,124 +36,52 @@
         <div class="logo">Inercia</div>
         <nav>
             <ul>
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#new">Nuevos Ingresos</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">New Arrival</a></li>
                 <li><a href="#">Prendas</a></li>
-                <li><a href="#">Contacto</a></li>
-                <li><a href="#" style="color: #e74c3c;">Sale</a></li>
+                <li><a href="#" style="color: #c5a059;">Sale</a></li>
             </ul>
         </nav>
     </header>
 
-    <section class="hero"></section>
+    <div class="hero"></div>
 
-    <section class="container" id="new">
-        <div class="section-title">
-            <h2>Novedades</h2>
-        </div>
-        <div class="grid">
-            <!-- Producto 1 -->
+    <section class="container">
+        <h2 class="section-title">New Arrivals</h2>
+        <div class="product-grid">
             <div class="product-card">
-                <div class="product-img"><img src="https://unsplash.com" alt="Moda"></div>
-                <div class="product-info">
-                    <h3>Blusa Essential</h3>
-                    <p class="price">$45.000</p>
-                </div>
+                <img src="https://unsplash.com" class="product-img">
+                <h3>Blusa Essential</h3>
+                <p class="price">$45.000</p>
             </div>
-            <!-- Producto 2 -->
             <div class="product-card">
-                <div class="product-img"><img src="https://unsplash.com" alt="Moda"></div>
-                <div class="product-info">
-                    <h3>Tapado Estructurado</h3>
-                    <p class="price">$120.000</p>
-                </div>
+                <img src="https://unsplash.com" class="product-img">
+                <h3>Tapado Inercia</h3>
+                <p class="price">$120.000</p>
             </div>
-            <!-- Producto 3 -->
             <div class="product-card">
-                <div class="product-img"><img src="https://unsplash.com" alt="Moda"></div>
-                <div class="product-info">
-                    <h3>Conjunto Urban White</h3>
-                    <p class="price">$85.000</p>
-                </div>
-            </div>
-            <!-- Producto 4 -->
-            <div class="product-card">
-                <div class="product-img"><img src="https://unsplash.com" alt="Moda"></div>
-                <div class="product-info">
-                    <h3>Suéter Oversize Beige</h3>
-                    <p class="price">$52.000</p>
-                </div>
+                <img src="https://unsplash.com" class="product-img">
+                <h3>Conjunto White</h3>
+                <p class="price">$85.000</p>
             </div>
         </div>
     </section>
 
-    <section class="collection-banner">
-        <h2>COLECCIÓN</h2>
-        <a href="#" class="btn-view">VER MÁS</a>
-    </section>
+    <div class="banner-collection">
+        <h2>COLLECTION</h2>
+        <a href="#" class="btn">VER MÁS</a>
+    </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>Nosotros</h4>
-                    <p>Inercia: Moda que te acompaña en cada paso. Estilo atemporal y movimiento.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Atención al Cliente</h4>
-                    <ul>
-                        <li><a href="#">Contacto</a></li>
-                        <li><a href="#">Envíos</a></li>
-                        <li><a href="#">Cambios</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Contacto</h4>
-                    <p>Tel: +54 11 1234-5678</p>
-                    <p>Email: hola@inerciamoda.com</p>
-                </div>
-            </div>
-            <div class="copy">
-                &copy; 2024 Inercia Moda en Movimiento. Todos los derechos reservados.
-            </div>
-        </div>
-    </footer>
-<!-- Enlace "Invisible" 0110 para entrar al admin -->
-<a href="admin.html" style="position: fixed; bottom: 5px; right: 5px; font-size: 7px; color: #f2f2f2; text-decoration: none; opacity: 0.5;">0110</a>
-<!-- Sistema de Acceso Seguro 0110 -->
-<script>
-    let inputCode = "";
-    document.addEventListener("keydown", (e) => {
-        // Solo permite números
-        if (!isNaN(e.key)) {
-            inputCode += e.key;
-            // Mantiene solo los últimos 4 dígitos ingresados
-            if (inputCode.length > 4) {
-                inputCode = inputCode.substring(inputCode.length - 4);
+    <!-- ACCESO OCULTO 0110 -->
+    <script>
+        let input = "";
+        document.addEventListener("keydown", (e) => {
+            if (!isNaN(e.key)) {
+                input += e.key;
+                if (input.length > 4) input = input.substring(input.length - 4);
+                if (input === "0110") window.location.href = "admin.html";
             }
-            // Si el código coincide, redirige
-            if (inputCode === "0110") {
-                window.location.href = "admin.html";
-            }
-        }
-    });
-</script>
-
-<!-- Referencia visual casi invisible (opcional) -->
-<div style="position: fixed; bottom: 5px; right: 5px; font-size: 6px; color: rgba(0,0,0,0.02); pointer-events: none;">0110</div>
-<!-- SISTEMA DE ACCESO OCULTO 0110 -->
-<script>
-    let n = "";
-    document.addEventListener("keydown", (e) => {
-        if (!isNaN(e.key)) {
-            n += e.key;
-            if (n.length > 4) n = n.substring(n.length - 4);
-            if (n === "0110") {
-                window.location.href = "admin.html"; // Te lleva al panel
-            }
-        }
-    });
-</script>
-
+        });
+    </script>
 </body>
 </html>
