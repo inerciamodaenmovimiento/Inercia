@@ -5,59 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inercia | Moda en Movimiento</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts para un look profesional -->
     <link href="https://googleapis.com" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <nav>
-            <div class="logo">INERCIA</div>
-            <ul>
-                <li><a href="#new">New Collection</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#categories">Catalog</a></li>
-            </ul>
-        </nav>
-    </header>
+    <nav>
+        <div class="logo">INERCIA</div>
+        <div class="menu-dots">:::</div>
+    </nav>
 
     <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1>DRESS HERE AND BE IN STYLE</h1>
-            <div class="hero-image">
-                <img src="assets/hero-model.jpg" alt="Nueva Colección Inercia">
-                <div class="hero-label">NEW COLLECTION</div>
+        <!-- SECCIÓN 1: HERO -->
+        <section class="hero-section">
+            <h1 class="main-title">DRESS HERE AND BE IN STYLE</h1>
+            <div class="hero-container">
+                <img src="https://unsplash.com" alt="Hero">
+                <div class="floating-label">NEW COLLECTION</div>
             </div>
         </section>
 
-        <!-- New Collection Grid -->
-        <section id="new" class="product-grid">
-            <div class="product-card">
-                <img src="assets/item1.jpg" alt="Body cut out">
-                <p>Body cut out soft</p>
-                <span>$35.00</span>
+        <!-- SECCIÓN 2: NEW COLLECTION (GRILLA DE 3) -->
+        <h2 class="section-label">NEW COLLECTION</h2>
+        <section class="product-grid-triple">
+            <div class="item">
+                <img src="https://unsplash.com" alt="Prod 1">
+                <p>Body cut out soft <br> <span>$35.00</span></p>
             </div>
-            <div class="product-card">
-                <img src="assets/item2.jpg" alt="Jacket oversize">
-                <p>Jacket oversize</p>
-                <span>$120.00</span>
+            <div class="item">
+                <img src="https://unsplash.com" alt="Prod 2">
+                <p>Jeans grey sleeves <br> <span>$55.00</span></p>
+            </div>
+            <div class="item">
+                <img src="https://unsplash.com" alt="Prod 3">
+                <p>Jacket oversize <br> <span>$120.00</span></p>
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="about">
-            <h2>ABOUT US</h2>
-            <div class="about-content">
-                <img src="assets/store.jpg" alt="Nuestra Tienda">
-                <p>Inercia es moda en constante movimiento. Desde 2023, creamos piezas que combinan elegancia urbana con la libertad del día a día.</p>
+        <!-- SECCIÓN 3: ABOUT US -->
+        <h2 class="section-label">ABOUT US</h2>
+        <section class="about-section">
+            <div class="about-img">
+                <img src="https://unsplash.com" alt="About">
+            </div>
+            <div class="about-text">
+                <p>Inercia es una marca que entiende el movimiento constante de la ciudad. Diseñamos para quienes no se detienen.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: CATEGORÍAS -->
+        <h2 class="section-label">PRODUCT CATEGORIES</h2>
+        <section class="categories-grid">
+            <div class="cat-item">
+                <img src="https://unsplash.com" alt="Cat 1">
+                <span>JACKETS & COATS</span>
+            </div>
+            <div class="cat-item">
+                <img src="https://unsplash.com" alt="Cat 2">
+                <span>DRESSES & SKIRTS</span>
             </div>
         </section>
     </main>
-
-    <footer>
-        <p>&copy; 2026 INERCIA - Moda en Movimiento</p>
-    </footer>
 
 </body>
 </html>
