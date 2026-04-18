@@ -2,184 +2,45 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Sistema de Gestión Interna</title>
-    <style>
-        :root {
-            --admin-black: #1a1a1a;
-            --admin-accent: #007AFF;
-            --admin-bg: #f8f9fa;
-            --border: #e2e8f0;
-            --success: #2ecc71;
-            --warning: #f1c40f;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--admin-bg); display: flex; height: 100vh; color: var(--admin-black); }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 260px; background: var(--admin-black); color: white;
-            padding: 30px 20px; display: flex; flex-direction: column;
-        }
-        .sidebar h2 { font-size: 18px; letter-spacing: 4px; margin-bottom: 40px; text-align: center; }
-        .nav-item {
-            padding: 12px 15px; border-radius: 8px; cursor: pointer;
-            margin-bottom: 8px; font-size: 14px; transition: 0.3s;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); color: var(--admin-accent); }
-
-        /* MAIN CONTENT */
-        .main-content { flex: 1; overflow-y: auto; padding: 40px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        
-        /* DASHBOARD CARDS */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
-        .stat-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
-        .stat-card span { font-size: 12px; color: #666; text-transform: uppercase; }
-        .stat-card h3 { font-size: 24px; margin-top: 10px; }
-
-        /* SECCIONES GESTIÓN */
-        .section { display: none; background: white; padding: 30px; border-radius: 12px; border: 1px solid var(--border); }
-        .section.active { display: block; animation: fadeIn 0.3s; }
-
-        /* TABLAS Y FORMULARIOS */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { text-align: left; padding: 15px; border-bottom: 2px solid var(--border); font-size: 13px; color: #666; }
-        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
-        
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-        .badge-success { background: #d4edda; color: #155724; }
-        .badge-warning { background: #fff3cd; color: #856404; }
-
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-size: 13px; margin-bottom: 8px; font-weight: 600; }
-        input, select, textarea { 
-            width: 100%; padding: 10px; border: 1px solid var(--border); 
-            border-radius: 6px; outline: none; 
-        }
-        
-        .btn-action {
-            background: var(--admin-black); color: white; padding: 10px 20px;
-            border: none; border-radius: 6px; cursor: pointer; font-size: 13px;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+    <title>Admin Dashboard | Editorial</title>
+    <script src="https://tailwindcss.com"></script>
 </head>
-<body>
-
-    <aside class="sidebar">
-        <h2>INERCIA</h2>
-        <div class="nav-item active" onclick="showSection('dashboard')">Dashboard</div>
-        <div class="nav-item" onclick="showSection('productos')">Productos y Variantes</div>
-        <div class="nav-item" onclick="showSection('stock')">Inventario Real</div>
-        <div class="nav-item" onclick="showSection('pedidos')">Pedidos y Envíos</div>
-        <div class="nav-item" onclick="showSection('marketing')">Marketing y Cupones</div>
-    </aside>
-
-    <main class="main-content">
-        <!-- CABECERA -->
-        <div class="header">
-            <h1 id="section-title">Vista General</h1>
-            <div class="user-info">Admin: 0110 | <span style="color: var(--admin-accent); cursor: pointer;">Cerrar Sesión</span></div>
-        </div>
-
-        <!-- DASHBOARD (Sección 4: Analítica) -->
-        <div id="dashboard" class="section active">
-            <div class="stats-grid">
-                <div class="stat-card"><span>Ventas Hoy</span><h3>$245.900</h3></div>
-                <div class="stat-card"><span>Pedidos Pendientes</span><h3>14</h3></div>
-                <div class="stat-card"><span>Stock Crítico</span><h3 style="color: red;">3 Artículos</h3></div>
-                <div class="stat-card"><span>Carritos Abandonados</span><h3>8</h3></div>
-            </div>
-            <h3>Productos más vendidos</h3>
-            <table>
-                <thead><tr><th>Producto</th><th>Ventas</th><th>Conversión</th><th>Estado</th></tr></thead>
-                <tbody>
-                    <tr><td>S/S Skirt Edition</td><td>124</td><td>4.2%</td><td><span class="badge badge-success">Top</span></td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- GESTIÓN DE PRODUCTOS (Sección 1: Variantes y Carga) -->
-        <div id="productos" class="section">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                <h3>Catálogo de Temporada</h3>
-                <button class="btn-action">+ Nuevo Producto</button>
-            </div>
-            <div class="form-group">
-                <label>Carga Masiva de Imágenes (Arrastra o selecciona)</label>
-                <input type="file" multiple accept="image/*" style="padding: 40px; border: 2px dashed var(--border); text-align: center;">
-            </div>
-            <div class="form-group">
-                <label>Configurar Variantes (Talla/Color/Material)</label>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" placeholder="Ej: Talla S, M, L">
-                    <input type="text" placeholder="Ej: Negro, Crudo">
-                    <button class="btn-action">Vincular</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- CONTROL DE STOCK (Sección 2: Sincronización) -->
-        <div id="stock" class="section">
-            <h3>Inventario en Tiempo Real</h3>
-            <table>
-                <thead><tr><th>SKU</th><th>Producto</th><th>Variante</th><th>Stock Actual</th><th>Alerta</th></tr></thead>
-                <tbody>
-                    <tr><td>INC-SK-001</td><td>S/S Skirt</td><td>Negro / M</td><td>42</td><td>OK</td></tr>
-                    <tr><td>INC-SK-002</td><td>S/S Skirt</td><td>Negro / S</td><td>2</td><td><span class="badge badge-warning">BAJO STOCK</span></td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- PEDIDOS (Sección 3: Logística) -->
-        <div id="pedidos" class="section">
-            <h3>Gestión de Envíos</h3>
-            <table>
-                <thead><tr><th>Orden</th><th>Cliente</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead>
-                <tbody>
-                    <tr><td>#10405</td><td>M. García</td><td>$196.000</td><td><span class="badge badge-warning">PAGADO - PREPARANDO</span></td><td><button class="btn-action">Generar Etiqueta</button></td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- MARKETING (Sección 5: SEO y Cupones) -->
-        <div id="marketing" class="section">
-            <h3>Marketing y SEO</h3>
-            <div class="form-group">
-                <label>Crear Cupón de Descuento</label>
-                <input type="text" placeholder="INERCIA2026">
-                <small>Aplica 20% de descuento en categoría "Summer Edition"</small>
-            </div>
-            <button class="btn-action">Activar Campaña</button>
-        </div>
-
-    </main>
-
-    <script>
-        function showSection(id) {
-            // Ocultar todas las secciones
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            // Quitar clase active de nav
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+<body class="bg-gray-100 font-mono text-xs">
+    <div id="admin-panel" class="max-w-xl mx-auto mt-20 bg-white p-10 shadow-2xl border border-black">
+        <h2 class="text-xl font-bold mb-10 border-b-2 border-black pb-2 uppercase tracking-widest">Panel de Control</h2>
+        
+        <div class="space-y-6">
+            <input type="text" id="p-nombre" placeholder="NOMBRE DEL PRODUCTO" class="w-full p-3 border border-gray-200">
+            <input type="text" id="p-sub" placeholder="SUBTÍTULO (EJ: DRAPED DETAIL)" class="w-full p-3 border border-gray-200">
+            <input type="number" id="p-precio" placeholder="PRECIO" class="w-full p-3 border border-gray-200">
+            <input type="text" id="p-img" placeholder="URL DE IMAGEN (JPG/PNG)" class="w-full p-3 border border-gray-200">
             
-            // Mostrar la seleccionada
-            document.getElementById(id).classList.add('active');
-            
-            // Actualizar título y estilo nav
-            const event = window.event;
-            if(event) event.target.classList.add('active');
-            document.getElementById('section-title').innerText = id.charAt(0).toUpperCase() + id.slice(1);
-        }
+            <button onclick="addProducto()" class="w-full bg-black text-white p-4 hover:bg-gray-800 transition">
+                PUBLICAR PRODUCTO
+            </button>
+        </div>
+    </div>
 
-        // Simulación de alerta de stock (Requisito 2)
-        function checkStockAlerts() {
-            console.log("Sincronizando inventario con tienda física...");
-        }
-        setInterval(checkStockAlerts, 5000);
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getFirestore, collection, addDoc } from "https://gstatic.com";
+
+        const firebaseConfig = { /* MISMA CONFIG QUE EL HOME */ };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.addProducto = async () => {
+            try {
+                await addDoc(collection(db, "productos"), {
+                    nombre: document.getElementById('p-nombre').value,
+                    subtitulo: document.getElementById('p-sub').value,
+                    precio: document.getElementById('p-precio').value,
+                    imagen: document.getElementById('p-img').value,
+                    timestamp: Date.now()
+                });
+                alert("¡Producto añadido!");
+            } catch (e) { alert("Error: " + e.message); }
+        };
     </script>
 </body>
 </html>
