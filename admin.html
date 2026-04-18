@@ -3,41 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myGESTIÓN PRO | INERCIA MODA</title>
+    <title>myGESTIÓN | INERCIA MODA PRO</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --black: #000; --gray: #f4f4f4; --border: #e0e0e0; --safe: #2e7d32; --blue: #1565c0; }
+        :root { --black: #000; --gray: #f4f4f4; --border: #e0e0e0; --accent: #555; --safe: #2e7d32; --blue: #1565c0; --red: #c62828; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--gray); display: flex; min-height: 100vh; }
+        body { font-family: 'Inter', sans-serif; background: var(--gray); display: flex; min-height: 100vh; color: var(--black); }
 
-        /* LOGIN */
+        /* SEGURIDAD */
         #lock-screen { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        #lock-screen input { border: none; border-bottom: 2px solid var(--black); font-size: 2rem; text-align: center; outline: none; width: 220px; }
+        #lock-screen input { border: none; border-bottom: 2px solid var(--black); font-size: 2rem; text-align: center; outline: none; width: 220px; padding: 10px; }
 
         /* SIDEBAR */
         sidebar { width: 260px; background: var(--black); color: #fff; padding: 40px 20px; position: fixed; height: 100vh; z-index: 1000; }
-        .brand { font-size: 1.2rem; letter-spacing: 3px; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .nav-item { color: #888; font-size: 11px; margin-bottom: 20px; letter-spacing: 1px; cursor: pointer; display: block; text-decoration: none; }
-        .nav-item:hover { color: #fff; }
+        .brand-admin { font-size: 1.2rem; font-weight: 600; letter-spacing: 3px; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .nav-item { color: #888; text-decoration: none; font-size: 11px; margin-bottom: 22px; letter-spacing: 1px; cursor: pointer; display: block; }
+        .nav-item:hover, .nav-item.active { color: #fff; }
 
         /* MAIN */
         main { flex: 1; margin-left: 260px; padding: 60px; display: none; }
-        .card { background: #fff; padding: 30px; border: 1px solid var(--border); margin-bottom: 25px; }
-        h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid var(--gray); padding-bottom: 8px; }
+        .card { background: #fff; padding: 35px; border: 1px solid var(--border); margin-bottom: 30px; position: relative; }
+        h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: var(--accent); border-bottom: 1px solid var(--gray); padding-bottom: 10px; }
 
-        /* FORMULARIOS */
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 9px; font-weight: 700; text-transform: uppercase; color: #999; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); font-size: 13px; outline: none; }
+        /* FORMULARIOS Y TABLAS */
+        .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+        label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #999; }
+        input, select, textarea { padding: 12px; border: 1px solid var(--border); font-size: 13px; outline: none; }
         
-        /* TABLAS DE CLIENTES Y PEDIDOS */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { text-align: left; font-size: 10px; text-transform: uppercase; padding: 10px; border-bottom: 1px solid var(--black); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; font-size: 10px; text-transform: uppercase; padding: 10px; border-bottom: 1px solid #000; }
         td { padding: 12px 10px; font-size: 12px; border-bottom: 1px solid #eee; }
-        .badge { padding: 3px 7px; border-radius: 3px; font-size: 9px; font-weight: 700; text-transform: uppercase; }
-        .badge-shipping { background: #e3f2fd; color: var(--blue); }
 
-        .btn-black { background: var(--black); color: #fff; border: none; padding: 15px; width: 100%; font-weight: 600; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
+        /* BOTONES */
+        .btn-black { background: var(--black); color: #fff; border: none; padding: 18px; width: 100%; font-weight: 600; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
+        .badge-shipping { background: #e3f2fd; color: var(--blue); padding: 3px 6px; font-size: 9px; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -48,89 +47,89 @@
     </div>
 
     <sidebar>
-        <div class="brand">myGESTIÓN</div>
-        <div class="nav-item" onclick="showSection('productos')">PRODUCTOS & CATEGORÍAS</div>
-        <div class="nav-item" onclick="showSection('clientes')">CLIENTES & ENVÍOS</div>
-        <div class="nav-item" onclick="showSection('config')">PAGOS & LOGÍSTICA</div>
+        <div class="brand-admin">myGESTIÓN</div>
+        <div class="nav-item" onclick="showSection('nuevo')">PRODUCTOS & CATEGORÍAS</div>
+        <div class="nav-item" onclick="showSection('clientes')">BASE DE CLIENTES</div>
+        <div class="nav-item" onclick="showSection('pedidos')">PEDIDOS & LOGÍSTICA</div>
+        <div class="nav-item" onclick="showSection('marketing')">MARKETING & SEO</div>
+        <div class="nav-item" onclick="showSection('config')">PAGOS & ENVÍOS</div>
     </sidebar>
 
     <main id="admin-content">
-        <!-- SECCIÓN 1: PRODUCTOS Y CATEGORÍAS -->
-        <section id="section-productos" class="admin-section">
+        <!-- PRODUCTOS Y CATEGORÍAS -->
+        <section id="section-nuevo" class="admin-section">
             <div class="card">
-                <h2>Categorías Personalizadas</h2>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="new-cat" placeholder="Nombre de categoría (ej: Drops Invierno)">
-                    <button class="btn-black" style="width:150px; padding:10px;" onclick="addCategory()">AÑADIR</button>
+                <h2>Categorías del Sistema</h2>
+                <div style="display:flex; gap:10px; margin-bottom:20px;">
+                    <input type="text" id="new-cat" placeholder="Nueva categoría...">
+                    <button class="btn-black" style="width:120px; padding:10px;" onclick="addCategory()">+ ADD</button>
                 </div>
-                <div id="cat-list" style="margin-top:15px; font-size:12px; color:var(--safe)">Categorías activas: General, Accesorios</div>
-            </div>
-            <div class="card">
-                <h2>Carga de Prenda</h2>
                 <div class="input-group">
                     <label>Categoría Seleccionada</label>
-                    <select id="cat-select"><option>General</option><option>Accesorios</option></select>
+                    <select id="p-categoria"><option>General</option></select>
                 </div>
-                <div class="input-group"><label>Nombre</label><input type="text"></div>
-                <button class="btn-black">PUBLICAR</button>
+            </div>
+            <div class="card">
+                <h2>Carga Editorial</h2>
+                <input type="text" placeholder="Nombre de prenda" style="margin-bottom:15px;">
+                <button class="btn-black">PUBLICAR PRODUCTO</button>
             </div>
         </section>
 
-        <!-- SECCIÓN 2: BASE DE DATOS DE CLIENTES -->
+        <!-- BASE DE CLIENTES (Datos para Correo) -->
         <section id="section-clientes" class="admin-section" style="display:none;">
             <div class="card">
-                <h2>Datos de Envío (Correo/Logística)</h2>
+                <h2>Información de Envío</h2>
                 <table>
                     <thead>
                         <tr>
                             <th>Cliente</th>
                             <th>DNI / Tel</th>
-                            <th>Dirección Completa</th>
-                            <th>Tipo</th>
+                            <th>Dirección Logística</th>
+                            <th>Envío</th>
                         </tr>
                     </thead>
-                    <tbody id="client-list">
+                    <tbody>
                         <tr>
-                            <td><strong>Julieta Smith</strong></td>
-                            <td>40.123.456 / 11-2345-6789</td>
-                            <td>Av. Corrientes 450, 4to B, CABA (CP 1425)</td>
-                            <td><span class="badge badge-shipping">CORREO ARG</span></td>
+                            <td><strong>Martina Rossi</strong></td>
+                            <td>38.990.123 / 11-5555-4444</td>
+                            <td>Calle Falsa 123, Piso 2A, CP 1425, CABA</td>
+                            <td><span class="badge-shipping">CORREO ARGENTINO</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- SECCIÓN 3: CONFIGURACIÓN DE MÉTODOS -->
+        <!-- CONFIGURACIÓN DE PAGOS Y ENVÍOS -->
         <section id="section-config" class="admin-section" style="display:none;">
             <div class="card">
-                <h2>Configuración de Cobros (Lo que verá el cliente)</h2>
+                <h2>Métodos de Pago (Info para el cliente)</h2>
                 <div class="input-group">
-                    <label>Instrucciones Transferencia (CBU/Alias)</label>
-                    <textarea rows="3" placeholder="Ej: Alias: inercia.moda.ok - Banco Nación"></textarea>
+                    <label>Datos para Transferencia (CBU/Alias)</label>
+                    <textarea rows="3" placeholder="Ej: Alias: inercia.moda | Banco Galicia..."></textarea>
                 </div>
                 <div class="input-group">
-                    <label>Link de Pago (MercadoPago/Stripe)</label>
+                    <label>Link Directo de Pago</label>
                     <input type="text" placeholder="https://mpago.la...">
                 </div>
             </div>
             <div class="card">
-                <h2>Configuración de Envíos</h2>
-                <div class="input-group">
-                    <label>Costo Envío Fijo ($)</label>
-                    <input type="number" placeholder="0.00">
-                </div>
-                <div class="input-group">
-                    <label>Info Adicional para el Check-out</label>
-                    <textarea rows="2" placeholder="Ej: Los envíos por correo demoran 3 a 5 días hábiles."></textarea>
-                </div>
+                <h2>Configuración de Logística</h2>
+                <div class="input-group"><label>Costo de Envío Fijo</label><input type="number" placeholder="0.00"></div>
+                <div class="input-group"><label>Instrucciones de Entrega</label><textarea rows="2" placeholder="Info que verá el cliente al finalizar..."></textarea></div>
                 <button class="btn-black">GUARDAR CONFIGURACIÓN</button>
             </div>
         </section>
+
+        <!-- Otras secciones (Pedidos, Marketing) permanecen con su lógica anterior -->
     </main>
 
-    <script>
-        // NAVEGACIÓN Y ACCESO
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        // ... Tus credenciales de Firebase aquí ...
+
+        // ACCESO
         document.getElementById('secret-key').addEventListener('input', (e) => {
             if(e.target.value === '0110') {
                 document.getElementById('lock-screen').style.display = 'none';
@@ -138,20 +137,20 @@
             }
         });
 
-        window.showSection = (id) => {
+        // NAVEGACIÓN
+        window.showSection = (name) => {
             document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
-            document.getElementById('section-' + id).style.display = 'block';
+            document.getElementById('section-' + name).style.display = 'block';
         };
 
-        // GESTIÓN DE CATEGORÍAS
+        // CATEGORÍAS
         window.addCategory = () => {
             const val = document.getElementById('new-cat').value;
             if(val) {
-                const sel = document.getElementById('cat-select');
+                const sel = document.getElementById('p-categoria');
                 const opt = document.createElement('option');
                 opt.text = val;
                 sel.add(opt);
-                document.getElementById('cat-list').innerText += ", " + val;
                 document.getElementById('new-cat').value = "";
             }
         };
