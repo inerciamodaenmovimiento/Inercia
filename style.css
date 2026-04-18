@@ -1,67 +1,31 @@
-:root {
-    --black: #000000;
-    --white: #ffffff;
-    --gray: #f4f4f4;
-    --text-dark: #333;
-}
+:root { --black: #000; --grey: #f9f9f9; --text-grey: #666; }
+body { font-family: 'Helvetica Neue', Arial; margin: 0; color: var(--black); }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Inter', sans-serif; color: var(--text-dark); line-height: 1.6; }
+/* Header */
+.nav-content { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #eee; }
+.logo { font-size: 1.8rem; font-weight: 300; letter-spacing: -1px; }
+.menu-links a { text-decoration: none; color: var(--black); margin: 0 15px; font-size: 0.8rem; font-weight: bold; }
 
-/* Navbar Sticky */
-.navbar {
-    position: sticky;
-    top: 0;
-    background: var(--white);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 5%;
-    border-bottom: 1px solid #eee;
-    z-index: 1000;
-}
-.logo { font-weight: 600; font-size: 1.5rem; letter-spacing: 2px; }
-.nav-links a { text-decoration: none; color: var(--black); margin: 0 15px; font-size: 0.9rem; text-transform: uppercase; }
+/* Hero */
+.hero { display: flex; align-items: center; background: var(--grey); height: 500px; overflow: hidden; margin-bottom: 40px; }
+.hero-text { padding: 80px; flex: 1; }
+.hero-text h2 { font-size: 3rem; margin: 10px 0 30px; }
+.hero-img { flex: 1; height: 100%; }
+.hero-img img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Hero Section */
-.hero {
-    height: 80vh;
-    background: #e0e0e0 url('https://unsplash.com') center/cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-.hero-content { background: rgba(255,255,255,0.8); padding: 3rem; }
-.btn-cta { 
-    display: inline-block; padding: 12px 30px; background: var(--black); 
-    color: var(--white); text-decoration: none; margin-top: 20px; transition: 0.3s;
-}
-.btn-cta:hover { opacity: 0.8; }
+/* Product Grid */
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 30px; margin-top: 30px; }
+.p-card { text-align: center; position: relative; }
+.p-card img { width: 100%; transition: opacity 0.3s; }
+.p-card:hover img { opacity: 0.8; }
+.btn-add { background: var(--black); color: white; border: none; padding: 10px; width: 100%; cursor: pointer; display: none; }
+.p-card:hover .btn-add { display: block; }
+.out-of-stock { color: red; font-size: 0.7rem; font-weight: bold; }
 
-/* Services Section - Grid */
-.services {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 4rem 5%;
-    background: var(--gray);
-}
-.service-card { text-align: center; padding: 20px; border: 1px solid #ddd; background: #fff; }
+/* Modal */
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); }
+.modal-content { background: white; margin: 5% auto; padding: 40px; width: 400px; position: relative; }
+.close { position: absolute; right: 20px; top: 20px; cursor: pointer; font-size: 24px; }
 
-/* Footer */
-footer { background: var(--black); color: var(--white); padding: 4rem 5% 2rem; }
-.footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
-.copy { text-align: center; margin-top: 3rem; font-size: 0.8rem; opacity: 0.6; }
-
-/* Admin Modal */
-.admin-modal {
-    display: none; position: fixed; top:0; left:0; width: 100%; height:100%;
-    background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center;
-}
-.admin-content { background: white; padding: 40px; border-radius: 5px; text-align: center; }
-
-/* Responsivo Mobile-First */
-@media (max-width: 768px) {
-    .nav-links { display: none; } /* En móvil solemos usar un menú hamburguesa */
-}
+.btn-black { background: var(--black); color: white; width: 100%; border: none; padding: 15px; cursor: pointer; margin-top: 20px; }
