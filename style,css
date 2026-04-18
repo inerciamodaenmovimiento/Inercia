@@ -1,94 +1,83 @@
-/* 1. La fuente: Importante usar una con mucho peso visual */
+/* Importar fuentes de lujo */
 @import url('https://googleapis.com');
 
 body {
     background-color: #fff;
+    color: #000;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Para que nada se corte */
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
 }
 
-/* 2. Título de fondo (Efecto revista) */
-.bg-title {
+/* Contenedor principal con márgenes de revista */
+.editorial-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr); /* Sistema de 12 columnas */
+    gap: 20px;
+}
+
+/* Encabezado */
+.main-header {
+    grid-column: 1 / 13;
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.logo {
     font-family: 'Bodoni Moda', serif;
-    font-size: 20vw; /* Tamaño masivo */
-    color: #f0f0f0; /* Gris muy clarito */
-    position: absolute;
-    top: -5vw;
-    left: 5%;
-    z-index: -1; /* Se queda atrás de todo */
+    font-size: 8rem;
+    font-weight: 900;
     margin: 0;
+    letter-spacing: -5px;
+    text-transform: uppercase;
 }
 
-/* 3. Contenedor principal */
-.magazine-container {
-    padding: 100px 5%;
-    max-width: 1400px;
-    margin: auto;
+nav {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 10px 0;
+    word-spacing: 30px;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
 }
 
-/* 4. El efecto de encimar texto sobre imagen */
-.hero-editorial {
-    display: flex;
-    align-items: flex-start;
-    gap: 40px;
+/* Sección Hero con solapamiento */
+.hero-section {
+    grid-column: 1 / 9; /* Ocupa la parte izquierda */
     position: relative;
+    background: #f0f0f0; /* Fondo gris temporal por si no carga la imagen */
+    min-height: 500px;
 }
 
-.main-frame {
-    width: 60%;
-    position: relative;
+.hero-text {
+    grid-column: 7 / 13; /* Empieza antes de que termine la imagen */
+    grid-row: 1;
+    z-index: 10;
+    padding-top: 100px;
 }
 
-.img-hero {
-    width: 100%;
-    filter: grayscale(100%) contrast(110%);
-    display: block;
-}
-
-.overlay-text {
-    position: absolute;
-    bottom: -50px; /* Sale de la imagen hacia abajo */
-    right: -20px;
-    text-align: right;
-}
-
-.overlay-text h2 {
+.title-overlap {
     font-family: 'Bodoni Moda', serif;
     font-size: 5rem;
     line-height: 0.8;
-    background: white; /* Recuadro blanco para tapar la foto */
+    background: white; /* Esto crea el efecto de recorte */
     padding: 20px;
-    margin: 0;
 }
 
-/* 5. Detalles de texto vertical */
-.vertical-text {
-    writing-mode: vertical-rl;
-    text-transform: uppercase;
-    letter-spacing: 10px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #888;
-}
-
-.description-block {
-    margin-top: 150px;
-    max-width: 300px;
+/* El manifiesto lateral */
+.manifesto {
+    grid-column: 2 / 6;
+    margin-top: 50px;
     border-left: 1px solid #000;
     padding-left: 20px;
-/* Agrega esto a tu style.css */
-.bg-title {
-    position: fixed; /* Se queda quieto mientras haces scroll */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Bodoni Moda', serif;
-    font-size: 25vw; /* Ocupa casi toda la pantalla */
-    font-weight: 900;
-    color: rgba(0,0,0,0.03); /* Casi invisible, gris muy suave */
-    z-index: -1;
-    pointer-events: none; /* Para que no interfiera con los clics */
-    white-space: nowrap;
 }
 
+.story-title {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 3rem;
+    font-style: italic;
+}
