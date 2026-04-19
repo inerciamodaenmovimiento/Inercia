@@ -11,11 +11,25 @@
 
     <nav>
         <div class="logo">INERCIA</div>
-        <div class="menu-dots">:::</div>
+        <button id="openAdmin" style="background:none; border:none; cursor:pointer; font-size:10px;">ADMIN</button>
     </nav>
 
+    <!-- PANEL DE CARGA (Oculto por defecto) -->
+    <div id="adminPanel" class="admin-modal">
+        <div class="admin-content">
+            <h3>Cargar Nuevo Producto</h3>
+            <input type="text" id="pName" placeholder="Nombre del producto">
+            <input type="text" id="pPrice" placeholder="Precio (ej: $35.00)">
+            <label>Seleccionar imagen desde PC:</label>
+            <input type="file" id="pImage" accept="image/*">
+            <div class="admin-buttons">
+                <button onclick="saveProduct()">Guardar Producto</button>
+                <button onclick="closeModal()" style="background:#ff4444">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <main>
-        <!-- SECCIÓN 1: HERO -->
         <section class="hero-section">
             <h1 class="main-title">DRESS HERE AND BE IN STYLE</h1>
             <div class="hero-container">
@@ -24,47 +38,63 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: NEW COLLECTION (GRILLA DE 3) -->
         <h2 class="section-label">NEW COLLECTION</h2>
-        <section class="product-grid-triple">
-            <div class="item">
-                <img src="https://unsplash.com" alt="Prod 1">
-                <p>Body cut out soft <br> <span>$35.00</span></p>
-            </div>
-            <div class="item">
-                <img src="https://unsplash.com" alt="Prod 2">
-                <p>Jeans grey sleeves <br> <span>$55.00</span></p>
-            </div>
-            <div class="item">
-                <img src="https://unsplash.com" alt="Prod 3">
-                <p>Jacket oversize <br> <span>$120.00</span></p>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 3: ABOUT US -->
-        <h2 class="section-label">ABOUT US</h2>
-        <section class="about-section">
-            <div class="about-img">
-                <img src="https://unsplash.com" alt="About">
-            </div>
-            <div class="about-text">
-                <p>Inercia es una marca que entiende el movimiento constante de la ciudad. Diseñamos para quienes no se detienen.</p>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 4: CATEGORÍAS -->
-        <h2 class="section-label">PRODUCT CATEGORIES</h2>
-        <section class="categories-grid">
-            <div class="cat-item">
-                <img src="https://unsplash.com" alt="Cat 1">
-                <span>JACKETS & COATS</span>
-            </div>
-            <div class="cat-item">
-                <img src="https://unsplash.com" alt="Cat 2">
-                <span>DRESSES & SKIRTS</span>
-            </div>
+        <!-- Aquí se cargarán tus productos automáticamente -->
+        <section class="product-grid-triple" id="productContainer">
+            <!-- Los productos subidos aparecerán aquí -->
         </section>
     </main>
 
+    <script>
+        const adminModal = document.getElementById('adminPanel');
+        const container = document.getElementById('productContainer');
+
+        // Abrir/Cerrar Panel
+        document.getElementById('openAdmin').onclick = () => adminModal.style.display = 'flex';
+        function closeModal() { adminModal.style.display = 'none'; }
+
+        // Función para guardar producto
+        function saveProduct() {
+            const name = document.getElementById('pName').value;
+            const price = document.getElementById('pPrice').value;
+            const fileInput = document.getElementById('pImage');
+            
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const newProduct = { name, price, img: e.target.result };
+                    let products = JSON.parse(localStorage.getItem('inercia_prods')) || [];
+                    products.push(newProduct);
+                    localStorage.setItem('inercia_prods', JSON.stringify(products));
+                    renderProducts();
+                    closeModal();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        // Función para mostrar productos
+        function renderProducts() {
+            container.innerHTML = '';
+            const products = JSON.parse(localStorage.getItem('inercia_prods')) || [];
+            products.forEach((p, index) => {
+                container.innerHTML += `
+                    <div class="item">
+                        <img src="${p.img}">
+                        <p>${p.name} <br> <span>${p.price}</span></p>
+                        <button onclick="deleteProduct(${index})" style="font-size:10px; color:red; border:none; background:none; cursor:pointer;">Eliminar</button>
+                    </div>`;
+            });
+        }
+
+        function deleteProduct(index) {
+            let products = JSON.parse(localStorage.getItem('inercia_prods'));
+            products.splice(index, 1);
+            localStorage.setItem('inercia_prods', JSON.stringify(products));
+            renderProducts();
+        }
+
+        window.onload = renderProducts;
+    </script>
 </body>
 </html>
