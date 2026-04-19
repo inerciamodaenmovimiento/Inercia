@@ -3,98 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inercia | Moda en Movimiento</title>
-    <link rel="stylesheet" href="style.css">
+    <title>INERCIA | Moda en Movimiento</title>
+    <!-- Tipografía de lujo -->
     <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root { --black: #000; --white: #fff; --gray: #f4f4f4; --accent: #666; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; }
+
+        /* HEADER */
+        nav { display: flex; justify-content: space-between; padding: 30px 6%; align-items: center; position: sticky; top: 0; background: white; z-index: 100; }
+        .logo { font-weight: 800; letter-spacing: 6px; font-size: 1.2rem; }
+        .admin-btn { font-size: 10px; letter-spacing: 2px; cursor: pointer; border: 1px solid #000; padding: 5px 10px; transition: 0.3s; }
+        .admin-btn:hover { background: #000; color: #fff; }
+
+        /* HERO SECTION */
+        .hero { padding: 40px 6%; text-align: center; }
+        .hero h1 { font-size: clamp(2.5rem, 10vw, 6rem); font-weight: 200; line-height: 0.85; letter-spacing: -3px; margin-bottom: 40px; }
+        .hero-banner { width: 100%; height: 80vh; background: var(--gray); position: relative; overflow: hidden; }
+        .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-tag { position: absolute; top: 20px; right: 20px; background: #fff; padding: 10px 25px; font-weight: 800; font-size: 0.7rem; }
+
+        /* GRID DE PRODUCTOS */
+        .section-title { padding: 80px 6% 30px; font-size: 0.7rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 6%; }
+        .item { margin-bottom: 40px; position: relative; }
+        .item img { width: 100%; aspect-ratio: 3/4; object-fit: cover; transition: transform 0.5s ease; background: #eee; }
+        .item:hover img { transform: scale(1.02); }
+        .item-info { margin-top: 15px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: flex-start; }
+        .item-info b { display: block; font-weight: 400; text-transform: uppercase; }
+        .delete-btn { color: red; border: none; background: none; cursor: pointer; font-size: 10px; margin-top: 5px; opacity: 0.3; }
+        .delete-btn:hover { opacity: 1; }
+
+        /* PANEL ADMIN MODAL */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: #fff; padding: 40px; width: 100%; max-width: 450px; display: flex; flex-direction: column; gap: 20px; }
+        .modal-content input { padding: 15px; border: 1px solid #ddd; outline: none; font-family: inherit; }
+        .modal-content button { padding: 15px; background: #000; color: #fff; border: none; cursor: pointer; font-weight: 800; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) { .product-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 600px) { .product-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 3rem; } }
+    </style>
 </head>
 <body>
 
     <nav>
         <div class="logo">INERCIA</div>
-        <button id="openAdmin" style="background:none; border:none; cursor:pointer; font-size:10px;">ADMIN</button>
+        <div class="admin-btn" onclick="toggleModal(true)">ADMIN PANEL</div>
     </nav>
 
-    <!-- PANEL DE CARGA (Oculto por defecto) -->
-    <div id="adminPanel" class="admin-modal">
-        <div class="admin-content">
-            <h3>Cargar Nuevo Producto</h3>
-            <input type="text" id="pName" placeholder="Nombre del producto">
-            <input type="text" id="pPrice" placeholder="Precio (ej: $35.00)">
-            <label>Seleccionar imagen desde PC:</label>
-            <input type="file" id="pImage" accept="image/*">
-            <div class="admin-buttons">
-                <button onclick="saveProduct()">Guardar Producto</button>
-                <button onclick="closeModal()" style="background:#ff4444">Cerrar</button>
+    <main>
+        <section class="hero">
+            <h1>DRESS HERE AND <br> BE IN STYLE</h1>
+            <div class="hero-banner">
+                <img src="https://unsplash.com" alt="Colección Principal">
+                <div class="hero-tag">NEW COLLECTION '26</div>
             </div>
+        </section>
+
+        <h2 class="section-title">Nuestra Colección</h2>
+        <div class="product-grid" id="grid">
+            <!-- Los productos de Firebase aparecerán aquí -->
+        </div>
+    </main>
+
+    <!-- Modal de Carga -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <h2 style="letter-spacing: -1px; margin-bottom: 10px;">Subir a Inercia</h2>
+            <input type="text" id="pName" placeholder="Nombre de la prenda">
+            <input type="text" id="pPrice" placeholder="Precio (ej: $120.00)">
+            <input type="file" id="pFile" accept="image/*">
+            <button id="btnSave">PUBLICAR PRODUCTO</button>
+            <button onclick="toggleModal(false)" style="background:none; color:#999; font-size: 12px;">Cancelar</button>
         </div>
     </div>
 
-    <main>
-        <section class="hero-section">
-            <h1 class="main-title">DRESS HERE AND BE IN STYLE</h1>
-            <div class="hero-container">
-                <img src="https://unsplash.com" alt="Hero">
-                <div class="floating-label">NEW COLLECTION</div>
-            </div>
-        </section>
+    <!-- CONFIGURACIÓN FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://gstatic.com";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://gstatic.com";
 
-        <h2 class="section-label">NEW COLLECTION</h2>
-        <!-- Aquí se cargarán tus productos automáticamente -->
-        <section class="product-grid-triple" id="productContainer">
-            <!-- Los productos subidos aparecerán aquí -->
-        </section>
-    </main>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTBgG4RK7yMEsg2lynJA6E_xKGSmamIv4",
+            authDomain: "://firebaseapp.com",
+            projectId: "incerciamoda",
+            storageBucket: "incerciamoda.firebasestorage.app",
+            messagingSenderId: "335158123341",
+            appId: "1:335158123341:web:2722e74538e808321a7504",
+            measurementId: "G-1NGJT0MRPB"
+        };
 
-    <script>
-        const adminModal = document.getElementById('adminPanel');
-        const container = document.getElementById('productContainer');
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const grid = document.getElementById('grid');
 
-        // Abrir/Cerrar Panel
-        document.getElementById('openAdmin').onclick = () => adminModal.style.display = 'flex';
-        function closeModal() { adminModal.style.display = 'none'; }
+        // Función para abrir/cerrar modal
+        window.toggleModal = (show) => {
+            document.getElementById('adminModal').style.display = show ? 'flex' : 'none';
+        };
 
-        // Función para guardar producto
-        function saveProduct() {
+        // SUBIR PRODUCTO
+        document.getElementById('btnSave').onclick = async () => {
             const name = document.getElementById('pName').value;
             const price = document.getElementById('pPrice').value;
-            const fileInput = document.getElementById('pImage');
-            
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const newProduct = { name, price, img: e.target.result };
-                    let products = JSON.parse(localStorage.getItem('inercia_prods')) || [];
-                    products.push(newProduct);
-                    localStorage.setItem('inercia_prods', JSON.stringify(products));
-                    renderProducts();
-                    closeModal();
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            }
-        }
+            const file = document.getElementById('pFile').files[0];
+            const btn = document.getElementById('btnSave');
 
-        // Función para mostrar productos
-        function renderProducts() {
-            container.innerHTML = '';
-            const products = JSON.parse(localStorage.getItem('inercia_prods')) || [];
-            products.forEach((p, index) => {
-                container.innerHTML += `
+            if (!name || !price || !file) return alert("Completa todos los campos");
+
+            btn.innerText = "SUBIENDO...";
+            btn.disabled = true;
+
+            try {
+                // 1. Subir imagen
+                const sRef = ref(storage, `inercia/${Date.now()}_${file.name}`);
+                await uploadBytes(sRef, file);
+                const url = await getDownloadURL(sRef);
+
+                // 2. Guardar en Base de Datos
+                await addDoc(collection(db, "productos"), {
+                    nombre: name,
+                    precio: price,
+                    imagen: url,
+                    createdAt: Date.now()
+                });
+
+                location.reload();
+            } catch (e) {
+                console.error(e);
+                alert("Error al subir");
+                btn.innerText = "PUBLICAR PRODUCTO";
+                btn.disabled = false;
+            }
+        };
+
+        // CARGAR PRODUCTOS
+        async function load() {
+            const q = query(collection(db, "productos"), orderBy("createdAt", "desc"));
+            const snap = await getDocs(q);
+            grid.innerHTML = '';
+            
+            snap.forEach(docItem => {
+                const p = docItem.data();
+                grid.innerHTML += `
                     <div class="item">
-                        <img src="${p.img}">
-                        <p>${p.name} <br> <span>${p.price}</span></p>
-                        <button onclick="deleteProduct(${index})" style="font-size:10px; color:red; border:none; background:none; cursor:pointer;">Eliminar</button>
-                    </div>`;
+                        <img src="${p.imagen}">
+                        <div class="item-info">
+                            <div>
+                                <b>${p.nombre}</b>
+                                <span>${p.precio}</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteItem('${docItem.id}')">ELIMINAR</button>
+                        </div>
+                    </div>
+                `;
             });
         }
 
-        function deleteProduct(index) {
-            let products = JSON.parse(localStorage.getItem('inercia_prods'));
-            products.splice(index, 1);
-            localStorage.setItem('inercia_prods', JSON.stringify(products));
-            renderProducts();
-        }
+        window.deleteItem = async (id) => {
+            if (confirm("¿Eliminar este producto de la tienda?")) {
+                await deleteDoc(doc(db, "productos", id));
+                location.reload();
+            }
+        };
 
-        window.onload = renderProducts;
+        load();
     </script>
 </body>
 </html>
